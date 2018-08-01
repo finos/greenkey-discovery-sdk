@@ -1,0 +1,347 @@
+{
+  "status": 0,
+  "timestamp": 1533145487791,
+  "segments": [
+    {
+      "startTimeSec": 0.0,
+      "clean_transcript": "Starting at 55 west, tom Monroe street heading toward to 33 south wacker drive.",
+      "words": [
+        {
+          "start": 0.78,
+          "confidence": 0.98822,
+          "word": "starting",
+          "length": 0.6
+        },
+        {
+          "start": 1.38,
+          "confidence": 0.986795,
+          "word": "at",
+          "length": 0.15
+        },
+        {
+          "start": 1.53,
+          "confidence": 1.0,
+          "word": "fifty",
+          "length": 0.42
+        },
+        {
+          "start": 1.95,
+          "confidence": 1.0,
+          "word": "five",
+          "length": 0.48
+        },
+        {
+          "start": 2.43,
+          "confidence": 0.999819,
+          "word": "west",
+          "length": 0.45
+        },
+        {
+          "start": 2.91,
+          "confidence": 0.507832,
+          "word": "tom",
+          "length": 0.39
+        },
+        {
+          "start": 3.39,
+          "confidence": 0.507343,
+          "word": "monroe",
+          "length": 0.45
+        },
+        {
+          "start": 3.84,
+          "confidence": 0.792634,
+          "word": "street",
+          "length": 0.48
+        },
+        {
+          "start": 4.38,
+          "confidence": 1.0,
+          "word": "heading",
+          "length": 0.36
+        },
+        {
+          "start": 4.74,
+          "confidence": 0.973251,
+          "word": "toward",
+          "length": 0.39
+        },
+        {
+          "start": 5.16,
+          "confidence": 0.67985,
+          "word": "to",
+          "length": 0.33
+        },
+        {
+          "start": 5.49,
+          "confidence": 1.0,
+          "word": "thirty",
+          "length": 0.39
+        },
+        {
+          "start": 5.88,
+          "confidence": 0.999751,
+          "word": "three",
+          "length": 0.42
+        },
+        {
+          "start": 6.3,
+          "confidence": 0.695993,
+          "word": "south",
+          "length": 0.42
+        },
+        {
+          "start": 6.72,
+          "confidence": 0.999675,
+          "word": "wacker",
+          "length": 0.42
+        },
+        {
+          "start": 7.14,
+          "confidence": 1.0,
+          "word": "drive",
+          "length": 0.6
+        }
+      ],
+      "endTimeSec": 8.85,
+      "transcript": "starting at fifty five west tom monroe street heading toward to thirty three south wacker drive",
+      "word_confusions": [
+        {
+          "the": 0.00120595,
+          "<eps>": 0.997328,
+          "<unk>": 0.00146596
+        },
+        {
+          "starting": 0.98822,
+          "<eps>": 0.0117797
+        },
+        {
+          "<eps>": 1.0
+        },
+        {
+          "at": 0.986795,
+          "up": 0.000444733,
+          "<eps>": 0.000980402,
+          "<unk>": 0.0117797
+        },
+        {
+          "the": 0.00137286,
+          "age": 0.000456058,
+          "<eps>": 0.998171
+        },
+        {
+          "fifty": 1.0
+        },
+        {
+          "<eps>": 1.0
+        },
+        {
+          "five": 1.0
+        },
+        {
+          "the": 0.00141961,
+          "or": 0.00126822,
+          "<eps>": 0.99332,
+          "<unk>": 0.00399175
+        },
+        {
+          "west": 0.999819,
+          "the": 8.6019E-8,
+          "quest": 0.000179869,
+          "or": 8.41099E-7,
+          "<unk>": 2.16393E-7
+        },
+        {
+          "<eps>": 0.999162,
+          "or": 0.000501236,
+          "<unk>": 0.000336719
+        },
+        {
+          "alm": 0.00222761,
+          "bomb": 0.0542505,
+          "brom": 0.00718024,
+          "palm": 0.0430671,
+          "poem": 0.00017115,
+          "from": 0.000388277,
+          "ham": 0.00172489,
+          "west": 0.00000114351,
+          "calm": 0.0051575,
+          "tom": 0.507832,
+          "balm": 0.00314105,
+          "hum": 0.000203955,
+          "thom": 0.0175201,
+          "<eps>": 0.000658227,
+          "on": 0.0139689,
+          "om": 0.00584604,
+          "obm": 0.321028,
+          "aam": 0.00127796,
+          "o": 0.000318498,
+          "bohm": 0.000648087,
+          "bom": 0.000487295,
+          "sm": 0.000410127,
+          "the": 0.00123088,
+          "com": 0.00489737,
+          "or": 0.000574426,
+          "<unk>": 0.00578772
+        },
+        {
+          "com": 0.000232808,
+          "obm": 0.000801625,
+          "m": 0.000318498,
+          "<eps>": 0.997416,
+          "bomb": 0.00123088
+        },
+        {
+          "munroe": 0.119016,
+          "alm": 3.48073E-7,
+          "brom": 0.00000112194,
+          "munros": 0.00717153,
+          "monroe": 0.507343,
+          "bohm": 1.01266E-7,
+          "ham": 2.69521E-7,
+          "murrow": 0.00630795,
+          "tom": 7.46545E-7,
+          "munro's": 0.00353287,
+          "monro": 0.00120089,
+          "monroes": 0.00179037,
+          "hum": 3.18688E-8,
+          "<eps>": 0.000451286,
+          "obm": 0.0000502872,
+          "munro": 0.341613,
+          "aam": 1.99686E-7,
+          "thom": 0.00000273759,
+          "bom": 7.61417E-8,
+          "monroe's": 0.00651065,
+          "com": 7.65234E-7,
+          "<unk>": 0.00500546
+        },
+        {
+          "<eps>": 0.999839,
+          "euro": 0.000160586
+        },
+        {
+          "streak": 0.000544165,
+          "stream": 0.00043508,
+          "tree": 0.000660172,
+          "streets": 0.000359698,
+          "streett": 0.000709576,
+          "three": 0.000807127,
+          "st": 0.202377,
+          "street": 0.792634,
+          "treat": 0.000965324,
+          "<unk>": 0.000507971
+        },
+        {
+          "<eps>": 1.0
+        },
+        {
+          "heading": 1.0
+        },
+        {
+          "<eps>": 1.0
+        },
+        {
+          "toward": 0.973251,
+          "towards": 0.0267486
+        },
+        {
+          "a": 0.000355224,
+          "the": 0.000658326,
+          "<eps>": 0.998986
+        },
+        {
+          "a": 0.000183766,
+          "two": 0.310415,
+          "ii": 0.00028557,
+          "to": 0.67985,
+          "too": 0.00798677,
+          "the": 0.00127842
+        },
+        {
+          "<eps>": 0.998538,
+          "two": 0.00146218
+        },
+        {
+          "thirty": 1.0
+        },
+        {
+          "<eps>": 1.0
+        },
+        {
+          "three": 0.999751,
+          "threes": 0.000249005
+        },
+        {
+          "a": 0.000913199,
+          "i": 0.000571421,
+          "is": 0.000669243,
+          "as": 0.00075583,
+          "years": 0.00158005,
+          "s": 0.00218096,
+          "s.": 0.00113368,
+          "<eps>": 0.990222,
+          "year": 0.00145726,
+          "yours": 0.000199523,
+          "<unk>": 0.00031684
+        },
+        {
+          "seven": 0.000314481,
+          "cents": 0.00166231,
+          "sells": 0.023755,
+          "sell": 0.0256051,
+          "said": 0.000780169,
+          "selves": 0.0010109,
+          "self": 0.165555,
+          "seller": 0.0623585,
+          "cell": 0.0026854,
+          "self's": 0.000647405,
+          "celta": 0.00104134,
+          "selling": 0.00327481,
+          "separate": 0.000183677,
+          "seconds": 0.000269829,
+          "sellers": 0.000180478,
+          "a": 0.00567165,
+          "celtic": 0.00333856,
+          "i": 0.000343442,
+          "cells": 0.00216513,
+          "celts": 0.00263404,
+          "sets": 0.000337034,
+          "sept": 0.000192471,
+          "south": 0.695993
+        },
+        {
+          "sell": 0.000343442,
+          "self": 0.00567165,
+          "to": 0.000454549,
+          "<eps>": 0.966673,
+          "the": 0.0128315,
+          "<unk>": 0.0140259
+        },
+        {
+          "wacker": 0.999675,
+          "whacker": 0.000325098
+        },
+        {
+          "<eps>": 1.0
+        },
+        {
+          "drive": 1.0
+        },
+        {
+          "<eps>": 1.0
+        }
+      ]
+    }
+  ],
+  "call_id": "none",
+  "result": {
+    "hypotheses": [
+      {
+        "clean_transcript": "Starting at 55 west, tom Monroe street heading toward to 33 south wacker drive.",
+        "transcript": "starting at fifty five west tom monroe street heading toward to thirty three south wacker drive"
+      }
+    ],
+    "final": true
+  },
+  "id": "1ad53246-2beb-4b48-84e4-ffa6491d40b6"
+}

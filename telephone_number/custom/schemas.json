@@ -1,0 +1,10 @@
+{
+  "schemas": [
+    {
+      "label": "telephone_number",
+      "return_json": {
+        "phone_numbers": ["{phone_number}"]
+      }
+    }
+  ]
+}

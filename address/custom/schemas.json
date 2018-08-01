@@ -1,0 +1,10 @@
+{
+  "schemas": [
+    {
+      "label": "address",
+      "return_json": {
+        "found_addresses": ["{complete_address}"]
+      }
+    }
+  ]
+}
