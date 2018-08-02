@@ -1,5 +1,8 @@
-''' this contians the entity definition for a us license plate '''
-# Each interpreter needs a list of patterns to look for
+'''
+This contains the entity definition for types of streets.
+'''
+
+from cleaning_functions import capitalize
 
 STREET_TYPE = {
   'label':
@@ -16,6 +19,9 @@ STREET_TYPE_PATTERN = [[['STREET_TYPE']]]
 ENTITY_DEFINITION = {
   'patterns': STREET_TYPE_PATTERN,
   'extraTokens': (STREET_TYPE,),
+  'extraCleaning': {
+    'STREET_TYPE': capitalize,
+  }
 }
 
 if __name__ == '__main__':

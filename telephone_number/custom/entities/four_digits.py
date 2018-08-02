@@ -1,5 +1,8 @@
-''' this contians the entity definition for a us license plate '''
-# Each interpreter needs a list of patterns to look for
+'''
+This Contains the entity definition for four contiguous numbers.
+This would be useful for part of a phone number, or a pin number.
+'''
+
 FOUR_DIGIT_PATTERN = [[['NUM'], ['NUM'], ['NUM'], ['NUM']]]
 
 ENTITY_DEFINITION = {

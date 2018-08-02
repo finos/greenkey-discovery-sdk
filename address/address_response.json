@@ -1,1 +1,768 @@
-{"message": "Internal Server Error"}
+{
+  "found_addresses": [
+    "55 West Monroe Street",
+    "233 South Wacker Drive"
+  ],
+  "interpreted_quote": {},
+  "result": {
+    "intents": [
+      {
+        "entities": [
+          {
+            "label": "complete_address",
+            "matches": [
+              [
+                {
+                  "endTimeSec": 4.32,
+                  "lattice_path": [
+                    [
+                      2,
+                      0
+                    ],
+                    [
+                      3,
+                      0
+                    ],
+                    [
+                      4,
+                      0
+                    ],
+                    [
+                      6,
+                      0
+                    ],
+                    [
+                      7,
+                      0
+                    ]
+                  ],
+                  "probability": 1.0,
+                  "startTimeSec": 1.53,
+                  "structure_confidence": 0.9,
+                  "value": "55 West Monroe Street"
+                },
+                {
+                  "endTimeSec": 4.32,
+                  "lattice_path": [
+                    [
+                      2,
+                      0
+                    ],
+                    [
+                      3,
+                      0
+                    ],
+                    [
+                      4,
+                      0
+                    ],
+                    [
+                      5,
+                      0
+                    ],
+                    [
+                      7,
+                      0
+                    ]
+                  ],
+                  "probability": 1.0,
+                  "startTimeSec": 1.53,
+                  "structure_confidence": 0.82,
+                  "value": "55 West Tom Street"
+                },
+                {
+                  "endTimeSec": 4.32,
+                  "lattice_path": [
+                    [
+                      2,
+                      0
+                    ],
+                    [
+                      4,
+                      0
+                    ],
+                    [
+                      6,
+                      0
+                    ],
+                    [
+                      7,
+                      0
+                    ]
+                  ],
+                  "probability": 1.0,
+                  "startTimeSec": 1.53,
+                  "structure_confidence": 0.7,
+                  "value": "50 West Monroe Street"
+                },
+                {
+                  "endTimeSec": 4.32,
+                  "lattice_path": [
+                    [
+                      3,
+                      0
+                    ],
+                    [
+                      4,
+                      0
+                    ],
+                    [
+                      6,
+                      0
+                    ],
+                    [
+                      7,
+                      0
+                    ]
+                  ],
+                  "probability": 1.0,
+                  "startTimeSec": 1.95,
+                  "structure_confidence": 0.64,
+                  "value": "5 West Monroe Street"
+                },
+                {
+                  "endTimeSec": 4.32,
+                  "lattice_path": [
+                    [
+                      2,
+                      0
+                    ],
+                    [
+                      4,
+                      0
+                    ],
+                    [
+                      5,
+                      0
+                    ],
+                    [
+                      7,
+                      0
+                    ]
+                  ],
+                  "probability": 1.0,
+                  "startTimeSec": 1.53,
+                  "structure_confidence": 0.55,
+                  "value": "50 West Tom Street"
+                },
+                {
+                  "endTimeSec": 4.32,
+                  "lattice_path": [
+                    [
+                      3,
+                      0
+                    ],
+                    [
+                      4,
+                      0
+                    ],
+                    [
+                      5,
+                      0
+                    ],
+                    [
+                      7,
+                      0
+                    ]
+                  ],
+                  "probability": 1.0,
+                  "startTimeSec": 1.95,
+                  "structure_confidence": 0.52,
+                  "value": "5 West Tom Street"
+                },
+                {
+                  "endTimeSec": 4.32,
+                  "lattice_path": [
+                    [
+                      2,
+                      0
+                    ],
+                    [
+                      3,
+                      0
+                    ],
+                    [
+                      6,
+                      0
+                    ],
+                    [
+                      7,
+                      0
+                    ]
+                  ],
+                  "probability": 1.0,
+                  "startTimeSec": 1.53,
+                  "structure_confidence": 0.5,
+                  "value": "55 Monroe Street"
+                },
+                {
+                  "endTimeSec": 4.32,
+                  "lattice_path": [
+                    [
+                      2,
+                      0
+                    ],
+                    [
+                      3,
+                      0
+                    ],
+                    [
+                      5,
+                      0
+                    ],
+                    [
+                      7,
+                      0
+                    ]
+                  ],
+                  "probability": 1.0,
+                  "startTimeSec": 1.53,
+                  "structure_confidence": 0.41,
+                  "value": "55 Tom Street"
+                },
+                {
+                  "endTimeSec": 4.32,
+                  "lattice_path": [
+                    [
+                      2,
+                      0
+                    ],
+                    [
+                      6,
+                      0
+                    ],
+                    [
+                      7,
+                      0
+                    ]
+                  ],
+                  "probability": 1.0,
+                  "startTimeSec": 1.53,
+                  "structure_confidence": 0.37,
+                  "value": "50 Monroe Street"
+                },
+                {
+                  "endTimeSec": 4.32,
+                  "lattice_path": [
+                    [
+                      3,
+                      0
+                    ],
+                    [
+                      6,
+                      0
+                    ],
+                    [
+                      7,
+                      0
+                    ]
+                  ],
+                  "probability": 1.0,
+                  "startTimeSec": 1.95,
+                  "structure_confidence": 0.35,
+                  "value": "5 Monroe Street"
+                },
+                {
+                  "endTimeSec": 4.32,
+                  "lattice_path": [
+                    [
+                      2,
+                      0
+                    ],
+                    [
+                      5,
+                      0
+                    ],
+                    [
+                      7,
+                      0
+                    ]
+                  ],
+                  "probability": 1.0,
+                  "startTimeSec": 1.53,
+                  "structure_confidence": 0.29,
+                  "value": "50 Tom Street"
+                },
+                {
+                  "endTimeSec": 4.32,
+                  "lattice_path": [
+                    [
+                      3,
+                      0
+                    ],
+                    [
+                      5,
+                      0
+                    ],
+                    [
+                      7,
+                      0
+                    ]
+                  ],
+                  "probability": 1.0,
+                  "startTimeSec": 1.95,
+                  "structure_confidence": 0.26,
+                  "value": "5 Tom Street"
+                }
+              ],
+              [
+                {
+                  "endTimeSec": 7.74,
+                  "lattice_path": [
+                    [
+                      10,
+                      1
+                    ],
+                    [
+                      11,
+                      0
+                    ],
+                    [
+                      12,
+                      0
+                    ],
+                    [
+                      13,
+                      0
+                    ],
+                    [
+                      14,
+                      0
+                    ],
+                    [
+                      15,
+                      0
+                    ]
+                  ],
+                  "probability": 0.46,
+                  "startTimeSec": 5.16,
+                  "structure_confidence": 1.0,
+                  "value": "233 South Wacker Drive"
+                },
+                {
+                  "endTimeSec": 7.74,
+                  "lattice_path": [
+                    [
+                      10,
+                      1
+                    ],
+                    [
+                      11,
+                      0
+                    ],
+                    [
+                      13,
+                      0
+                    ],
+                    [
+                      14,
+                      0
+                    ],
+                    [
+                      15,
+                      0
+                    ]
+                  ],
+                  "probability": 0.46,
+                  "startTimeSec": 5.16,
+                  "structure_confidence": 0.95,
+                  "value": "230 South Wacker Drive"
+                },
+                {
+                  "endTimeSec": 7.74,
+                  "lattice_path": [
+                    [
+                      11,
+                      0
+                    ],
+                    [
+                      12,
+                      0
+                    ],
+                    [
+                      13,
+                      0
+                    ],
+                    [
+                      14,
+                      0
+                    ],
+                    [
+                      15,
+                      0
+                    ]
+                  ],
+                  "probability": 1.0,
+                  "startTimeSec": 5.49,
+                  "structure_confidence": 0.86,
+                  "value": "33 South Wacker Drive"
+                },
+                {
+                  "endTimeSec": 7.74,
+                  "lattice_path": [
+                    [
+                      10,
+                      1
+                    ],
+                    [
+                      11,
+                      0
+                    ],
+                    [
+                      12,
+                      0
+                    ],
+                    [
+                      14,
+                      0
+                    ],
+                    [
+                      15,
+                      0
+                    ]
+                  ],
+                  "probability": 0.46,
+                  "startTimeSec": 5.16,
+                  "structure_confidence": 0.78,
+                  "value": "233 Wacker Drive"
+                },
+                {
+                  "endTimeSec": 7.74,
+                  "lattice_path": [
+                    [
+                      10,
+                      1
+                    ],
+                    [
+                      11,
+                      0
+                    ],
+                    [
+                      12,
+                      0
+                    ],
+                    [
+                      13,
+                      3
+                    ],
+                    [
+                      15,
+                      0
+                    ]
+                  ],
+                  "probability": 0.02,
+                  "startTimeSec": 5.16,
+                  "structure_confidence": 0.74,
+                  "value": "233 Sell Drive"
+                },
+                {
+                  "endTimeSec": 7.74,
+                  "lattice_path": [
+                    [
+                      11,
+                      0
+                    ],
+                    [
+                      13,
+                      0
+                    ],
+                    [
+                      14,
+                      0
+                    ],
+                    [
+                      15,
+                      0
+                    ]
+                  ],
+                  "probability": 1.0,
+                  "startTimeSec": 5.49,
+                  "structure_confidence": 0.67,
+                  "value": "30 South Wacker Drive"
+                },
+                {
+                  "endTimeSec": 7.74,
+                  "lattice_path": [
+                    [
+                      10,
+                      1
+                    ],
+                    [
+                      13,
+                      0
+                    ],
+                    [
+                      14,
+                      0
+                    ],
+                    [
+                      15,
+                      0
+                    ]
+                  ],
+                  "probability": 0.46,
+                  "startTimeSec": 5.16,
+                  "structure_confidence": 0.61,
+                  "value": "2 South Wacker Drive"
+                },
+                {
+                  "endTimeSec": 7.74,
+                  "lattice_path": [
+                    [
+                      12,
+                      0
+                    ],
+                    [
+                      13,
+                      0
+                    ],
+                    [
+                      14,
+                      0
+                    ],
+                    [
+                      15,
+                      0
+                    ]
+                  ],
+                  "probability": 1.0,
+                  "startTimeSec": 5.88,
+                  "structure_confidence": 0.58,
+                  "value": "3 South Wacker Drive"
+                },
+                {
+                  "endTimeSec": 7.74,
+                  "lattice_path": [
+                    [
+                      10,
+                      1
+                    ],
+                    [
+                      11,
+                      0
+                    ],
+                    [
+                      14,
+                      0
+                    ],
+                    [
+                      15,
+                      0
+                    ]
+                  ],
+                  "probability": 0.46,
+                  "startTimeSec": 5.16,
+                  "structure_confidence": 0.47,
+                  "value": "230 Wacker Drive"
+                },
+                {
+                  "endTimeSec": 7.74,
+                  "lattice_path": [
+                    [
+                      11,
+                      0
+                    ],
+                    [
+                      12,
+                      0
+                    ],
+                    [
+                      14,
+                      0
+                    ],
+                    [
+                      15,
+                      0
+                    ]
+                  ],
+                  "probability": 1.0,
+                  "startTimeSec": 5.49,
+                  "structure_confidence": 0.45,
+                  "value": "33 Wacker Drive"
+                },
+                {
+                  "endTimeSec": 7.74,
+                  "lattice_path": [
+                    [
+                      10,
+                      1
+                    ],
+                    [
+                      11,
+                      0
+                    ],
+                    [
+                      13,
+                      3
+                    ],
+                    [
+                      15,
+                      0
+                    ]
+                  ],
+                  "probability": 0.02,
+                  "startTimeSec": 5.16,
+                  "structure_confidence": 0.43,
+                  "value": "230 Sell Drive"
+                },
+                {
+                  "endTimeSec": 7.74,
+                  "lattice_path": [
+                    [
+                      11,
+                      0
+                    ],
+                    [
+                      12,
+                      0
+                    ],
+                    [
+                      13,
+                      3
+                    ],
+                    [
+                      15,
+                      0
+                    ]
+                  ],
+                  "probability": 0.04,
+                  "startTimeSec": 5.49,
+                  "structure_confidence": 0.39,
+                  "value": "33 Sell Drive"
+                },
+                {
+                  "endTimeSec": 7.74,
+                  "lattice_path": [
+                    [
+                      11,
+                      0
+                    ],
+                    [
+                      14,
+                      0
+                    ],
+                    [
+                      15,
+                      0
+                    ]
+                  ],
+                  "probability": 1.0,
+                  "startTimeSec": 5.49,
+                  "structure_confidence": 0.33,
+                  "value": "30 Wacker Drive"
+                },
+                {
+                  "endTimeSec": 7.74,
+                  "lattice_path": [
+                    [
+                      10,
+                      1
+                    ],
+                    [
+                      14,
+                      0
+                    ],
+                    [
+                      15,
+                      0
+                    ]
+                  ],
+                  "probability": 0.46,
+                  "startTimeSec": 5.16,
+                  "structure_confidence": 0.32,
+                  "value": "2 Wacker Drive"
+                },
+                {
+                  "endTimeSec": 7.74,
+                  "lattice_path": [
+                    [
+                      12,
+                      0
+                    ],
+                    [
+                      14,
+                      0
+                    ],
+                    [
+                      15,
+                      0
+                    ]
+                  ],
+                  "probability": 1.0,
+                  "startTimeSec": 5.88,
+                  "structure_confidence": 0.3,
+                  "value": "3 Wacker Drive"
+                },
+                {
+                  "endTimeSec": 7.74,
+                  "lattice_path": [
+                    [
+                      11,
+                      0
+                    ],
+                    [
+                      13,
+                      3
+                    ],
+                    [
+                      15,
+                      0
+                    ]
+                  ],
+                  "probability": 0.04,
+                  "startTimeSec": 5.49,
+                  "structure_confidence": 0.27,
+                  "value": "30 Sell Drive"
+                },
+                {
+                  "endTimeSec": 7.74,
+                  "lattice_path": [
+                    [
+                      10,
+                      1
+                    ],
+                    [
+                      13,
+                      3
+                    ],
+                    [
+                      15,
+                      0
+                    ]
+                  ],
+                  "probability": 0.02,
+                  "startTimeSec": 5.16,
+                  "structure_confidence": 0.25,
+                  "value": "2 Sell Drive"
+                },
+                {
+                  "endTimeSec": 7.74,
+                  "lattice_path": [
+                    [
+                      12,
+                      0
+                    ],
+                    [
+                      13,
+                      3
+                    ],
+                    [
+                      15,
+                      0
+                    ]
+                  ],
+                  "probability": 0.04,
+                  "startTimeSec": 5.88,
+                  "structure_confidence": 0.23,
+                  "value": "3 Sell Drive"
+                }
+              ]
+            ]
+          }
+        ],
+        "label": "address",
+        "probability": 1.0
+      }
+    ]
+  }
+}

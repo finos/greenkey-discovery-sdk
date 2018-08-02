@@ -1,6 +1,5 @@
-''' this contians the entity definition for a us license plate '''
-# Each interpreter needs a list of patterns to look for
-
+''' This contains the entity definition for a cardinal directions '''
+from cleaning_functions import capitalize
 
 DIRECTION = {
   'label': 'DIRECTION',
@@ -12,6 +11,9 @@ ADDRESS_NUMBER_PATTERN = [[['DIRECTION']]]
 ENTITY_DEFINITION = {
   'patterns': ADDRESS_NUMBER_PATTERN,
   'extraTokens': (DIRECTION,),
+  'extraCleaning': {
+    'DIRECTION': capitalize,
+  }
 }
 
 if __name__ == '__main__':

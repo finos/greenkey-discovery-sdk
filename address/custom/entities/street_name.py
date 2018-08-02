@@ -1,5 +1,7 @@
-''' this contians the entity definition for a us license plate '''
-# Each interpreter needs a list of patterns to look for
+'''
+This contains the entity definition for the most popular street names in Chicago, Illinois.
+Replace these streets with whatever street names you please.
+'''
 import sys
 sys.path.append('../../nlp/')
 
@@ -119,12 +121,6 @@ STREET_NAME = {
 
 # cleaning functions expect to take a 'spacer' as an argument, which is why we list
 # them as arguments in the following functions even though we overwrite "spacer" in the function body
-def capitalize(wordList, spacer):
-  """ Generally, capitalize all words for discover """
-
-  return spacer.join(word.capitalize() for word in wordList) if isinstance(wordList, list) else wordList.capitalize()
-
-
 def format_ordinal(wordList, spacer):
   """ Add suffix to ordinals to make output more human-readable
 
