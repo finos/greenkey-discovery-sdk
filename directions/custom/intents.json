@@ -1,0 +1,24 @@
+{
+  "intents": [
+    {
+      "label": "directions",
+      "entities": ["transportation_type"],
+      "composite_entities": [
+        {
+          "label": "complete_address",
+          "spacing_threshold": 1,
+          "component_entity_patterns": [
+            ["address_number", "street_name"],
+            ["address_number", "street_name", "street_type"],
+            ["address_number", "street_name", "street_type"],
+            ["address_number", "street_name", "street_name", "street_name"],
+            ["address_number", "direction", "street_name"],
+            ["address_number", "direction", "street_name", "street_type"],
+            ["address_number", "direction", "street_name", "street_type"],
+            ["address_number", "direction", "street_name", "street_name", "street_name"]
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -4,6 +4,7 @@ Replace these streets with whatever street names you please.
 '''
 import sys
 sys.path.append('../../nlp/')
+from cleaning_functions import capitalize
 
 STREET_NAME = {
   'label':
