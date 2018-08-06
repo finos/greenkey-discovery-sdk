@@ -1,0 +1,8 @@
+{
+  "intents": [
+    {
+      "label": "room_dialing",
+      "entities": ["digit"]
+    }
+  ]
+}
