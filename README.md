@@ -1,6 +1,6 @@
 # GreenKey Scribe Discovery SDK
 
-The Discovery SDK allows you to write logic-based interpreters, and let Scribe's Discovery engine use probabalistic search to identify intents and entities.
+The Discovery SDK allows you to write logic-based interpreters, and let Scribe's Discovery engine use probabilistic search to identify intents and entities.
 
 You can use your Discovery interpreter to power several voice-driven workflows such as:
 
