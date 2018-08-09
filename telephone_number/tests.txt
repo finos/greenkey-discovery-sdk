@@ -1,0 +1,7 @@
+test: telephone number
+transcript: Dail five five five three one two five three one nine
+phone_number: 555-312-5319
+
+test: telephone number
+transcript: his number is five eight eight two three zero one two three six
+phone_number: 588-230-1236
