@@ -1,0 +1,14 @@
+test: directions
+transcript: I need directions to fifty five west monroe avenue by car
+complete_address: 55 West Monroe Avenue
+transportation_type: car
+
+test: directions
+transcript: I need to get to two thirty three south wacker drive by bus
+complete_address: 233 South Wacker Drive
+transportation_type: bus
+
+test: directions
+transcript: I'm travelling by train to two oh one east randolph street
+complete_address: 201 East Randolph Street
+transportation_type: train

@@ -10,7 +10,7 @@ TRANSPORTATION_METHOD = {
     'bicycle',
     'bike',
     'bus',
-    'train'
+    'train',
     'car',
   )
 }
