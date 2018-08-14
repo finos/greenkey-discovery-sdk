@@ -63,6 +63,23 @@ For development purposes, it's easiest to first record a few audio files using y
 
 Then, run these files through SVTServer [following our documentation](https://transcription.greenkeytech.com/svt-e0286da/) with the SVTServer parameter `WORD_CONFUSIONS="True"` enabled when you launch the container. 
 
+For example, you can launch a single job container with the following command for a file called `test.wav`. Be sure to set `$USERNAME` and `$SECRETKEY`
+
+```
+docker run \
+    -it \
+    --rm \
+    --name svtserver-test \
+    -e GKT_API="https://scribeapi.greenkeytech.com/" \
+    -e GKT_USERNAME="$USERNAME" \
+    -e GKT_SECRETKEY="$SECRETKEY" \
+    -e TARGET_FILE="/files/test.wav" \
+    -v $(pwd):/files \
+    -e ENABLE_CLOUD="False" \
+    -e PROCS=1 \
+    docker.greenkeytech.com/svtserver
+```
+
 Once complete, you should have a JSON file for each audio file you generated. This JSON file contains the **word confusion lattice** that Discovery searches for your target phrases.
 
 These JSON files can be used directly with the Discovery Engine as [shown here](https://transcription.greenkeytech.com/discovery-1890af/deploying/#getting-started). The example directories provide guidance on how to send these files to discovery in the `send_transcript_to_discovery.sh`.
