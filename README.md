@@ -1,4 +1,9 @@
 # GreenKey Scribe Discovery SDK
+> Speed up business workflows through creating custom 'voice skills' and text interpreters
+
+<img src="https://github.com/finos-voice/greenkey-sdk/raw/master/logo/greenkey-logo.png" width="100" />
+
+---
 
 The Discovery SDK allows you to write logic-based interpreters, and let Scribe's Discovery engine use probabilistic search to identify intents and entities.
 
