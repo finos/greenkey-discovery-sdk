@@ -83,3 +83,7 @@ docker run \
 Once complete, you should have a JSON file for each audio file you generated. This JSON file contains the **word confusion lattice** that Discovery searches for your target phrases.
 
 These JSON files can be used directly with the Discovery Engine as [shown here](https://transcription.greenkeytech.com/discovery-1890af/deploying/#getting-started). The example directories provide guidance on how to send these files to discovery in the `send_transcript_to_discovery.sh`.
+
+## License
+
+This project is licensed under the Apache 2.0 License - see the [LICENSE.md](LICENSE.md) file for details.
