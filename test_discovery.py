@@ -24,7 +24,10 @@ from discovery_utils import validate_entity_definition
 from discovery_config import *
 
 if len(sys.argv) > 1:
-  DISCOVERY_DIRECTORY = os.getcwd() + "/" + sys.argv[1]
+  if sys.argv[1].startswith("/"):
+    DISCOVERY_DIRECTORY = sys.argv[1]
+  else:
+    DISCOVERY_DIRECTORY = os.getcwd() + "/" + sys.argv[1]
 else:
   DISCOVERY_DIRECTORY = os.getcwd()
   
@@ -242,6 +245,7 @@ def validate_json():
     json_object = json.loads(''.join([x.rstrip() for x in open(DISCOVERY_DIRECTORY + "/custom/intents.json")]))
   except Exception as e:
     print("Invalid intents.json")
+    print("Error: {}".format(e))
     exit(1)
   return True
 
