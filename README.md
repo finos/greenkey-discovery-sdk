@@ -1,7 +1,7 @@
 # GreenKey Scribe Discovery SDK
 > Speed up business workflows through creating custom 'voice skills' and text interpreters
 
-<img src="https://github.com/finos-voice/greenkey-sdk/raw/master/logo/greenkey-logo.png" width="100" />
+<img src="https://github.com/finos-voice/greenkey-voice-sdk/raw/master/logo/greenkey-logo.png" width="100" />
 
 ---
 
