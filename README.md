@@ -24,9 +24,9 @@ Feel free to use these examples as a jumping off point in your own code.
 
 ### Requirements
 
-Docker 17+  
-python  
-python requests library (`pip install requests`)  
+- Docker 17+
+- python
+- python requests library (`pip install requests`)
 
 
 ### Obtaining credentials
@@ -64,9 +64,9 @@ python test_discovery.py examples/directions
 
 Scribe Discovery can work off of output from our delayed file transcription engine (SVTServer) or our real-time dictation engine (SQCServer).
 
-For development purposes, it's easiest to first record a few audio files using your favorite software wherein you or someone else is speaking the voice commands or key phrases you want to interpret. 
+For development purposes, it's easiest to first record a few audio files using your favorite software wherein you or someone else is speaking the voice commands or key phrases you want to interpret.
 
-Then, run these files through SVTServer [following our documentation](https://transcription.greenkeytech.com/svt-e0286da/) with the SVTServer parameter `WORD_CONFUSIONS="True"` enabled when you launch the container. 
+Then, run these files through SVTServer [following our documentation](https://transcription.greenkeytech.com/svt-e0286da/) with the SVTServer parameter `WORD_CONFUSIONS="True"` enabled when you launch the container.
 
 For example, you can launch a single job container with the following command for a file called `test.wav`. Be sure to set `$USERNAME` and `$SECRETKEY`
 
