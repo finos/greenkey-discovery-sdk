@@ -30,9 +30,8 @@ if len(sys.argv) > 1:
     DISCOVERY_DIRECTORY = os.getcwd() + "/" + sys.argv[1]
 else:
   DISCOVERY_DIRECTORY = os.getcwd()
-  
-TEST_FILE = DISCOVERY_DIRECTORY + "/tests.txt"
 
+TEST_FILE = DISCOVERY_DIRECTORY + "/tests.txt"
 '''
 Functions for handling the Discovery Docker container
 '''
@@ -198,6 +197,7 @@ def test_all():
   total_tests = len(tests)
   failed_tests = 0
   errors = 0
+
   for test in tests:
     (failure, errors) = test_single_case(test)
     failed_tests += failure
@@ -205,8 +205,7 @@ def test_all():
 
   print(
     "\n---\n({} / {}) tests passed in {}s with {} errors".format(
-      total_tests - failed_tests, total_tests,
-      int(time.time()) - t1, errors
+      total_tests - failed_tests, total_tests, int(time.time()) - t1, errors
     )
   )
 
