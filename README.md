@@ -1,7 +1,7 @@
 # GreenKey Scribe Discovery SDK
 > Speed up business workflows through creating custom 'voice skills' and text interpreters
 
-<img src="https://github.com/finos-voice/greenkey-sdk/raw/master/logo/greenkey-logo.png" width="100" />
+<img src="https://github.com/finos-voice/greenkey-voice-sdk/raw/master/logo/greenkey-logo.png" width="100" />
 
 ---
 
@@ -15,6 +15,12 @@ You can use your Discovery interpreter to power several voice-driven workflows s
 
 Read more about Discovery on our [blog](https://www.greenkeytech.com/news/2018/07/17/greenkey-scribe-discovery-skills/) or [checkout the full documentation](https://transcription.greenkeytech.com/discovery-1890af/)
 
+The GreenKey Discovery SDK
+is hosted by the [Voice Program] of the Fintech Open Source Foundation ([FINOS]).
+If you are a company interested in the evolution of
+open standards, interoperability, and innovation in the financial services sector,
+please consider joining FINOS.
+
 ### Repository overview
 Each example contains a folder labeled `custom`, which in turn contains the needed `intents.json` and `entities` folder for launching Discovery.
 Some examples contain a `schemas.json` file to customize the return json.
@@ -24,9 +30,9 @@ Feel free to use these examples as a jumping off point in your own code.
 
 ### Requirements
 
-Docker 17+  
-python  
-python requests library (`pip install requests`)  
+- Docker 17+
+- python
+- python requests library (`pip install requests`)
 
 
 ### Obtaining credentials
@@ -64,9 +70,9 @@ python test_discovery.py examples/directions
 
 Scribe Discovery can work off of output from our delayed file transcription engine (SVTServer) or our real-time dictation engine (SQCServer).
 
-For development purposes, it's easiest to first record a few audio files using your favorite software wherein you or someone else is speaking the voice commands or key phrases you want to interpret. 
+For development purposes, it's easiest to first record a few audio files using your favorite software wherein you or someone else is speaking the voice commands or key phrases you want to interpret.
 
-Then, run these files through SVTServer [following our documentation](https://transcription.greenkeytech.com/svt-e0286da/) with the SVTServer parameter `WORD_CONFUSIONS="True"` enabled when you launch the container. 
+Then, run these files through SVTServer [following our documentation](https://transcription.greenkeytech.com/svt-e0286da/) with the SVTServer parameter `WORD_CONFUSIONS="True"` enabled when you launch the container.
 
 For example, you can launch a single job container with the following command for a file called `test.wav`. Be sure to set `$USERNAME` and `$SECRETKEY`
 
@@ -89,6 +95,42 @@ Once complete, you should have a JSON file for each audio file you generated. Th
 
 These JSON files can be used directly with the Discovery Engine as [shown here](https://transcription.greenkeytech.com/discovery-1890af/deploying/#getting-started). The example directories provide guidance on how to send these files to discovery in the `send_transcript_to_discovery.sh`.
 
+## Contributing
+
+### Code of Conduct
+
+Please make sure you read and observe our [Code of Conduct].
+
+### Pull Request process
+
+1. Fork it
+1. Create your feature branch (`git checkout -b feature/fooBar`)
+1. Commit your changes (`git commit -am 'Add some fooBar'`)
+1. Push to the branch (`git push origin feature/fooBar`)
+1. Create a new Pull Request
+
+## Versioning
+
+We use [SemVer] for versioning.  For the versions available, see the [tags on this repository].
+
+## Authors
+
+Original authors:
+
+- [Ashley Shultz](https://github.com/AGiantSquid)
+- [Matthew Goldey](https://github.com/mgoldey)
+- [Tejas Shastry](https://github.com/tshastry)
+
+For all others who have aided this project, please see the [list of contributors].
+
 ## License
 
 This project is licensed under the Apache 2.0 License - see the [LICENSE.md](LICENSE.md) file for details.
+
+<!-- Markdown link & img defs -->
+[FINOS]: https://www.finos.org
+[Code of Conduct]: https://www.finos.org/code-of-conduct
+[Voice Program]: https://finosfoundation.atlassian.net/wiki/spaces/VOICE/overview
+[SemVer]: http://semver.org
+[list of contributors]: https://github.com/finos-voice/greenkey-discovery-sdk/graphs/contributors
+[tags on this repository]: https://github.com/finos-voice/greenkey-discovery-sdk/tags
