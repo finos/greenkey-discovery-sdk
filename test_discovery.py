@@ -140,19 +140,53 @@ def submit_transcript(transcript):
   return json.loads(r.text)
 
 
+def is_valid_response(resp):
+  '''
+  Validates a Discovery response
+  Fail if a failure response was received
+  '''
+  if "result" in resp and resp['result'] == "failure":
+    return False
+
+  if "intents" not in resp:
+    return False
+
+  if "entities" not in resp["intents"][0]:
+    return False
+
+  return True
+
+
+def test_single_entity(entities, test_name, test_value):
+  '''
+  Tests a single entity within a test case
+  '''
+  if test_name in ['test', 'transcript']:
+    return 0
+
+  if test_name not in entities.keys():
+    fail_test(resp, "Entity not found: {}".format(test_name), continued=True)
+    return 1
+
+  if entities[test_name] != test_value:
+    fail_test(
+      {}, "Value incorrect: ({}) expected {} != {}".format(test_name, test_value, entities[test_name]), continued=True
+    )
+    return 1
+    
+  return 0
+
+
 def test_single_case(test):
-  failed = False
+  '''
+  Run a single test case
+  Return the number of errors
+  '''
   print("======\nTesting: {}".format(test['test']))
   resp = submit_transcript(test['transcript'])
 
-  # Fail if a failure response was received
-  if "result" in resp and resp['result'] == "failure":
-    fail_test(resp)
-
-  if "intents" not in resp:
-    fail_test(resp)
-
-  if "entities" not in resp["intents"][0]:
+  # Check if a valid response was received
+  if not is_valid_response(resp):
     fail_test(resp)
 
   # For now, only keep the first intent:
@@ -161,26 +195,19 @@ def test_single_case(test):
   # Get all values of entities
   entities = {x["label"]: x["matches"][0][0]["value"] for x in intent["entities"]}
 
-  for key, value in test.items():
-    if key in ['test', 'transcript']:
-      continue
-    if key not in entities.keys():
-      fail_test(resp, "Entity not found: {}".format(key), continued=True)
-      failed = True
-      errors += 1
-      continue
-    if entities[key] != value:
-      fail_test({}, "Value incorrect: ({}) expected {} != {}".format(key, value, entities[key]), continued=True)
-      failed = True
-      errors += 1
+  total_errors = 0
+
+  # Loop through all entity tests
+  for test_name, test_value in test.items():
+    total_errors += test_single_entity(entities, test_name, test_value)
 
   extra_entities = {x: entities[x] for x in entities.keys() if x not in test.keys()}
 
   if len(extra_entities) > 0:
     print("Extra entities: {}\n".format(extra_entities))
 
-  if failed:
-    return (1, errors)
+  if total_errors > 0:
+    return (1, total_errors)
   else:
     print("Test passed\n---\n")
     return (0, 0)
@@ -196,12 +223,12 @@ def test_all():
 
   total_tests = len(tests)
   failed_tests = 0
-  errors = 0
+  total_errors = 0
 
   for test in tests:
     (failure, errors) = test_single_case(test)
     failed_tests += failure
-    errors += errors
+    total_errors += errors
 
   print(
     "\n---\n({} / {}) tests passed in {}s with {} errors".format(
