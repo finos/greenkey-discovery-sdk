@@ -1,2 +1,3 @@
 *.pyc
 dico/
+.DS_Store
