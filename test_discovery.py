@@ -141,6 +141,52 @@ def submit_transcript(transcript):
   return json.loads(r.text)
 
 
+def test_single_case(test):
+  failed = False
+  print("======\nTesting: {}".format(test['test']))
+  resp = submit_transcript(test['transcript'])
+
+  # Fail if a failure response was received
+  if "result" in resp and resp['result'] == "failure":
+    fail_test(resp)
+
+  if "intents" not in resp:
+    fail_test(resp)
+
+  if "entities" not in resp["intents"][0]:
+    fail_test(resp)
+
+  # For now, only keep the first intent:
+  intent = resp["intents"][0]
+
+  # Get all values of entities
+  entities = {x["label"]: x["matches"][0][0]["value"] for x in intent["entities"]}
+
+  for key, value in test.items():
+    if key in ['test', 'transcript']:
+      continue
+    if key not in entities.keys():
+      fail_test(resp, "Entity not found: {}".format(key), continued=True)
+      failed = True
+      errors += 1
+      continue
+    if entities[key] != value:
+      fail_test({}, "Value incorrect: ({}) expected {} != {}".format(key, value, entities[key]), continued=True)
+      failed = True
+      errors += 1
+
+  extra_entities = {x: entities[x] for x in entities.keys() if x not in test.keys()}
+
+  if len(extra_entities) > 0:
+    print("Extra entities: {}\n".format(extra_entities))
+
+  if failed:
+    return (1, errors)
+  else:
+    print("Test passed\n---\n")
+    return (0, 0)
+
+
 def test_all():
   '''
   Runs all defined tests
@@ -153,50 +199,9 @@ def test_all():
   failed_tests = 0
   errors = 0
   for test in tests:
-    failed = False
-    print("======\nTesting: {}".format(test['test']))
-    resp = submit_transcript(test['transcript'])
-
-    # Fail if a failure response was received
-    if "result" in resp and resp['result'] == "failure":
-      fail_test(resp)
-
-    if "intents" not in resp:
-      fail_test(resp)
-
-    if "entities" not in resp["intents"][0]:
-      fail_test(resp)
-
-    # For now, only keep the first intent:
-    intent = resp["intents"][0]
-
-    # Get all values of entities
-    entities = {x["label"]: x["matches"][0][0]["value"] for x in intent["entities"]}
-
-    for key, value in test.items():
-      if key in ['test', 'transcript']:
-        continue
-      if key not in entities.keys():
-        fail_test(resp, "Entity not found: {}".format(key), continued=True)
-        failed = True
-        errors += 1
-        continue
-      if entities[key] != value:
-        fail_test({}, "Value incorrect: ({}) expected {} != {}".format(key, value, entities[key]), continued=True)
-        failed = True
-        errors += 1
-
-    extra_entities = {x: entities[x] for x in entities.keys() if x not in test.keys()}
-
-    if len(extra_entities) > 0:
-      print("Extra entities: {}\n".format(extra_entities))
-
-    #print(json.dumps(resp))
-
-    if failed:
-      failed_tests += 1
-    else:
-      print("Test passed\n---\n")
+    (failure, errors) = test_single_case(test)
+    failed_tests += failure
+    errors += errors
 
   print(
     "\n---\n({} / {}) tests passed in {}s with {} errors".format(
