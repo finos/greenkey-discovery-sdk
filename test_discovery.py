@@ -21,7 +21,7 @@ import sys
 
 from importlib import import_module
 from discovery_utils import validate_entity_definition
-from discovery_config import *
+from discovery_config import DISCOVERY_CONFIG, DISCOVERY_PORT, DISCOVERY_HOST
 
 if len(sys.argv) > 1:
   if sys.argv[1].startswith("/"):
@@ -67,11 +67,12 @@ def launch_discovery():
   '''
   Launches the Discovery engine Docker container
   '''
+  dico_dir = ["-v", "{}/dico:/dico".format(DISCOVERY_DIRECTORY)] if os.path.isdir(DISCOVERY_DIRECTORY + '/dico') else []
   launch_command = ' '.join(
     ["docker", "run", "--rm", "-d", "--name", "discovery-dev"] + \
     ["-v", "{}/custom:/custom".format(DISCOVERY_DIRECTORY), \
-     "-v", "{}/dico:/dico".format(DISCOVERY_DIRECTORY), \
      "-p", "{}:1234".format(DISCOVERY_PORT)] + \
+    dico_dir +
     ["-e {}='{}'".format(k, v) for k, v in DISCOVERY_CONFIG.iteritems()] + \
     ["docker.greenkeytech.com/discovery"]
   )
@@ -165,7 +166,7 @@ def test_single_entity(entities, test_name, test_value):
     return 0
 
   if test_name not in entities.keys():
-    fail_test(resp, "Entity not found: {}".format(test_name), continued=True)
+    fail_test({}, "Entity not found: {}".format(test_name), continued=True)
     return 1
 
   if entities[test_name] != test_value:
@@ -173,7 +174,7 @@ def test_single_entity(entities, test_name, test_value):
       {}, "Value incorrect: ({}) expected {} != {}".format(test_name, test_value, entities[test_name]), continued=True
     )
     return 1
-    
+
   return 0
 
 
