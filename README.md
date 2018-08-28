@@ -66,6 +66,37 @@ Ensure that your *transcripts are unformatted text with numbers spelled out*. Fo
 python test_discovery.py examples/directions
 ```
 
+### Using the Discovery CLI tool
+
+The Discovery CLI is a tool that can aid in the creation of custom definition files for use with Discovery.
+
+#### Installation
+
+You must have PIP installed for this CLI to work.
+Simply type the following to install the CLI:
+```sh
+sudo ./install_cli.sh
+```
+
+#### Usage
+
+Once the CLI is installed, it is invoked with the command `gk_cli`.
+
+You can use the tool to either create a new project, or to create an individual entity.
+
+Before invoking the tool, navigate to the directory where you wish to create your new file or files.
+- If you wish to create an entire project, navigate to the directory that will hold your `custom` folder. If you have not made your `custom` folder, the CLI will guide you through the creation of one.
+- If you have already created a project, and simply wish to create an entity, navigate to your `entities` folder before running the tool. If you have not made your `entities` folder in your project, the CLI will guide you through the creation of one.
+
+If the installation was successful, you should see the following output after invoking the tool~
+```sh
+$ gk_cli
+
+? What would you like to do?  (Use arrow keys)
+ ❯ Create a new entity
+   Create a new project
+```
+
 ### Testing with real audio
 
 Scribe Discovery can work off of output from our delayed file transcription engine (SVTServer) or our real-time dictation engine (SQCServer).
