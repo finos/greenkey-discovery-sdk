@@ -1,3 +1,4 @@
 *.pyc
 dico/
 .DS_Store
+*.egg-info/
