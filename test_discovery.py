@@ -20,7 +20,7 @@ import glob
 import sys
 
 from importlib import import_module
-from discovery_utils import validate_entity_definition
+from discovery_utils.discovery_utils import EntityDefinitionValidator
 from discovery_config import DISCOVERY_CONFIG, DISCOVERY_PORT, DISCOVERY_HOST
 
 if len(sys.argv) > 1:
@@ -32,6 +32,7 @@ else:
   DISCOVERY_DIRECTORY = os.getcwd()
 
 TEST_FILE = DISCOVERY_DIRECTORY + "/tests.txt"
+
 '''
 Functions for handling the Discovery Docker container
 '''
@@ -263,9 +264,10 @@ def validate_entities():
   for entity in entities:
     if '__init__' in entity:
       continue
-    entity_module = import_module(entity.split("/")[-1].replace(".py", ""))
+    entity_name = entity.split("/")[-1].replace(".py", "")
+    entity_module = import_module(entity_name)
     if 'ENTITY_DEFINITION' in dir(entity_module):
-      validate_entity_definition(entity_module.ENTITY_DEFINITION)
+      EntityDefinitionValidator(entity_module.ENTITY_DEFINITION, entity_name)
     os.remove(entity.replace(".py", ".pyc"))
 
 
