@@ -20,7 +20,7 @@ import glob
 import sys
 
 from importlib import import_module
-from discovery_utils.discovery_utils import EntityDefinitionValidator
+from discovery_utils import find_errors_in_entity_definition
 from discovery_config import DISCOVERY_CONFIG, DISCOVERY_PORT, DISCOVERY_HOST
 
 if len(sys.argv) > 1:
@@ -267,7 +267,14 @@ def validate_entities():
     entity_name = entity.split("/")[-1].replace(".py", "")
     entity_module = import_module(entity_name)
     if 'ENTITY_DEFINITION' in dir(entity_module):
-      EntityDefinitionValidator(entity_module.ENTITY_DEFINITION, entity_name)
+        print('Checking entity definition{0:.<35}'.format(entity_name), end='')
+        errors = find_errors_in_entity_definition(entity_module.ENTITY_DEFINITION)
+        if errors:
+            print('Error! \nThe following problems were found with your entity_definition:')
+            for error in errors:
+                print(error)
+        else:
+          print('No errors!')
     os.remove(entity.replace(".py", ".pyc"))
 
 
