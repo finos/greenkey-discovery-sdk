@@ -1,3 +1,6 @@
 *.pyc
 dico/
 .DS_Store
+*.egg-info/
+.pytest_cache/
+.eggs/
