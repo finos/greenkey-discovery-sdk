@@ -1,26 +1,7 @@
 import pytest
 import sys
-import json
 
-from discovery_sdk_utils import json_utf_8_encoding, find_errors_in_entity_definition
-
-
-def test_json_utf_8_encoding():
-    json_obj = '''{
-      "prop2": {
-        "nested_prop": [
-          "array",
-          "values"
-        ]
-      },
-      "prop": "val"
-    }'''
-    dict_obj = json.loads(json_obj)
-    de_unicoded_dict_obj = json_utf_8_encoding(dict_obj)
-    print(de_unicoded_dict_obj)
-    assert all(isinstance(key, str) for key in de_unicoded_dict_obj.keys())
-    assert all(isinstance(key, str) for key in de_unicoded_dict_obj['prop2'].keys())
-    assert all(isinstance(key, str) for key in de_unicoded_dict_obj['prop2']['nested_prop'])
+from discovery_sdk_utils import find_errors_in_entity_definition
 
 
 class TestEntityDefinitionValidator(object):
