@@ -2,7 +2,7 @@ import pytest
 import sys
 import json
 
-from discovery_utils import json_utf_8_encoding, find_errors_in_entity_definition
+from discovery_sdk_utils import json_utf_8_encoding, find_errors_in_entity_definition
 
 
 def test_json_utf_8_encoding():

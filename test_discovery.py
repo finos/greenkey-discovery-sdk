@@ -20,7 +20,7 @@ import glob
 import sys
 
 from importlib import import_module
-from discovery_utils import find_errors_in_entity_definition
+from discovery_sdk_utils import find_errors_in_entity_definition
 from discovery_config import DISCOVERY_CONFIG, DISCOVERY_PORT, DISCOVERY_HOST
 
 if len(sys.argv) > 1:
