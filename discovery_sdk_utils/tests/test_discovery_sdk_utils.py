@@ -16,21 +16,21 @@ class TestEntityDefinitionValidator(object):
         errors = find_errors_in_entity_definition(entity_definition)
         assert errors == ['Your ENTITY_DEFINITION must contain a "patterns" property!']
 
-    def test_patterns_property_has_correct_value(self):
+    def test_patterns_property_has_correct_value_string(self):
         entity_definition = {'patterns': 'wrong stuff'}
         errors = find_errors_in_entity_definition(entity_definition)
         assert errors == [
             'The "patterns" property of ENTITY_DEFINITION must be a list of lists of lists of strings. e.g. [[["NUM"], ["LETTER"]]]'
         ]
 
-    def test_patterns_property_has_correct_value_2(self):
+    def test_patterns_property_has_correct_value_list(self):
         entity_definition = {'patterns': ['wrong stuff']}
         errors = find_errors_in_entity_definition(entity_definition)
         assert errors == [
             'The "patterns" property of ENTITY_DEFINITION must be a list of lists of lists of strings. e.g. [[["NUM"], ["LETTER"]]]'
         ]
 
-    def test_patterns_property_has_correct_value_3(self):
+    def test_patterns_property_has_correct_value_nested_list(self):
         entity_definition = {'patterns': [['still wrong stuff']]}
         errors = find_errors_in_entity_definition(entity_definition)
         assert errors == [
@@ -60,22 +60,22 @@ class TestEntityDefinitionValidator(object):
             'The token "what_am_i" is used in "patterns" but is not a built in token, please define "what_am_i" in "extraTokens"'
         ]
 
-    def test_validate_extra_tokens_and_pattern_tokens_2(self):
+    def test_validate_extra_tokens_and_pattern_tokens_tuple_of_strings(self):
         entity_definition = {'patterns': [[['defined_wrong']]], 'extraTokens': ('defined_wrong',)}
         errors = find_errors_in_entity_definition(entity_definition)
         assert errors == ['Your "extraTokens" must be a tuple of dictionaries!']
 
-    def test_validate_extra_tokens_and_pattern_tokens_3(self):
+    def test_validate_extra_tokens_and_pattern_tokens_missing_values_prop(self):
         entity_definition = {'patterns': [[['defined_wrong']]], 'extraTokens': ({'label': 'defined_wrong'},)}
         errors = find_errors_in_entity_definition(entity_definition)
         assert errors == ['Your "extraTokens" dictionaries must contain a "values" property!']
 
-    def test_validate_extra_tokens_and_pattern_tokens_4(self):
+    def test_validate_extra_tokens_and_pattern_tokens_missing_label_prop(self):
         entity_definition = {'patterns': [[['defined_wrong']]], 'extraTokens': ({'values': ('defined_wrong')},)}
         errors = find_errors_in_entity_definition(entity_definition)
         assert errors == ['Your "extraTokens" dictionaries must contain a "label" property!']
 
-    def test_validate_extra_tokens_and_pattern_tokens_5(self):
+    def test_validate_extra_tokens_and_pattern_tokens_tokens_not_defined(self):
         entity_definition = {
             'patterns': [[['defined_wrong']]],
             'extraTokens': ({
@@ -91,7 +91,7 @@ class TestEntityDefinitionValidator(object):
         ]
         assert errors == expected_errors
 
-    def test_validate_extra_tokens_and_pattern_tokens_6(self):
+    def test_validate_extra_tokens_and_pattern_tokens_valid(self):
         # this function should finally pass
         entity_definition = {
             'patterns': [[['DEFINED_CORRECT']]],
@@ -102,7 +102,7 @@ class TestEntityDefinitionValidator(object):
         }
         assert [] == find_errors_in_entity_definition(entity_definition)
 
-    def test_validate_extraCleaning(self):
+    def test_validate_extraCleaning_is_dict(self):
         entity_definition = {
             'patterns': [[['DEFINED_CORRECT']]],
             'extraTokens': ({
@@ -113,7 +113,7 @@ class TestEntityDefinitionValidator(object):
         }
         assert ['The property "extraCleaning" must be a dict!'] == find_errors_in_entity_definition(entity_definition)
 
-    def test_validate_extraCleaning_2(self):
+    def test_validate_extraCleaning_is_functions(self):
         entity_definition = {
             'patterns': [[['DEFINED_CORRECT']]],
             'extraTokens': ({
