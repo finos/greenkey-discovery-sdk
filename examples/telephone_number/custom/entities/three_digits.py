@@ -11,9 +11,3 @@ ENTITY_DEFINITION = {
     'default': '',
   }
 }
-
-if __name__ == '__main__':
-  import sys
-  sys.path.append('../')
-  from discovery_utils import validate_entity_definition
-  validate_entity_definition(ENTITY_DEFINITION)
