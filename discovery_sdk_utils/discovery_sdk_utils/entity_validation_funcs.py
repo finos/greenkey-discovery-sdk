@@ -4,6 +4,7 @@ Utility functions for discovery
 '''
 from __future__ import print_function
 from inspect import isfunction
+from .built_in_tokens import BUILT_IN_TOKENS
 
 
 def _entity_definition_is_dictionary(entity_definition):
@@ -40,18 +41,41 @@ def _patterns_property_has_correct_value(entity_definition):
         'of strings. e.g. [[["NUM"], ["LETTER"]]]'
     ]
 
-    if not _type_is_correct(entity_definition['patterns'], list):
+    patterns = entity_definition['patterns']
+
+    try:
+        _find_error_with_patterns_property(patterns)
+    except SyntaxError:
         return pattern_error_message
 
-    for pattern in entity_definition['patterns']:
-        if not _type_is_correct(pattern, list):
-            return pattern_error_message
-        for token_slot in pattern:
-            if not _type_is_correct(token_slot, list):
-                return pattern_error_message
-            for token in token_slot:
-                if not _type_is_correct(token, str):
-                    return pattern_error_message
+
+def _find_error_with_patterns_property(patterns):
+    if not _type_is_correct(patterns, list):
+        raise SyntaxError()
+    _validate_pattern_in_patterns(patterns)
+
+
+def _validate_pattern_in_patterns(patterns):
+    for pattern in patterns:
+        _throw_error_if_not_list(pattern)
+        _validate_token_slot_in_pattern(pattern)
+
+
+def _validate_token_slot_in_pattern(pattern):
+    for token_slot in pattern:
+        _throw_error_if_not_list(token_slot)
+        _validate_token_in_token_slot(token_slot)
+
+
+def _throw_error_if_not_list(item_list):
+    if not _type_is_correct(item_list, list):
+        raise SyntaxError()
+
+
+def _validate_token_in_token_slot(token_slot):
+    for token in token_slot:
+        if not _type_is_correct(token, str):
+            raise SyntaxError()
 
 
 def _validate_extraTokens(entity_definition):
@@ -85,7 +109,9 @@ def _validate_extra_tokens_and_pattern_tokens_against_each_other(entity_definiti
 
     errors = []
     errors += _check_if_extraTokens_are_missing_from_patterns(extra_tokens, pattern_tokens)
-    errors += _check_if_pattern_tokens_are_missing_from_extraTokens(pattern_tokens, extra_tokens)
+    errors += _check_if_pattern_tokens_are_missing_from_extraTokens_or_built_in_tokens(
+        pattern_tokens, extra_tokens, BUILT_IN_TOKENS
+    )
     return errors
 
 
@@ -97,41 +123,10 @@ def _check_if_extraTokens_are_missing_from_patterns(extra_tokens, pattern_tokens
     return errors
 
 
-def _check_if_pattern_tokens_are_missing_from_extraTokens(pattern_tokens, extra_tokens):
+def _check_if_pattern_tokens_are_missing_from_extraTokens_or_built_in_tokens(
+    pattern_tokens, extra_tokens, built_in_tokens
+):
     errors = []
-    ontological_tags = (
-        'IN',
-        'VB',
-        'NNPS',
-        'VBG',
-        'RB',
-        'NN',
-        'VBD',
-        'RBS',
-        'RBR',
-        'PDT',
-        'JJS',
-        'VBN',
-        'JJR',
-        'VBP',
-        'PRP',
-        'JJ',
-        'WP',
-        'VBZ',
-        'DT',
-        'PRP$',
-        'NNS',
-    )
-    discovery_tokens = (
-        "NUM",
-        "LETTER",
-        "NUM_ORD",
-        "NUM_PLURAL",
-        "TIME_MONTH",
-        "TIME_DAY",
-        "TIME_WEEK",
-    )
-    built_in_tokens = ontological_tags + discovery_tokens
     for token in pattern_tokens:
         if token not in extra_tokens and token not in built_in_tokens:
             errors.append(
