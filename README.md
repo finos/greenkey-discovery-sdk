@@ -31,9 +31,22 @@ Feel free to use these examples as a jumping off point in your own code.
 ### Requirements
 
 - Docker 17+
-- python
-- python requests library (`pip install requests`)
+- Python with `pip`
 
+### Dependencies
+
+To ensure your dependencies install correctly, we recommend that you upgrade your `setuptools` before proceeding further.
+
+```sh
+pip install --upgrade setuptools
+```
+
+Now you are ready to install the required dependencies with `pip`.
+This will provide you with the packages needed to run the `test_discovery.py` script, as well as the Discovery CLI.
+
+```sh
+pip install -r requirements.txt
+```
 
 ### Obtaining credentials
 [Contact Us](mailto:transcription@greenkeytech.com) to obtain credentials to obtain the Discovery Docker container from our repository and launch the Discovery engine.
@@ -69,14 +82,6 @@ python test_discovery.py examples/directions
 ### Using the Discovery CLI tool
 
 The Discovery CLI is a tool that can aid in the creation of custom definition files for use with Discovery.
-
-#### Installation
-
-You must have PIP installed for this CLI to work.
-Simply type the following to install the CLI:
-```sh
-sudo ./install_cli.sh
-```
 
 #### Usage
 
