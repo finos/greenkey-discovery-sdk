@@ -275,7 +275,7 @@ def _validate_individual_entity(entity):
   entity_name = entity.split("/")[-1].replace(".py", "")
   entity_module = import_module(entity_name)
   if 'ENTITY_DEFINITION' in dir(entity_module):
-      print('Checking entity definition{0:.<35}'.format(entity_name), end='')
+      print('Checking entity definition {0:.<35}'.format(entity_name), end='')
       _log_entity_definition_error_results(entity_module)
 
 
