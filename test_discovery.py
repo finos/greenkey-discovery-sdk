@@ -251,36 +251,30 @@ def validate_entities():
     for entity in entities:
         if '__init__' in entity:
             continue
-        entity_name = os.path.split(entity)[-1].replace(".py", "")
-        entity_module = import_module(entity_name)
-        if 'ENTITY_DEFINITION' in dir(entity_module):
-            print('Checking entity definition{0:.<35}'.format(entity_name), end='')
-            errors = find_errors_in_entity_definition(entity_module.ENTITY_DEFINITION)
-            if errors:
-                print('Error! \nThe following problems were found with your entity_definition:')
-                for error in errors:
-                    print(error)
-            else:
-                print('No errors!')
+        _validate_individual_entity(entity)
         os.remove(entity.replace(".py", ".pyc"))
 
 
 def _validate_individual_entity(entity):
-  entity_name = entity.split("/")[-1].replace(".py", "")
+  entity_name = os.path.split(entity)[-1].replace(".py", "")
   entity_module = import_module(entity_name)
+  definition_errors = []
   if 'ENTITY_DEFINITION' in dir(entity_module):
-      print('Checking entity definition {0:.<35}'.format(entity_name), end='')
-      _log_entity_definition_error_results(entity_module)
+      print('Checking entity definition{0:.<35}'.format(entity_name), end='')
+      errors = find_errors_in_entity_definition(entity_module.ENTITY_DEFINITION)
+      _log_entity_definition_error_results(errors)
+      definition_errors.extend(errors)
+  if definition_errors:
+    raise Exception('Please fix all entity definition errors before running discovery!')
 
 
-def _log_entity_definition_error_results(entity_module):
-  errors = find_errors_in_entity_definition(entity_module.ENTITY_DEFINITION)
-  if errors:
-      print('Error! \nThe following problems were found with your entity_definition:')
-      for error in errors:
-          print(error)
-  else:
-      print('No errors!')
+def _log_entity_definition_error_results(errors):
+    if errors:
+        print('Error! \nThe following problems were found with your entity_definition:')
+        for error in errors:
+            print(error)
+    else:
+        print('No errors!')
 
 
 def validate_json():
