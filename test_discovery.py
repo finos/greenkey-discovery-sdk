@@ -21,17 +21,15 @@ import sys
 
 from importlib import import_module
 from discovery_sdk_utils import find_errors_in_entity_definition
-from discovery_config import DISCOVERY_CONFIG, DISCOVERY_PORT, DISCOVERY_HOST
+from discovery_config import DISCOVERY_PORT, DISCOVERY_HOST
+from launch_discovery import launch_discovery
 
 if len(sys.argv) > 1:
-    if sys.argv[1].startswith("/"):
-        DISCOVERY_DIRECTORY = sys.argv[1]
-    else:
-        DISCOVERY_DIRECTORY = os.getcwd() + "/" + sys.argv[1]
+    DISCOVERY_DIRECTORY = os.path.abspath(sys.argv[1])
 else:
     DISCOVERY_DIRECTORY = os.getcwd()
 
-TEST_FILE = DISCOVERY_DIRECTORY + "/tests.txt"
+TEST_FILE = os.path.join(DISCOVERY_DIRECTORY, "tests.txt")
 '''
 Functions for handling the Discovery Docker container
 '''
@@ -39,8 +37,8 @@ Functions for handling the Discovery Docker container
 
 def check_discovery_status():
     '''
-  Checks whether Discovery is ready to receive new jobs
-  '''
+    Checks whether Discovery is ready to receive new jobs
+    '''
     r = requests.get("http://{}:{}/status".format(DISCOVERY_HOST, DISCOVERY_PORT))
 
     if json.loads(r.text)['status'] == 0:
@@ -63,26 +61,6 @@ def wait_for_discovery_status(timeout=1, retries=5):
     return False
 
 
-def launch_discovery():
-    '''
-    Launches the Discovery engine Docker container
-    '''
-    dico_dir = ["-v",
-                "{}/dico:/dico".format(DISCOVERY_DIRECTORY)] if os.path.isdir(DISCOVERY_DIRECTORY + '/dico') else []
-    launch_command = ' '.join(
-      ["docker", "run", "--rm", "-d", "--name", "discovery-dev"] + \
-      ["-v", "{}/custom:/custom".format(DISCOVERY_DIRECTORY), \
-       "-p", "{}:1234".format(DISCOVERY_PORT)] + \
-      dico_dir +
-      ["-e {}='{}'".format(k, v) for k, v in DISCOVERY_CONFIG.iteritems()] + \
-      ["docker.greenkeytech.com/discovery"]
-    )
-
-    print("Launching Discovery: {}\n".format(launch_command))
-
-    subprocess.call(launch_command, shell=True)
-
-
 def wait_for_discovery_launch():
     '''
     Wait for launch to complete
@@ -100,7 +78,11 @@ def shutdown_discovery():
     '''
     Shuts down the Discovery engine Docker container
     '''
-    requests.get("http://{}:{}/shutdown".format(DISCOVERY_HOST, DISCOVERY_PORT))
+    try:
+        requests.get("http://{}:{}/shutdown".format(DISCOVERY_HOST, DISCOVERY_PORT))
+    # Windows throws a ConnectionError for a request to shutdown a server which makes it looks like the test fail
+    except requests.exceptions.ConnectionError:
+        pass
 
 
 '''
@@ -134,8 +116,8 @@ def load_tests():
 
 def submit_transcript(transcript):
     '''
-  Submits a transcript to Discovery
-  '''
+    Submits a transcript to Discovery
+    '''
     d = {"data": json.dumps({"json_lattice": {"transcript": transcript}})}
     r = requests.post("http://{}:{}/discover".format(DISCOVERY_HOST, DISCOVERY_PORT), data=d)
 
@@ -144,9 +126,9 @@ def submit_transcript(transcript):
 
 def is_valid_response(resp):
     '''
-  Validates a Discovery response
-  Fail if a failure response was received
-  '''
+    Validates a Discovery response
+    Fail if a failure response was received
+    '''
     if "result" in resp and resp['result'] == "failure":
         return False
 
@@ -161,8 +143,8 @@ def is_valid_response(resp):
 
 def test_single_entity(entities, test_name, test_value):
     '''
-  Tests a single entity within a test case
-  '''
+    Tests a single entity within a test case
+    '''
     if test_name in ['test', 'transcript']:
         return 0
 
@@ -183,9 +165,9 @@ def test_single_entity(entities, test_name, test_value):
 
 def test_single_case(test):
     '''
-  Run a single test case
-  Return the number of errors
-  '''
+    Run a single test case
+    Return the number of errors
+    '''
     print("======\nTesting: {}".format(test['test']))
     resp = submit_transcript(test['transcript'])
 
@@ -219,8 +201,8 @@ def test_single_case(test):
 
 def test_all():
     '''
-  Runs all defined tests
-  '''
+    Runs all defined tests
+    '''
     tests = load_tests()
 
     t1 = int(time.time())
@@ -261,8 +243,10 @@ def validate_entities():
     '''
     Validate entities
     '''
-    entities = glob.glob(DISCOVERY_DIRECTORY + "/custom/entities/*.py")
-    sys.path.append(DISCOVERY_DIRECTORY + "/custom/entities")
+    entities_file = os.path.join(DISCOVERY_DIRECTORY, 'custom', 'entities')
+    entities = glob.glob(os.path.join(entities_file, '*.py'))
+    entities_directory = os.path.join(DISCOVERY_DIRECTORY, 'custom', 'entities')
+    sys.path.append(entities_directory)
 
     for entity in entities:
         if '__init__' in entity:
@@ -272,29 +256,34 @@ def validate_entities():
 
 
 def _validate_individual_entity(entity):
-  entity_name = entity.split("/")[-1].replace(".py", "")
+  entity_name = os.path.split(entity)[-1].replace(".py", "")
   entity_module = import_module(entity_name)
+  definition_errors = []
   if 'ENTITY_DEFINITION' in dir(entity_module):
-      print('Checking entity definition {0:.<35}'.format(entity_name), end='')
-      _log_entity_definition_error_results(entity_module)
+      print('Checking entity definition{0:.<35}'.format(entity_name), end='')
+      errors = find_errors_in_entity_definition(entity_module.ENTITY_DEFINITION)
+      _log_entity_definition_error_results(errors)
+      definition_errors.extend(errors)
+  if definition_errors:
+    raise Exception('Please fix all entity definition errors before running discovery!')
 
 
-def _log_entity_definition_error_results(entity_module):
-  errors = find_errors_in_entity_definition(entity_module.ENTITY_DEFINITION)
-  if errors:
-      print('Error! \nThe following problems were found with your entity_definition:')
-      for error in errors:
-          print(error)
-  else:
-      print('No errors!')
+def _log_entity_definition_error_results(errors):
+    if errors:
+        print('Error! \nThe following problems were found with your entity_definition:')
+        for error in errors:
+            print(error)
+    else:
+        print('No errors!')
 
 
 def validate_json():
     '''
     Validate intents.json
     '''
+    intents_config_file = os.path.join(DISCOVERY_DIRECTORY, 'custom', 'intents.json')
     try:
-        json.loads(''.join([x.rstrip() for x in open(DISCOVERY_DIRECTORY + "/custom/intents.json")]))
+        json.loads(''.join([x.rstrip() for x in open(intents_config_file)]))
     except Exception as e:
         print("Invalid intents.json")
         print("Error: {}".format(e))
@@ -305,8 +294,8 @@ def validate_json():
 if __name__ == '__main__':
     validate_entities()
     validate_json()
-
-    launch_discovery()
+    custom_directory = os.path.join(DISCOVERY_DIRECTORY, 'custom')
+    launch_discovery(custom_directory=custom_directory)
     wait_for_discovery_launch()
 
     if wait_for_discovery_status():

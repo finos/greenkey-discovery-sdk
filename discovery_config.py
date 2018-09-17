@@ -10,3 +10,4 @@ DISCOVERY_CONFIG = {
 
 DISCOVERY_PORT = "1234"
 DISCOVERY_HOST = "localhost"
+DISCOVERY_IMAGE_NAME = "docker.greenkeytech.com/discovery"

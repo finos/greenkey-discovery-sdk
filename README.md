@@ -30,8 +30,8 @@ Feel free to use these examples as a jumping off point in your own code.
 
 ### Requirements
 
-- Docker 17+
-- Python with `pip`
+- Docker 17+ (or Discovery Binaries)
+- Python 2.7 with `pip`
 
 ### Dependencies
 
@@ -78,6 +78,12 @@ Ensure that your *transcripts are unformatted text with numbers spelled out*. Fo
 ```
 python test_discovery.py examples/directions
 ```
+
+### Using Compiled Binary Files
+
+If you are unable to use Docker, contact us to obtain compiled binary files for Discovery.
+Simply place the binaries directory into the SDK directory before running `test_discovery.py`.
+The test script will automatically detect the binaries directory and use that instead of a Docker image.
 
 ### Using the Discovery CLI tool
 
