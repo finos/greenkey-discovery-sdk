@@ -260,7 +260,7 @@ def _validate_individual_entity(entity):
   entity_module = import_module(entity_name)
   definition_errors = []
   if 'ENTITY_DEFINITION' in dir(entity_module):
-      print('Checking entity definition{0:.<35}'.format(entity_name), end='')
+      print('Checking entity definition {0:.<35}'.format(entity_name), end='')
       errors = find_errors_in_entity_definition(entity_module.ENTITY_DEFINITION)
       _log_entity_definition_error_results(errors)
       definition_errors.extend(errors)
