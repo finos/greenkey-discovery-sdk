@@ -203,7 +203,7 @@ def _type_to_string(type):
 
 def _type_is_correct(item, type):
     if type == 'function':
-        return isfunction(item)
+        return isfunction(item) or hasattr(item, '__code__')
     else:
         return isinstance(item, type)
 
