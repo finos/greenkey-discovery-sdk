@@ -1,8 +1,8 @@
 from __future__ import print_function
 
 import doctest
-from cli_utils import format_file_name, remove_quotation_marks, BlankAnswerValidator, prompt_user
-from tokens import get_custom_tokens
+from .cli_utils import format_file_name, remove_quotation_marks, BlankAnswerValidator, prompt_user
+from .tokens import get_custom_tokens
 
 entity_name = [
     {

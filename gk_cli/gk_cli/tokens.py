@@ -1,7 +1,7 @@
 from __future__ import print_function
 
 import doctest
-from cli_utils import (
+from .cli_utils import (
     BlankAnswerValidator, format_file_name, ListOfSingleWordsValidator, prompt_user, prompt_user_with_help_check
 )
 
