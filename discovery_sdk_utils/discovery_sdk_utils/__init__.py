@@ -1,1 +1,1 @@
-from entity_validation_funcs import find_errors_in_entity_definition
+from .entity_validation_funcs import find_errors_in_entity_definition
