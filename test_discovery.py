@@ -252,7 +252,10 @@ def validate_entities():
         if '__init__' in entity:
             continue
         _validate_individual_entity(entity)
-        os.remove(entity.replace(".py", ".pyc"))
+        try:
+            os.remove(entity.replace(".py", ".pyc"))
+        except FileNotFoundError:
+            pass
 
 
 def _validate_individual_entity(entity):
