@@ -51,10 +51,10 @@ if __name__ == '__main__':
 
 
 def _get_custom_token_content(custom_tokens):
-    '''
+    r'''
     >>> custom_tokens = [{'label': 'TEST', 'values': ('one', 'two')}]
     >>> _get_custom_token_content(custom_tokens)
-    "TEST = {'label': 'TEST', 'values': ('one', 'two')}\\n\\n"
+    "TEST = {'label': 'TEST', 'values': ('one', 'two')}\n\n"
     '''
     custom_token_content = ''
     if len(custom_tokens):
@@ -64,12 +64,12 @@ def _get_custom_token_content(custom_tokens):
 
 
 def _get_entity_patterns_content(entity_name, custom_tokens):
-    '''
+    r'''
     >>> custom_tokens = [{'label': 'TEST', 'values': ('one', 'two')}]
     >>> _get_entity_patterns_content("FUN", custom_tokens)
-    "FUN_PATTERNS = [[['TEST']]]\\n"
+    "FUN_PATTERNS = [[['TEST']]]\n"
     >>> _get_entity_patterns_content("FUN", [])
-    "# change this to suit your needs. The following pattern would search for one number followed by one letter.\\nFUN_PATTERNS = [[['NUM'], ['LETTER']]]\\n\\n"
+    "# change this to suit your needs. The following pattern would search for one number followed by one letter.\nFUN_PATTERNS = [[['NUM'], ['LETTER']]]\n\n"
     '''
     entity_patterns_content = ''
     entity_pattern_label = entity_name.upper() + '_PATTERNS'
@@ -83,10 +83,10 @@ def _get_entity_patterns_content(entity_name, custom_tokens):
 
 
 def _get_entity_definition_content(entity_name, custom_tokens):
-    '''
+    r'''
     >>> custom_tokens = [{'label': 'TEST', 'values': ('one', 'two')}]
     >>> _get_entity_definition_content("FUN", custom_tokens)
-    "\\nENTITY_DEFINITION = {\\n  'patterns': FUN_PATTERNS,\\n  'extraTokens': (TEST,),\\n}\\n\\n"
+    "\nENTITY_DEFINITION = {\n  'patterns': FUN_PATTERNS,\n  'extraTokens': (TEST,),\n}\n\n"
     '''
     entity_definition_content = '''
 ENTITY_DEFINITION = {

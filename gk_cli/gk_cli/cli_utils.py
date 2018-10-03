@@ -6,18 +6,20 @@ from gk_cli.style import style
 
 
 def raise_error_for_blank_doc(document):
-  if document.text.strip() == '':
-      raise ValidationError(
-          message='Oops, you entered a blank response, please try again!',
-          cursor_position=len(document.text))  # Move cursor to end
+    if document.text.strip() == '':
+        raise ValidationError(
+            message='Oops, you entered a blank response, please try again!', cursor_position=len(document.text)
+        )  # Move cursor to end
 
 
 class BlankAnswerValidator(Validator):
+
     def validate(self, document):
-      raise_error_for_blank_doc(document)
+        raise_error_for_blank_doc(document)
 
 
 class ListOfSingleWordsValidator(Validator):
+
     def validate(self, document):
         raise_error_for_blank_doc(document)
         words = document.text.split(',')
@@ -25,20 +27,21 @@ class ListOfSingleWordsValidator(Validator):
             if ' ' in word.strip():
                 raise ValidationError(
                     message='Oops, you must only enter single words! "{}" has a space!'.format(word),
-                    cursor_position=len(document.text))  # Move cursor to end
+                    cursor_position=len(document.text)
+                )  # Move cursor to end
 
 
 def prompt_user(prompt_dict):
-  response = prompt(prompt_dict, style=style)
-  return response['value']
+    response = prompt(prompt_dict, style=style)
+    return response['value']
 
 
 def prompt_user_with_help_check(prompt_dict, help_message):
-  response = prompt_user(prompt_dict)
-  if _user_wants_help(response):
-    print(help_message)
-    return prompt_user_with_help_check(prompt_dict, help_message)
-  return response
+    response = prompt_user(prompt_dict)
+    if _user_wants_help(response):
+        print(help_message)
+        return prompt_user_with_help_check(prompt_dict, help_message)
+    return response
 
 
 def format_file_name(file_name):
@@ -58,26 +61,26 @@ def format_file_name(file_name):
     return snake_cased_filename
 
 
-def remove_quotation_marks(string):
-  '''
-  >>> string = "'That\\'s just great'"
-  >>> remove_quotation_marks(string)
+def remove_quotation_marks(string_arg):
+    r'''
+  >>> string_arg = "'That's just great'"
+  >>> remove_quotation_marks(string_arg)
   "That's just great"
-  >>> string = '"That\\'s just great"'
-  >>> remove_quotation_marks(string)
+  >>> string_arg = '"That\'s just great"'
+  >>> remove_quotation_marks(string_arg)
   "That's just great"
   '''
-  return string.replace('"', '').strip("\'")
+    return string_arg.replace('"', '').strip("\'")
 
 
-def _user_wants_help(string):
-  '''
-  >>> string = "Help "
-  >>> _user_wants_help(string)
+def _user_wants_help(string_arg):
+    '''
+  >>> string_arg = "Help "
+  >>> _user_wants_help(string_arg)
   True
   '''
-  cleaned_response = remove_quotation_marks(string).lower().strip()
-  return cleaned_response == 'help'
+    cleaned_response = remove_quotation_marks(string_arg).lower().strip()
+    return cleaned_response == 'help'
 
 
 if __name__ == '__main__':
