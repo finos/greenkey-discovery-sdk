@@ -1,8 +1,7 @@
-from __future__ import print_function
+from __future__ import print_function, absolute_import
 
-import doctest
-from .cli_utils import format_file_name, remove_quotation_marks, BlankAnswerValidator, prompt_user
-from .tokens import get_custom_tokens
+from gk_cli.cli_utils import format_file_name, remove_quotation_marks, BlankAnswerValidator, prompt_user
+from gk_cli.tokens import get_custom_tokens
 
 entity_name = [
     {

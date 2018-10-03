@@ -1,10 +1,10 @@
-from __future__ import print_function
+from __future__ import print_function, absolute_import
 
 import os
 import re
-from .entity import create_new_entity
-from .intents import create_new_intent_definition_file
-from .cli_utils import BlankAnswerValidator, format_file_name, prompt_user
+from gk_cli.entity import create_new_entity
+from gk_cli.intents import create_new_intent_definition_file
+from gk_cli.cli_utils import BlankAnswerValidator, format_file_name, prompt_user
 
 create_type = [
     {

@@ -1,3 +1,5 @@
+from __future__ import print_function, absolute_import
+
 from PyInquirer import style_from_dict, Token
 
 style = style_from_dict({

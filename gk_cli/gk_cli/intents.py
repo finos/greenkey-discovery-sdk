@@ -1,8 +1,8 @@
-from __future__ import print_function
+from __future__ import print_function, absolute_import
 
 import json
 import doctest
-from .cli_utils import (
+from gk_cli.cli_utils import (
     BlankAnswerValidator, format_file_name, ListOfSingleWordsValidator, prompt_user, prompt_user_with_help_check
 )
 

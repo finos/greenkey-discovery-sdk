@@ -1,9 +1,9 @@
-from __future__ import print_function
+from __future__ import print_function, absolute_import
 
 import string
 import doctest
 from PyInquirer import prompt, Validator, ValidationError
-from .style import style
+from gk_cli.style import style
 
 
 def raise_error_for_blank_doc(document):
