@@ -58,7 +58,7 @@ def format_file_name(file_name):
         return filtered_file_name
 
     snake_cased_filename = filtered_file_name.replace(' ', '_')
-    return snake_cased_filename
+    return str(snake_cased_filename)
 
 
 def remove_quotation_marks(string_arg):
@@ -70,7 +70,7 @@ def remove_quotation_marks(string_arg):
   >>> remove_quotation_marks(string_arg)
   "That's just great"
   '''
-    return string_arg.replace('"', '').strip("\'")
+    return str(string_arg.replace('"', '').strip("\'"))
 
 
 def _user_wants_help(string_arg):
