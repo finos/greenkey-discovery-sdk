@@ -1,4 +1,4 @@
-from __future__ import print_function, absolute_import
+from __future__ import print_function, absolute_import, unicode_literals
 
 from gk_cli.cli_utils import format_file_name, remove_quotation_marks, BlankAnswerValidator, prompt_user
 from gk_cli.tokens import get_custom_tokens

@@ -1,4 +1,4 @@
-from __future__ import print_function, absolute_import
+from __future__ import print_function, absolute_import, unicode_literals
 
 from PyInquirer import style_from_dict, Token
 

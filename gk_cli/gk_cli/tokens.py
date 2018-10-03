@@ -1,4 +1,4 @@
-from __future__ import print_function, absolute_import
+from __future__ import print_function, absolute_import, unicode_literals
 
 import doctest
 from gk_cli.cli_utils import (
@@ -116,7 +116,7 @@ def _get_token_label():
         'Token names are all uppercase and underscore separated by convention.\n'
     )
     response = prompt_user_with_help_check(token_label_prompt, help_message)
-    return response.encode('utf-8')
+    return response
 
 
 def _get_token_values(token_name):
@@ -129,7 +129,7 @@ def _get_token_values(token_name):
         'but "spaghetti with meatballs, pasta alfredo" is not.\n'
     )
     response = prompt_user_with_help_check(token_values_prompt, help_message)
-    return tuple([value.encode('utf-8') for value in response.split(',')])
+    return tuple([value for value in response.split(',')])
 
 
 def _user_needs_another_token():
