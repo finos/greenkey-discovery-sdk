@@ -1,7 +1,6 @@
 from __future__ import print_function, absolute_import, unicode_literals
 
 import string
-import doctest
 from PyInquirer import prompt, Validator, ValidationError
 from gk_cli.style import style
 
@@ -82,4 +81,5 @@ def _user_wants_help(string):
 
 
 if __name__ == '__main__':
-  doctest.testmod(raise_on_error=False)
+    import doctest
+    doctest.testmod(raise_on_error=True)
