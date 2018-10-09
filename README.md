@@ -85,6 +85,19 @@ If you are unable to use Docker, contact us to obtain compiled binary files for 
 Simply place the binaries directory into the SDK directory before running `test_discovery.py`.
 The test script will automatically detect the binaries directory and use that instead of a Docker image.
 
+Make sure not to change the name of the binaries file when you move it.
+You should end up with a structure like the following for the `test_discovery.py` script to work.
+
+```
+└───greenkey-discovery-sdk
+    └───discovery_binaries_windows_10_64bit__python27_32bit
+    └───examples
+    └───gkcli
+    │   discovery_config.py
+    │   README.md
+    │   test_discovery.py
+```
+
 ### Using the Discovery CLI tool
 
 The Discovery CLI is a tool that can aid in the creation of custom definition files for use with Discovery.
