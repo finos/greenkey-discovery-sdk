@@ -1,8 +1,7 @@
-from __future__ import print_function
+from __future__ import print_function, absolute_import, unicode_literals
 
-import doctest
-from cli_utils import format_file_name, remove_quotation_marks, BlankAnswerValidator, prompt_user
-from tokens import get_custom_tokens
+from gk_cli.cli_utils import format_file_name, remove_quotation_marks, BlankAnswerValidator, prompt_user
+from gk_cli.tokens import get_custom_tokens
 
 entity_name = [
     {
@@ -52,42 +51,53 @@ if __name__ == '__main__':
 
 
 def _get_custom_token_content(custom_tokens):
-    '''
+    r'''
     >>> custom_tokens = [{'label': 'TEST', 'values': ('one', 'two')}]
     >>> _get_custom_token_content(custom_tokens)
-    "TEST = {'values': ('one', 'two'), 'label': 'TEST'}\\n\\n"
+    "TEST = {'label': 'TEST', 'values': ('one', 'two')}\n\n"
     '''
     custom_token_content = ''
     if len(custom_tokens):
         for token in custom_tokens:
-            custom_token_content += '{label} = {token}\n'.format(label=token['label'], token=token)
-    return custom_token_content + '\n'
+            custom_token_content += '{label} = {token}\n'.format(label=token['label'], token=_stringify_token(token))
+    return str(custom_token_content + '\n')
+
+
+def _stringify_token(token):
+    """
+  >>> token = {'label': 'TEST', 'values': ('one', 'two')}
+  >>> _stringify_token(token)
+  "{'label': 'TEST', 'values': ('one', 'two')}"
+  """
+    return str(
+        "{'label': '" + str(token['label']) + "', 'values': " + str(tuple([str(val) for val in token['values']])) + "}"
+    )
 
 
 def _get_entity_patterns_content(entity_name, custom_tokens):
-    '''
+    r'''
     >>> custom_tokens = [{'label': 'TEST', 'values': ('one', 'two')}]
     >>> _get_entity_patterns_content("FUN", custom_tokens)
-    "FUN_PATTERNS = [[['TEST']]]\\n"
+    "FUN_PATTERNS = [[['TEST']]]\n"
     >>> _get_entity_patterns_content("FUN", [])
-    "# change this to suit your needs. The following pattern would search for one number followed by one letter.\\nFUN_PATTERNS[[['NUM'], ['LETTER']]]\\n\\n"
+    "# change this to suit your needs. The following pattern would search for one number followed by one letter.\nFUN_PATTERNS = [[['NUM'], ['LETTER']]]\n\n"
     '''
     entity_patterns_content = ''
-    entity_pattern_label = entity_name.upper() + '_PATTERNS'
+    entity_pattern_label = str(entity_name.upper()) + '_PATTERNS'
     if len(custom_tokens):
-        entity_patterns_content = entity_pattern_label + ' = ' + str([[[token['label']]] for token in custom_tokens])
+        entity_patterns_content = entity_pattern_label + ' = ' + str([[[str(token['label'])]] for token in custom_tokens])
     else:
         entity_patterns_content = '# change this to suit your needs. ' + \
                                   'The following pattern would search for one number followed by one letter.\n' + \
                                   entity_pattern_label + " = [[['NUM'], ['LETTER']]]\n"
-    return entity_patterns_content + '\n'
+    return str(entity_patterns_content + '\n')
 
 
 def _get_entity_definition_content(entity_name, custom_tokens):
-    '''
+    r'''
     >>> custom_tokens = [{'label': 'TEST', 'values': ('one', 'two')}]
     >>> _get_entity_definition_content("FUN", custom_tokens)
-    "\\nENTITY_DEFINITION = {\\n  'patterns': FUN_PATTERNS,\\n  'extraTokens': (TEST,),\\n}\\n\\n"
+    "\nENTITY_DEFINITION = {\n  'patterns': FUN_PATTERNS,\n  'extraTokens': (TEST,),\n}\n\n"
     '''
     entity_definition_content = '''
 ENTITY_DEFINITION = {
@@ -98,19 +108,18 @@ ENTITY_DEFINITION = {
     entity_definition_content += '''
 }
 '''
-    return entity_definition_content + '\n'
+    return str(entity_definition_content + '\n')
 
 
 def _format_custom_tokens(custom_tokens):
-  '''
+    '''
   >>> custom_tokens = [{'label': 'TEST', 'values': ('one', 'two')}]
   >>> _format_custom_tokens(custom_tokens)
   '(TEST,)'
   '''
-  return str(tuple([remove_quotation_marks(token['label']) for token in custom_tokens])).replace("'", '')
+    return str(str(tuple([remove_quotation_marks(token['label']) for token in custom_tokens])).replace("'", ''))
 
 
 if __name__ == '__main__':
-    custom_tokens = [{'label': 'TEST', 'values': ('one', 'two')}]
-    _get_entity_definition_content("FUN", custom_tokens)
-    doctest.testmod(raise_on_error=False)
+    import doctest
+    doctest.testmod(raise_on_error=True)

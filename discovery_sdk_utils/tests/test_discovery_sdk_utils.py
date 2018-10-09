@@ -245,8 +245,10 @@ class TestEntityDefinitionValidator(object):
 
     def test_importing_address_number(self):
       import sys
+      import os
       from importlib import import_module
-      sys.path.append('../examples/directions/custom/entities')
+      directions_entity_folder_path = os.path.abspath(os.path.join('..', 'examples', 'directions', 'custom', 'entities'))
+      sys.path.append(directions_entity_folder_path)
       entity = 'address_number.py'
 
       entity_name = entity.split("/")[-1].replace(".py", "")

@@ -1,8 +1,7 @@
-from __future__ import print_function
+from __future__ import print_function, absolute_import, unicode_literals
 
 import json
-import doctest
-from cli_utils import (
+from gk_cli.cli_utils import (
     BlankAnswerValidator, format_file_name, ListOfSingleWordsValidator, prompt_user, prompt_user_with_help_check
 )
 
@@ -165,4 +164,5 @@ def _user_needs_another_intent():
 
 
 if __name__ == '__main__':
-    doctest.testmod(raise_on_error=False)
+    import doctest
+    doctest.testmod(raise_on_error=True)
