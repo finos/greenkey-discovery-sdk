@@ -18,6 +18,7 @@ import os
 import time
 import glob
 import sys
+import editdistance
 
 from importlib import import_module
 from discovery_sdk_utils import find_errors_in_entity_definition
@@ -145,12 +146,10 @@ def test_single_entity(entities, test_name, test_value):
     '''
     Tests a single entity within a test case
     '''
-    if test_name in ['test', 'transcript']:
-        return 0
 
     if test_name not in entities.keys():
         fail_test({}, "Entity not found: {}".format(test_name), continued=True)
-        return 1
+        return (1, len(test_value))
 
     if entities[test_name] != test_value:
         fail_test(
@@ -158,9 +157,9 @@ def test_single_entity(entities, test_name, test_value):
             "Value incorrect: ({}) expected {} != {}".format(test_name, test_value, entities[test_name]),
             continued=True
         )
-        return 1
+        return (1, editdistance.eval(test_value, entities[test_name]))
 
-    return 0
+    return (0, 0)
 
 
 def test_single_case(test):
@@ -182,10 +181,18 @@ def test_single_case(test):
     entities = {x["label"]: x["matches"][0][0]["value"] for x in intent["entities"]}
 
     total_errors = 0
+    char_errors = 0
+    characters = 0
 
     # Loop through all entity tests
     for test_name, test_value in test.items():
-        total_errors += test_single_entity(entities, test_name, test_value)
+        if test_name in ['test', 'transcript']:
+          continue
+
+        (errors, char_errors) = test_single_entity(entities, test_name, test_value)
+        total_errors += errors
+        char_errors += char_errors
+        characters += len(test_value)
 
     extra_entities = {x: entities[x] for x in entities.keys() if x not in test.keys()}
 
@@ -193,10 +200,10 @@ def test_single_case(test):
         print("Extra entities: {}\n".format(extra_entities))
 
     if total_errors > 0:
-        return (1, total_errors)
+        return (1, total_errors, char_errors, characters)
     else:
         print("Test passed\n---\n")
-        return (0, 0)
+        return (0, 0, 0, characters)
 
 
 def test_all():
@@ -210,16 +217,21 @@ def test_all():
     total_tests = len(tests)
     failed_tests = 0
     total_errors = 0
+    total_char_errors = 0
+    total_characters = 0
 
     for test in tests:
-        (failure, errors) = test_single_case(test)
+        (failure, errors, char_errors, characters) = test_single_case(test)
         failed_tests += failure
         total_errors += errors
+        total_char_errors += char_errors
+        total_characters += characters
 
     print(
-        "\n---\n({} / {}) tests passed in {}s with {} errors".format(
+        "\n---\n({} / {}) tests passed in {}s with {} errors, Character error rate: {}%".format(
             total_tests - failed_tests, total_tests,
-            int(time.time()) - t1, errors
+            int(time.time()) - t1, errors,
+            "{:.2f}".format((total_char_errors / total_characters) * 100)
         )
     )
 
