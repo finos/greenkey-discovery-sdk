@@ -2,7 +2,8 @@ from __future__ import print_function
 
 import doctest
 from cli_utils import (
-    BlankAnswerValidator, format_file_name, ListOfSingleWordsValidator, prompt_user, prompt_user_with_help_check
+    BlankAnswerValidator, format_file_name, ListOfSingleWordsValidator, prompt_user, prompt_user_with_help_check,
+    remove_quotation_marks
 )
 
 
@@ -129,7 +130,7 @@ def _get_token_values(token_name):
         'but "spaghetti with meatballs, pasta alfredo" is not.\n'
     )
     response = prompt_user_with_help_check(token_values_prompt, help_message)
-    return tuple([value.encode('utf-8') for value in response.split(',')])
+    return tuple([remove_quotation_marks(value).strip().encode('utf-8') for value in response.split(',')])
 
 
 def _user_needs_another_token():
