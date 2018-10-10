@@ -6,6 +6,8 @@ from gk_cli.entity import create_new_entity
 from gk_cli.intents import create_new_intent_definition_file
 from gk_cli.cli_utils import BlankAnswerValidator, format_file_name, prompt_user
 
+CREATE_NEW_ENTITY_MSG = 'Create a new entity for an existing project.'
+
 create_type = [
     {
         'type': 'list',
@@ -16,7 +18,7 @@ create_type = [
                 'name': 'Create a new project.'
             },
             {
-                'name': 'Create a new entity for an existing project.'
+                'name': CREATE_NEW_ENTITY_MSG
             },
         ],
     }
@@ -105,7 +107,7 @@ def create_new_entities_folder(file_path):
 
 def main():
     option = prompt_user(create_type)
-    if option == 'Create a new entity':
+    if option == CREATE_NEW_ENTITY_MSG:
         create_new_entity_in_folder('')
 
     else:
