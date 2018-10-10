@@ -14,6 +14,8 @@ def _format_token_name(token_name):
     token_name = format_file_name(token_name)
     return token_name.upper()
 
+REQUEST_TOKEN_INFO_MSG = 'I do not know. What is a token?'
+
 
 def _generate_custom_tokens_prompt(entity_name):
     return [
@@ -33,7 +35,7 @@ def _generate_custom_tokens_prompt(entity_name):
                         'name': 'No, the built in tokens are sufficient.'
                     },
                     {
-                        'name': 'I do not know. What is a token?'
+                        'name': REQUEST_TOKEN_INFO_MSG
                     },
                 ],
         }
@@ -91,7 +93,11 @@ def _prompt_for_custom_tokens(entity_name):
         'If you make a custom token, you will first be prompted for a label for your token, '
         'and next you will be prompted for a list of the actual words that discovery should find.\n'
     )
-    response = prompt_user_with_help_check(custom_tokens_prompt, help_message)
+    response = prompt_user(custom_tokens_prompt)
+    if response == REQUEST_TOKEN_INFO_MSG:
+      print(help_message)
+      return _prompt_for_custom_tokens(entity_name)
+
     return response == 'Yes'
 
 
