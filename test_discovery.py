@@ -136,6 +136,9 @@ def is_valid_response(resp):
     if "intents" not in resp:
         return False
 
+    if not resp['intents']:
+        return False
+
     if "entities" not in resp["intents"][0]:
         return False
 
