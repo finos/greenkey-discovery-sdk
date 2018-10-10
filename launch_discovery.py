@@ -45,17 +45,17 @@ def _determine_discovery_launch_type():
 def _launch_container(custom_directory, port, discovery_config):
     '''launches the Discovery docker container.'''
     dico_dir = ["-v", "{}/dico:/dico".format(custom_directory)] if os.path.isdir(custom_directory + '/dico') else []
-    
+
     try:
-      config_items = discovery_config.iteritems()
+        config_items = discovery_config.iteritems()
     except AttributeError:
-      config_items = iter(discovery_config.items())
-      
+        config_items = iter(discovery_config.items())
+
     # yapf: disable
     launch_command = ' '.join(
         ["docker", "run", "--rm", "-d"] +
         ["--name", "discovery-dev"] +
-        ["-v", "{}:/custom".format(custom_directory)] +
+        ["-v", '"{}":/custom'.format(custom_directory)] +
         ["-p", "{}:1234".format(port)] +
         dico_dir +
         ["-e {}={}".format(k, v) for k, v in config_items] +
