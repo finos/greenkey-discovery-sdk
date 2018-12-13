@@ -1,5 +1,9 @@
 ''' This contains the entity definition for a cardinal directions '''
-from cleaning_functions import capitalize
+try:
+  from cleaning_functions import capitalize
+except ImportError:
+  from .cleaning_functions import capitalize
+
 
 DIRECTION = {
   'label': 'DIRECTION',

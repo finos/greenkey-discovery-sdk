@@ -31,21 +31,21 @@ Feel free to use these examples as a jumping off point in your own code.
 ### Requirements
 
 - Docker 17+ (or Discovery Binaries)
-- Python 2.7 with `pip`
+- Python 3 with `pip`
 
 ### Dependencies
 
 To ensure your dependencies install correctly, we recommend that you upgrade your `setuptools` before proceeding further.
 
 ```sh
-pip install --upgrade setuptools
+python3 -m pip install --upgrade setuptools
 ```
 
 Now you are ready to install the required dependencies with `pip`.
 This will provide you with the packages needed to run the `test_discovery.py` script, as well as the Discovery CLI.
 
 ```sh
-pip install -r requirements.txt
+python3 -m pip install -r requirements.txt
 ```
 
 ### Obtaining credentials
@@ -73,7 +73,7 @@ Ensure that your *transcripts are unformatted text with numbers spelled out*. Fo
 
 5) Edit the credentials and other configuration parameters in `discovery_config.py`
 
-6) Run `python test_discovery.py folder_name` to test your interpreter. For example:
+6) Run `python3 test_discovery.py folder_name` to test your interpreter. For example:
 
 ```
 python test_discovery.py examples/directions
@@ -90,7 +90,7 @@ You should end up with a structure like the following for the `test_discovery.py
 
 ```
 └───greenkey-discovery-sdk
-    └───discovery_binaries_windows_10_64bit__python27_32bit
+    └───discovery_binaries_windows_10_64bit__python37_64bit
     └───examples
     └───gkcli
     │   discovery_config.py
@@ -131,7 +131,7 @@ Then, run these files through SVTServer [following our documentation](https://tr
 
 For example, you can launch a single job container with the following command for a file called `test.wav`. Be sure to set `$USERNAME` and `$SECRETKEY`
 
-```
+```bash
 docker run \
     -it \
     --rm \
@@ -140,7 +140,7 @@ docker run \
     -e GKT_USERNAME="$USERNAME" \
     -e GKT_SECRETKEY="$SECRETKEY" \
     -e TARGET_FILE="/files/test.wav" \
-    -v $(pwd):/files \
+    -v "$PWD":/files \
     -e ENABLE_CLOUD="False" \
     -e PROCS=1 \
     docker.greenkeytech.com/svtserver

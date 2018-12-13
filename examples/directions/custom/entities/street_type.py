@@ -1,8 +1,10 @@
 '''
 This contains the entity definition for types of streets.
 '''
-
-from cleaning_functions import capitalize
+try:
+  from cleaning_functions import capitalize
+except ImportError:
+  from .cleaning_functions import capitalize
 
 STREET_TYPE = {
   'label':

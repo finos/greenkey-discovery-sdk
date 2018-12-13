@@ -2,9 +2,11 @@
 This contains the entity definition for the most popular street names in Chicago, Illinois.
 Replace these streets with whatever street names you please.
 '''
-import sys
-sys.path.append('../../nlp/')
-from cleaning_functions import capitalize
+from nlp.cleanText import text2int
+try:
+  from cleaning_functions import capitalize
+except ImportError:
+  from .cleaning_functions import capitalize
 
 STREET_NAME = {
   'label':
@@ -134,7 +136,6 @@ def format_ordinal(wordList, spacer):
   >>> format_ordinal("five three", ' ')
   '5th 3rd'
   """
-  from cleanText import text2int
 
   def add_suffix(n):
     return str(n) + 'tsnrhtdd' [n % 5 * (n % 100 ^ 15 > 4 > n % 10)::4]

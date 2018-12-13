@@ -1,7 +1,7 @@
-#!/usr/bin/python
-'''
+#!/usr/bin/env python3
+"""
 Utility functions for discovery
-'''
+"""
 from __future__ import print_function
 from inspect import isfunction
 from .built_in_tokens import BUILT_IN_TOKENS
@@ -221,8 +221,7 @@ VALIDATION_FUNCTIONS = [
 
 
 def find_errors_in_entity_definition(entity_definition, validation_functions=VALIDATION_FUNCTIONS):
-    ''' Accumulates a list of errors to return to the user.
-    '''
+    """Accumulates a list of errors to return to the user."""
     errors = []
     for func in validation_functions:
         # Minor errors are returned as strings and added to the list.
