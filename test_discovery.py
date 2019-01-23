@@ -1,5 +1,5 @@
-#!/usr/bin/python
-'''
+#!/usr/bin/env python3
+"""
 Test Discovery performs system testing of new intents and interpreters.
 
 This tool is intended to be distributed to any developer who wishes to develop their own
@@ -8,7 +8,7 @@ Discovery interpreter.
 Tests are assumed to pass if the defined entities are present in the most
 likely found intent. Tests are also assumed to always return a valid intent
 with entities.
-'''
+"""
 
 from __future__ import print_function
 import requests
@@ -31,15 +31,15 @@ else:
     DISCOVERY_DIRECTORY = os.getcwd()
 
 TEST_FILE = os.path.join(DISCOVERY_DIRECTORY, "tests.txt")
-'''
+"""
 Functions for handling the Discovery Docker container
-'''
+"""
 
 
 def check_discovery_status():
-    '''
+    """
     Checks whether Discovery is ready to receive new jobs
-    '''
+    """
     r = requests.get("http://{}:{}/status".format(DISCOVERY_HOST, DISCOVERY_PORT))
 
     if json.loads(r.text)['status'] == 0:
@@ -49,9 +49,9 @@ def check_discovery_status():
 
 
 def wait_for_discovery_status(timeout=1, retries=5):
-    '''
+    """
     Wait for Discovery to be ready
-    '''
+    """
     for i in range(retries):
         try:
             check_discovery_status()
@@ -63,9 +63,9 @@ def wait_for_discovery_status(timeout=1, retries=5):
 
 
 def wait_for_discovery_launch():
-    '''
+    """
     Wait for launch to complete
-    '''
+    """
 
     # Timeout of 25 seconds for launch
     if not wait_for_discovery_status(timeout=5, retries=5):
@@ -76,9 +76,9 @@ def wait_for_discovery_launch():
 
 
 def shutdown_discovery():
-    '''
+    """
     Shuts down the Discovery engine Docker container
-    '''
+    """
     try:
         requests.get("http://{}:{}/shutdown".format(DISCOVERY_HOST, DISCOVERY_PORT))
     # Windows throws a ConnectionError for a request to shutdown a server which makes it looks like the test fail
@@ -86,15 +86,15 @@ def shutdown_discovery():
         pass
 
 
-'''
+"""
 Testing functions
-'''
+"""
 
 
 def load_tests():
-    '''
+    """
     Loads and parses the test file
-    '''
+    """
     test_file = [x.rstrip() for x in open(TEST_FILE)]
 
     tests = []
@@ -116,20 +116,20 @@ def load_tests():
 
 
 def submit_transcript(transcript):
-    '''
+    """
     Submits a transcript to Discovery
-    '''
-    d = {"data": json.dumps({"json_lattice": {"transcript": transcript}})}
-    r = requests.post("http://{}:{}/discover".format(DISCOVERY_HOST, DISCOVERY_PORT), data=d)
+    """
+    data = {"transcript": transcript}
+    response = requests.post("http://{}:{}/process".format(DISCOVERY_HOST, DISCOVERY_PORT), json=data)
 
-    return json.loads(r.text)
+    return json.loads(response.text)
 
 
 def is_valid_response(resp):
-    '''
+    """
     Validates a Discovery response
     Fail if a failure response was received
-    '''
+    """
     if "result" in resp and resp['result'] == "failure":
         return False
 
@@ -146,9 +146,9 @@ def is_valid_response(resp):
 
 
 def test_single_entity(entities, test_name, test_value):
-    '''
+    """
     Tests a single entity within a test case
-    '''
+    """
 
     if test_name not in entities.keys():
         fail_test({}, "Entity not found: {}".format(test_name), continued=True)
@@ -166,10 +166,10 @@ def test_single_entity(entities, test_name, test_value):
 
 
 def test_single_case(test):
-    '''
+    """
     Run a single test case
     Return the number of errors
-    '''
+    """
     print("======\nTesting: {}".format(test['test']))
     resp = submit_transcript(test['transcript'])
 
@@ -190,7 +190,7 @@ def test_single_case(test):
     # Loop through all entity tests
     for test_name, test_value in test.items():
         if test_name in ['test', 'transcript']:
-          continue
+            continue
 
         (errors, char_errors) = test_single_entity(entities, test_name, test_value)
         total_errors += errors
@@ -210,9 +210,9 @@ def test_single_case(test):
 
 
 def test_all():
-    '''
+    """
     Runs all defined tests
-    '''
+    """
     tests = load_tests()
 
     t1 = int(time.time())
@@ -249,15 +249,25 @@ def fail_test(resp, message="", continued=False):
         exit(1)
 
 
-'''
+"""
 Interpreter validation
-'''
+"""
+
+
+class cleanText(object):
+    """Mock up a module that is imported by entities so they can be imported and inspected."""
+    @staticmethod
+    def text2int(wordList, spacer):
+        return wordList
 
 
 def validate_entities():
-    '''
+    """
     Validate entities
-    '''
+    """
+    # mock up nlp.cleanText so that entities can be imported
+    sys.modules['nlp.cleanText'] = cleanText()
+
     entities_file = os.path.join(DISCOVERY_DIRECTORY, 'custom', 'entities')
     entities = glob.glob(os.path.join(entities_file, '*.py'))
     entities_directory = os.path.join(DISCOVERY_DIRECTORY, 'custom', 'entities')
@@ -272,18 +282,21 @@ def validate_entities():
         except FileNotFoundError:
             pass
 
+    # remove mocked up dummy module from modules
+    sys.modules.pop('nlp.cleanText')
+
 
 def _validate_individual_entity(entity):
-  entity_name = os.path.split(entity)[-1].replace(".py", "")
-  entity_module = import_module(entity_name)
-  definition_errors = []
-  if 'ENTITY_DEFINITION' in dir(entity_module):
-      print('Checking entity definition {0:.<35}'.format(entity_name), end='')
-      errors = find_errors_in_entity_definition(entity_module.ENTITY_DEFINITION)
-      _log_entity_definition_error_results(errors)
-      definition_errors.extend(errors)
-  if definition_errors:
-    raise Exception('Please fix all entity definition errors before running discovery!')
+    entity_name = os.path.split(entity)[-1].replace(".py", "")
+    entity_module = import_module(entity_name)
+    definition_errors = []
+    if 'ENTITY_DEFINITION' in dir(entity_module):
+        print('Checking entity definition {0:.<35}'.format(entity_name), end='')
+        errors = find_errors_in_entity_definition(entity_module.ENTITY_DEFINITION)
+        _log_entity_definition_error_results(errors)
+        definition_errors.extend(errors)
+    if definition_errors:
+        raise Exception('Please fix all entity definition errors before running discovery!')
 
 
 def _log_entity_definition_error_results(errors):
@@ -296,9 +309,9 @@ def _log_entity_definition_error_results(errors):
 
 
 def validate_json():
-    '''
+    """
     Validate intents.json
-    '''
+    """
     intents_config_file = os.path.join(DISCOVERY_DIRECTORY, 'custom', 'intents.json')
     try:
         json.loads(''.join([x.rstrip() for x in open(intents_config_file)]))

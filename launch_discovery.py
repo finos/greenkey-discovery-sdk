@@ -1,25 +1,28 @@
 #!/usr/bin/env python
-'''This module will launch Discovery on http://localhost:1234
+"""This module will launch Discovery on http://localhost:1234
 
 This file will automatically scan for a folder of discovery binaries.
 If the binaries are not detected, the script will launch the Discovery docker container.
 
 Available functions:
 - launch_discovery: Starts discovery container or binaries
-'''
+"""
 import fnmatch
+from multiprocessing import Process
 import os
 import subprocess
+import sys
+
 from discovery_config import DISCOVERY_CONFIG, DISCOVERY_PORT, DISCOVERY_IMAGE_NAME
 
 
 def launch_discovery(custom_directory=None, type=None, port=None, discovery_config=None):
-    '''Launches the Discovery engine either via docker container or via compiled binaries.
+    """Launches the Discovery engine either via docker container or via compiled binaries.
 
     Args:
         custom_directory: File path to the custom directory would like uploaded to discovery.
         type: String, can either be 'docker' or 'binaries'
-    '''
+    """
     if custom_directory is None:
         custom_directory = os.getcwd()
     if port is None:
@@ -43,7 +46,7 @@ def _determine_discovery_launch_type():
 
 
 def _launch_container(custom_directory, port, discovery_config):
-    '''launches the Discovery docker container.'''
+    """launches the Discovery docker container."""
     dico_dir = ["-v", "{}/dico:/dico".format(custom_directory)] if os.path.isdir(custom_directory + '/dico') else []
 
     try:
@@ -68,10 +71,9 @@ def _launch_container(custom_directory, port, discovery_config):
 
 
 def _launch_binaries(custom_directory, port, discovery_config):
-    '''launches Discovery from the compiled binaries.'''
+    """launches Discovery from the compiled binaries."""
     binaries_directory = _detect_binaries_file()
     if binaries_directory:
-        import sys
         sys.path.append(os.path.abspath(binaries_directory))
         from run import find_definition_files_and_copy_them_to_appropriate_location
         find_definition_files_and_copy_them_to_appropriate_location(
@@ -79,20 +81,18 @@ def _launch_binaries(custom_directory, port, discovery_config):
         )
 
         sys.path.append(os.path.join(binaries_directory, 'discovery'))
-        os.chdir(os.path.join(binaries_directory, 'discovery', 'server'))
+
         print("Launching Discovery from Binaries: {}\n".format(binaries_directory))
 
-        sdk_directory = os.path.abspath(os.path.join(binaries_directory, '..'))
-        # remove any instances of the SDK directory from the path to prevent dummy modules from getting loaded in
-        while sdk_directory in sys.path:
-            sys.path.remove(sdk_directory)
+        os.environ["SERVICE_NAME"] = "discovery"
+        from discovery.server import main
 
-        from server.server import main
-        main()
+        proc = Process(target=main, args=())
+        proc.start()
 
 
 def _detect_binaries_file():
-    '''Returns the absolute path of the binaries directory.'''
+    """Returns the absolute path of the binaries directory."""
     for file in os.listdir('.'):
         if fnmatch.fnmatch(file, 'discovery_binaries_*') and not file.endswith('.tar.gz') and not file.endswith('.zip'):
             return os.path.abspath(file)
