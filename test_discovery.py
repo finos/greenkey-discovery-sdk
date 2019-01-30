@@ -42,7 +42,7 @@ def check_discovery_status():
     """
     r = requests.get("http://{}:{}/status".format(DISCOVERY_HOST, DISCOVERY_PORT))
 
-    if json.loads(r.text)['status'] == 0:
+    if 'listening' in json.loads(r.text)['message']:
         return True
 
     return False
