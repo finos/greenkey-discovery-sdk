@@ -59,7 +59,7 @@ def _launch_container(custom_directory, port, discovery_config):
         ["docker", "run", "--rm", "-d"] +
         ["--name", "discovery-dev"] +
         ["-v", '"{}":/custom'.format(custom_directory)] +
-        ["-p", "{}:8000".format(port)] +
+        ["-p", "{}:{}".format(port, discovery_config["PORT"])] +
         dico_dir +
         ["-e {}={}".format(k, v) for k, v in config_items] +
         [DISCOVERY_IMAGE_NAME]
