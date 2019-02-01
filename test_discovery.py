@@ -25,12 +25,6 @@ from discovery_sdk_utils import find_errors_in_entity_definition
 from discovery_config import DISCOVERY_PORT, DISCOVERY_HOST
 from launch_discovery import launch_discovery
 
-if len(sys.argv) > 1:
-    DISCOVERY_DIRECTORY = os.path.abspath(sys.argv[1])
-else:
-    DISCOVERY_DIRECTORY = os.getcwd()
-
-TEST_FILE = os.path.join(DISCOVERY_DIRECTORY, "tests.txt")
 """
 Functions for handling the Discovery Docker container
 """
@@ -91,11 +85,11 @@ Testing functions
 """
 
 
-def load_tests():
+def load_tests(test_file_argument):
     """
     Loads and parses the test file
     """
-    test_file = [x.rstrip() for x in open(TEST_FILE)]
+    test_file = [x.rstrip() for x in open(test_file_argument)]
 
     tests = []
     current_test = {}
@@ -209,11 +203,11 @@ def test_single_case(test):
         return (0, 0, 0, characters)
 
 
-def test_all():
+def test_all(test_file):
     """
     Runs all defined tests
     """
-    tests = load_tests()
+    tests = load_tests(test_file)
 
     t1 = int(time.time())
 
@@ -261,16 +255,16 @@ class cleanText(object):
         return wordList
 
 
-def validate_entities():
+def validate_entities(discovery_directory):
     """
     Validate entities
     """
     # mock up nlp.cleanText so that entities can be imported
     sys.modules['nlp.cleanText'] = cleanText()
 
-    entities_file = os.path.join(DISCOVERY_DIRECTORY, 'custom', 'entities')
+    entities_file = os.path.join(discovery_directory, 'custom', 'entities')
     entities = glob.glob(os.path.join(entities_file, '*.py'))
-    entities_directory = os.path.join(DISCOVERY_DIRECTORY, 'custom', 'entities')
+    entities_directory = os.path.join(discovery_directory, 'custom', 'entities')
     sys.path.append(entities_directory)
 
     for entity in entities:
@@ -308,11 +302,11 @@ def _log_entity_definition_error_results(errors):
         print('No errors!')
 
 
-def validate_json():
+def validate_json(discovery_directory):
     """
     Validate intents.json
     """
-    intents_config_file = os.path.join(DISCOVERY_DIRECTORY, 'custom', 'intents.json')
+    intents_config_file = os.path.join(discovery_directory, 'custom', 'intents.json')
     try:
         json.loads(''.join([x.rstrip() for x in open(intents_config_file)]))
     except Exception as e:
@@ -323,8 +317,15 @@ def validate_json():
 
 
 if __name__ == '__main__':
-    validate_entities()
-    validate_json()
+    if len(sys.argv) > 1:
+        DISCOVERY_DIRECTORY = os.path.abspath(sys.argv[1])
+    else:
+        DISCOVERY_DIRECTORY = os.getcwd()
+
+    TEST_FILE = os.path.join(DISCOVERY_DIRECTORY, "tests.txt")
+
+    validate_entities(DISCOVERY_DIRECTORY)
+    validate_json(DISCOVERY_DIRECTORY)
     custom_directory = os.path.join(DISCOVERY_DIRECTORY, 'custom')
     launch_discovery(custom_directory=custom_directory)
     wait_for_discovery_launch()
@@ -332,6 +333,6 @@ if __name__ == '__main__':
     if wait_for_discovery_status():
         print("Discovery Ready")
 
-    test_all()
+    test_all(TEST_FILE)
 
     shutdown_discovery()
