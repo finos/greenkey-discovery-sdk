@@ -1,0 +1,29 @@
+  "schemas": [
+    {
+      "label": "inquiry",
+      "return_json": {
+        "produce_class": "{product_class}",         // fruit or vegetable
+        "product": "{product}",                     // color + base_product
+        "quantity": "{quantity}",                   // total number want to purchase        100
+        "price": "{price}",                         // money per unit        100/50
+        "ask_or_bid": "{ask_or_bid}"                // buy or sell
+        "total_price": "{total_price}",             // quantity}*{price}    $50
+        "color": "{color}",                         // color - red, green, orange, purple
+        "base_product": "{base_product}"            // produce - apple, organge, carrot
+      }
+    }
+  ]
+}
+
+
+//github.com/greenkeytech/client-deployments/blob/master/rbc/rbc-rates-interpreter/custom/schemas.json
+
+  // bid and ask == bid and offer--> two-way price quotation that indicates the best price at which a security can be *sold* and *bought* at a given point in time
+
+
+//Which schema format should be included?
+
+//above formatted like schema in discovery example directions: https://github.com/finos-voice/greenkey-discovery-sdk/blob/master/examples/directions/custom/schemas.json
+////
+////format for rbc rates interpreter schema differs
+//https://git

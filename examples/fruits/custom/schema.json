@@ -1,0 +1,17 @@
+{
+  "schemas": [
+    {
+      "label": "inquiry",
+      "return_json": {
+        "produce_class": "{product_class}",         // fruit or vegetable
+        "product": "{product}",                     // produce - apple, orange, carrot
+        "color": "{color}",                         // color - red, green, orange, purple
+        "price": "{price}",                         // price in sentence
+        "quantity": "{quantity}",                   // total number want to purchase        100
+      }
+    }
+  ]
+}
+
+
+{
