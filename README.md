@@ -26,6 +26,17 @@ Each example contains a folder labeled `custom`, which in turn contains the need
 Some examples contain a `schemas.json` file to customize the return json.
 They also contain example scripts to see how the particular configuration will detect entities.
 
+```
+examples
+└── room_number
+    ├── custom
+    │   ├── entities
+    │   │   └── room_number.py
+    │   └── intents.json
+    ├── send_transcript_to_discovery.sh
+    └── tests.txt
+```
+
 Feel free to use these examples as a jumping off point in your own code.
 
 ### Requirements
