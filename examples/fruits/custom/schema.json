@@ -7,11 +7,9 @@
         "product": "{product}",                     // produce - apple, orange, carrot
         "color": "{color}",                         // color - red, green, orange, purple
         "price": "{price}",                         // price in sentence
-        "quantity": "{quantity}",                   // total number want to purchase        100
+        "quantity": "{quantity}"                   // total number want to purchase        100
       }
     }
   ]
 }
 
-
-{
