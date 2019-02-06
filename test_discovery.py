@@ -78,6 +78,7 @@ def shutdown_discovery():
     # Windows throws a ConnectionError for a request to shutdown a server which makes it looks like the test fail
     except requests.exceptions.ConnectionError:
         pass
+    time.sleep(3)
 
 
 """
@@ -327,12 +328,16 @@ if __name__ == '__main__':
     validate_entities(DISCOVERY_DIRECTORY)
     validate_json(DISCOVERY_DIRECTORY)
     custom_directory = os.path.join(DISCOVERY_DIRECTORY, 'custom')
-    launch_discovery(custom_directory=custom_directory)
-    wait_for_discovery_launch()
+    try:
+        launch_discovery(custom_directory=custom_directory)
+        wait_for_discovery_launch()
 
-    if wait_for_discovery_status():
-        print("Discovery Ready")
+        if wait_for_discovery_status():
+            print("Discovery Ready")
 
-    test_all(TEST_FILE)
+        test_all(TEST_FILE)
+    except Exception as e:
+        shutdown_discovery()
+        raise e
 
     shutdown_discovery()
