@@ -1,0 +1,48 @@
+//"""
+// Interpreter that categorizes text as Inquiry, Quote, Trade or Correction
+// Asset class: Food
+// Product classes: Fruits, Vegetab;es
+//"""
+//# filepath: greenkey-discovery-sdk/exmples/fruits/custom/intents.json
+
+
+{
+  "intents": [
+    {
+      "label": "inquiry",
+      "domain": "food",
+      "examples": [
+        "What is your price on {color} {fruit}?",
+        "How many {fruit} can I get for {money}?",
+        "What's going on with {color} {fruit} today?"
+     ]
+   },
+   {
+     "label": "quotes",
+     "domain": "food",
+     "examples": [
+       "I'll buy {quantity} {vegetable} for {money}" ,
+       "Can you sell {quantity} {color} {fruit} for {money}?",
+       "I can sell up to {quantity} {fruit} for {money} each"
+     ]
+   },
+   {
+     "label": "trade",
+     "domain": "food",
+     "examples": [
+       "I'll take your {quantity} {fruit} for {money} each",
+       "We're done on the {quantity} {color} {fruit} for {money}",
+       "Confirming that I'll sell you {quantity} {vegetable} for {money}"
+     ]
+   },
+   {
+     "label": "correction",
+     "domain": "food",
+     "examples": [
+       "Scratch that, I can sell {quantity} {fruit} for {money} each",
+       "Correction, my price on {quantity} {vegetable} is {money}",
+       "I need to revise my offer. I'll give you {money} for {quantity} {fruit}"
+     ]
+   }
+ ]
+}

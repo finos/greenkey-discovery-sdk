@@ -1,0 +1,33 @@
+test: (1) Inquiry
+transcript: What is your price on green tomatoes?
+intent: inquiry
+product_class: vegetable
+product: tomato
+color: green
+
+test: (2) Quote
+transcript: I'll buy 70 purple carrots for $10 each
+intent: quote
+product_class: vegetable
+product: carrot
+color: purple
+price: 10
+quantity: 100
+
+test: (3) Trade
+transcript: Confirming I'll sell you 20 oranges for $20
+intent: trade
+product_class: fruit
+product: orange
+color:
+price: 20
+quantity: 20
+
+test: (4) Correction
+transcript: I have to change my offer. I'll buy 50 red apples for $100
+intent: correction
+product_class: fruit
+product: apple
+color: red
+price: 100
+quantity: 50
