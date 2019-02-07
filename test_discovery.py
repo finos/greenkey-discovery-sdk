@@ -38,7 +38,6 @@ def check_discovery_status():
 
     if 'listening' in json.loads(r.text)['message']:
         return True
-
     return False
 
 
@@ -52,7 +51,6 @@ def wait_for_discovery_status(timeout=1, retries=5):
             return True
         except Exception:
             time.sleep(timeout)
-
     return False
 
 
@@ -60,7 +58,6 @@ def wait_for_discovery_launch():
     """
     Wait for launch to complete
     """
-
     # Timeout of 25 seconds for launch
     if not wait_for_discovery_status(timeout=5, retries=5):
         print("Couldn't launch Discovery, printing Docker logs:\n---\n")
@@ -89,6 +86,13 @@ Testing functions
 def load_tests(test_file_argument):
     """
     Loads and parses the test file
+
+    :param test_file_argument: str, path to test.txt file
+    :return: list of dicts, each dict is a test
+        key is either 'intent' or the named of an entity
+        value:
+            expected classification label (for intent)
+            substring in transcript expected as value of specified entity
     """
     test_file = [x.rstrip() for x in open(test_file_argument)]
 
@@ -96,7 +100,7 @@ def load_tests(test_file_argument):
     current_test = {}
     for line in test_file:
         key = line.split(":")[0]
-        value = line.split(": ")[-1]
+        value = line.split(":")[-1]
         if key == "test":
             if len(current_test.keys()) > 0:
                 tests.append(current_test)
@@ -113,6 +117,12 @@ def load_tests(test_file_argument):
 def submit_transcript(transcript):
     """
     Submits a transcript to Discovery
+
+    :param transcript: str: text to post to Discovery
+    :return dict: response from Discovery
+       top-level key is "intents" which takes a List of Dicts
+       each Dict is label, entities, and probability keys
+         order of Dicts corresponds to likelihood of returned intents/entities
     """
     data = {"transcript": transcript}
     response = requests.post("http://{}:{}/process".format(DISCOVERY_HOST, DISCOVERY_PORT), json=data)
@@ -140,57 +150,70 @@ def is_valid_response(resp):
     return True
 
 
-def test_single_entity(entities, test_name, test_value):
+def tally_errors_in_entity(expected_entity_label, expected_entity_value, observed_entities):
     """
-    Tests a single entity within a test case
+    :param expected_entity_label: str;
+    :param: expected_entity_value: str
+    :param observed_entities: dict, all entity label-value pairs returned by Discovery
+    :return: 2-Tuple; number of errors found, number of char different btw observed & expected
     """
+    error_found = 0
+    characters_different = 0
+    if expected_entity_label not in observed_entities:
+        fail_test({}, "Entity not found: {}".format(expected_entity_label), continued=True)
+        error_found = 1
+        characters_different = len(expected_entity_value)
 
-    if test_name not in entities.keys():
-        fail_test({}, "Entity not found: {}".format(test_name), continued=True)
-        return (1, len(test_value))
-
-    if entities[test_name] != test_value:
+    if observed_entities[expected_entity_label] != expected_entity_value:
         fail_test(
             {},
-            "Value incorrect: ({}) expected {} != {}".format(test_name, test_value, entities[test_name]),
+            "Value incorrect: ({}) expected {} != {}".format(
+                expected_entity_label,
+                expected_entity_value,
+                observed_entities[expected_entity_label]
+            ),
             continued=True
         )
-        return (1, editdistance.eval(test_value, entities[test_name]))
+        error_found = 1
+        characters_different = editdistance.eval(
+            expected_entity_value, observed_entities[expected_entity_label]
+        )
+    return error_found, characters_different
 
-    return (0, 0)
 
-
-def test_single_case(test):
+def evaluate_entities(test, response_intent_dict):
     """
-    Run a single test case
-    Return the number of errors
+    Compares expected entities (from test) with discovery returned entities
+
+    :param test: dict;
+        key: str; name of entity
+        value: str; first occurrence of entity in transcript
+
+    :param response_intent_dict: dict, single intent from Discovery response
+
+    :return: 4-Tuple
+       first: 0 if pass tests, 1 if fails
+       total_errors: number of entities in test whose observed value (str) differs from expected
+       total_char_errors: sum of number of char that differ between observed and expected values for each entity
+       characters:
     """
-    print("======\nTesting: {}".format(test['test']))
-    resp = submit_transcript(test['transcript'])
-
-    # Check if a valid response was received
-    if not is_valid_response(resp):
-        fail_test(resp)
-
-    # For now, only keep the first intent:
-    intent = resp["intents"][0]
-
     # Get all values of entities
-    entities = {x["label"]: x["matches"][0][0]["value"] for x in intent["entities"]}
+    entities = {ent["label"]: ent["matches"][0][0]["value"] for ent in response_intent_dict["entities"]}
 
     total_errors = 0
     total_char_errors = 0
     characters = 0
 
     # Loop through all entity tests
-    for test_name, test_value in test.items():
-        if test_name in ['test', 'transcript']:
+    for expected_entity_name, expected_entity_value in test.items():
+        if expected_entity_name in ['test', 'transcript', 'intent']:
             continue
 
-        (errors, char_errors) = test_single_entity(entities, test_name, test_value)
+        # test all observed entities for an expected entity
+        (errors, char_errors) = tally_errors_in_entity(expected_entity_name, expected_entity_value, entities)
         total_errors += errors
         total_char_errors += char_errors
-        characters += len(test_value)
+        characters += len(expected_entity_value)
 
     extra_entities = {x: entities[x] for x in entities.keys() if x not in test.keys()}
 
@@ -198,10 +221,10 @@ def test_single_case(test):
         print("Extra entities: {}\n".format(extra_entities))
 
     if total_errors > 0:
-        return (1, total_errors, total_char_errors, characters)
+        return 1, total_errors, total_char_errors, characters
     else:
         print("Test passed\n---\n")
-        return (0, 0, 0, characters)
+        return 0, 0, 0, characters
 
 
 def test_all(test_file):
@@ -219,14 +242,29 @@ def test_all(test_file):
     total_characters = 0
 
     for test in tests:
-        (failure, errors, char_errors, characters) = test_single_case(test)
+        print("======\nTesting: {}".format(test['test']))
+        resp = submit_transcript(test['transcript'])
+
+        # Check if a valid response was received
+        if not is_valid_response(resp):
+            fail_test(resp)
+
+        # For now, only keep the first intent:
+        most_likely_intent = resp["intents"][0]
+
+        if 'intent' in test and test['intent'] != most_likely_intent:
+            failed_tests += 1
+            fail_test(resp, message="Observed intent does not match expected intent!", continued=True)
+            continue
+
+        (failure, errors, char_errors, characters) = evaluate_entities(test=test, response_intent_dict=most_likely_intent)
         failed_tests += failure
         total_errors += errors
         total_char_errors += char_errors
         total_characters += characters
 
     print(
-        "\n---\n({} / {}) tests passed in {}s with {} errors, Character error rate: {}%".format(
+        "\n---\n({} / {}) tests passed in {}s with {} entity errors, Entity character error rate: {}%".format(
             total_tests - failed_tests, total_tests,
             int(time.time()) - t1, total_errors,
             "{:.2f}".format((total_char_errors / total_characters) * 100)
