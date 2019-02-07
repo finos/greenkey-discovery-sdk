@@ -78,6 +78,7 @@ def shutdown_discovery():
     # Windows throws a ConnectionError for a request to shutdown a server which makes it looks like the test fail
     except requests.exceptions.ConnectionError:
         pass
+    time.sleep(3)
 
 
 """
@@ -178,7 +179,7 @@ def test_single_case(test):
     entities = {x["label"]: x["matches"][0][0]["value"] for x in intent["entities"]}
 
     total_errors = 0
-    char_errors = 0
+    total_char_errors = 0
     characters = 0
 
     # Loop through all entity tests
@@ -188,7 +189,7 @@ def test_single_case(test):
 
         (errors, char_errors) = test_single_entity(entities, test_name, test_value)
         total_errors += errors
-        char_errors += char_errors
+        total_char_errors += char_errors
         characters += len(test_value)
 
     extra_entities = {x: entities[x] for x in entities.keys() if x not in test.keys()}
@@ -197,7 +198,7 @@ def test_single_case(test):
         print("Extra entities: {}\n".format(extra_entities))
 
     if total_errors > 0:
-        return (1, total_errors, char_errors, characters)
+        return (1, total_errors, total_char_errors, characters)
     else:
         print("Test passed\n---\n")
         return (0, 0, 0, characters)
@@ -227,10 +228,13 @@ def test_all(test_file):
     print(
         "\n---\n({} / {}) tests passed in {}s with {} errors, Character error rate: {}%".format(
             total_tests - failed_tests, total_tests,
-            int(time.time()) - t1, errors,
+            int(time.time()) - t1, total_errors,
             "{:.2f}".format((total_char_errors / total_characters) * 100)
         )
     )
+    if total_errors > 0:
+        shutdown_discovery()
+        exit(1)
 
 
 def fail_test(resp, message="", continued=False):
@@ -327,12 +331,16 @@ if __name__ == '__main__':
     validate_entities(DISCOVERY_DIRECTORY)
     validate_json(DISCOVERY_DIRECTORY)
     custom_directory = os.path.join(DISCOVERY_DIRECTORY, 'custom')
-    launch_discovery(custom_directory=custom_directory)
-    wait_for_discovery_launch()
+    try:
+        launch_discovery(custom_directory=custom_directory)
+        wait_for_discovery_launch()
 
-    if wait_for_discovery_status():
-        print("Discovery Ready")
+        if wait_for_discovery_status():
+            print("Discovery Ready")
 
-    test_all(TEST_FILE)
+        test_all(TEST_FILE)
+    except Exception as e:
+        shutdown_discovery()
+        raise e
 
     shutdown_discovery()
