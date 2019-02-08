@@ -212,6 +212,13 @@ def test_single_case(test_dict, response_intent_dict):
 def test_all(test_file):
     """
     Runs all defined tests
+    
+    :param test_file: str, path to file with test(s) (tests.txt)
+
+    :return: 
+       for each test, posts transcript to Discovery and compares value(s) of
+         intent and/or entity(ies) in response to expected value(s) in test file
+      prints outcomes to stdout: # of passing tests, character error rate for entities
     """
     tests = load_tests(test_file)
 
@@ -224,26 +231,19 @@ def test_all(test_file):
     total_characters = 0
 
     for test in tests:
-        print("======\nTesting: {}".format(test['test']))
+        print("======\nTest Name: {}".format(test['test']))
         resp = submit_transcript(test['transcript'])
-
-        #print("Response from Discovery: {}".format(resp))
 
         # Check if a valid response was received
         if not is_valid_response(resp):
             fail_test(resp)
 
-        # For now, only keep the first intent:
+        # keep only the most likely hypothesis from Discovery:
         most_likely_intent = resp["intents"][0]
 
         if 'intent' in test:
-            print("Expected Intent: {}".format(test['intent']))
-            print("Observed Intent: {}".format(most_likely_intent['label']))
-
+            print("\n Expected Intent: {} \n Observed Intent: {}\n".format(test['intent'], most_likely_intent['label']))
         if 'intent' in test and test['intent'] != most_likely_intent['label']:
-           #print("foo")
-          #if test['intent'] != most_likely_intent["label"]:
-            print("bad intent")
             failed_tests += 1
             fail_test(resp, message="Observed intent does not match expected intent!", continued=True)
             continue
