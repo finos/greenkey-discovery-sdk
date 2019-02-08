@@ -1,0 +1,14 @@
+test: (1) Inquiry
+transcript: What is your price on green tomatoes?
+intent: inquiry
+
+test: (2) Quote (bid)
+transcript: I'll buy 70 purple carrots for $10 each
+intent: quote
+
+test: (3) Trade
+transcript: Confirming I'll sell you 20 oranges for $20
+intent: trade
+
+test: (4) Correction
+transcript: I have to change my offer. I'll buy 50 red apples for $100
