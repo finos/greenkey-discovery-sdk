@@ -1,8 +1,8 @@
 DISCOVERY_CONFIG = {
-  "GKT_USERNAME": "gkt", #"username",
-  "GKT_SECRETKEY": "5f3d00b5b15884c280a390725a863941a68bfe55", #"password",
+  "GKT_USERNAME": "username",
+  "GKT_SECRETKEY": "password",
   "GKT_API": "https://scribeapi.greenkeytech.com/",
-  "NUMBER_OF_INTENTS": "1",
+  "NUMBER_OF_INTENTS": "4",
   "MAX_NUMBER_OF_ENTITIES": "3",
   "STRUCTURE_CONFIDENCE_THRESHOLD": "0.8",
   "SORT_ENTITIES_BY_LENGTH": "True"
