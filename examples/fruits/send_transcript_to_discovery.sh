@@ -1,9 +1,5 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
-PORT=1234
-
-TRANSCRIPT="I'll buy 70 purple carrots for \$10 each"
-
-curl -X POST http://localhost:$PORT/discover  \
+curl -X POST http://localhost:1234/discover  \
      -H "Content-Type: application/json" \
-     -d '{"transcript": $TRANSCRIPT}'
+     -d '{"transcript": "I will buy 70 purple carrots for $10 each"}'

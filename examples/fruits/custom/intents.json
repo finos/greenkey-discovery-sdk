@@ -10,10 +10,10 @@
      ]
    },
    {
-     "label": "quotes",
+     "label": "quote",
      "domain": "food",
      "examples": [
-       "I'll buy 23 carrots for $5",
+       "I will buy 23 carrots for $5",
        "Can you sell 100 green tomatoes for $50?",
        "I can sell up to 100 oranges for $2 each"
     ]
