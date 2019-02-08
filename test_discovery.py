@@ -160,21 +160,20 @@ def test_single_entity(entities, test_name, test_value):
     return (0, 0)
 
 
-def test_single_case(test):
+def test_single_case(test, intent):
     """
     Run a single test case
     Return the number of errors
     """
-    print("======\nTesting: {}".format(test['test']))
-    resp = submit_transcript(test['transcript'])
+    #print("======\nTesting: {}".format(test['test']))
+    #resp = submit_transcript(test['transcript'])
 
     # Check if a valid response was received
-    if not is_valid_response(resp):
-        fail_test(resp)
+    #if not is_valid_response(resp):
+    #    fail_test(resp)
 
     # For now, only keep the first intent:
-    intent = resp["intents"][0]
-
+    #intent = resp["intents"][0]
     # Get all values of entities
     entities = {x["label"]: x["matches"][0][0]["value"] for x in intent["entities"]}
 
@@ -219,7 +218,26 @@ def test_all(test_file):
     total_characters = 0
 
     for test in tests:
-        (failure, errors, char_errors, characters) = test_single_case(test)
+        print("======\nTesting: {}".format(test['test']))
+        resp = submit_transcript(test['transcript'])
+
+        # Check if a valid response was received
+        if not is_valid_response(resp):
+            fail_test(resp)
+
+        # For now, only keep the first intent:
+        most_likely_intent = resp["intents"][0]
+
+        if 'intent' in test and test['intent'] != most_likely_intent['label']:
+           #print("foo")
+          #if test['intent'] != most_likely_intent["label"]:
+            print("bad intent")
+            failed_tests += 1
+            fail_test(resp, message="Observed intent does not match expected intent!", continued=True)
+            continue
+
+        # check entities if 'intent' not present in test or it is present and correect
+        (failure, errors, char_errors, characters) = test_single_case(test, most_likely_intent)
         failed_tests += failure
         total_errors += errors
         total_char_errors += char_errors
