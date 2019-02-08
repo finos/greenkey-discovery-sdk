@@ -183,7 +183,7 @@ def test_single_case(test, intent):
 
     # Loop through all entity tests
     for test_name, test_value in test.items():
-        if test_name in ['test', 'transcript']:
+        if test_name in ['test', 'transcript', 'intent']:
             continue
 
         (errors, char_errors) = test_single_entity(entities, test_name, test_value)
@@ -221,12 +221,18 @@ def test_all(test_file):
         print("======\nTesting: {}".format(test['test']))
         resp = submit_transcript(test['transcript'])
 
+        #print("Response from Discovery: {}".format(resp))
+
         # Check if a valid response was received
         if not is_valid_response(resp):
             fail_test(resp)
 
         # For now, only keep the first intent:
         most_likely_intent = resp["intents"][0]
+
+        if 'intent' in test:
+            print("Expected Intent: {}".format(test['intent']))
+            print("Observed Intent: {}".format(most_likely_intent['label']))
 
         if 'intent' in test and test['intent'] != most_likely_intent['label']:
            #print("foo")
