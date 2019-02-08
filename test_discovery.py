@@ -140,58 +140,64 @@ def is_valid_response(resp):
     return True
 
 
-def test_single_entity(entities, test_name, test_value):
+def test_single_entity(expected_entity_label, expected_entity_value, entities):
     """
-    Tests a single entity within a test case
+    :param expected_entity_label: str;
+    :param: expected_entity_value: str
+    :param observed_entities: dict, all entity label-value pairs returned by Discovery
+    :return: 2-Tuple; number of errors found, number of char different btw observed & expected
     """
 
-    if test_name not in entities.keys():
-        fail_test({}, "Entity not found: {}".format(test_name), continued=True)
-        return (1, len(test_value))
+    if expected_entity_label not in entities:
+        fail_test({}, "Entity not found: {}".format(expected_entity_label), continued=True)
+        return (1, len(expected_entity_value))
 
-    if entities[test_name] != test_value:
+    if entities[expected_entity_label] != expected_entity_value:
         fail_test(
             {},
-            "Value incorrect: ({}) expected {} != {}".format(test_name, test_value, entities[test_name]),
+            "Value incorrect: ({}) expected {} != {}".format(expected_entity_label, expected_entity_value, entities[expected_entity_label]),
             continued=True
         )
-        return (1, editdistance.eval(test_value, entities[test_name]))
+        return (1, editdistance.eval(expected_entity_value, entities[expected_entity_label]))
 
     return (0, 0)
 
 
-def test_single_case(test, intent):
+def test_single_case(test_dict, response_intent_dict):
     """
-    Run a single test case
-    Return the number of errors
+    Compares expected entities (from test) with discovery returned entities
+
+    :param test_dict: dict;
+        key: str; name of entity
+        value: str; first occurrence of entity in transcript
+
+    :param response_intent_dict: dict, single intent from Discovery response
+
+    :return: 4-Tuple
+       first: 0 if pass tests, 1 if fails
+       total_errors: number of entities in test whose observed value (str) differs from expected
+       total_char_errors: sum of number of char that differ between observed and expected values for each entity
+       characters:
     """
-    #print("======\nTesting: {}".format(test['test']))
-    #resp = submit_transcript(test['transcript'])
-
-    # Check if a valid response was received
-    #if not is_valid_response(resp):
-    #    fail_test(resp)
-
-    # For now, only keep the first intent:
-    #intent = resp["intents"][0]
-    # Get all values of entities
-    entities = {x["label"]: x["matches"][0][0]["value"] for x in intent["entities"]}
+    # retrieves all entity labels and corresponding values from Discovery -> repsonse['intents']['entities']
+    entities = {ent["label"]: ent["matches"][0][0]["value"] for ent in response_intent_dict["entities"]}
 
     total_errors = 0
     total_char_errors = 0
     characters = 0
 
     # Loop through all entity tests
-    for test_name, test_value in test.items():
-        if test_name in ['test', 'transcript', 'intent']:
+    for expected_entity_label, expected_entity_value in test_dict.items():
+        if expected_entity_label in ['test', 'transcript', 'intent']:
             continue
 
-        (errors, char_errors) = test_single_entity(entities, test_name, test_value)
+        (errors, char_errors) = test_single_entity(expected_entity_label, expected_entity_value, entities)
         total_errors += errors
         total_char_errors += char_errors
-        characters += len(test_value)
-
-    extra_entities = {x: entities[x] for x in entities.keys() if x not in test.keys()}
+        characters += len(expected_entity_value)
+    
+    # entities List[Dict]; entity label/value(str) pairs in Response from Discovery not in test
+    extra_entities = {ent: entities[ent] for ent in entities if ent not in test_dict}
 
     if len(extra_entities) > 0:
         print("Extra entities: {}\n".format(extra_entities))
