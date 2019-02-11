@@ -4,3 +4,4 @@ dico/
 *.egg-info/
 .pytest_cache/
 .eggs/
+.idea/
