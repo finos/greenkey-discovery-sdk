@@ -22,7 +22,7 @@ import editdistance
 
 from importlib import import_module
 from discovery_sdk_utils import find_errors_in_entity_definition
-from discovery_config import DISCOVERY_PORT, DISCOVERY_HOST
+from discovery_config import DISCOVERY_PORT, DISCOVERY_HOST, DISCOVERY_SHUTDOWN_SECRET
 from launch_discovery import launch_discovery
 
 """
@@ -74,7 +74,7 @@ def shutdown_discovery():
     Shuts down the Discovery engine Docker container
     """
     try:
-        requests.get("http://{}:{}/shutdown".format(DISCOVERY_HOST, DISCOVERY_PORT))
+        requests.get("http://{}:{}/shutdown?secret_key={}".format(DISCOVERY_HOST, DISCOVERY_PORT, DISCOVERY_SHUTDOWN_SECRET))
     # Windows throws a ConnectionError for a request to shutdown a server which makes it looks like the test fail
     except requests.exceptions.ConnectionError:
         pass
