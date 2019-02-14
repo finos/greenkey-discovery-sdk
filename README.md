@@ -23,15 +23,13 @@ please consider joining FINOS.
 
 # Overview
 1. [Quickstart](#1.-quickstart)
-    - TODO: update description. Add intro to NLP terms (intent, entity) to finos discovery SDK, just before 'build your own interpreter' section
+    - Step through the 'room_dialing' interpreter example.
 
 2. [Customization and Discovery CLI](#2.-customization-and-discovery-cli)
-    - TODO: update description. Add intro to NLP terms (intent, entity) to finos discovery SDK, just before 'build your own interpreter' section
-    - discovery docs
-3. [Advanced Examples and Documentation](#3.-advanced-examples-and-documentation)
-    - TODO: update description. interpreter
-    - voice input
+    - Customize your own interpreter and use the Discovery CLI to set up a project or entities.
 
+3. [Advanced Examples and Documentation](#3.-advanced-examples-and-documentation)
+    - Transcribing voice audio files with SVTServer and using the Discovery engine.
 
 
 # 1. Quickstart
@@ -151,12 +149,8 @@ You should end up with a structure like the following for the `test_discovery.py
 ```
 
 
-
-
-
 # 2. Customization and Discovery CLI
-TODO: update description. details, Add intro to NLP terms (intent, entity) to finos discovery SDK, just before 'build your own interpreter' section
-Creating a custom project can be done by following the structure of an existing example. The Discovery CLI tool can also be used to guide you through creating your own project and custom definition files for use with Discovery.
+Creating a custom project can be done by following the structure of an existing example found in `examples/`. The Discovery CLI tool can also be used to guide you through creating your own project and custom definition files for use with Discovery.
 
 
 ## Installation
@@ -183,7 +177,6 @@ $ gk_cli
  ❯ Create a new entity
    Create a new project
 ```
-
 
 
 # 3. Advanced Examples and Documentation
@@ -229,22 +222,13 @@ curl -X POST http://localhost:1234/discover  \
 Our full [documentation](https://transcription.greenkeytech.com/discovery-1890af/) provides many more in-depth descriptions, explanations and examples.
 
 
+# Contributing
 
-
-
-
-
-
-================================ **previous README** code
-
-
-## Contributing
-
-### Code of Conduct
+## Code of Conduct
 
 Please make sure you read and observe our [Code of Conduct].
 
-### Pull Request process
+## Pull Request process
 
 1. Fork it
 1. Create your feature branch (`git checkout -b feature/fooBar`)
@@ -252,11 +236,11 @@ Please make sure you read and observe our [Code of Conduct].
 1. Push to the branch (`git push origin feature/fooBar`)
 1. Create a new Pull Request
 
-## Versioning
+# Versioning
 
 We use [SemVer] for versioning.  For the versions available, see the [tags on this repository].
 
-## Authors
+# Authors
 
 Original authors:
 
@@ -266,7 +250,7 @@ Original authors:
 
 For all others who have aided this project, please see the [list of contributors].
 
-## License
+# License
 
 This project is licensed under the Apache 2.0 License - see the [LICENSE.md](LICENSE.md) file for details.
 
