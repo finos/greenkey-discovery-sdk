@@ -189,7 +189,7 @@ For development purposes, it's easiest to first record a few audio files using y
 
 Then, run these files through SVTServer [following our documentation](https://transcription.greenkeytech.com/svt-e0286da/) with the SVTServer parameter `WORD_CONFUSIONS="True"` enabled when you launch the container.
 
-For example, you can launch a single job container with the following command for a file called `test.wav`. Be sure to set `$GKT_USERNAME` and `$GKT_SECRETKEY`
+For example, you can launch a single job container with the following command for a file called `test.wav`. Be sure to set `$USERNAME` and `$SECRETKEY`
 
 ```bash
 docker run \
@@ -212,10 +212,13 @@ These JSON files can be used directly with the Discovery Engine as [shown here](
 
 For the 'room_dialing' example, `send_transcript_to_discovery.sh` contains:
 ```bash
-curl -X POST http://localhost:1234/discover  \
+curl -X POST http://localhost:1234/discover \
      -H "Content-Type: application/json" \
      -d '{"transcript": "dial one eight"}'
 ```
+
+
+<!-- here is a comment -->
 
 
 ## Full Documentation
