@@ -1,0 +1,40 @@
+{
+ "intents": [
+   {
+    "label": "inquiry",
+      "domain": "food",
+      "examples": [
+        "What is your price on green apples?",
+        "How many oranges can I get for $23?",
+        "What's going on with red tomatoes today?"
+     ]
+   },
+   {
+     "label": "quote",
+     "domain": "food",
+     "examples": [
+       "I will buy 23 carrots for $5",
+       "Can you sell 100 green tomatoes for $50?",
+       "I can sell up to 100 oranges for $2 each"
+    ]
+   },
+   {
+     "label": "trade",
+     "domain": "food",
+     "examples": [
+       "I'll take your 100 oranges for $2 each",
+       "We're done on the 100 green tomatoes for $50",
+       "Confirming that I'll sell you 23 carrots for '$5'"
+    ]
+   },
+   {
+     "label": "correction",
+     "domain": "food",
+     "examples": [
+       "Scratch that, I can sell 90 oranges for $2 each",
+       "Correction, my price on 23 carrots is $6",
+       "I need to revise my offer. I'll give you $40 for 60 oranges"
+    ]
+  }
+ ]
+}
