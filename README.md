@@ -21,30 +21,27 @@ If you are a company interested in the evolution of
 open standards, interoperability, and innovation in the financial services sector,
 please consider joining FINOS.
 
-### Repository overview
-Each example contains a folder labeled `custom`, which in turn contains the needed `intents.json` and `entities` folder for launching Discovery.
-Some examples contain a `schemas.json` file to customize the return json.
-They also contain example scripts to see how the particular configuration will detect entities.
+# Overview
+1. [Quickstart](#1.-quickstart)
+    - TODO: update description. Add intro to NLP terms (intent, entity) to finos discovery SDK, just before 'build your own interpreter' section
 
-```
-examples
-└── room_number
-    ├── custom
-    │   ├── entities
-    │   │   └── room_number.py
-    │   └── intents.json
-    ├── send_transcript_to_discovery.sh
-    └── tests.txt
-```
+2. [Customization and Discovery CLI](#2.-customization-and-discovery-cli)
+    - TODO: update description. Add intro to NLP terms (intent, entity) to finos discovery SDK, just before 'build your own interpreter' section
+    - discovery docs
+3. [Advanced Examples and Documentation](#3.-advanced-examples-and-documentation)
+    - TODO: update description. interpreter
+    - voice input
 
-Feel free to use these examples as a jumping off point in your own code.
 
-### Requirements
+
+# 1. Quickstart
+
+## Requirements
 
 - Docker 17+ (or Discovery Binaries)
 - Python 3 with `pip`
 
-### Dependencies
+## Dependencies
 
 To ensure your dependencies install correctly, we recommend that you upgrade your `setuptools` before proceeding further.
 
@@ -59,38 +56,82 @@ This will provide you with the packages needed to run the `test_discovery.py` sc
 python3 -m pip install -r requirements.txt
 ```
 
-### Obtaining credentials
+## Obtaining Credentials
 [Contact Us](mailto:transcription@greenkeytech.com) to obtain credentials to obtain the Discovery Docker container from our repository and launch the Discovery engine.
 
-### Building your own interpreter
 
-1) Copy an example folder or make one with the same structure
-
-2) Create test cases in tests.txt with the following format:
-
-```
-test: {name of test}
-transcript: {transcript you want to parse}
-{entity 1}: {value}
-{entity 2}: {value}
-...
-```
-
-Ensure that your *transcripts are unformatted text with numbers spelled out*. Formatting will be taken care of by your entities, and the output from transcription engines will be unformatted.
-
-3) Create your `intents.json` file to specify examples that resemble your tests.
-
-4) Create any additional entities required by your intents.
-
-5) Edit the credentials and other configuration parameters in `discovery_config.py`
-
-6) Run `python3 test_discovery.py folder_name` to test your interpreter. For example:
+## Discovery Examples Directory Overview
+Each discovery example contains a folder named `custom`, which in turn contains the required two items for launching Discovery: `intents.json` and the `entities` folder.
+Some examples contain a `schemas.json` file to customize the return json.
+They also contain example scripts to see how the particular configuration will detect entities.
 
 ```
-python test_discovery.py examples/directions
+examples
+└── room_dialing
+    ├── custom
+    │   ├── entities
+    │   │   └── digit.py
+    │   └── intents.json
+    ├── send_transcript_to_discovery.sh
+    └── tests.txt
 ```
 
-### Using Compiled Binary Files
+
+## The 'room_dialing' Interpreter Example
+
+1) Test cases for the room dialing example are in `examples/room_dialing/tests.txt` 
+    ```
+    test: dial number
+    transcript: please dial eight
+    digit: 8
+
+    test: dial number
+    transcript: press one eight
+    digit: 1
+    ...
+    ```
+
+    tests.txt follows the following format:
+    ```
+    test: {name of test}
+    transcript: {transcript you want to parse}
+    {entity 1}: {value}
+    {entity 2}: {value}
+    ...
+    ```
+    Ensure that your *transcripts are unformatted text with numbers spelled out*. Formatting will be taken care of by your entities, and the output from transcription engines will be unformatted.
+
+2) The intents file, `examples/room_dialing/custom/intents.json`, contains examples that match the tests
+    ```
+    {
+      "intents": [
+        {
+          "label": "room_dialing",
+          "entities": ["digit"]
+        }
+      ]
+    }
+    ```
+    where "room_dialing" is the name of the intent and the entities value ("digit") match entities in `tests.txt`.
+
+3) Edit your `discovery_config.py` to specify your "GKT_USERNAME" and "GKT_SECRETKEY" credentials.
+
+4) Execute `python3 test_discovery.py examples/room_dialing` to test the room_dialing example.
+    ```
+    Discovery Ready
+    ======
+    Testing: dial number
+    Test passed
+    
+    ======
+    Testing: dial number
+    Test passed
+    
+    
+    (2 / 2) tests passed in 0s with 0 errors, Character error rate: 0.00%
+    ```
+
+## Using Compiled Binary Files
 
 If you are unable to use Docker, contact us to obtain compiled binary files for Discovery.
 Simply place the binaries directory into the SDK directory before running `test_discovery.py`.
@@ -103,19 +144,30 @@ You should end up with a structure like the following for the `test_discovery.py
 └───greenkey-discovery-sdk
     └───discovery_binaries_windows_10_64bit__python37_64bit
     └───examples
-    └───gkcli
+    └───gk_cli
     │   discovery_config.py
     │   README.md
     │   test_discovery.py
 ```
 
-### Using the Discovery CLI tool
 
-The Discovery CLI is a tool that can aid in the creation of custom definition files for use with Discovery.
 
-#### Usage
 
-Once the CLI is installed, it is invoked with the command `gk_cli`.
+
+# 2. Customization and Discovery CLI
+TODO: update description. details, Add intro to NLP terms (intent, entity) to finos discovery SDK, just before 'build your own interpreter' section
+Creating a custom project can be done by following the structure of an existing example. The Discovery CLI tool can also be used to guide you through creating your own project and custom definition files for use with Discovery.
+
+
+## Installation
+The CLI tool should already be installed from previously executing 
+```sh
+python3 -m pip install -r requirements.txt
+```
+
+## Usage
+
+Once the CLI tool is installed, it is invoked with the command `gk_cli`.
 
 You can use the tool to either create a new project, or to create an individual entity.
 
@@ -123,7 +175,7 @@ Before invoking the tool, navigate to the directory where you wish to create you
 - If you wish to create an entire project, navigate to the directory that will hold your `custom` folder. If you have not made your `custom` folder, the CLI will guide you through the creation of one.
 - If you have already created a project, and simply wish to create an entity, navigate to your `entities` folder before running the tool. If you have not made your `entities` folder in your project, the CLI will guide you through the creation of one.
 
-If the installation was successful, you should see the following output after invoking the tool~
+If `gk_cli` is installed, you should see the following output after invoking the tool:
 ```sh
 $ gk_cli
 
@@ -132,7 +184,11 @@ $ gk_cli
    Create a new project
 ```
 
-### Testing with real audio
+
+
+# 3. Advanced Examples and Documentation
+
+## Testing with Real Audio
 
 Scribe Discovery can work off of output from our delayed file transcription engine (SVTServer) or our real-time dictation engine (SQCServer).
 
@@ -140,7 +196,7 @@ For development purposes, it's easiest to first record a few audio files using y
 
 Then, run these files through SVTServer [following our documentation](https://transcription.greenkeytech.com/svt-e0286da/) with the SVTServer parameter `WORD_CONFUSIONS="True"` enabled when you launch the container.
 
-For example, you can launch a single job container with the following command for a file called `test.wav`. Be sure to set `$USERNAME` and `$SECRETKEY`
+For example, you can launch a single job container with the following command for a file called `test.wav`. Be sure to set `$GKT_USERNAME` and `$GKT_SECRETKEY`
 
 ```bash
 docker run \
@@ -157,9 +213,30 @@ docker run \
     docker.greenkeytech.com/svtserver
 ```
 
-Once complete, you should have a JSON file for each audio file you generated. This JSON file contains the **word confusion lattice** that Discovery searches for your target phrases.
+Once complete, you should have a JSON file for each audio file you generated (e.g. `test.json` for `test.wav`). This JSON file contains the **word confusion lattice** that Discovery searches for your target phrases.
 
-These JSON files can be used directly with the Discovery Engine as [shown here](https://transcription.greenkeytech.com/discovery-1890af/deploying/#getting-started). The example directories provide guidance on how to send these files to discovery in the `send_transcript_to_discovery.sh`.
+These JSON files can be used directly with the Discovery Engine as [shown here](https://transcription.greenkeytech.com/discovery-1890af/deploying/#6-run-the-scribe-discovery-engine-on-a-file). The example directories provide guidance on how to send these files to discovery in the `send_transcript_to_discovery.sh` script.
+
+For the 'room_dialing' example, `send_transcript_to_discovery.sh` contains:
+```bash
+curl -X POST http://localhost:1234/discover  \
+     -H "Content-Type: application/json" \
+     -d '{"transcript": "dial one eight"}'
+```
+
+
+## Full Documentation
+Our full [documentation](https://transcription.greenkeytech.com/discovery-1890af/) provides many more in-depth descriptions, explanations and examples.
+
+
+
+
+
+
+
+
+================================ **previous README** code
+
 
 ## Contributing
 
