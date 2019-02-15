@@ -160,30 +160,48 @@ def test_single_entity(entities, test_name, test_value):
     return (0, 0)
 
 
-def test_single_case(test):
+def test_single_case(test_dict, response_intent_dict):      #most_likely_intent
     """
     Run a single test case
     Return the number of errors
+
+    Compares expected entities (from test) with discovery returned entities
+
+    :param test_dict: dict;
+        key: str; name of entity
+        value: str; first occurrence of entity in transcript
+
+    :param response_intent_dict: dict, single intent from Discovery response
+
+    :return: 4-Tuple
+       first: 0 if tests pass, 1 if tests fails
+
+       total_errors: number of entities in test whose observed value (str) differs from expected
+
+       total_char_errors: sum of number of char that differ between observed and expected values for each entity
+
+       characters:
     """
-    print("======\nTesting: {}".format(test['test']))
-    resp = submit_transcript(test['transcript'])
-
-    # Check if a valid response was received
-    if not is_valid_response(resp):
-        fail_test(resp)
-
-    # For now, only keep the first intent:
-    intent = resp["intents"][0]
+    # print("======\nTesting: {}".format(test['test']))
+    # resp = submit_transcript(test['transcript'])
+    #
+    # # Check if a valid response was received
+    # if not is_valid_response(resp):
+    #     fail_test(resp)
+    #
+    # # For now, only keep the first intent:
+    # intent = resp["intents"][0]
 
     # Get all values of entities
-    entities = {x["label"]: x["matches"][0][0]["value"] for x in intent["entities"]}
+    entities = {ent["label"]: ent["matches"][0][0]["value"]
+                for ent in response_intent_dict["entities"]}
 
     total_errors = 0
     total_char_errors = 0
     characters = 0
 
     # Loop through all entity tests
-    for test_name, test_value in test.items():
+    for test_name, test_value in test_dict.items():
         if test_name in ['test', 'transcript']:
             continue
 
@@ -192,7 +210,7 @@ def test_single_case(test):
         total_char_errors += char_errors
         characters += len(test_value)
 
-    extra_entities = {x: entities[x] for x in entities.keys() if x not in test.keys()}
+    extra_entities = {x: entities[x] for x in entities.keys() if x not in test_dict.keys()}
 
     if len(extra_entities) > 0:
         print("Extra entities: {}\n".format(extra_entities))
@@ -219,14 +237,37 @@ def test_all(test_file):
     total_characters = 0
 
     for test in tests:
-        (failure, errors, char_errors, characters) = test_single_case(test)
+        print("======\nTesting: {}".format(test['test']))
+
+        resp = submit_transcript(test['transcript'])
+
+        # Check if a valid response was received
+        if not is_valid_response(resp):
+            fail_test(resp)
+
+        # keep only the most likely hypothesis from Discovery
+        most_likely_intent = resp["intents"][0]
+
+        # if 'intent' in test:
+        #     print(
+        #         "\n Expected Intent: {} \n Observed Intent: {}\n".format(
+        #             test['intent'], most_likely_intent['label']
+        #         )
+        #     )
+
+        if 'intent' in test and test['intent'] != most_likely_intent['label']:
+            failed_tests += 1
+            fail_test(resp, message="Observed intent does not match expected intent!", continued=True)
+            continue
+
+        (failure, errors, char_errors, characters) = test_single_case(test, most_likely_intent)
         failed_tests += failure
         total_errors += errors
         total_char_errors += char_errors
         total_characters += characters
 
     print(
-        "\n---\n({} / {}) tests passed in {}s with {} errors, Character error rate: {}%".format(
+        "\n---\n({} / {}) tests passed in {}s with {} entity character errors, Entity character error rate: {}%".format(
             total_tests - failed_tests, total_tests,
             int(time.time()) - t1, total_errors,
             "{:.2f}".format((total_char_errors / total_characters) * 100)
