@@ -202,7 +202,7 @@ def test_single_case(test_dict, response_intent_dict):      #most_likely_intent
 
     # Loop through all entity tests
     for test_name, test_value in test_dict.items():
-        if test_name in ['test', 'transcript']:
+        if test_name in ['test', 'transcript', 'intent']:
             continue
 
         (errors, char_errors) = test_single_entity(entities, test_name, test_value)
