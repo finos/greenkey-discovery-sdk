@@ -218,9 +218,6 @@ curl -X POST http://localhost:1234/discover \
 ```
 
 
-<!-- here is a comment -->
-
-
 ## Full Documentation
 Our full [documentation](https://transcription.greenkeytech.com/discovery-1890af/) provides many more in-depth descriptions, explanations and examples.
 
