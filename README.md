@@ -13,7 +13,7 @@ You can use your Discovery interpreter to power several voice-driven workflows s
 
 - Searching transcribed files for key phrases with [Scribe's File Transcription](https://transcription.greenkeytech.com/svt-e0286da/)
 
-Read more about Discovery on our [blog](https://www.greenkeytech.com/news/2018/07/17/greenkey-scribe-discovery-skills/) or [checkout the full documentation](https://transcription.greenkeytech.com/discovery-1890af/)
+Read more about Discovery on our [blog](https://greenkeytech.com/greenkey-scribe-discovery-skills/) or [checkout the full documentation](https://transcription.greenkeytech.com/discovery-1890af/)
 
 The GreenKey Discovery SDK
 is hosted by the [Voice Program] of the Fintech Open Source Foundation ([FINOS]).
