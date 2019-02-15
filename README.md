@@ -22,13 +22,13 @@ open standards, interoperability, and innovation in the financial services secto
 please consider joining FINOS.
 
 # Overview
-1. [Quickstart](#1.-quickstart)
+1. [Quickstart](#1-quickstart)
     - Step through the 'room_dialing' interpreter example.
 
-2. [Customization and Discovery CLI](#2.-customization-and-discovery-cli)
+2. [Customization and Discovery CLI](#2-customization-and-discovery-cli)
     - Customize your own interpreter and use the Discovery CLI to set up a project or entities.
 
-3. [Advanced Examples and Documentation](#3.-advanced-examples-and-documentation)
+3. [Advanced Examples and Documentation](#3-advanced-examples-and-documentation)
     - Transcribing voice audio files with SVTServer and using the Discovery engine.
 
 
