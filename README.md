@@ -89,7 +89,7 @@ examples
     ...
     ```
 
-    tests.txt follows the following format:
+    `tests.txt` follows the following format:
     ```
     test: {name of test}
     transcript: {transcript you want to parse}
