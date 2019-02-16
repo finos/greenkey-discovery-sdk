@@ -1,5 +1,3 @@
-entities:
-	# should we always include both `entities` and `intents`?
 intents:
   - inquiry:
     - examples:

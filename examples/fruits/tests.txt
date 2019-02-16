@@ -12,3 +12,4 @@ intent: trade
 
 test: Correction
 transcript: I have to change my offer. I'll buy 50 red apples for $100
+intent: correction
