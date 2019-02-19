@@ -55,7 +55,7 @@ python3 -m pip install -r requirements.txt
 ```
 
 ## Obtaining Credentials
-[Contact Us](mailto:transcription@greenkeytech.com) to obtain credentials to obtain the Discovery Docker container from our repository and launch the Discovery engine.
+[Contact us](mailto:transcription@greenkeytech.com) to obtain credentials to obtain the Discovery Docker container from our repository and launch the Discovery engine.
 
 
 ## Discovery Examples Directory Overview
@@ -150,7 +150,7 @@ You should end up with a structure like the following for the `test_discovery.py
 
 
 # 2. Customization and Discovery CLI
-Creating a custom project can be done by following the structure of an existing example found in `examples/`. The Discovery CLI tool can also be used to guide you through creating your own project and custom definition files for use with Discovery.
+Creating a custom project can be done by following the structure of an existing example found in the `examples` folder. The Discovery CLI tool can also be used to guide you through creating your own project and custom definition files for use with Discovery.
 
 
 ## Installation
@@ -183,7 +183,7 @@ $ gk_cli
 
 ## Testing with Real Audio
 
-Scribe Discovery can work off of output from our delayed file transcription engine (SVTServer) or our real-time dictation engine (SQCServer).
+Scribe Discovery can use output from our delayed file transcription engine (SVTServer) or our real-time dictation engine (SQCServer).
 
 For development purposes, it's easiest to first record a few audio files using your favorite software wherein you or someone else is speaking the voice commands or key phrases you want to interpret.
 
@@ -206,9 +206,9 @@ docker run \
     docker.greenkeytech.com/svtserver
 ```
 
-Once complete, you should have a JSON file for each audio file you generated (e.g. `test.json` for `test.wav`). This JSON file contains the **word confusion lattice** that Discovery searches for your target phrases.
+Once complete, you should have a JSON file for each audio file you generated (e.g. `test.json` for `test.wav`). Each JSON file contains a **word confusion lattice** that Discovery searches for your target phrases.
 
-These JSON files can be used directly with the Discovery Engine as [shown here](https://transcription.greenkeytech.com/discovery-1890af/deploying/#6-run-the-scribe-discovery-engine-on-a-file). The example directories provide guidance on how to send these files to discovery in the `send_transcript_to_discovery.sh` script.
+These JSON files can be used directly with the Discovery Engine as [shown here](https://transcription.greenkeytech.com/discovery-1890af/deploying/#6-run-the-scribe-discovery-engine-on-a-file). The example directories provide guidance on how to send these files to Discovery in the `send_transcript_to_discovery.sh` script.
 
 For the 'room_dialing' example, `send_transcript_to_discovery.sh` contains:
 ```bash
@@ -231,10 +231,10 @@ Please make sure you read and observe our [Code of Conduct].
 ## Pull Request process
 
 1. Fork it
-1. Create your feature branch (`git checkout -b feature/fooBar`)
-1. Commit your changes (`git commit -am 'Add some fooBar'`)
-1. Push to the branch (`git push origin feature/fooBar`)
-1. Create a new Pull Request
+2. Create your feature branch (`git checkout -b feature/fooBar`)
+3. Commit your changes (`git commit -am 'Add some fooBar'`)
+4. Push to the branch (`git push origin feature/fooBar`)
+5. Create a new Pull Request
 
 # Versioning
 
