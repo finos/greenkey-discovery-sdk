@@ -18,7 +18,7 @@ def test_validate_entities(capsys):
         except AttributeError:
             output = captured[0] # works for python 3.4 and older versions of pytest
         print(output)
-        assert output.endswith("No errors!\n")
+        assert "No errors!" in output[-20:]
 
 def test_validate_json(capsys):
     """Check that the json validator runs. Also serves to check that all built in
