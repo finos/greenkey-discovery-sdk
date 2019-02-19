@@ -12,14 +12,17 @@ def test_validate_entities(capsys):
     for directory_to_test in directories_to_test:
         discovery_directory = 'examples/{}'.format(directory_to_test)
 
-        validate_entities(discovery_directory)
-        captured = capsys.readouterr()
-        try:
-            output = captured.out # works for newer python versions of pytest
-        except AttributeError:
-            output = captured[0] # works for python 3.4 and older versions of pytest
-        print(output)
-        assert "No errors!" in output[-20:]
+        example_has_entities_directory_that_is_not_empty = os.path.isdir('{}/custom/entities'.format(discovery_directory)) and  \
+                                                           os.listdir('{}/custom/entities'.format(discovery_directory))
+        if example_has_entities_directory_that_is_not_empty:
+            validate_entities(discovery_directory)
+            captured = capsys.readouterr()
+            try:
+                output = captured.out # works for newer python versions of pytest
+            except AttributeError:
+                output = captured[0] # works for python 3.4 and older versions of pytest
+            print(output)
+            assert "No errors!" in output[-20:]
 
 
 def test_validate_json():
