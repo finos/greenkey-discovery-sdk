@@ -271,13 +271,21 @@ def test_all(test_file):
         total_char_errors += char_errors
         total_characters += characters
 
-    print(
-        "\n---\n({} / {}) tests passed in {}s with {} entity character errors, Entity character error rate: {}%".format(
-            total_tests - failed_tests, total_tests,
-            int(time.time()) - t1, total_errors,
-            "{:.2f}".format((total_char_errors / total_characters) * 100)
+    if total_characters:
+        print(
+            "\n---\n({} / {}) tests passed in {}s with {} entity character errors, Entity character error rate: {}%".format(
+                total_tests - failed_tests, total_tests,
+                int(time.time()) - t1, total_errors,
+                "{:.2f}".format((total_char_errors / total_characters) * 100)
+            )
         )
-    )
+    else:
+        print(
+             "\n---\n({} / {}) tests passed in {}s".format(
+                total_tests - failed_tests, total_tests,
+                int(time.time()) - t1
+            )
+        )
     if total_errors > 0:
         shutdown_discovery()
         exit(1)
