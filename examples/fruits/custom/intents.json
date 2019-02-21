@@ -4,36 +4,38 @@
     "label": "inquiry",
       "domain": "food",
       "examples": [
-        "What is your price on green apples?",
-        "How many oranges can I get for $23?",
-        "What's going on with red tomatoes today?"
+        "what is your price on green apples",
+        "how many oranges can i get for twenty three dollars",
+        "what's going on with red tomatoes today"
      ]
    },
    {
      "label": "quote",
      "domain": "food",
      "examples": [
-       "I will buy 23 carrots for $5",
-       "Can you sell 100 green tomatoes for $50?",
-       "I can sell up to 100 oranges for $2 each"
+       "I will buy twenty three carrots for five dollars",
+       "can you sell one hundred green tomatoes for fifty dollars",
+       "I can sell up to one hundred oranges for two dollars each"
     ]
    },
    {
      "label": "trade",
      "domain": "food",
      "examples": [
-       "I'll take your 100 oranges for $2 each",
-       "We're done on the 100 green tomatoes for $50",
-       "Confirming that I'll sell you 23 carrots for '$5'"
+       "I'll take your one hundred oranges for two dollars each",
+       "confirming I will sell you twenty carrots for twenty five dollars",
+       "we're done on the one hundred green tomatoes for fifty dollars",
+       "confirming that I'll sell you twenty three carrots for five dollars"
     ]
    },
    {
      "label": "correction",
      "domain": "food",
      "examples": [
-       "Scratch that, I can sell 90 oranges for $2 each",
-       "Correction, my price on 23 carrots is $6",
-       "I need to revise my offer. I'll give you $40 for 60 oranges"
+       "scratch that I can sell ninety oranges for two dollars each",
+       "I have to change the offer I'll buy fifteen red apples for fifty dollars",
+       "correction my price on twenty three carrots is six dollars",
+       "I need to revise my offer. I'll give you forty for sixty oranges"
     ]
   }
  ]
