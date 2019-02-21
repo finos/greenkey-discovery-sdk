@@ -1,0 +1,30 @@
+# This Yaml assembles a list of entities that are seen in the 'old interpreters'  (projects/discovery/src/interpreters_old/)
+# entities for one interpreter can be used from another (egbs may use entities from credit)
+
+## entities Yaml for class_credit.py
+entities:
+  - product_keywords_credit:
+    - file: "product_keywords_credit.txt"
+  - upcoming_year_word:
+    - "%num{4,4}"
+    - validation: "is_upcoming_year.py"
+  
+  - term:
+    - "%product_keywords_credit %upcoming_year_word"
+
+  - bare:
+   - "%product_keywords_credit"  (should the 'bare' quoteStructure be an entity? it is the same as the "%product_keywords_credit" entity)
+
+  TODO: specify the number of digits that are allowed/found for the credit class (e.g. only 4 digits and up to 4 decimals).
+  - float_num
+    - "%num{0,3} %spot %num{1,3}"
+
+  - rate:
+    - "%product_keywords_credit (%float_num|%num{2,3})"
+
+  - rate_and_term:
+    - "%rate %upcoming_year_word"
+
+
+
+## next interpreter: egbs
