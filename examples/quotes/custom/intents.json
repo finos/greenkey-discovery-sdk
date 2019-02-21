@@ -3,15 +3,15 @@
         {
             "label": "quotes",
             "examples": [
-                "data/quotes.txt",
-                "data/new_quotes.txt"
+                "data/quotes_90.txt",
+                "data/new_quotes_90.txt"
             ]
         },
         {
             "label": "None",
             "examples": [
-                "data/not_quotes.txt",
-                "data/new_not_quotes.txt"
+                "data/not_quotes_90.txt",
+                "data/new_not_quotes_90.txt"
             ]
         }
     ]
