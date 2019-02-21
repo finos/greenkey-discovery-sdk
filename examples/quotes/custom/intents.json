@@ -1,0 +1,18 @@
+{
+    "intents": [
+        {
+            "label": "quotes",
+            "examples": [
+                "data/quotes.txt",
+                "data/new_quotes.txt"
+            ]
+        },
+        {
+            "label": "None",
+            "examples": [
+                "data/not_quotes.txt",
+                "data/new_not_quotes.txt"
+            ]
+        }
+    ]
+}
