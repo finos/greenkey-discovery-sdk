@@ -48,7 +48,7 @@ def shuffle_and_split_data(infile, size=0.9):
 def write_file(outfile, data):
   with open(outfile, 'w+', encoding='utf-8') as f:
     for line in data:
-      f.write(line)
+      f.write(line + "\n")
 
 
 def main(directory=None, size=0.9, ext='.txt'):
