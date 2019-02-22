@@ -6,36 +6,36 @@
       "examples": [
         "what is your price on green apples",
         "how many oranges can i get for twenty three dollars",
-        "what's going on with red tomatoes today"
+        "what is going on with red tomatoes today"
      ]
    },
    {
      "label": "quote",
      "domain": "food",
      "examples": [
-       "I will buy twenty three carrots for five dollars",
+       "i will buy twenty three carrots for five dollars",
        "can you sell one hundred green tomatoes for fifty dollars",
-       "I can sell up to one hundred oranges for two dollars each"
+       "i can sell up to one hundred oranges for two dollars each"
     ]
    },
    {
      "label": "trade",
      "domain": "food",
      "examples": [
-       "I'll take your one hundred oranges for two dollars each",
-       "confirming I will sell you twenty carrots for twenty five dollars",
-       "we're done on the one hundred green tomatoes for fifty dollars",
-       "confirming that I'll sell you twenty three carrots for five dollars"
+       "i will take your one hundred oranges for two dollars each",
+       "confirming i will sell you twenty carrots for twenty five dollars",
+       "we are done on the one hundred green tomatoes for fifty dollars",
+       "confirming that i will sell you twenty three carrots for five dollars"
     ]
    },
    {
      "label": "correction",
      "domain": "food",
      "examples": [
-       "scratch that I can sell ninety oranges for two dollars each",
-       "I have to change the offer I'll buy fifteen red apples for fifty dollars",
+       "scratch that i can sell ninety oranges for two dollars each",
+       "i have to change the offer i will buy fifteen red apples for fifty dollars",
        "correction my price on twenty three carrots is six dollars",
-       "I need to revise my offer. I'll give you forty for sixty oranges"
+       "i need to revise my offer i will give you forty for sixty oranges"
     ]
   }
  ]
