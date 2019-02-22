@@ -1,0 +1,15 @@
+[[source]]
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[dev-packages]
+
+[packages]
+"41f79e7" = {file = "file:///drive/amy/greenkey-discovery-sdk-private/discovery_sdk_utils"}
+"8b1fd45" = {file = "file:///drive/amy/greenkey-discovery-sdk-private/gk_cli"}
+requests = "*"
+editdistance = "*"
+
+[requires]
+python_version = "3.5"
