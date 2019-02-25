@@ -1,40 +1,22 @@
 # This Yaml assembles a list of entities that are seen in the 'old interpreters'  (projects/discovery/src/interpreters_old/)
 # entities for one interpreter can be used from another (egbs may use entities from credit)
 
-## entities Yaml for class_credit.py
+## entities for class_credit.py
 entities:
-  - product_keywords_credit:
-    - file: "product_keywords_credit.txt"
-  - upcoming_year_word:
+  - credit_product:
+    - file: "credit_products.txt"
+
+  - upcoming_year:
     - "%num{1,6}"
-    - validation: "is_upcoming_year.py"
+    - validation: "is_upcoming_year.py"  ( datetime.now.year() < x < datetime.now.year() + 10 , x is an int)
   
-  - term:
-    - "%product_keywords_credit %upcoming_year_word"
-
-  - bare:
-    - "%product_keywords_credit"  (should the 'bare' quoteStructure be an entity? it is the same as the "%product_keywords_credit" entity)
-
-  - one_digit:
-    - "%num"
-    - validation: "is_1digit_number.py" (-1<x<10) include zero?
-  - two_digit:
-    - "%num{1,2}"
-    - validation: "is_2digit_number.py" (9<x<100)
-  - three_digit:
-    - "%num{1,5}"
-    - validation: "is_3digit_number.py" (99<x<1000)
-
-  TODO: specify the number of digits that are allowed/found for the credit class (e.g. only 4 digits and up to 4 decimals).
-  - float_num:
-    - "(%one_digit|%two_digit|%three_digit)? %spot (%one_digit|%two_digit|%three_digit)"  (can i choose between 2+ entities?)
-
-  - rate:
-    - "%product_keywords_credit (%float_num|%two_digit|%three_digit)"
-
-  - rate_and_term:
-    - "%rate %upcoming_year_word"
-
+  - coupon:
+    - "%num{1,6}? %spot? %num{1,6}?"
+    - validation: "lambda x: 0 < x < 20"  ( x is a float, not a string )
+  
+  - credit_instrument:
+    - "%credit_product %coupon? %upcoming_year?"
+    
 
 
 ## next interpreter: egbs
