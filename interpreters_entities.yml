@@ -19,4 +19,89 @@ entities:
     
 
 
-## next interpreter: egbs
+## entities for class_egbs.py
+## Matthew: we do not want to use fuzzy matching anymore in discovery. the confusion matrix is used instead
+## class_egbs.py contained 13 QuoteStructures (2 of those are hedges)
+
+##products = ["schatz", "bkos", "dbrs", "bunds"]
+
+- entities:
+  - egbs_product:
+    - file: "egbs_products.txt"
+
+  - month:
+    - file: "months.txt"
+  
+  - verse:
+    - verse
+    - versus
+
+  - outright_1:
+    - "%egbs_product %month %num{1,3}"
+    - spacing_threshold: 2
+
+  - outright_2:
+    - "%month %num{1,3} %egbs_product?"
+    - spacing_threshold: 2
+
+  (- outright_combined:
+    - "%egbs_product? %month %num{1,3} %egbs_product?")
+
+  - outright_3:  # this can also be covered by "%outright_combined" if egbs_product contains 'buxel'
+    - "%num{1,3} (buxel | bunds)"      # the keyword possibilities here are 'buxel','bunds'
+
+  - oble_keywords: # keywords intersect between oble and oble_oble_switch
+    - oble
+    - series
+    
+  - oble_keywords2:
+    - "%oble_keywords"
+    - to
+    - against
+
+  - oble:
+    - "%oble_keywords2 %num{1,4} (%oble_keywords2 %month)?"   # can i use parentheses to group an object that's two entities?
+
+  - oble_oble_switch:
+    - "%num{1,4} %verse %oble_keywords? %num{1,4}"
+
+  - oble_bund_switch:
+    - "%num{1,4} %verse %month %num{1,4}"  # can be combined with above, oble_oble_switch
+  
+  - bund_switch_1:
+    - "%month %num{1,3} %verse? %month %num{1,3}"
+
+  - bund_switch_2:
+    - "%num{1,5} %verse? bunds? %num{1,3}"
+    - spacing_threshold: 2
+  
+  - bund_switch_3:
+    - "%month %num{1,3}? %month %num{1,3}?"
+    - spacing_threshold: 2
+
+  - bund_switch_4:
+    - "%num{1,3} %num{1,3} (spread | switch | bunds)"
+  
+  - bund_switch_5:
+    - "%month %num{1,3} %verse %num{1,3}"
+
+  - cross:
+    - cross
+    - crossing
+    - again
+    - against
+
+  - float_num:
+    - "%num{1,5}? %spot %num{1,5}"
+
+  - egbs_hedge:
+    - "%float_num %cross"
+    - "%cross %float_num"  # can this be combined with above. e.g.  %float? %cross %float?.  in this case a " %cross " pattern match is possible
+    - spacing_threshold: 2
+
+  - egbs_quantity:
+    - "mill %num{1,5}"
+    - "(small | scrap)"  # can this be combined with preceding entry?  e.g.  " mill? (small | scrap)? %num{1,5}? "  in this case an empty pattern match is possible
+    - spacing_threshold: 2
+
+  
