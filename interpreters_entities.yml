@@ -87,3 +87,76 @@ entities:
     - spacing_threshold: 2
 
   
+
+## entities for class_gilts.py
+## list of used 'keywords'
+## products = {
+##   "fy": "fy",
+##   "s/s": "s/s",
+##   "mpc": "MPC",
+##   "sonia": "sonia",
+##   "fra": "fra",
+##   "imm": "IMM",
+##   "fra": "Fra",
+##   "6s3s": "6x3",
+## }
+## 
+## quantities = {'m': ' mill', 'y': ' yard'}
+## 
+## plural_numbers = [
+##   'ones', 'twos', 'threes', 'fours', 'fives', 'sixes', 'sevens', 'eights', 'nines', 'tens', 'elevens', 'twelves',
+##   'thirteens', 'fourteens', 'fifteens', 'sixteens', 'seventeens', 'eighteens', 'nineteens', 'twenties', 'thirties',
+##   'forties', 'fourties', 'fifties', "sixties", "seventies", "eighties", "nineties", 'bonds', 'bond', 'twentys',
+##   'thirtys', 'fortys', 'fiftys'
+## ]
+## 
+## ordinals = [
+##   "first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth", "ninth", "tenth", "eleventh", "twelfth"
+## ]
+## ordinals += [i + "teenth" for i in ["thir", "four", "fif", "six", "seven", "eigh", "nine"]]
+## ordinals += [
+##   "twent" + i for i in
+##   ["ieth", "y first", "y second", "y third", "y fourth", "y fifth", "y sixth", "y seventh", "y eighth", "y ninth"]
+## ]
+## ordinals += ["thirt" + i for i in ["ieth", "y first"]]
+## ordinals = ordinals[::-1]
+
+- entities:
+  - gilts_product:
+    - "gilts_products.txt"
+  
+  - year: # year word
+    - year
+    - years
+  
+  - plural_num:
+    - "plural_numbers.txt"
+
+  - ordinal:
+    - "ordinals.txt"
+
+  - future:
+    - "$num{1,6} $year $gilts_product"
+  
+  - halves:
+    - "$upcoming_year_word match"
+
+  - mpc_gilts:
+    - "$time_month $gilts_product"
+
+  - semi_from_immmy:
+    - "$num{1,6} $year $gilts_product $time_month $gilts_product"
+    - spacing_threshold: 2
+
+  - spreads_and_fly:
+    - "$plural_num $plural_num ($ordinal $gilts_product $verse $plural_num $plural_num $gilts_product $gilts_product)?"
+    - "$plural_num $plural_num $plural_num"
+
+  #- basis:  # this is the same pattern as 'future', since fuzzy matching was removed.
+  #  - "$num{1,6} $year $gilts_product"   # how does the get_product keyword arg work for QuoteStructure ?
+
+  - gilts_quantity:
+    - "$num{1,6} (mill | yard)"
+
+
+## TODO: replace '$' with '@'
