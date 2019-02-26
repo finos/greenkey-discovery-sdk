@@ -28,27 +28,18 @@ entities:
 - entities:
   - egbs_product:
     - file: "egbs_products.txt"
-
-  - month:
-    - file: "months.txt"
-  
-  - verse:
+ 
+  - verse:  # should be moved to a place with defs, primitives
     - verse
     - versus
 
-  - outright_1:
-    - "%egbs_product %month %num{1,3}"
+  - outright:
+    - "%egbs_product %time_month %num{1,3}"
+    - "%time_month %num{1,3} %egbs_product?"
     - spacing_threshold: 2
 
-  - outright_2:
-    - "%month %num{1,3} %egbs_product?"
-    - spacing_threshold: 2
-
-  (- outright_combined:
-    - "%egbs_product? %month %num{1,3} %egbs_product?")
-
-  - outright_3:  # this can also be covered by "%outright_combined" if egbs_product contains 'buxel'
-    - "%num{1,3} (buxel | bunds)"      # the keyword possibilities here are 'buxel','bunds'
+  - outright_2:  # this can also be covered by "%outright_combined" if egbs_product contains 'buxel'
+    - "%num{1,3} (buxel | bunds)"
 
   - oble_keywords: # keywords intersect between oble and oble_oble_switch
     - oble
@@ -60,48 +51,39 @@ entities:
     - against
 
   - oble:
-    - "%oble_keywords2 %num{1,4} (%oble_keywords2 %month)?"   # can i use parentheses to group an object that's two entities?
-
-  - oble_oble_switch:
+    - "%oble_keywords2 %num{1,4} (%oble_keywords2 %time_month)?"   # can I use parentheses to group an object that's two entities?
     - "%num{1,4} %verse %oble_keywords? %num{1,4}"
-
-  - oble_bund_switch:
-    - "%num{1,4} %verse %month %num{1,4}"  # can be combined with above, oble_oble_switch
+    - "%num{1,4} %verse %time_month %num{1,4}"  
   
   - bund_switch_1:
-    - "%month %num{1,3} %verse? %month %num{1,3}"
+    - "%time_month %num{1,3} %verse? %time_month %num{1,3}"
 
   - bund_switch_2:
     - "%num{1,5} %verse? bunds? %num{1,3}"
+    - "%time_month %num{1,3}? %time_month %num{1,3}?"
     - spacing_threshold: 2
-  
+
   - bund_switch_3:
-    - "%month %num{1,3}? %month %num{1,3}?"
-    - spacing_threshold: 2
-
-  - bund_switch_4:
     - "%num{1,3} %num{1,3} (spread | switch | bunds)"
-  
-  - bund_switch_5:
-    - "%month %num{1,3} %verse %num{1,3}"
+    - "%time_month %num{1,3} %verse %num{1,3}"
 
-  - cross:
+  - cross:  # should be moved to a place with defs, primitives
     - cross
     - crossing
     - again
     - against
 
-  - float_num:
+  - float_num:  # a primitive, # should be moved to a place with defs, primitives
     - "%num{1,5}? %spot %num{1,5}"
 
-  - egbs_hedge:
+  - egbs_hedge:  # may be more a general pattern, not just an 'egbs_hedge'
     - "%float_num %cross"
-    - "%cross %float_num"  # can this be combined with above. e.g.  %float? %cross %float?.  in this case a " %cross " pattern match is possible
+    - "%cross %float_num"  # keeping this separate from above pattern. This is more precise for possible matches, and will be advantageous for testing later.
     - spacing_threshold: 2
 
-  - egbs_quantity:
-    - "mill %num{1,5}"
-    - "(small | scrap)"  # can this be combined with preceding entry?  e.g.  " mill? (small | scrap)? %num{1,5}? "  in this case an empty pattern match is possible
+  - egbs_quantity:  # may be more a general pattern, not just an 'egbs_quantity'
+    - "%num{1,5} mill"
+    - "(small | scrap)"  # keeping this separate from above pattern. This may be advantageous for testing later
     - spacing_threshold: 2
 
   
