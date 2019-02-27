@@ -33,12 +33,12 @@ entities:
     - verse
     - versus
 
-  - outright:
+  - outright_egbs:
     - "%egbs_product %time_month %num{1,3}"
     - "%time_month %num{1,3} %egbs_product?"
     - spacing_threshold: 2
 
-  - outright_2:  # this can also be covered by "%outright_combined" if egbs_product contains 'buxel'
+  - outright_egbs_2:  # this can also be covered by "%outright_combined" if egbs_product contains 'buxel'
     - "%num{1,3} (buxel | bunds)"
 
   - oble_keywords: # keywords intersect between oble and oble_oble_switch
@@ -123,17 +123,17 @@ entities:
 
 - entities:
   - gilts_product:
-    - "gilts_products.txt"
+    - file: "gilts_products.txt"
   
   - year: # year word
     - year
     - years
   
   - plural_num:
-    - "plural_numbers.txt"
+    - file: "plural_numbers.txt"
 
   - ordinal:
-    - "ordinals.txt"
+    - file: "ordinals.txt"
 
   - future:
     - "$num{1,6} $year $gilts_product"
@@ -159,4 +159,11 @@ entities:
     - "$num{1,6} (mill | yard)"
 
 
+## entities for class_swaps.py
+
+
+
+
 ## TODO: replace '$' with '@'
+
+
