@@ -160,6 +160,145 @@ entities:
 
 
 ## entities for class_swaps.py
+## products = {
+##   "semi": "s/b 3s",
+##   "money": "am 3s",
+##   "fed": "ff",
+##   "feds": "ff",
+##   'e': 'E/E',
+##   'lchcme': 'LCH/CME',
+##   'ex:': 'EUREX',
+##   'l.c.h.': 'LCH/EUREX',
+##   'eurex': "EUREX"
+## }
+## futures = ['bund', 'bobl']
+## quantities = {'m': ' million', 'y': ' billion', 'l': ' lots'}
+## 
+## swap currencies. currencies.keys() are used
+## i.currencies = {
+##   "dollar": "USD",
+##   "greenback": "USD",
+##   "euro": "EUR",
+##   "euros": "EUR",
+##   "yen": "JPY",
+##   "sterling": "GBP",
+##   "swissy": "CHF",
+##   "swiss": "CHF",
+##   "aussie": "AUD",
+##   "kiwi": "NZD",
+##   "cad": "CAD",
+##   "loonie": "CAD",
+##   "stocky": "SEK",
+##   "stockee": "SEK",
+##   "nokee": "NOK",
+##   "check": "CZK",
+##   "huf": "HUF",
+##   "shekel": "ILS",
+##   "rand": "ZAR",
+##   "lira": "TRY",
+##   "turkey": "TRY",
+##   "poll": "PLN",
+##   "rub": "RUB",
+##   "ruble": "RUB",
+##   "cable": "GBP",
+##   "mexican": "MXN",
+##   "tiie": "CLP",  # Chilean Peso - maybe TIIE
+##   "peso": "CLP",  # Chilean Peso
+##   "reel": "BRL",  # Brazilian Real - maybe DI
+##   "real": "BRL",  # Brazilian Real
+##   "di": "BRL",  # Brazilian Real
+## }
+
+entities:
+  - swap_product:
+    - file: "swap_products.txt" 
+  
+  - currency:  # this can be named 'swap_currency', if it is used only by the swap interpreter
+    - file: "currencies.txt"
+
+  - multiple_of_ten:
+    - file: "two_digit_10s.txt"  # 10, 20, 30 ..., 90
+
+  - outright_swap_month:
+    - "$multiple_of_ten? $plural_num"
+    - "$num{1,6} $year"
+    - "$num{1,6} month"
+
+  - gadget:
+    - "($multiple_of_ten | $plural_num)? $plural_num gadget"
+    - "($num{1,6} $year){1,2} gadget"
+
+  - outright_plus_eonia:
+    - "$num{1,6} $year eonia"
+
+  - future_spread:  # the keywords below should be corrected. 'uxl' should be 'buxl' ? (buxl, bobl, schatz, bund)
+    - "($year | uxl | bl | shatz | bunds | spread | eonia) (uxl | bl | shatz | bunds | spread | eonia)"  # an entity def is possible for these keywords
+
+  - future_spread_box:  # the keywords below should be corrected. 'uxl' should be 'buxl' ? (buxl, bobl, schatz, bund)
+    - "(uxl | bl | atz | und | spread | eonia | box) (uxl | bl | atz | und | spread | eonia | box) (uxl | bl | atz | und | spread | eonia | box)"
+
+  - future_combined:  # the above two can be combined
+    - "($year | uxl | bl | shatz | bunds | spread | eonia | box) (uxl | bl | shatz | bunds | spread | eonia | box) (uxl | bl | shatz | bunds | spread | eonia | box)?"
+
+  - swap_basis_product:
+    - file: "products_swap_basis.txt"  # ['c.m.e.','l.c.h.','ex:']+["3s1s", "6s3s", "6s1s", "6s12s"]
+
+  - basis_swap:
+    - "$swap_basis_product $num{1,6} $year ($num{1,6} $year)?"
+    - "$swap_basis_product $multiple_of_ten ($plural_num | $num{1,6} $year)"
+    - "$swap_basis_product ($plural_num | $num{1,6})? $plural_num"
+
+  - basis_reverse_swap:
+    - "(($num{1,6} $year) | $multiple_of_ten)? $num{1,6} $year $swap_basis_product"
+    - "($multiple_of_ten | $plural_num | $num{1,6} ) $plural_num $swap_basis_product"
+
+  - curve:
+    - "($num{1,6} | $plural_num | $plural_num $multiple_of_ten | $multiple_of_ten $plural_num $multiple_of_ten?)? $plural_num $swap_product"
+
+  - fly:
+    - "($multiple_of_ten $plural_num $multiple_of_ten $plural_num | $plural_num $multiple_of_ten $plural_num | $multiple_of_ten $plural_num $plural_num | $plural_num $plural_num) $multiple_of_ten $plural_num"
+    - "($multiple_of_ten $plural_num $multiple_of_ten | $multiple_of_ten $plural_num | $plural_num $multiple_of_ten | $num{1,6} $multiple_of_ten) $plural_num $plural_num"
+    - "($num{1,6} $num{1,6} | not($num{1,6}) $plural_num $num{1,6} | $num{1,6} $plural_num | $plural_num $plural_num) $plural_num"
+    - "$num{1,6} $year $num{1,6} $year $num{1,6} $year"
+
+  - rate_swap:
+    - "$num{1,6} $year $swap_product"
+
+  - switch:
+    - "$plural_num $verse? $plural_num"
+    - "$multiple_of_ten $plural_num $verse? $multiple_of_ten $plural_num"
+    - "$num{1,6} $year $verse? $num{1,6} $year"
+
+  - swap_switch_product:
+    - "3s1s"
+    - "6s3s"
+    - "fed"
+
+  - switch_2:
+    - "($swap_switch_product $num{1,6} $year | $num{1,6} $year $swap_switch_product ) $verse ($num{1,6} $year $swap_switch_product | $swap_switch_product $num{1,6} $year)"
+
+  - spread:
+    - "$multiple_of_ten? $plural_num"
+    - "$num{1,6} $year (bunds | bobl)?"
+  
+  - time_word: # requires that time_week, time_year, time_day are defined in our set of 'base' entities
+    - "($time_week | $time_month | $time_year | $time_day)"
+
+  - ois:
+    - "$num{1,6} $time_word oes"
+
+  - swap_quantity:
+    - "$num{1,6} (mill | yard | lot)"
+    - "(small | scrap | tiny)"
+    - spacing_threshold: 2
+  
+  - swap_forward:
+    - "($num{1,6} $time_word | $plural_num | $num{1,6}) forward"
+
+  - swap_hedge:
+    - "$float_num (bund | bobl)? $cross"
+    - "$cross (bund | bobl)? $float_num"
+    - spacing_threshold: 2
 
 
 
