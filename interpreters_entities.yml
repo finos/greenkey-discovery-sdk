@@ -302,6 +302,49 @@ entities:
 
 
 
+## entities for class_swaptions.py
+## products = {"euro": "EUR", "euros": "EUR", "sterling": "GBP"}
+## quantities = {'m': ' million', 'y': ' billion'}
+
+entities:
+  - percent_num:
+    - "($num{1,6} | $float_num) percent"
+
+  - swaption_product:
+    - euro
+    - euros
+    - sterling
+
+  - outright_atm:
+    - "$swaption_product $num{1,6} $time_word $num{1,6} $time_word"
+  
+  - dated_skew:  # to correct: list of 'receiv:, payer:' .
+    - "($swaption_product | receive | payer) $num{1,6} $time_month $num{1,3} $num{1,6} $time_word ($float_num | ($num{1,12})) (receive | payer)"
+  
+  - skew: 
+    - "($swaption_product | receive | payer) $num{1,6} $time_word $num{1,6} $time_word ($num{1,12}) (receive | payer)"
+
+  - skew_collar_strangle:
+    - "($swaption_product | wide | collar | strangle) $num{1,6} $time_word $num{1,6} $time_word $num{1,6} ($swaption_product | wide | collar | strangle) ($swaption_product | wide | collar | strangle)"
+
+  - skew_spread:  # to correct: 'ats', 'receive', 'pay' keywords
+    - "($swaption_product | ats | receive | pay) $num{1,6} $time_word $num{1,6} $time_word (ats | receive | pay) $verse $num{1,6} (ats | receive | pay)"
+
+  - skew_spread_3:
+    - "$swaption_product $num{1,6} $time_word $num{1,6} $time_word $verse $num{1,6} $time_word $num{1,6} $time_word"
+  
+  - skew_spread_2:
+    - "($swaption_product | receive | ratio | payer | to) $num{1,6} $time_word $num{1,6} $time_word $num{1,12} (receive | ratio | payer) $verse $num{1,12} (receive | ratio | payer) ($num{1,6} ($swaption_product | receive | ratio | payer | to)? $num{1,6} (receive | ratio | payer))?"
+
+  - swaption_hedge:
+    - "$verse ($num{1,12} | $float_num)"
+
+  - swaption_quantity:
+    - "(mill | yard | in | delta) ($percent_num | $float_num ($percent_num | $num{1,6}) )"
+    - "(mill | yard | in | delta) $num{1,10} (mill | yard | in | delta)?"
+    - "$num{1,6} (mill | yard | in | delta)"
+    - spacing_threshold: 2
+
 
 ## TODO: replace '$' with '@'
 
