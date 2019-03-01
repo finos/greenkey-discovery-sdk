@@ -346,6 +346,56 @@ entities:
     - spacing_threshold: 2
 
 
+    
+## entities for class_fxforwards.py
+
+## products = {
+##   "dollar": "USD",
+##   "greenback": "USD",
+##   "euro": "EUR",
+##   "euros": "EUR",
+##   "yen": "JPY",
+##   "sterling": "GBP",
+##   "swissy": "CHF",
+##   "aussie": "AUD",
+##   "kiwi": "NZD",
+##   "cad": "CAD",
+##   "loonie": "CAD",
+##   "stocky": "SEK",
+##   "stockee": "SEK",
+##   "nokee": "NOK",
+##   "check": "CZK",
+##   "huf": "HUF",
+##   "shekel": "ILS",
+##   "rand": "ZAR",
+##   "lira": "TRY",
+##   "turkey": "TRY",
+##   "poll": "PLN",
+##   "rub": "RUB",
+##   "ruble": "RUB",
+##   "cable": "GBP"
+## }
+## 
+## quantities = {'m': ' million', 'y': ' billion'}
+
+
+entities:
+  - fxforwards_product:
+    - file: "fxforwards_products.txt"
+
+  - fxforward:
+    - "$num{1,6} ($year | month | week) $fxforwards_product $fxforwards_product?"
+    - "$plural_num? $plural_num $fxforwards_product $fxforwards_product"
+    - "overnight (overnight | $fxforwards_product) (overnight | $fxforwards_product)?"
+    - "((tom | spot) | next) ((tom | spot) | next) ((tom | spot) | next | $fxforwards_product) ((tom | spot) | next | $fxforwards_product)?"
+    - "spot week (spot | $fxforwards_product) (spot | $fxforwards_product)?"
+
+  - fxforward_quantity:
+    - "(mill | yard | in) $num{1,6} ((mill | yard | in) | $num{1,6})?"
+    - "((mill | yard | in) | $num{1,6}) (mill | yard | in)"
+
+
+
 ## TODO: replace '$' with '@'
 
 
