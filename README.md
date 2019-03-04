@@ -48,7 +48,7 @@ python3 -m pip install --upgrade setuptools
 ```
 
 Now you are ready to install the required dependencies with `pip`.
-This will provide you with the packages needed to run the `test_discovery.py` script, as well as the Discovery CLI.
+This will provide you with the packages needed to run the `test_discovery.py` script (see the 'room_dialing' example below), as well as the Discovery CLI.
 
 ```sh
 python3 -m pip install -r requirements.txt
@@ -114,7 +114,7 @@ examples
 
 3) Edit your `discovery_config.py` to specify your "GKT_USERNAME" and "GKT_SECRETKEY" credentials.
 
-4) Execute `python3 test_discovery.py examples/room_dialing` to test the room_dialing example.
+4) Execute `python3 test_discovery.py examples/room_dialing` to test the room_dialing example. `test_discovery.py` launches a Discovery Docker container and performs testing on `tests.txt`, where tests pass if they have defined entities present in the most likely found intent.
     ```
     Discovery Ready
     ======
