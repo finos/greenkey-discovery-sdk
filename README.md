@@ -28,7 +28,7 @@ They also contain example scripts to see how the particular configuration will d
 
 ```
 examples
-└── room_number
+└── calling_room
     ├── custom
     │   ├── entities
     │   │   └── room_number.py
