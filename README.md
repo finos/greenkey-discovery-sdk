@@ -1,4 +1,4 @@
-# GreenKey Scribe Discovery SDK
+# GreenKey Scribe Discovery SDK [![Build Status](https://travis-ci.org/finos-voice/greenkey-discovery-sdk.svg?branch=master)](https://travis-ci.org/finos-voice/greenkey-discovery-sdk)
 > Speed up business workflows through creating custom 'voice skills' and text interpreters
 
 <img src="https://github.com/finos-voice/greenkey-voice-sdk/raw/master/logo/greenkey-logo.png" width="100" />
@@ -25,6 +25,17 @@ please consider joining FINOS.
 Each example contains a folder labeled `custom`, which in turn contains the needed `intents.json` and `entities` folder for launching Discovery.
 Some examples contain a `schemas.json` file to customize the return json.
 They also contain example scripts to see how the particular configuration will detect entities.
+
+```
+examples
+└── room_number
+    ├── custom
+    │   ├── entities
+    │   │   └── room_number.py
+    │   └── intents.json
+    ├── send_transcript_to_discovery.sh
+    └── tests.txt
+```
 
 Feel free to use these examples as a jumping off point in your own code.
 
