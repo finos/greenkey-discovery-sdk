@@ -1,7 +1,7 @@
 {
   "intents": [
     {
-      "label": "room_number",
+      "label": "calling_room",
       "entities": ["room_number"]
     }
   ]
