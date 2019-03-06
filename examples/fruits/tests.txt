@@ -1,15 +1,15 @@
 test: Inquiry
-transcript: What is your price on green tomatoes?
+transcript: what is your price on green tomatoes
 intent: inquiry
 
 test: Quote
-transcript: I'll buy 70 purple carrots for $10 each
+transcript: I'll buy seventy purple carrots for ten dollars each
 intent: quote
 
 test: Trade
-transcript: Confirming I'll sell you 20 oranges for $20
+transcript: confirming I'll sell you twenty oranges for twenty dollars
 intent: trade
 
 test: Correction
-transcript: I have to change my offer. I'll buy 50 red apples for $100
+transcript: I have to change my offer. I'll buy fifty red apples for one hundred dollars
 intent: correction
