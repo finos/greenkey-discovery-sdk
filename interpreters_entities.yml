@@ -7,15 +7,15 @@ entities:
     - file: "credit_products.txt"
 
   - upcoming_year:
-    - "%num{1,6}"
+    - "$num{1,6}"
     - validation: "is_upcoming_year.py"  ( datetime.now.year() < x < datetime.now.year() + 10 , x is an int)
   
   - coupon:
-    - "%num{1,6}? %spot? %num{1,6}?"
+    - "$num{1,6}? $spot? $num{1,6}?"
     - validation: "lambda x: 0 < x < 20"  ( x is a float, not a string )
   
   - credit_instrument:
-    - "%credit_product %coupon? %upcoming_year?"
+    - "$credit_product $coupon? $upcoming_year?"
     
 
 
@@ -34,38 +34,38 @@ entities:
     - versus
 
   - outright_egbs:
-    - "%egbs_product %time_month %num{1,3}"
-    - "%time_month %num{1,3} %egbs_product?"
+    - "$egbs_product $time_month $num{1,3}"
+    - "$time_month $num{1,3} $egbs_product?"
     - spacing_threshold: 2
 
-  - outright_egbs_2:  # this can also be covered by "%outright_combined" if egbs_product contains 'buxel'
-    - "%num{1,3} (buxel | bunds)"
+  - outright_egbs_2:  # this can also be covered by "$outright_combined" if egbs_product contains 'buxel'
+    - "$num{1,3} (buxel | bunds)"
 
   - oble_keywords: # keywords intersect between oble and oble_oble_switch
     - oble
     - series
     
   - oble_keywords2:
-    - "%oble_keywords"
+    - "$oble_keywords"
     - to
     - against
 
   - oble:
-    - "%oble_keywords2 %num{1,4} (%oble_keywords2 %time_month)?"   # can I use parentheses to group an object that's two entities?
-    - "%num{1,4} %verse %oble_keywords? %num{1,4}"
-    - "%num{1,4} %verse %time_month %num{1,4}"  
+    - "$oble_keywords2 $num{1,4} ($oble_keywords2 $time_month)?"   # can I use parentheses to group an object that's two entities?
+    - "$num{1,4} $verse $oble_keywords? $num{1,4}"
+    - "$num{1,4} $verse $time_month $num{1,4}"  
   
   - bund_switch_1:
-    - "%time_month %num{1,3} %verse? %time_month %num{1,3}"
+    - "$time_month $num{1,3} $verse? $time_month $num{1,3}"
 
   - bund_switch_2:
-    - "%num{1,5} %verse? bunds? %num{1,3}"
-    - "%time_month %num{1,3}? %time_month %num{1,3}?"
+    - "$num{1,5} $verse? bunds? $num{1,3}"
+    - "$time_month $num{1,3}? $time_month $num{1,3}?"
     - spacing_threshold: 2
 
   - bund_switch_3:
-    - "%num{1,3} %num{1,3} (spread | switch | bunds)"
-    - "%time_month %num{1,3} %verse %num{1,3}"
+    - "$num{1,3} $num{1,3} (spread | switch | bunds)"
+    - "$time_month $num{1,3} $verse $num{1,3}"
 
   - cross:  # should be moved to a place with defs, primitives
     - cross
@@ -74,15 +74,15 @@ entities:
     - against
 
   - float_num:  # a primitive, # should be moved to a place with defs, primitives
-    - "%num{1,5}? %spot %num{1,5}"
+    - "$num{1,5}? $spot $num{1,5}"
 
   - egbs_hedge:  # may be more a general pattern, not just an 'egbs_hedge'
-    - "%float_num %cross"
-    - "%cross %float_num"  # keeping this separate from above pattern. This is more precise for possible matches, and will be advantageous for testing later.
+    - "$float_num $cross"
+    - "$cross $float_num"  # keeping this separate from above pattern. This is more precise for possible matches, and will be advantageous for testing later.
     - spacing_threshold: 2
 
   - egbs_quantity:  # may be more a general pattern, not just an 'egbs_quantity'
-    - "%num{1,5} mill"
+    - "$num{1,5} mill"
     - "(small | scrap)"  # keeping this separate from above pattern. This may be advantageous for testing later
     - spacing_threshold: 2
 
@@ -434,7 +434,7 @@ entities:
     - file: "fxoptions_products.txt"
 
   - num_all:
-    - $num{1,6} | $plural_num | $ float_num
+    - "$num{1,6} | $plural_num | $ float_num"
     
   - struct_1:
     - "($fxoptions_product | ats) $num{1,6} $time_word $num{1,4} $plural_num?"
@@ -599,7 +599,7 @@ entities:
     - nineteen
   
   - distillates_product2:
-    - ($distillates_product | q one | q two | q three | q four | cal | $sixteen_to_nineteen | bal | fp) 
+    - "($distillates_product | q one | q two | q three | q four | cal | $sixteen_to_nineteen | bal | fp)"
   
   - distillates_noprod:
     - "(fp | bal) $time_month $time_month (($sixteen_to_nineteen | fp | bal) | (fp | bal))"  # to fix:  'fp' and 'bal' words expanded
@@ -616,7 +616,7 @@ entities:
     - "(bal | fp) $time_month $time_month (bal | fp)"
     - "(bal | fp) $time_month $distillates_product2 $distillates_product2?"
     - "(bal | fp) $distillates_product2 $time_month $time_month $distillates_product2?"
-    - "(bal | fp) $distillates_product2 %time_month $distillates_product2?"
+    - "(bal | fp) $distillates_product2 $time_month $distillates_product2?"
     - "(bal | fp) $distillates_product2 $distillates_product2 (bal | fp)?"
     - "$time_month $time_month $distillates_product2 $distillates_product2?"
     - "$time_month $time_month (bal | fp)"
@@ -662,7 +662,6 @@ entities:
 ## }
 
 
-
 entities:
   - softs_product:
     - file: "softs_products.txt"
@@ -701,5 +700,4 @@ entities:
 
 
 ## TODO: replace '$' with '@'
-
 
