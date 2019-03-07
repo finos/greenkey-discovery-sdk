@@ -642,6 +642,61 @@ entities:
     - "(mill | yard | in | kt) $num{1,6} ((mill | yard | in | kt) | $num{1,6})?"
     - "($num{1,6} | (mill | yard | in | kt)) (mill | yard | in | kt)"
 
+
+
+
+## entities for class_softs.py
+
+## products = {
+##   'df': "DF",  # robusta coffee
+##   'kc': "KC",  # ny coffee
+##   'sb': "SB",  # ny sugar
+##   'cc': "CC",  # ny cocoa
+##   'w': "W",  # white sugar
+##   'ql': "QL",  # london cocoa
+##   'ozn': "OZN",  # cme corn
+##   'sm': "SM",  # cme soy bean meal
+##   'so': "SO",  # cme soy bean oil
+##   'sz': "SZ",  # cme soy beans
+##   'obm': "OBM",  # matif wheat
+## }
+
+
+
+entities:
+  - softs_product:
+    - file: "softs_products.txt"
+
+  - call_or_put:
+    - "$softs_product $time_month $upcoming_year_word $num{1,12} (put | call)"
+  
+  - call_or_put_vs:
+    - "$softs_product $time_month $upcoming_year_word $num{1,12} (put | call) $verse $num{1,12} delta $num{1,6}"
+
+  - call_or_put_spread:
+    - "($softs_product | spread) $time_month $upcoming_year_word $num{4,21} (time | x) $num{1,6} (put | call) spread"
+    - "($softs_product | spread) $time_month $upcoming_year_word $num{2,18} (put | call) spread $verse $num{1,12} delta $num{1,6}"
+    - "($softs_product | spread) $month $upcoming_year_word $num{2,21} (put | call) spread"
+
+  - call_or_put_cal:
+    - "($softs_product | calendar) $time_month $upcoming_year_word $time_month $upcoming_year_word $num{1,12} (put | call) calendar"  # to fix:  should 'calend' be 'calendar' ?
+
+  - straddle:
+    - "($softs_product | straddle) $time_month $upcoming_year_word $num{1,12} straddle"
+  
+  - strangle:
+    - "($softs_product | strangle) $time_month $upcoming_year_word $num{2,18} strangle"
+
+  - fence:
+    - "($softs_product | fence | ttc) $time_month $upcoming_year_word $num{2,18} (fence | ttc) (fence | ttc) $verse $num{1,12} delta $num{1,6}"
+
+  - condor:
+    - "($softs_product | condor) $time_month $upcoming_year_word $num{3,24} (put | call)? condor"
+
+  - softs_quantity:  # NOTE this has the same patterns as $fxforward_quantity
+    - "(mill | yard | in) $num{1,6} ((mill | yard | in) | $num{1,6})?"
+    - "((mill | yard | in) | $num{1,6}) (mill | yard | in)"
+
     
 
 
