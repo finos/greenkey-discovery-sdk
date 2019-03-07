@@ -408,7 +408,7 @@ entities:
 ##   "yen": "JPY",
 ##   "sterling": "GBP",
 ##   "swissy": "CHF",
-##   "swiss": "CHF",
+##   "swiss": "CHF",         # not part of products for class_fxforwards.py
 ##   "aussie": "AUD",
 ##   "kiwi": "NZD",
 ##   "cad": "CAD",
@@ -493,6 +493,156 @@ entities:
     - "$num{1,6} (mill | yard | even)"
 
 
+
+
+## entities for class_energy.py
+
+## futures = {'wti': 'CL', 'brent': 'BZ', 'gas': 'NG'}
+## options = {'wti': 'LO', 'brent': 'BZO', 'gas': 'LN'}
+
+entities:
+  - future:
+    - file: "futures.txt"
+  - option:
+    - file: "options.txt"
+
+  - call_put_fly_spread:
+    - "($option | call | put | fly | spread) $time_month $num{1,20} ($option | call | put | fly | spread) ($option | call | put | fly | spread)"
+
+  - strangle_fence_straddle_call_put:
+    - "($option | strangle | straddle | fence | collar | call | put) $time_month $num{1,14} ($option | strangle | straddle | fence | collar | call | put)"
+
+  - strip_spread:
+    - "($future | strip | spread) $time_month $num{1,2} $time_month $num{1,2} ($future | strip | spread)"
+
+  - outright_energy:
+    - "$futures $time_month $num{1,2}"
+
+  - energy_hedge:
+    - "$cross $float_num (delta $num{1,6} | $num{1,6} delta)"
+
+  - energy_quantity:
+    - "quant $num{1,6}"
+
+
+
+
+## entities for class_distillates.py
+
+## products = {
+##   'rbob': "RBOB",
+##   'RBOB': "RBOB",
+##   'ebob': "EBOB",
+##   'EBOB': "EBOB",
+##   'nwe': 'NWE',
+##   'NWE': 'NWE',
+##   'mopj': 'MOPJ',
+##   'MOPJ': 'MOPJ',
+##   'MED': 'MED',
+##   'med': 'MED',
+##   'ron92': 'RON92',
+##   'RON92': 'RON92',
+##   'crack': 'CRACK',  # they sometimes fail to say what product they are trading and just say crack to trade the spread
+##   'CRACK': 'CRACK',
+##   'roll': 'ROLL',
+##   'ROLL': 'ROLL',
+##   "wti": "WTI",
+##   "WTI": "WTI",
+##   "brent": "BRENT",
+##   "BRENT": "BRENT",
+##   "east": "MOPJ",
+##   "naptha": "NAPHTHA",
+##   "naphtha": "NAPHTHA",
+##   "north west": "NWE",
+##   "northwest": "NWE",
+##   "mopj": "MOPJ",
+##   "gas nap": "EBOB  NWE",
+##   "gasnap": "EBOB  NWE",
+##   'r bob': "RBOB",
+##   'e bob': "EBOB",
+##   "ebob crack": "EBOB BRENT",
+##   "arb": "RBOB EBOB",
+##   "mo gas crack": "RON92 BRENT",
+##   "europe crack": "NWE BRENT",
+##   "japanese crack": "MOPJ BRENT",
+##   "mednorth": "MED EBOB",
+##   "eastwest": "MOPJ EBOB",
+##   "east west": "MOPJ EBOB",
+##   "92 crack": "RON92 BRENT",
+##   "nap crack": "NWE BRENT",
+##   "MOPJ crack": "MOPJ BRENT",
+##   "NAPHTHA MOPJ": "MOPJ",
+##   "sing gas": "RON92",
+##   "european NAPTHA": "NAPTHA",
+##   "west": "EBOB",
+##   "north": "EBOB",
+##   "ron": "RON92",
+##   "mo gas 92": "RON92",
+##   "med": "MED",
+##   "mediterranean": "MED",
+##   "texas crude oil": "WTI",
+##   "crude oil": "BRENT",
+##   "crude": "BRENT",
+##   "light": "WTI",
+##   "sweet": "WTI",
+## }
+
+
+entities:
+  - distillates_product:
+    - file: "distillates_products.txt"
+
+  - sixteen_to_nineteen:
+    - sixteen
+    - seventeen
+    - eighteen
+    - nineteen
+  
+  - distillates_product2:
+    - ($distillates_product | q one | q two | q three | q four | cal | $sixteen_to_nineteen | bal | fp) 
+  
+  - distillates_noprod:
+    - "(fp | bal) $time_month $time_month (($sixteen_to_nineteen | fp | bal) | (fp | bal))"  # to fix:  'fp' and 'bal' words expanded
+    - "((fp | bal) | $time_month) $time_month ((fp | bal)| ($sixteen_to_nineteen | fp | bal))"
+    - "(fp | bal) $time_month $time_month?"
+    - "$time_month (fp | bal)"
+    - "$time_month $time_month?"
+    - "$time_month ($sixteen_to_nineteen | fp | bal)"
+  
+  - distillates_hasprod:
+    - "(bal | fp) $distillates_product2 $distillates_product2 $time_month $time_month $distillates_product2?"
+    - "(bal | fp) $distillates_product2 $distillates_product2 $time_month $distillates_product2?"
+    - "(bal | fp) $time_month $time_month $distillates_product2 $distillates_product2?"
+    - "(bal | fp) $time_month $time_month (bal | fp)"
+    - "(bal | fp) $time_month $distillates_product2 $distillates_product2?"
+    - "(bal | fp) $distillates_product2 $time_month $time_month $distillates_product2?"
+    - "(bal | fp) $distillates_product2 %time_month $distillates_product2?"
+    - "(bal | fp) $distillates_product2 $distillates_product2 (bal | fp)?"
+    - "$time_month $time_month $distillates_product2 $distillates_product2?"
+    - "$time_month $time_month (bal | fp)"
+    - "$time_month $distillates_product2 $distillates_product2?"
+    - "$distillates_product2 $distillates_product2 $time_month $time_month $distillates_product2?"
+    - "$distillates_product2 $distillates_product2 $time_month $distillates_product2?"
+    - "$distillates_product2 $time_month $time_month $distillates_product2?"
+    - "$distillates_product2 $time_month $distillates_product2?"
+    - "$distillates_product2 $distillates_product2 $distillates_product2 $distillates_product2?"
+    - "$distillates_product2 $distillates_product2 (bal | fp)?"
+    - "$distillates_product2 (bal | fp)"
+
+  - fly_noprod:
+    - "$time_month $time_month $time_month fly"
+
+  - fly_hasprod:
+    - "$time_month $time_month $time_month $distillates_product fly"
+  
+  - box_hasprod:
+    - "$time_month $time_month $distillates_product $distillates_product box"
+
+  - distillates_quantity:
+    - "(mill | yard | in | kt) $num{1,6} ((mill | yard | in | kt) | $num{1,6})?"
+    - "($num{1,6} | (mill | yard | in | kt)) (mill | yard | in | kt)"
+
+    
 
 
 ## TODO: replace '$' with '@'
