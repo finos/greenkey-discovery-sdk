@@ -1,0 +1,12 @@
+this is a test
+one two three four
+one at two
+march eighteenth
+beware the fifth of march
+testing testing one two three
+this is a test of green keys transcription engine green key can detect quotes and trades that are spoken with in the course of a transcript if i say quote like dec eighteen schatz sixty four and a half offered i should see it populate at the end of this object if i instead say an address like thirteen oh four cherry hill drive i shouldn't see this recognizes a quote
+green key can detect quotes and trades that are spoken with in the course of a transcript if i say quote like dec eighteen schatz sixty four and a half offered i should see it populate at the end of this object if i instead say an address like thirteen oh four cherry hill drive i shouldn't see this recognizes a quote
+this is a test of green keys transcription engine 
+green key can detect quotes and trades that are spoken with in the course of a transcript 
+if i say quote like dec eighteen schatz sixty four and a half offered i should see it populate at the end of this object 
+if i instead say an address like thirteen oh four cherry hill drive i shouldn't see this recognizes a quote
