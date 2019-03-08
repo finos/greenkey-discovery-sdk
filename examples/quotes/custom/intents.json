@@ -1,6 +1,7 @@
 {
     "intents": [
-        {
+        {   
+            "domain": "quote_or_not",
             "label": "quote",
             "examples": [
                 "data/quotes_90.txt",
@@ -8,6 +9,7 @@
             ]
         },
         {
+            "domain": "quote_or_not",
             "label": "none",
             "examples": [
                 "data/not_quotes_90.txt",

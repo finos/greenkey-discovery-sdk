@@ -1,15 +1,27 @@
 [[source]]
-url = "https://pypi.python.org/simple"
+url = 'https://pypi.python.org/simple'
 verify_ssl = true
-name = "pypi"
-
-[dev-packages]
-
-[packages]
-"41f79e7" = {file = "file:///drive/amy/greenkey-discovery-sdk-private/discovery_sdk_utils"}
-"8b1fd45" = {file = "file:///drive/amy/greenkey-discovery-sdk-private/gk_cli"}
-requests = "*"
-editdistance = "*"
+name = 'pypi'
 
 [requires]
-python_version = "3.5"
+python_version = "3"
+
+[packages]
+falcon = "*"
+futures = "*"
+bjoern = "*"
+psutil = "*"
+pybind11 = "*"
+pycrypto = "*"
+requests = "*"
+ujson = {ref = "7d0f4fb7e911120fd09075049233b587936b0a65",git = "git://github.com/esnme/ultrajson.git"}
+Cython = "*"
+falcon-cors = "*"
+falcon-multipart = "*"
+nltk = "*"
+num2words = "*"
+pytest = "*"
+asrtoolkit = {ref = "aee4291d8b89d52dbe355d32a2a939dc8005e69f",git = "git://github.com/finos-voice/greenkey-asrtoolkit.git"}
+numpy = ">=1.16.1"
+
+[dev-packages]
