@@ -77,7 +77,6 @@ def wait_for_discovery_launch():
         exit(1)
 
 
-
 def shutdown_discovery():
     """
     Shuts down the Discovery engine Docker container
@@ -100,7 +99,6 @@ def load_tests(test_file_argument):
     Loads and parses the test file
     """
     test_file = [x.rstrip() for x in open(test_file_argument)]
-
     tests = []
     current_test = {}
     for line in test_file:
@@ -112,10 +110,8 @@ def load_tests(test_file_argument):
             current_test = {key: value}
         elif len(key) > 0:
             current_test[key] = value
-
     if len(current_test.keys()) > 0:
         tests.append(current_test)
-
     return tests
 
 
@@ -306,8 +302,6 @@ def fail_test(resp, message="", continued=False):
 
     if not continued:
         docker_log_and_stop()
-        # subprocess.call("docker logs {docker_name}", shell=True)
-        # subprocess.call("docker stop {docker_name}", shell=True)
         exit(1)
 
 
