@@ -14,9 +14,10 @@ import subprocess
 import sys
 
 from discovery_config import DISCOVERY_CONFIG, DISCOVERY_PORT, DISCOVERY_IMAGE_NAME
+from discovery_config import DOCKER_NAME
 
 
-def launch_discovery(custom_directory=None, type=None, port=None, discovery_config=None):
+def launch_discovery(custom_directory=None, type=None, port=None, discovery_config=None, docker_name=None):
     """Launches the Discovery engine either via docker container or via compiled binaries.
 
     Args:
@@ -29,11 +30,14 @@ def launch_discovery(custom_directory=None, type=None, port=None, discovery_conf
         port = DISCOVERY_PORT
     if discovery_config is None:
         discovery_config = DISCOVERY_CONFIG
+    if docker_name is None:
+        docker_name = DOCKER_NAME
+
     if type is None:
         type = _determine_discovery_launch_type()
 
     if type == 'docker':
-        return _launch_container(custom_directory, port, discovery_config)
+        return _launch_container(custom_directory, port, discovery_config, docker_name)
 
     return _launch_binaries(custom_directory, port, discovery_config)
 
@@ -45,8 +49,31 @@ def _determine_discovery_launch_type():
     return 'docker'
 
 
-def _launch_container(custom_directory, port, discovery_config):
-    """launches the Discovery docker container."""
+def _launch_container(custom_directory, port, discovery_config, docker_name):
+    """
+    launches the Discovery docker container.
+
+    :param custom_directory: `custom/` directory with config adn data files for custom interpreter:
+    intents.json, schema.json (optional), entities/ (optional) #TODO changes in development
+    any supporting `.txt` files requisite for training or testing intents and/or entities
+
+    All other variables are imported from `discovery_config.py`
+     - required: valid GKT_USERNAME & GKT_SECRET_KEY
+     - required if values used by running container: DISCOVERY_PORT, PORT, DOCKER_NAME,
+     - additional values modify Discovery behavior!
+
+    :param port: DISCOVERY_PORT -> port outside container: location to send POST requests
+    :param discovery_config: DISCOVERY_CONFIG: dict; see for specifics
+    :param docker_name: DOCKER_NAME; value of `docker run` param `--name`
+        default: `discovery-dev`
+        recommend: select unique name when launching container (modify config script)
+
+        IMPORTANT:
+        DOCKER_NAME: sets name of output log file in `launch_discovery.py`
+        - also parameter required to launch container
+    :return: launches Discovery container; default:
+        mounts custom directory in examples/directions (modify under `__main__`
+    """
     dico_dir = ["-v", "{}/dico:/dico".format(custom_directory)] if os.path.isdir(custom_directory + '/dico') else []
 
     try:
@@ -57,7 +84,7 @@ def _launch_container(custom_directory, port, discovery_config):
     # yapf: disable
     launch_command = ' '.join(
         ["docker", "run", "--rm", "-d"] +
-        ["--name", "discovery-dev"] +
+        ["--name", docker_name] +
         ["-v", '"{}":/custom'.format(custom_directory)] +
         ["-p", "{}:{}".format(port, discovery_config["PORT"])] +
         dico_dir +
