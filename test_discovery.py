@@ -37,10 +37,10 @@ GOOD_EXIT_CODE = 0
 # DOCKER_NAME = 'discovery-dev'
 
 
-def docker_log_and_stop(docker_name):
+def docker_log_and_stop():
     """name assigned to Docker container"""
-    subprocess.call(f"docker logs {docker_name}", shell=True)
-    subprocess.call(f"docker stop {docker_name}", shell=True)
+    subprocess.call(f"docker logs {}".format(DOCKER_NAME), shell=True)
+    subprocess.call(f"docker stop {}".format(DOCKER_NAME), shell=True)
 
 
 def check_discovery_status():
@@ -73,7 +73,7 @@ def wait_for_discovery_launch():
     # Timeout of 25 seconds for launch
     if not wait_for_discovery_status(timeout=5, retries=5):
         print("Couldn't launch Discovery, printing Docker logs:\n---\n")
-        docker_log_and_stop(DOCKER_NAME)
+        docker_log_and_stop()
         exit(1)
 
 
@@ -305,7 +305,7 @@ def fail_test(resp, message="", continued=False):
     print("{}\n---\n".format(resp))
 
     if not continued:
-        docker_log_and_stop(DOCKER_NAME)
+        docker_log_and_stop()
         # subprocess.call("docker logs {docker_name}", shell=True)
         # subprocess.call("docker stop {docker_name}", shell=True)
         exit(1)
