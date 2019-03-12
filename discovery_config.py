@@ -9,7 +9,7 @@ DISCOVERY_CONFIG = {
   "PORT": "1234",  # Port that Discovery will bind to on the Docker daemon, change if port is taken already
 }
 
-DOCKER_NAME = 'discovery-dev'
+DOCKER_NAME = "discovery-dev"
 DISCOVERY_PORT = "1234"  # This is the port you will POST to, e.g. curl localhost:1234
 DISCOVERY_SHUTDOWN_SECRET = "greenkeytech"
 DISCOVERY_HOST = "localhost"

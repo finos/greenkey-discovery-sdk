@@ -39,8 +39,8 @@ GOOD_EXIT_CODE = 0
 
 def docker_log_and_stop():
     """name assigned to Docker container"""
-    subprocess.call(f"docker logs {}".format(DOCKER_NAME), shell=True)
-    subprocess.call(f"docker stop {}".format(DOCKER_NAME), shell=True)
+    subprocess.call("docker logs {}".format(DOCKER_NAME), shell=True)
+    subprocess.call("docker stop {}".format(DOCKER_NAME), shell=True)
 
 
 def check_discovery_status():
