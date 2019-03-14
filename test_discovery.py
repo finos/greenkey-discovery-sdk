@@ -23,11 +23,24 @@ import editdistance
 from importlib import import_module
 from discovery_sdk_utils import find_errors_in_entity_definition
 from discovery_config import DISCOVERY_PORT, DISCOVERY_HOST, DISCOVERY_SHUTDOWN_SECRET
+from discovery_config import DOCKER_NAME
 from launch_discovery import launch_discovery
 
 """
 Functions for handling the Discovery Docker container
 """
+
+#TODO Remap the following Bash codes; confusing as opposite of standard Python codes
+BAD_EXIT_CODE = 1
+GOOD_EXIT_CODE = 0
+
+# DOCKER_NAME = 'discovery-dev'
+
+
+def docker_log_and_stop():
+    """name assigned to Docker container"""
+    subprocess.call("docker logs {}".format(DOCKER_NAME), shell=True)
+    subprocess.call("docker stop {}".format(DOCKER_NAME), shell=True)
 
 
 def check_discovery_status():
@@ -35,10 +48,8 @@ def check_discovery_status():
     Checks whether Discovery is ready to receive new jobs
     """
     r = requests.get("http://{}:{}/status".format(DISCOVERY_HOST, DISCOVERY_PORT))
-
     if 'listening' in json.loads(r.text)['message']:
         return True
-
     return False
 
 
@@ -52,7 +63,6 @@ def wait_for_discovery_status(timeout=1, retries=5):
             return True
         except Exception:
             time.sleep(timeout)
-
     return False
 
 
@@ -60,12 +70,10 @@ def wait_for_discovery_launch():
     """
     Wait for launch to complete
     """
-
     # Timeout of 25 seconds for launch
     if not wait_for_discovery_status(timeout=5, retries=5):
         print("Couldn't launch Discovery, printing Docker logs:\n---\n")
-        subprocess.call("docker logs discovery-dev", shell=True)
-        subprocess.call("docker stop discovery-dev", shell=True)
+        docker_log_and_stop()
         exit(1)
 
 
@@ -91,7 +99,6 @@ def load_tests(test_file_argument):
     Loads and parses the test file
     """
     test_file = [x.rstrip() for x in open(test_file_argument)]
-
     tests = []
     current_test = {}
     for line in test_file:
@@ -103,10 +110,8 @@ def load_tests(test_file_argument):
             current_test = {key: value}
         elif len(key) > 0:
             current_test[key] = value
-
     if len(current_test.keys()) > 0:
         tests.append(current_test)
-
     return tests
 
 
@@ -296,8 +301,7 @@ def fail_test(resp, message="", continued=False):
     print("{}\n---\n".format(resp))
 
     if not continued:
-        subprocess.call("docker logs discovery-dev", shell=True)
-        subprocess.call("docker stop discovery-dev", shell=True)
+        docker_log_and_stop()
         exit(1)
 
 
