@@ -3,13 +3,13 @@ transcript: what is your price on green tomatoes
 intent: inquiry
 
 test: Quote
-transcript: I'll buy seventy purple carrots for ten dollars each
+transcript: i will buy seventy purple carrots for ten dollars each
 intent: quote
 
 test: Trade
-transcript: confirming I'll sell you twenty oranges for twenty dollars
+transcript: confirming i will sell you twenty oranges for twenty dollars
 intent: trade
 
 test: Correction
-transcript: I have to change my offer. I'll buy fifty red apples for one hundred dollars
+transcript: i have to change my offer i will buy fifty red apples for one hundred dollars
 intent: correction
