@@ -23,7 +23,7 @@ import editdistance
 from importlib import import_module
 from discovery_sdk_utils import find_errors_in_entity_definition
 from discovery_config import DISCOVERY_PORT, DISCOVERY_HOST, DISCOVERY_SHUTDOWN_SECRET
-from discovery_config import DOCKER_NAME
+from discovery_config import CONTAINER_NAME
 from launch_discovery import launch_discovery
 
 """
@@ -34,13 +34,15 @@ Functions for handling the Discovery Docker container
 BAD_EXIT_CODE = 1
 GOOD_EXIT_CODE = 0
 
-# DOCKER_NAME = 'discovery-dev'
-
 
 def docker_log_and_stop():
-    """name assigned to Docker container"""
-    subprocess.call("docker logs {}".format(DOCKER_NAME), shell=True)
-    subprocess.call("docker stop {}".format(DOCKER_NAME), shell=True)
+    """
+    name assigned to Docker container; 
+    defalut='discovery-dev' 
+    to modify: set DOCKER_CONTAINER in discovery_config.py
+    """
+    subprocess.call("docker logs {}".format(CONTAINER_NAME), shell=True)
+    subprocess.call("docker stop {}".format(CONTAINER_NAME), shell=True)
 
 
 def check_discovery_status():

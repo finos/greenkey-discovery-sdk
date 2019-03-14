@@ -14,7 +14,7 @@ import subprocess
 import sys
 
 from discovery_config import DISCOVERY_CONFIG, DISCOVERY_PORT, DISCOVERY_IMAGE_NAME
-from discovery_config import DOCKER_NAME
+from discovery_config import CONTAINER_NAME 
 
 
 def launch_discovery(custom_directory=None, type=None, port=None, discovery_config=None, docker_name=None):
@@ -37,7 +37,7 @@ def launch_discovery(custom_directory=None, type=None, port=None, discovery_conf
         type = _determine_discovery_launch_type()
 
     if type == 'docker':
-        return _launch_container(custom_directory, port, discovery_config, docker_name)
+        return _launch_container(custom_directory, port, discovery_config, container_name)
 
     return _launch_binaries(custom_directory, port, discovery_config)
 
@@ -49,7 +49,7 @@ def _determine_discovery_launch_type():
     return 'docker'
 
 
-def _launch_container(custom_directory, port, discovery_config, docker_name):
+def _launch_container(custom_directory, port, discovery_config, container_name):
     """
     launches the Discovery docker container.
 
@@ -64,7 +64,7 @@ def _launch_container(custom_directory, port, discovery_config, docker_name):
 
     :param port: DISCOVERY_PORT -> port outside container: location to send POST requests
     :param discovery_config: DISCOVERY_CONFIG: dict; see for specifics
-    :param docker_name: DOCKER_NAME; value of `docker run` param `--name`
+    :param container_name: CONTAINER_NAME; value of `docker run` param `--name`
         default: `discovery-dev`
         recommend: select unique name when launching container (modify config script)
 
@@ -84,7 +84,7 @@ def _launch_container(custom_directory, port, discovery_config, docker_name):
     # yapf: disable
     launch_command = ' '.join(
         ["docker", "run", "--rm", "-d"] +
-        ["--name", docker_name] +
+        ["--name", container_name] +
         ["-v", '"{}":/custom'.format(custom_directory)] +
         ["-p", "{}:{}".format(port, discovery_config["PORT"])] +
         dico_dir +
