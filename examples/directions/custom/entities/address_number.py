@@ -1,8 +1,6 @@
 ''' this contians the entity definition for an address number '''
 # Each interpreter needs a list of patterns to look for
 
-from nlp.cleanText import text2int
-
 ZERO = {
   'label': 'ZERO',
   'values': (
@@ -33,12 +31,15 @@ ADDRESS_NUMBER_PATTERN = [_ for _ in ADDRESS_NUMBER_PATTERN if len(_) < 6]
 
 def removeSpaces(transcript):
   return ''.join(transcript.split(' '))
+  
+def cleanZero(wordList, spacer):
+  return '0'
 
 ENTITY_DEFINITION = {
   'extraTokens': (ZERO, ),
   'patterns': ADDRESS_NUMBER_PATTERN,
   'extraCleaning': {
-    'ZERO': text2int
+    'ZERO': cleanZero
   },
   'spacing': {
     'ZERO': '',
