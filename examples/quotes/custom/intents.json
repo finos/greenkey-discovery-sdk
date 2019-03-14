@@ -4,16 +4,14 @@
             "domain": "quote_or_not",
             "label": "quote",
             "examples": [
-                "data/quotes_90.txt",
-                "data/new_quotes_90.txt"
+                "train_quotes_90.txt"
             ]
         },
         {
             "domain": "quote_or_not",
-            "label": "none",
+            "label": "not_quote",
             "examples": [
-                "data/not_quotes_90.txt",
-                "data/new_not_quotes_90.txt"
+                "train_not_quotes_90.txt"
             ]
         }
     ]
