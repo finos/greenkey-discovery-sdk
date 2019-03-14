@@ -54,6 +54,25 @@ This will provide you with the packages needed to run the `test_discovery.py` sc
 python3 -m pip install -r requirements.txt
 ```
 
+## Using Compiled Binary Files
+
+If you are unable to use Docker, contact us to obtain compiled binary files for Discovery.
+Simply place the binaries directory into the SDK directory before running `test_discovery.py`.
+The test script will automatically detect the binaries directory and use that instead of a Docker image.
+
+Make sure not to change the name of the binaries file when you move it.
+You should end up with a structure like the following for the `test_discovery.py` script to work.
+
+```
+└───greenkey-discovery-sdk
+    └───discovery_binaries_windows_10_64bit__python37_64bit
+    └───examples
+    └───gk_cli
+    │   discovery_config.py
+    │   README.md
+    │   test_discovery.py
+```
+
 ## Obtaining Credentials
 [Contact us](mailto:transcription@greenkeytech.com) to obtain credentials to obtain the Discovery Docker container from our repository and launch the Discovery engine.
 
@@ -128,26 +147,6 @@ examples
     
     (2 / 2) tests passed in 0s with 0 errors, Character error rate: 0.00%
     ```
-
-## Using Compiled Binary Files
-
-If you are unable to use Docker, contact us to obtain compiled binary files for Discovery.
-Simply place the binaries directory into the SDK directory before running `test_discovery.py`.
-The test script will automatically detect the binaries directory and use that instead of a Docker image.
-
-Make sure not to change the name of the binaries file when you move it.
-You should end up with a structure like the following for the `test_discovery.py` script to work.
-
-```
-└───greenkey-discovery-sdk
-    └───discovery_binaries_windows_10_64bit__python37_64bit
-    └───examples
-    └───gk_cli
-    │   discovery_config.py
-    │   README.md
-    │   test_discovery.py
-```
-
 
 # 2. Customization and Discovery CLI
 Creating a custom project can be done by following the structure of an existing example found in the `examples` folder. The Discovery CLI tool can also be used to guide you through creating your own project and custom definition files for use with Discovery.
