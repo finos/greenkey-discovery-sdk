@@ -1,4 +1,4 @@
-''' this contians the entity definition for a us license plate '''
+''' this contians the entity definition for an address number '''
 # Each interpreter needs a list of patterns to look for
 
 ADDRESS_NUMBER_PATTERN = []
