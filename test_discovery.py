@@ -210,62 +210,6 @@ def test_single_case(test_dict, response_intent_dict):
         return 0, 0, 0, characters
 
 
-# def read_test_files(infile):
-#     """
-#
-#     :param infile: str, path to file; default 'test_intents.txt' (same directory as tests.txt)
-#     :return:
-#     """
-#     test_num = 0
-#     with open(infile, 'r+') as f:
-#         for line in f.readlines():
-#             if line.strip() and line.endswith('.txt'):
-#                 intent, infile = line.split(":")
-#                 if exists(infile) and is_file(infile):
-#                     transcripts = [line for line in Path(infile).read_text().split("\n") if line]
-#                     for transcript in transcripts:
-#                         test_name = "{}_{}".format(intent, test_num)
-#                         test = {'test': test_name, 'transcript': transcript, 'intent': intent}
-#                         yield test
-#
-#
-# intent = 'quote'
-# infile = 'test_quotes.txt'
-# # transcripts = [line.strip() for line in open(infile, 'r+') if line.strip()]
-# import os
-# os.getcwd()
-# from os.path import exists, isfile as is_file, join as join_path, dirname, basename
-# from pathlib import Path
-# root_dir = os.getcwd()
-# quotes_dir = join_path(root_dir, 'examples', 'quotes')
-# infile = join_path(quotes_dir, infile)
-# infile
-# transcripts = [line.strip() for line in open(infile, 'r+') if line.strip()]
-# transcripts[-1]
-# quote_transcripts = transcripts
-#
-# other_infile = 'test_not_quotes.txt'
-# other_infile = join_path(quotes_dir, other_infile)
-# exists(other_infile)
-# not_quote_transcripts = [line.strip() for line in open(other_infile, 'r+') if line.strip()]
-# print(
-#     not_quote_transcripts[0], "\n",
-#     not_quote_transcripts[-1]
-# )
-# d = {'quote': quote_transcripts, 'not_quote': not_quote_transcripts}
-# outfile = 'tests_complete.txt'
-# outfile = join_path(dirname(infile), outfile)
-# with open(outfile, 'w+') as fw:
-#     for intent, transcript_list in d.items():
-#         test_num = 1
-#         for line_no, line in enumerate(transcripts):
-#             test = "{}_{}".format(intent, test_num)
-#             test_num += 1
-#             transcript = line.strip()
-#             fw.writelines('test: {}\n'.format(test))
-#             fw.writelines('intent: {}\n'.format(intent))
-#             fw.writelines('transcript: {}\n\n'.format(transcript))
-
 def test_all(test_file):
     """
     Runs all defined tests
@@ -437,10 +381,15 @@ if __name__ == '__main__':
 
     # to specify project directory and name of file with tests
     # python test_discovery.py examples/fruits tests_sample.txt
-    if sys.argv[1]:
-      DISCOVERY_DIRECTORY = os.path.abspath(sys.argv[1])   # project directory:
-    if sys.argv[2]:
-      infile = sys.argv[2]  # "tests_complete.txt" vs "tests_sample.txt"; select one as defalt
+    try:
+        DISCOVERY_DIRECTORY = os.path.abspath(sys.argv[1])   # project directory
+    except IndexError:
+        DISCOVERY_DIRECTORY = os.getcwd()
+    try:
+        infile = sys.argv[2]  # "tests_complete.txt" vs "tests_sample.txt"; select one as defalt
+    except IndexError:
+        infile = "tests.txt"
+
     TEST_FILE = os.path.join(DISCOVERY_DIRECTORY, infile)
 
     # validation
