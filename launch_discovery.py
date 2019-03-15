@@ -14,10 +14,10 @@ import subprocess
 import sys
 
 from discovery_config import DISCOVERY_CONFIG, DISCOVERY_PORT, DISCOVERY_IMAGE_NAME
-from discovery_config import CONTAINER_NAME 
+from discovery_config import CONTAINER_NAME
 
 
-def launch_discovery(custom_directory=None, type=None, port=None, discovery_config=None, docker_name=None):
+def launch_discovery(custom_directory=None, type=None, port=None, discovery_config=None, container_name=None):
     """Launches the Discovery engine either via docker container or via compiled binaries.
 
     Args:
@@ -30,8 +30,8 @@ def launch_discovery(custom_directory=None, type=None, port=None, discovery_conf
         port = DISCOVERY_PORT
     if discovery_config is None:
         discovery_config = DISCOVERY_CONFIG
-    if docker_name is None:
-        docker_name = DOCKER_NAME
+    if container_name is None:
+        container_name = CONTAINER_NAME
 
     if type is None:
         type = _determine_discovery_launch_type()
@@ -59,7 +59,7 @@ def _launch_container(custom_directory, port, discovery_config, container_name):
 
     All other variables are imported from `discovery_config.py`
      - required: valid GKT_USERNAME & GKT_SECRET_KEY
-     - required if values used by running container: DISCOVERY_PORT, PORT, DOCKER_NAME,
+     - required if values used by running container: DISCOVERY_PORT, PORT, CONTAINER_NAME,
      - additional values modify Discovery behavior!
 
     :param port: DISCOVERY_PORT -> port outside container: location to send POST requests
@@ -69,7 +69,7 @@ def _launch_container(custom_directory, port, discovery_config, container_name):
         recommend: select unique name when launching container (modify config script)
 
         IMPORTANT:
-        DOCKER_NAME: sets name of output log file in `launch_discovery.py`
+        CONTAINER_NAME: sets name of output log file in `launch_discovery.py`
         - also parameter required to launch container
     :return: launches Discovery container; default:
         mounts custom directory in examples/directions (modify under `__main__`
