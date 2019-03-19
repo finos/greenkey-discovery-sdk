@@ -26,7 +26,7 @@ entities:
   - em_bond_product:
     - file: "em_bonds_products.txt"
   
-  - em_bond_quantity:
+  - bond_quantity:
     - mill
     - million
     - yard
@@ -41,9 +41,33 @@ entities:
     - "$em_bond_product ($float_num | $num{2,6})?"
 
   - em_bond_quantity_instrument:
-    - "$num{1,5}? $em_bond_quantity"
+    - "$num{1,5}? $bond_quantity"
 
 
+
+## entities for class_ig_bonds.py
+
+## products = { ... }  defined in https://github.com/greenkeytech/scribe/pull/1993/files
+
+# patterns are the same as with em_bonds
+entities:
+- ig_bond_product:
+  - file: "ig_bonds_products.txt"
+
+- ig_bond_rate_and_term:
+  - "$ig_bond_product $float_num $num{1,2} (($ordinal $time_month) | ($time_month $ordinal?))? $upcoming_year_word_extend"
+  - "$ig_bond_product $num{1,5} (($ordinal $time_month) | ($time_month $ordinal?))? $upcoming_year_word_extend"
+
+- ig_bond_term:
+  - "$ig_bond_product (($ordinal $time_month) | ($time_month $ordinal?))? $upcoming_year_word_extend"
+
+- ig_bond_rate_bare:
+  - "$ig_bond_product ($float_num | $num{2,6})?"
+
+- ig_bond_quantity_instrument:  # reusing bond_quantity from em_bonds entities
+  - "$num{1,5}? $bond_quantity" 
+  
+  
 
 
 ## entities for class_egbs.py
