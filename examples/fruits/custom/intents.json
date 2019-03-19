@@ -13,14 +13,14 @@
      "label": "quote",
      "domain": "food",
      "examples": [
-       "pre_deal.txt"
+       "/custom/pre_deal.txt"
     ]
    },
    {
      "label": "trade",
      "domain": "food",
      "examples": [
-       "post_deal.txt"
+       "/custom/post_deal.txt"
     ]
    },
    {
