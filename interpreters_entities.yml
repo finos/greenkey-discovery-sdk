@@ -18,6 +18,33 @@ entities:
     - "$credit_product $coupon? $upcoming_year?"
     
 
+## entities for class_em_bonds.py
+
+## products = { ... }  defined in https://github.com/greenkeytech/scribe/pull/1993/files
+
+entities:
+  - em_bond_product:
+    - file: "em_bonds_products.txt"
+  
+  - em_bond_quantity:
+    - mill
+    - million
+    - yard
+    - k
+    - up  
+
+  - em_bond_rate_term:
+    - "$em_bond_product $float_num $num{1,2} (($ordinal $time_month) | ($time_month $ordinal?))? $upcoming_year_word_extend"
+    - "$em_bond_product $num{1,5}? (($ordinal $time_month) | ($time_month $ordinal?))? $upcoming_year_word_extend"
+
+  - em_bond_rate_bare:
+    - "$em_bond_product ($float_num | $num{2,6})?"
+
+  - em_bond_quantity_instrument:
+    - "$num{1,5}? $em_bond_quantity"
+
+
+
 
 ## entities for class_egbs.py
 ## Matthew: we do not want to use fuzzy matching anymore in discovery. the confusion matrix is used instead
@@ -25,7 +52,7 @@ entities:
 
 ##products = ["schatz", "bkos", "dbrs", "bunds"]
 
-- entities:
+entities:
   - egbs_product:
     - file: "egbs_products.txt"
  
@@ -121,7 +148,7 @@ entities:
 ## ordinals += ["thirt" + i for i in ["ieth", "y first"]]
 ## ordinals = ordinals[::-1]
 
-- entities:
+entities:
   - gilts_product:
     - file: "gilts_products.txt"
   
@@ -696,7 +723,6 @@ entities:
     - "(mill | yard | in) $num{1,6} ((mill | yard | in) | $num{1,6})?"
     - "((mill | yard | in) | $num{1,6}) (mill | yard | in)"
 
-    
 
 
 ## TODO: replace '$' with '@'
