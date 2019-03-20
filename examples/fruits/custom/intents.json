@@ -23,7 +23,6 @@
      "domain": "food",
      "examples": [
        "i will take your one hundred oranges for two dollars each",
-       "confirming i will sell you twenty carrots for twenty five dollars",
        "we are done on the one hundred green tomatoes for fifty dollars",
        "confirming that i will sell you twenty three carrots for five dollars"
     ]
@@ -33,7 +32,6 @@
      "domain": "food",
      "examples": [
        "scratch that i can sell ninety oranges for two dollars each",
-       "i have to change the offer i will buy fifteen red apples for fifty dollars",
        "correction my price on twenty three carrots is six dollars",
        "i need to revise my offer i will give you forty for sixty oranges"
     ]
