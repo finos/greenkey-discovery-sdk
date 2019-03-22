@@ -29,21 +29,21 @@ ADDRESS_NUMBER_PATTERN += [
 
 ADDRESS_NUMBER_PATTERN = [_ for _ in ADDRESS_NUMBER_PATTERN if len(_) < 6]
 
-def removeSpaces(transcript):
+def remove_spaces(transcript):
   return ''.join(transcript.split(' '))
   
-def cleanZero(wordList, spacer):
+def clean_zero(wordList, spacer):
   return '0'
 
 ENTITY_DEFINITION = {
   'extraTokens': (ZERO, ),
   'patterns': ADDRESS_NUMBER_PATTERN,
   'extraCleaning': {
-    'ZERO': cleanZero
+    'ZERO': clean_zero
   },
   'spacing': {
     'ZERO': '',
     'NUM': ''
   },
-  'entityCleaning': removeSpaces
+  'entityCleaning': remove_spaces
 }
