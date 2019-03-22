@@ -13,18 +13,14 @@
      "label": "quote",
      "domain": "food",
      "examples": [
-       "i will buy twenty three carrots for five dollars",
-       "can you sell one hundred green tomatoes for fifty dollars",
-       "i can sell up to one hundred oranges for two dollars each"
+       "pre_deal.txt"
     ]
    },
    {
      "label": "trade",
      "domain": "food",
      "examples": [
-       "i will take your one hundred oranges for two dollars each",
-       "we are done on the one hundred green tomatoes for fifty dollars",
-       "confirming that i will sell you twenty three carrots for five dollars"
+       "post_deal.txt"
     ]
    },
    {
@@ -33,7 +29,7 @@
      "examples": [
        "scratch that i can sell ninety oranges for two dollars each",
        "correction my price on twenty three carrots is six dollars",
-       "i need to revise my offer i will give you forty for sixty oranges"
+       "i need to revise my offer i will give you forty dollars for sixty oranges"
     ]
   }
  ]
