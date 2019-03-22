@@ -15,7 +15,7 @@ try:
 except IndexError:
   quotes_test_file = 'test_quotes_10.txt'
   not_quotes_test_file = 'test_not_quotes_10.txt'
-  outfile = 'test_quote_or_not_10.txt'
+  outfile = 'tests.txt' #'test_quote_or_not_10.txt'
 
 try:  
   assert exists(quotes_test_file) and is_file(quotes_test_file)
