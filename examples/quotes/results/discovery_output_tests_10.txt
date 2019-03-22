@@ -1,4 +1,4 @@
-fe1b1d9f5eeb56294ae126f7ef679ad2386f614cf2b794383b564b59795690c4
+lsfe1b1d9f5eeb56294ae126f7ef679ad2386f614cf2b794383b564b59795690c4
 Launching Discovery from Container: docker run --rm -d --name discovery-dev-amy -v "/drive/ageojo/greenkey-discovery-sdk-private/examples/quotes/custom":/custom -p 8004:8004 -e MAX_NUMBER_OF_ENTITIES=3 -e STRUCTURE_CONFIDENCE_THRESHOLD=0.8 -e GKT_API=https://scribeapi.greenkeytech.com/ -e SORT_ENTITIES_BY_LENGTH=True -e NUMBER_OF_INTENTS=2 -e PORT=8004 -e GKT_USERNAME=gkt -e GKT_SECRETKEY=5f3d00b5b15884c280a390725a863941a68bfe55 docker.greenkeytech.com/discovery:local
 
 Discovery Ready
