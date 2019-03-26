@@ -40,21 +40,23 @@ services:
       - PORT=80
       - SLACK_API_URL=https://slack.com/api     # SLACK_URL
       - SLACK_ACCESS_TOKEN=xoxp-4953937137-344679330118-509400138422-a20f349799113ba21f5c91e8a190cd14
+      - SERVICE_NAME='slack'
+      - CHANNEL_NAME='ageojo_test'
       # need DESTINATION_URL -> sending chats to middleware pipeline (different from current one as does not traverse all microservices
       - DESTINATION_URL=http://middleware-pipeline:6000/mw
     networks:
       - greenkey
   # ----------------------------------------------------------------------
-  formatter:
-    image:
-      "docker.greenkeytech.com/formatter:${FORMATTER_DOCKER_TAG:-latest}"
-    environment:
-      - GKT_USERNAME=gkt
-      - GKT_SECRETKEY=5f3d00b5b15884c280a390725a863941a68bfe55
-      - GKT_API=https://scribeapi.greenkeytech.com/
-      - PORT=80
-    networks:
-      - greenkey
+#  formatter:
+#    image:
+#      "docker.green7keytech.com/formatter:${FORMATTER_DOCKER_TAG:-latest}"
+#    environment:
+#      - GKT_USERNAME=gkt
+#      - GKT_SECRETKEY=5f3d00b5b15884c280a390725a863941a68bfe55
+#      - GKT_API=https://scribeapi.greenkeytech.com/
+#      - PORT=80
+#    networks:
+#      - greenkey
   # ----------------------------------------------------------------------
   discovery:
     image:
@@ -64,7 +66,7 @@ services:
       - GKT_SECRETKEY=5f3d00b5b15884c280a390725a863941a68bfe55
       - GKT_API=https://scribeapi.greenkeytech.com/
       - PORT=80
-      - DISCOVERY_DOMAINS=broker_quotes     #TODO change from `broker_quotes`
+#      - DISCOVERY_DOMAINS=broker_quotes     #TODO change from `broker_quotes`
     networks:
       - greenkey
   # ----------------------------------------------------------------------
@@ -88,15 +90,15 @@ networks:
     external: true
     name: host
 
-volumes:
-  call_id_config:
-  recordings:
-  # Uncomment below for transient storage of recordings.
-  # Be warned! Removing the stack will delete all recordings & transcripts!
-  # This is a desired feature for some clients.
-  #   driver: local
-  #   driver_opts:
-  #     type: tmpfs
-  #     device: tmpfs
-  ###########################################
-  data-built:
+#volumes:
+#  call_id_config:
+#  recordings:
+#  # Uncomment below for transient storage of recordings.
+#  # Be warned! Removing the stack will delete all recordings & transcripts!
+#  # This is a desired feature for some clients.
+#  #   driver: local
+#  #   driver_opts:
+#  #     type: tmpfs
+#  #     device: tmpfs
+#  ###########################################
+#  data-built:
