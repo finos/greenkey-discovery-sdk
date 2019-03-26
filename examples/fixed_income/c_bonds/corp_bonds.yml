@@ -41,10 +41,11 @@ entities:
   - credit_instrument:
     - "@cbond_product @coupon? @upcoming_year?"
   
-  - price1:
+  - price1:  # entity_requirements is needed. req: cbond_product for price database checking
     - "@num{1,6}"
     - validation: "int(entity) > 80 and int(entity) < 121"  # assuming price is +/- 20% of 100
-  - price2:
+    
+  - price2:  # entity_requirements is needed. req: cbond_product, price1
     - "@num{1,6}"
     - validation: "int(entity) > 80 and int(entity) < 121"  # assuming price is +/- 20% of 100
 
