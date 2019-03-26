@@ -282,14 +282,17 @@ entities:
   - outright_plus_eonia:
     - "$num{1,6} $year eonia"
 
+  - swap_var:  # to be named more appropriately
+    - "uxl | bl | shatz | bunds | spread | eonia"
   - future_spread:  # the keywords below should be corrected. 'uxl' should be 'buxl' ? (buxl, bobl, schatz, bund)
-    - "($year | uxl | bl | shatz | bunds | spread | eonia) (uxl | bl | shatz | bunds | spread | eonia)"  # an entity def is possible for these keywords
+    - "($year | $swap_var) $swap_var"  # an entity def is possible for these keywords
 
   - future_spread_box:  # the keywords below should be corrected. 'uxl' should be 'buxl' ? (buxl, bobl, schatz, bund)
-    - "(uxl | bl | atz | und | spread | eonia | box) (uxl | bl | atz | und | spread | eonia | box) (uxl | bl | atz | und | spread | eonia | box)"
+    #- "(uxl | bl | atz | und | spread | eonia | box) (uxl | bl | atz | und | spread | eonia | box) (uxl | bl | atz | und | spread | eonia | box)" #old
+    - "($swap_var | box) ($swap_var | box) ($swap_var | box)"
 
   - future_combined:  # the above two can be combined
-    - "($year | uxl | bl | shatz | bunds | spread | eonia | box) (uxl | bl | shatz | bunds | spread | eonia | box) (uxl | bl | shatz | bunds | spread | eonia | box)?"
+    - "($year | $swap_var | box) ($swap_var | box) ($swap_var | box)?"
 
   - swap_basis_product:
     - file: "products_swap_basis.txt"  # ['c.m.e.','l.c.h.','ex:']+["3s1s", "6s3s", "6s1s", "6s12s"]
@@ -378,14 +381,18 @@ entities:
   - skew_collar_strangle:
     - "($swaption_product | wide | collar | strangle) $num{1,6} $time_word $num{1,6} $time_word $num{1,6} ($swaption_product | wide | collar | strangle) ($swaption_product | wide | collar | strangle)"
 
+  - skew_spread_var:  # to be named more appropriately
+    - "ats | receive | pay"
   - skew_spread:  # to correct: 'ats', 'receive', 'pay' keywords
-    - "($swaption_product | ats | receive | pay) $num{1,6} $time_word $num{1,6} $time_word (ats | receive | pay) $verse $num{1,6} (ats | receive | pay)"
+    - "($swaption_product | $skew_spread_var) $num{1,6} $time_word $num{1,6} $time_word $skew_spread_var $verse $num{1,6} $skew_spread_var"
 
   - skew_spread_3:
     - "$swaption_product $num{1,6} $time_word $num{1,6} $time_word $verse $num{1,6} $time_word $num{1,6} $time_word"
   
+  - skew_spread_2_var:  # to be named more appropriately
+    - "receive | ratio | payer"
   - skew_spread_2:
-    - "($swaption_product | receive | ratio | payer | to) $num{1,6} $time_word $num{1,6} $time_word $num{1,12} (receive | ratio | payer) $verse $num{1,12} (receive | ratio | payer) ($num{1,6} ($swaption_product | receive | ratio | payer | to)? $num{1,6} (receive | ratio | payer))?"
+    - "($swaption_product | $skew_spread_2_var | to) $num{1,6} $time_word $num{1,6} $time_word $num{1,12} $skew_spread_2_var $verse $num{1,12} $skew_spread_2_var ($num{1,6} ($swaption_product | $skew_spread_2_var | to)? $num{1,6} $skew_spread_2_var)?"
 
   - swaption_hedge:
     - "$verse ($num{1,12} | $float_num)"
@@ -516,20 +523,24 @@ entities:
     - "$plural_num ($fxoptions_product | ats) ($fxoptions_product | ats) $num{1,4}"
     - "($time_day | $plural_num) ((($fxoptions_product | ats) ($fxoptions_product | ats) ats) | (ats ($fxoptions_product | ats) ($fxoptions_product | ats)))"
   
+  - fxopts_var:  # to be named more appropriately
+    - "delta | fly | riskies"
   - struct_5:
-    - "($plural_num ($fxoptions_product | delta | fly | riskies) | ($fxoptions_product | delta | fly | riskies) $plural_num) $num{1,6} (delta | fly | riskies) (delta | fly | riskies)"
+    - "($plural_num ($fxoptions_product | $fxopts_var) | ($fxoptions_product | $fxopts_var) $plural_num) $num{1,6} $fxopts_var $fxopts_var"
 
   - struct_6_7_8_9_10_11_12:
-    - "($num{1,6} $time_word ($fxoptions_product | delta | fly | riskies) ($fxoptions_product | delta | fly | riskies)? | ($fxoptions_product | delta | fly | riskies)? ($fxoptions_product | delta | fly | riskies) $num{1,6} $time_word) $num{1,6} (delta | fly | riskies) (delta | fly | riskies)"
-    - "(($fxoptions_product | delta | fly | riskies) ($fxoptions_product | delta | fly | riskies) $plural_num | $plural_num ($fxoptions_product | delta | fly | riskies) ($fxoptions_product | delta | fly | riskies)) $num{1,6} (delta | fly | riskies) (delta | fly | riskies)"
+    - "($num{1,6} $time_word ($fxoptions_product | $fxopts_var) ($fxoptions_product | $fxopts_var)? | ($fxoptions_product | $fxopts_var)? ($fxoptions_product | $fxopts_var) $num{1,6} $time_word) $num{1,6} $fxopts_var $fxopts_var"
+    - "(($fxoptions_product | $fxopts_var) ($fxoptions_product | $fxopts_var) $plural_num | $plural_num ($fxoptions_product | $fxopts_var) ($fxoptions_product | $fxopts_var)) $num{1,6} $fxopts_var $fxopts_var"
 
   - struct_13_14:
     - "$fxoptions_product $fxoptions_product? $num{1,6} ($time_month | $time_word) $num{0,9} $num_all $cross $num{1,6} $time_month $num{0,9} $num_all"
-  
+
+  - vega_var:  # to be named more appropriately
+    - "ats | vega"
   - vega_1_2_3_4_5:
-    - "$num{1,6} $time_word $cross? $num{1,6} $time_word ($fxoptions_product | ats | vega) ($fxoptions_product | ats | vega)? (ats | vega) (ats | vega)"
-    - "($fxoptions_product | ats | vega) ($fxoptions_product | ats | vega)? $num{1,6} $time_word $cross? $num{1,6} $time_word (ats | vega) (ats | vega)"
-    - "$num{1,6} $time_word ($fxoptions_product | ats | vega) ($fxoptions_product | ats | vega) $float_num $cross $num{1,6} $time_word $float_num (ats | vega)"
+    - "$num{1,6} $time_word $cross? $num{1,6} $time_word ($fxoptions_product | $vega_var) ($fxoptions_product | $vega_var)? $vega_var $vega_var"
+    - "($fxoptions_product | $vega_var) ($fxoptions_product | $vega_var)? $num{1,6} $time_word $cross? $num{1,6} $time_word $vega_var $vega_var"
+    - "$num{1,6} $time_word ($fxoptions_product | $vega_var) ($fxoptions_product | $vega_var) $float_num $cross $num{1,6} $time_word $float_num $vega_var"
 
   - overnight:
     - "($fxoptions_product | overnight) ($fxoptions_product | overnight)? overnight $num{1,6}? $float_num"
@@ -537,11 +548,13 @@ entities:
     - "overnight ($fxoptions_product | overnight) ($fxoptions_product | overnight)? $num{1,6}? $float_num"
     - "overnight ($fxoptions_product | overnight) ($fxoptions_product | overnight)? ($num{1,10})?"
 
+  - fxops_quant_var:  # to be named more appropriately
+    - "mill | yard | even"
   - fxoption_quantity:
-    - "(mill | yard | in | even) $num{1,6}? (mill | yard | even)"
-    - "(mill | yard | in | even) $num{1,10}"
-    - "(mill | yard | in | even) (mill | yard | in | even)"
-    - "$num{1,6} (mill | yard | even)"
+    - "($fxops_quant_var | in) $num{1,6}? $fxops_quant_var"
+    - "($fxops_quant_var | in) $num{1,10}"
+    - "($fxops_quant_var | in) ($fxops_quant_var | in)"
+    - "$num{1,6} $fxops_quant_var"
 
 
 
@@ -557,11 +570,15 @@ entities:
   - option:
     - file: "options.txt"
 
+  - energy_var:  # to be named more appropriately
+    - "call | put | fly | spread"
   - call_put_fly_spread:
-    - "($option | call | put | fly | spread) $time_month $num{1,20} ($option | call | put | fly | spread) ($option | call | put | fly | spread)"
+    - "($option | $energy_var) $time_month $num{1,20} ($option | $energy_var) ($option | $energy_var)"
 
+  - energy_var2:  # to be named more appropriately
+    - "strangle | straddle | fence | collar | call | put"
   - strangle_fence_straddle_call_put:
-    - "($option | strangle | straddle | fence | collar | call | put) $time_month $num{1,14} ($option | strangle | straddle | fence | collar | call | put)"
+    - "($option | $energy_var2) $time_month $num{1,14} ($option | $energy_var2)"
 
   - strip_spread:
     - "($future | strip | spread) $time_month $num{1,2} $time_month $num{1,2} ($future | strip | spread)"

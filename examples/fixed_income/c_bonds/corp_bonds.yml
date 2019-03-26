@@ -1,0 +1,55 @@
+# entities for previous class_credit.py
+
+entities:
+  - one_through_seven:
+    - a
+    - an
+    - one
+    - two
+    - three
+    - four
+    - five
+    - six
+    - seven
+  - denominator:
+    - quarter
+    - quarters
+    - fourth
+    - half
+    - eighth
+    - eighths
+    - eights
+
+  - fraction:
+    - "and? @one_through_seven @denominator"
+
+  - spot_num:
+    - "(spot|point) @num{1,6}"  # NOTE: @num entity to be replaced by @digit
+
+  - cbond_product:
+    - file: "cbond_products.txt"
+
+  - upcoming_year:
+    - "@num{1,6}"
+    - validation: "int(entity) > 2019 and int(entity) < 2030" #"is_upcoming_year.py"  # ( datetime.now.year() < x < datetime.now.year() + 10 , x is an int)
+  
+  - coupon:
+    - "@num{1,6} (@spot_num | @fraction)?"
+    - validation: "float(entity) > 0 and float(entity) < 20"  # formatting is done before float() is applied
+    - spacing_threshold: 1
+  
+  - credit_instrument:
+    - "@cbond_product @coupon? @upcoming_year?"
+  
+  - price1:
+    - "@num{1,6}"
+    - validation: "int(entity) > 80 and int(entity) < 121"  # assuming price is +/- 20% of 100
+  - price2:
+    - "@num{1,6}"
+    - validation: "int(entity) > 80 and int(entity) < 121"  # assuming price is +/- 20% of 100
+
+intents:
+  - cbond:
+    - examples:
+      - "i have a @credit_instrument for @price1"
+    
