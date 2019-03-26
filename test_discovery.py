@@ -381,15 +381,29 @@ def validate_json(discovery_directory):
 
 
 if __name__ == '__main__':
-    if len(sys.argv) > 1:
-        DISCOVERY_DIRECTORY = os.path.abspath(sys.argv[1])
-    else:
+    # if len(sys.argv) > 1:
+    DISCOVERY_DIRECTORY = os.getcwd()  # typically given: examples/{project_directory}
+    infile = "tests.txt"  # default filename: DISCOVERY_DIRECTORY/tests.txt
+
+    # to specify project directory and name of file with tests
+    # python test_discovery.py examples/fruits tests_sample.txt
+    try:
+        DISCOVERY_DIRECTORY = os.path.abspath(sys.argv[1])   # project directory
+    except IndexError:
         DISCOVERY_DIRECTORY = os.getcwd()
+    try:
+        infile = sys.argv[2]  # "tests_complete.txt" vs "tests_sample.txt"; select one as defalt
+    except IndexError:
+        infile = "tests.txt"
 
-    TEST_FILE = os.path.join(DISCOVERY_DIRECTORY, "tests.txt")
+    TEST_FILE = os.path.join(DISCOVERY_DIRECTORY, infile)
 
+    # validation
     validate_entities(DISCOVERY_DIRECTORY)
     validate_json(DISCOVERY_DIRECTORY)
+
+    # DISCOVERY_DIRECTORY project name; contains tests.txt & directory 'custom'
+    # DISCOVERY_DIRECTORY/custom/intents.json (and/or schema.json and/or entities/ directory)
     custom_directory = os.path.join(DISCOVERY_DIRECTORY, 'custom')
     try:
         launch_discovery(custom_directory=custom_directory)

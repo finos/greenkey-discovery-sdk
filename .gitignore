@@ -4,3 +4,9 @@ dico/
 *.egg-info/
 .pytest_cache/
 .eggs/
+
+# specific
+mirror_public_sdk_repo.sh
+README_private_SDK.md
+quotes/utils/
+tmp/
