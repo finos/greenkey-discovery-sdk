@@ -27,30 +27,33 @@ entities:
     - "(spot|point) @num{1,6}"  # NOTE: @num entity to be replaced by @digit
 
   - cbond_product:
-    - file: "cbond_products.txt"
+    - file: "tests/assets/cbond_products.txt"
 
   - upcoming_year:
     - "@num{1,6}"
-    - validation: "int(entity) > 2019 and int(entity) < 2030" #"is_upcoming_year.py"  # ( datetime.now.year() < x < datetime.now.year() + 10 , x is an int)
+    - validation: "int(entity) > 19 and int(entity) < 30" #"is_upcoming_year.py"  # ( datetime.now.year() < x < datetime.now.year() + 10 , x is an int)
   
   - coupon:
-    - "@num{1,6} (@spot_num | @fraction)?"
-    - validation: "float(entity) > 0 and float(entity) < 20"  # formatting is done before float() is applied
+    - "@num{1,6}" #(@spot_num | @fraction)?"  # validation on spot_num and fraction may not work
+    - validation: "int(entity) > 0 and int(entity) < 20"  # formatting is done before float() is applied
+  
+  - cbond_instrument:
+    - "@cbond_product @coupon? @upcoming_year?"
     - spacing_threshold: 1
   
-  - credit_instrument:
-    - "@cbond_product @coupon? @upcoming_year?"
-  
   - price1:  # entity_requirements is needed. req: cbond_product for price database checking
-    - "@num{1,6}"
+    - "@num{1,3}"
     - validation: "int(entity) > 80 and int(entity) < 121"  # assuming price is +/- 20% of 100
     
   - price2:  # entity_requirements is needed. req: cbond_product, price1
-    - "@num{1,6}"
+    - "@num{1,3}"
     - validation: "int(entity) > 80 and int(entity) < 121"  # assuming price is +/- 20% of 100
+  - full_str:
+    - "@cbond_instrument @price1? @price2?"
 
 intents:
   - cbond:
     - examples:
-      - "i have a @credit_instrument for @price1"
+      - "i have a @cbond_instrument for @price1 @price2"
+      - "i have a @full_str"
     

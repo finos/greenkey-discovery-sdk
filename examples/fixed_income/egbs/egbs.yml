@@ -1,0 +1,70 @@
+## entities for class_egbs.py
+
+entities:
+  - egbs_product:
+    - file: "tests/assets/egbs_products.txt"  # scribe/discovery/integration_tests  on /drive/svyat on the beast
+ 
+  - verse:  # should be moved to a place with defs, primitives
+    - verse
+    - versus
+  - cross:  # should be moved to a place with defs, primitives
+    - cross
+    - crossing
+    - again
+    - against
+  - oble_word: # NOTE: name of entity can be 'oble' something.  keywords intersect between oble and oble_oble_switch
+    - oble
+    - series  
+  - oble_word2:
+    - "@oble_word"
+    - to
+    - against
+
+  - outright_egbs:
+    - "@egbs_product @time_month @num{1,3}"
+    - "@time_month @num{1,3} @egbs_product?"
+    - spacing_threshold: 2
+
+  - outright_egbs_2:  # this can also be covered by "@outright_combined" if egbs_product contains 'buxel'
+    - "@num{1,3} (buxel | bunds)"
+
+  - oble:
+    - "@oble_word2 @num{1,4} (@oble_word2 @time_month)?"   # can I use parentheses to group an object that's two entities?
+    - "@num{1,4} @verse @oble_word? @num{1,4}"
+    - "@num{1,4} @verse @time_month @num{1,4}"  
+  
+  - bund_switch_1:
+    - "@time_month @num{1,3} @verse? @time_month @num{1,3}"
+
+  - bund_switch_2:
+    - "@num{1,5} @verse? bunds? @num{1,3}"
+    - "@time_month @num{1,3}? @time_month @num{1,3}?"
+    - spacing_threshold: 2
+
+  - bund_switch_3:
+    - "@num{1,3} @num{1,3} (spread | switch | bunds)"
+    - "@time_month @num{1,3} @verse @num{1,3}"
+
+  - float_num:  # a primitive, # should be moved to a place with defs, primitives
+    - "@num{1,5}? @spot @num{1,5}"
+
+  - egbs_hedge:  # may be more a general pattern, not just an 'egbs_hedge'
+    - "@float_num @cross"
+    - "@cross @float_num"  # keeping this separate from above pattern. This is more precise for possible matches, and will be advantageous for testing later.
+    - spacing_threshold: 2
+
+  - egbs_quantity:  # may be more a general pattern, not just an 'egbs_quantity'
+    - "@num{1,5} mill"
+    - "(small | scrap)"  # keeping this separate from above pattern. This may be advantageous for testing later
+    - spacing_threshold: 2
+
+  - price1:
+    - "@num{1,4}"
+  - full_str:
+    - "@outright_egbs @price1?"
+
+intents:
+  - egbs:
+    - examples:
+      - "i have a @outright_egbs"
+      - "i have a @full_str"

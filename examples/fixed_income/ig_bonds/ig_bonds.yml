@@ -1,0 +1,46 @@
+## entities for class_ig_bonds.py
+
+entities:
+  - ig_bond_product:
+    - file: "tests/assets/igbond_products.txt"
+  
+  - bond_quantity:
+    - mill
+    - million
+    - yard
+    - k
+    - up
+  - upcoming_year_word_extend:
+    - "@num{1,4}"
+    - validation: "int(entity) > 18 and int(entity) < 70"
+  - ordinal:
+    - file: "tests/assets/ordinals.txt"
+  - float_num:  # a primitive, # should be moved to a place with defs, primitives
+    - "@num{1,5}? @spot @num{1,5}"
+
+  - rate:
+    - "@num{1,5}"
+  - ord_month:
+    - "((@ordinal @time_month) | (@time_month @ordinal?))"
+  #- "@ig_bond_product @float_num @num{1,2} ((@ordinal @time_month) | (@time_month @ordinal?))? @upcoming_year_word_extend" # excluding float_nums for now
+  - ig_bond_rate_term:
+    - "@ig_bond_product @rate? @ord_month? @upcoming_year_word_extend?"
+    #- "@ig_bond_product @rate?"
+
+  - price1:
+    - "@num{1,4}"
+  - price2:
+    - "@num{1,4}"
+  - quant1:
+    - "@num{1,3}"
+  - quant1_part:
+    - "@quant1 @bond_quantity"
+  - full_str:
+    - "@ig_bond_rate_term @price1? @price2? @quant1_part"
+    - "@rate? @quant1_part @ig_bond_product @upcoming_year_word_extend @rate? @price1?"
+    - spacing_threshold: 3
+
+intents:
+  - igbond:
+    - examples:
+      - "i have a @full_str"
