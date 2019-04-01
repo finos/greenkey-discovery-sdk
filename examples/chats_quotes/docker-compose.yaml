@@ -1,5 +1,12 @@
 ---
 version: "3.7"
+# --- local volumes
+x-custom:
+  &custom
+  type: bind
+  source: ./custom
+  target: /custom
+# -------
 services:
   middleware-pipeline:
     image:
@@ -10,7 +17,7 @@ services:
       - GKT_API=https://scribeapi.greenkeytech.com/
       - FILE_MAKER_URL=http://file_maker/process
       - FORMATTER_URL=http://formatter/process
-      - MIDDLEWARE=FORMATTER,DISCOVERY,FILE_MAKER #
+      - MIDDLEWARE=DISCOVERY,FILE_MAKER # add FORMATTER before DISCOVERY
       - PORT=:6000
       - DISCOVERY_URL=http://discovery/process
     networks:
@@ -30,7 +37,7 @@ services:
     image:
       "docker.greenkeytech.com/chat_slack:${CHAT_SLACK_DOCKER_TAG:-latest}"
     ports:
-      - "8888:80" # set ports
+      - "8003:80" # set ports -> was 8888:80
       ## make a request (curl, python repl) to chat_slack from your workstation /status
       ## then retrieve some chats, and make sure it can return json response with chats
     environment:
@@ -40,8 +47,8 @@ services:
       - PORT=80
       - SLACK_API_URL=https://slack.com/api     # SLACK_URL
       - SLACK_ACCESS_TOKEN=xoxp-4953937137-344679330118-509400138422-a20f349799113ba21f5c91e8a190cd14
-      - SERVICE_NAME='slack'
-      - CHANNEL_NAME='ageojo_test'
+      - SERVICE_NAME=slack
+      - CHANNEL_NAME=ageojo_test
       # need DESTINATION_URL -> sending chats to middleware pipeline (different from current one as does not traverse all microservices
       - DESTINATION_URL=http://middleware-pipeline:6000/mw
     networks:
@@ -66,9 +73,13 @@ services:
       - GKT_SECRETKEY=5f3d00b5b15884c280a390725a863941a68bfe55
       - GKT_API=https://scribeapi.greenkeytech.com/
       - PORT=80
+      - NUMBER_OF_INTENTS=2
+      - FILE_LOG_LEVEL=debug
 #      - DISCOVERY_DOMAINS=broker_quotes     #TODO change from `broker_quotes`
     networks:
       - greenkey
+    volumes:
+      - <<: *custom
   # ----------------------------------------------------------------------
   file_maker:
     image:
