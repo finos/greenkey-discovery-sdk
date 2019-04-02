@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+
 """
 Test Discovery performs system testing of new intents and interpreters.
 
@@ -23,16 +24,14 @@ import editdistance
 from importlib import import_module
 from discovery_sdk_utils import find_errors_in_entity_definition
 from discovery_config import DISCOVERY_PORT, DISCOVERY_HOST, DISCOVERY_SHUTDOWN_SECRET
-from discovery_config import CONTAINER_NAME
+from discovery_config import CONTAINER_NAME, TIMEOUT, RETRIES
 from launch_discovery import launch_discovery
+
+# STATUS_CHECK_RETRIES, STATUS_CHECK_TIMEOUT
 
 """
 Functions for handling the Discovery Docker container
 """
-
-#TODO Remap the following Bash codes; confusing as opposite of standard Python codes
-BAD_EXIT_CODE = 1
-GOOD_EXIT_CODE = 0
 
 
 def docker_log_and_stop():
@@ -55,16 +54,16 @@ def check_discovery_status():
     return False
 
 
-def wait_for_discovery_status(timeout=1, retries=5):
+def wait_for_discovery_status():  # timeout=1, retries=5
     """
     Wait for Discovery to be ready
     """
-    for i in range(retries):
+    for i in range(RETRIES):
         try:
             check_discovery_status()
             return True
         except Exception:
-            time.sleep(timeout)
+            time.sleep(TIMEOUT)
     return False
 
 
@@ -72,8 +71,8 @@ def wait_for_discovery_launch():
     """
     Wait for launch to complete
     """
-    # Timeout of 25 seconds for launch
-    if not wait_for_discovery_status(timeout=5, retries=5):
+    # Timeout of 25 seconds for launch (default timeout & retries)
+    if not wait_for_discovery_status():
         print("Couldn't launch Discovery, printing Docker logs:\n---\n")
         docker_log_and_stop()
         exit(1)
