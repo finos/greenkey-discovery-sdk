@@ -8,34 +8,11 @@ x-custom:
   target: /custom
 # -------
 services:
-  middleware-pipeline:
-    image:
-      "docker.greenkeytech.com/middleware:${MIDDLEWARE_TAG:-latest}"
-    environment:
-      - GKT_USERNAME=gkt
-      - GKT_SECRETKEY=5f3d00b5b15884c280a390725a863941a68bfe55
-      - GKT_API=https://scribeapi.greenkeytech.com/
-      - FILE_MAKER_URL=http://file_maker/process
-      - FORMATTER_URL=http://formatter/process
-      - MIDDLEWARE=DISCOVERY,FILE_MAKER # add FORMATTER before DISCOVERY
-      - PORT=:6000
-      - DISCOVERY_URL=http://discovery/process
-    networks:
-      - greenkey
-    ports:
-      - "6000:6000"
-    volumes:
-      - recordings:/files
-    deploy:
-      restart_policy:
-        condition: any
-        delay: 0s
-        window: 120s
   # ----------------------------------------------------------------------
   ## FIRST STEP ###
   chat_slack:
     image:
-      "docker.greenkeytech.com/chat_slack:${CHAT_SLACK_DOCKER_TAG:-latest}"
+      "docker.greenkeytech.com/chat_slack:${CHAT_SLACK_DOCKER_TAG:-develop}"
     ports:
       - "8003:80" # set ports -> was 8888:80
       ## make a request (curl, python repl) to chat_slack from your workstation /status
@@ -50,18 +27,7 @@ services:
       - SERVICE_NAME=slack
       - CHANNEL_NAME=ageojo_test
       # need DESTINATION_URL -> sending chats to middleware pipeline (different from current one as does not traverse all microservices
-      - DESTINATION_URL=http://middleware-pipeline:6000/mw
-    networks:
-      - greenkey
-  # ----------------------------------------------------------------------
-  formatter:
-    image:
-      "docker.greenkeytech.com/formatter:${FORMATTER_DOCKER_TAG:-latest}"
-    environment:
-      - GKT_USERNAME=gkt
-      - GKT_SECRETKEY=5f3d00b5b15884c280a390725a863941a68bfe55
-      - GKT_API=https://scribeapi.greenkeytech.com/
-      - PORT=80
+      - DESTINATION_URL=http://discovery/process
     networks:
       - greenkey
   # ----------------------------------------------------------------------
@@ -81,35 +47,8 @@ services:
     volumes:
       - <<: *custom
   # ----------------------------------------------------------------------
-  file_maker:
-    image:
-      "docker.greenkeytech.com/file_maker:${FILE_MAKER_DOCKER_TAG:-latest}"
-    environment:
-      - GKT_USERNAME=gkt
-      - GKT_SECRETKEY=5f3d00b5b15884c280a390725a863941a68bfe55
-      - GKT_API=https://scribeapi.greenkeytech.com/
-      - PORT=80
-    networks:
-      - greenkey
-    volumes:
-      - recordings:/files
 # ----------------------------------------------------------------------
 networks:
   greenkey:
     driver: overlay
-  hostnet:
-    external: true
-    name: host
 
-volumes:
-  call_id_config:
-  recordings:
-  # Uncomment below for transient storage of recordings.
-  # Be warned! Removing the stack will delete all recordings & transcripts!
-  # This is a desired feature for some clients.
-  #   driver: local
-  #   driver_opts:
-  #     type: tmpfs
-  #     device: tmpfs
-  ###########################################
-  data-built:
