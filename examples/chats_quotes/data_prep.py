@@ -143,24 +143,51 @@ def write_tests(test_files=None):
   # generate intents.json in `quotes/custom` directory
 
 def write_intents_config():
-  """generates `intents.json` file in `quotes/custom` directory"""
-  print("generating intents.json file for quote vs not_quote interpreter")
+  """
+  generates `intents.json` file in `quotes/custom` directory
+    expects environment var `DIRECTORY` to contain a directory `custom`
+  :return: saves JSON file intents.json with intent to be classified and paths to training data
+  """
+  # create custom directory if it does not exist; it should already exist and contain training files
+  custom_dir = join_path(DIRECTORY, 'custom')
+  os.makedirs(custom_dir, exist_ok=True)
+
+  # TODO generalize to accomodate n number of intents and training files
+
+  train_quotes = "train_quotes_{}.txt".format(TRAIN_SIZE*100)
+  train_not_quotes = "train_not_quotes_{}.txt".format(TRAIN_SIZE*100)
+
+  training_data = [train_quotes, train_not_quotes]
+
   intents_config = {
     "intents":
       [
-        dict(label='quote', domain='quote_or_not', examples=["/custom/train_quotes_{}.txt".format(TRAIN_SIZE)]),
-        dict(label='not_quote', domain='quote_or_not', examples=["/custom/train_not_quotes_{}.txt".format(TRAIN_SIZE)])
+        dict(
+          label='quote',
+          domain='quote_or_not',
+          examples=["/custom/{}".format(train_quotes)]
+        ),
+        dict(label='not_quote',
+             domain='quote_or_not',
+             examples=["/custom/{}".format(train_not_quotes)])
       ]
   }
-  custom_dir = join_path(DIRECTORY, 'custom')
+
+  DEFINITIONS_FILENAME = 'intents.json'
   try:
-    json.dump(intents_config, open(join_path(custom_dir, 'intents.json'), 'w+'))
-  except:
-    print("Failed to write 'intents.json'. Exiting")
-    return
-  assert len(os.listdir(custom_dir)) == 3
-  print("Wrote `intents.json` to `quotes/custom/` directory:\n {}".format(os.listdir(custom_dir)))
-  return
+    print("Writing {} file".format(DEFINITIONS_FILENAME))
+    definitions_infile = join_path(custom_dir, DEFINITIONS_FILENAME)
+    json.dump(intents_config, open(definitions_infile, 'w+'))
+  except:# AssertionError:   # TODO other error for failure to write file?
+    print("Failed to write 'intents.json'. File must be added for model training")
+  try:
+    assert all(
+      [exists(join_path(custom_dir, intent_file)) in os.listdir(custom_dir)
+       for intent_file in training_data]
+    )
+  except AssertionError:
+    print("The `custom/` directory must {} and all training files named exactly as specified. If any files are missing or data file paths are invalid, Discovery will NOT train an intents classifier upon launch".format(DEFINITIONS_FILENAME))
+
 
 
 def main():
@@ -218,6 +245,7 @@ if __name__ == '__main__':
   # assert basename(DIRECTORY) == 'quotes'
 
   quotes_dir = DIRECTORY
+
 
   try:
     TRAIN_SIZE = float(sys.argv[2])

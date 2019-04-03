@@ -13,8 +13,8 @@ try:
   not_quotes_test_file = sys.argv[2]
   outfile = sys.argv[3]
 except IndexError:
-  quotes_test_file = 'test_quotes_10.txt'
-  not_quotes_test_file = 'test_not_quotes_10.txt'
+  quotes_test_file = 'test_quotes_20.txt'
+  not_quotes_test_file = 'test_not_quotes_20.txt'
   outfile = 'tests.txt' #'test_quote_or_not_10.txt'
 
 try:  
