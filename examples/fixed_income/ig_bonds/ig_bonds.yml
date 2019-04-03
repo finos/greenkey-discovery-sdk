@@ -8,6 +8,7 @@ entities:
     - mill
     - million
     - yard
+    - yards
     - k
     - up
   - upcoming_year_word_extend:
@@ -26,6 +27,7 @@ entities:
   - ig_bond_rate_term:
     - "@ig_bond_product @rate? @ord_month? @upcoming_year_word_extend?"
     #- "@ig_bond_product @rate?"
+    - spacing_threshold: 2
 
   - price1:
     - "@num{1,4}"
@@ -36,9 +38,9 @@ entities:
   - quant1_part:
     - "@quant1 @bond_quantity"
   - full_str:
-    - "@ig_bond_rate_term @price1? @price2? @quant1_part"
+    - "@ig_bond_rate_term @price1? @price2? @quant1_part?"
     - "@rate? @quant1_part @ig_bond_product @upcoming_year_word_extend @rate? @price1?"
-    - spacing_threshold: 3
+    - spacing_threshold: 4
 
 intents:
   - igbond:
