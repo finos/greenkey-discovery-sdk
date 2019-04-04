@@ -1,0 +1,1093 @@
+{
+  "segments": [
+    {
+      "speakerInfo": "UBR6MGXM2",
+      "startTimeSec": "1554410647.03",
+      "endTimeSec": "1554410647.05",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "<!here> <@UH3RCR9A6> and I just upgraded Jefferies London to their latest ASR model, SQCserver and focus demo. To upgrade to the Focus webtool we went through updating new base.env and docker-compose.yaml and conf files. Patrick H in New-York was able to connect to the London POC machine and confirm everything was working OK.",
+      "transcript": "< here> <@uh three rcr nine a six > and i just upgraded jefferies london to their latest a s r model sqcserver and focus demo to upgrade to the focus webtool we went through updating new base env and docker compose yaml and conf files patrick h in new york was able to connect to the london p o c machine and confirm everything was working o k",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UH3RCR9A6",
+      "startTimeSec": "1554389995.04",
+      "endTimeSec": "1554389995.04",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "\"god[n]\"",
+      "transcript": "\"god[n]\"",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UBR6MGXM2",
+      "startTimeSec": "1554389990.04",
+      "endTimeSec": "1554389990.04",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "Correct its a monthly update",
+      "transcript": "correct its a monthly update",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "U6NCM1A05",
+      "startTimeSec": "1554389953.02",
+      "endTimeSec": "1554389953.04",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "<@U4B1LHD0R> <@U9RRC0G00> <@UH3RCR9A6> <@UBR6MGXM2> heads up to anyone doing jefferies support that you'll need to rotate your password to <http://support.jefferies.com|support.jefferies.com> frequently. I've already been *required* to update my own (from \"Welcome1\" to \"password1\" to \"password2\")",
+      "transcript": "<@u four b one lhd zero r> <@u nine rrc zero g zero > <@uh three rcr nine a six > <@ubr six mgxm two > heads up to anyone doing jefferies support that you 'll need to rotate your password to <http://support jefferies dot com|support jefferies dot com> frequently i 've already been required to update my own (from \"welcome one \" to \"password one \" to \"password two \")",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UBR6MGXM2",
+      "startTimeSec": "1554378935.04",
+      "endTimeSec": "1554378935.04",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "Keep the team posted with further updates",
+      "transcript": "keep the team posted with further updates",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UBR6MGXM2",
+      "startTimeSec": "1554378863.03",
+      "endTimeSec": "1554378863.04",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "<@U6NCM1A05> and team thank you for your efforts on this thus far.",
+      "transcript": "<@u six ncm one a five > and team thank you for your efforts on this thus far",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UBR6MGXM2",
+      "startTimeSec": "1554378813.03",
+      "endTimeSec": "1554378813.04",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "The above SQC parameters were updated. Dictation quotes from their example list were read out and seemed to work successfully during my checkouts",
+      "transcript": "the above s q c parameters were updated dictation quotes from their example list were read out and seemed to work successfully during my checkouts",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UBR6MGXM2",
+      "startTimeSec": "1554378739.01",
+      "endTimeSec": "1554378739.04",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "``` - ACOUSTIC_SCALE=1.0\n      - BEAM=20.0\n      - CHUNK_LENGTH=1.0\n      - WORD_CONFUSIONS=False\n      - WORD_ALIGNMENTS=True\n      - CONSOLE_LOG=verbose\n      - ROOT_LOG=verbose\n      - TRACEBACK_PERIOD=1.0\n      - DATA_OUT=/scribe/data\n      - ENDPOINTING=True\n      - INTERPRETERS=True\n      - MAX_ACTIVE=5000\n      - MODEL_TYPE=tradervoice\n      - PRODUCT_CLASS=swap\n      - QUOTE_ACTIVATION_KEYWORD=confirm\n      - SILENCE_TIMEOUT=10\n      - USERS=4\n      - VERBOSE_LOGGING=True```",
+      "transcript": "```acoustic_scale= one point zero zero \n b e a m= twenty point zero zero \n chunk_length= one point zero zero \n word_confusions=false\n word_alignments=true\n console_log=verbose\n root_log=verbose\n traceback_period= one point zero zero \n data_out=/scribe/data\n e n d p o i n t i n g=true\n i n t e r p r e t e r s=true\n max_active= five thousand \n model_type=tradervoice\n product_class=swap\n quote_activation_keyword=confirm\n silence_timeout= ten \n u s e r s= four \n verbose_logging=true```",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UBR6MGXM2",
+      "startTimeSec": "1554378732.03",
+      "endTimeSec": "1554378732.04",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "<!here> BAML update: sqcserver_single_baml, baml_7 model have been deployed on their on premise machine.",
+      "transcript": "< here> b a m l update: sqcserver_single_baml baml_ seven model have been deployed on their on premise machine",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UBR6MGXM2",
+      "startTimeSec": "1554364268.03",
+      "endTimeSec": "1554364268.03",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "OK thanks Matthew",
+      "transcript": "o k thanks matthew",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "U6NCM1A05",
+      "startTimeSec": "1554346247.02",
+      "endTimeSec": "1554346247.03",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "baml_7 for now. I’m seeing indications of slight degradation in model quality with more data which might mean I need to dial back the number of epochs and the learning rate.",
+      "transcript": "baml_ seven for now i’m seeing indications of slight degradation in model quality with more data which might mean i need to dial back the number of epochs and the learning rate",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UBR6MGXM2",
+      "startTimeSec": "1554334566.03",
+      "endTimeSec": "1554334566.03",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "Cheers",
+      "transcript": "cheers",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UBR6MGXM2",
+      "startTimeSec": "1554334557.03",
+      "endTimeSec": "1554334557.03",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "<@U6NCM1A05> thanks. Let me know of we go with baml_8 or _7",
+      "transcript": "<@u six ncm one a five > thanks let me know of we go with baml_ eight or _ seven",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "U6NCM1A05",
+      "startTimeSec": "1554330013.01",
+      "endTimeSec": "1554330013.03",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "<@UBR6MGXM2> this link is updated: <https://storage.googleapis.com/gk-data/greenkey_scribe_sqcserver_single_baml.tar.gz>\nI don't think we've received more client data since yesterday when baml_7 was minted. baml_8 is ongoing with more data from Hutch.\nI'll set some small scale experiments going to assess where we stand and see if we can make further improvements.",
+      "transcript": "<@ubr six mgxm two > this link is updated: <https://storage googleapis dot com/gk data/greenkey_scribe_sqcserver_single_baml tar gz>\ni don 't think we 've received more client data since yesterday when baml_ seven was minted baml_ eight is ongoing with more data from hutch \ni 'll set some small scale experiments going to assess where we stand and see if we can make further improvements",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UBR6MGXM2",
+      "startTimeSec": "1554262792.02",
+      "endTimeSec": "1554262792.03",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "<@U6NCM1A05> makes sense will wait. When we deploy will set their PRODUCT_CLASS=swap plus any other recommended changes.....will cover with you tomorrow.",
+      "transcript": "<@u six ncm one a five > makes sense will wait when we deploy will set their product_class=swap plus any other recommended changes will cover with you tomorrow",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "U6NCM1A05",
+      "startTimeSec": "1554258853.01",
+      "endTimeSec": "1554258853.02",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "I strongly advocate for their deployment to be locked to the swap product interpreter to remove any issues with the `any` product classifier. That’s accomplished by setting `PRODUCT_CLASS=swap` in the docker-compose.yaml",
+      "transcript": "i strongly advocate for their deployment to be locked to the swap product interpreter to remove any issues with the `any` product classifier that’s accomplished by setting `product_class=swap` in the docker compose yaml",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "U6NCM1A05",
+      "startTimeSec": "1554258779.00",
+      "endTimeSec": "1554258779.02",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "<@UBR6MGXM2> This is “blocked” by waiting for BAML SMEs to respond to issues raised today but if decision is to deploy anyways, updated models are at\n<https://storage.googleapis.com/gk-models/nnet_baml_7.tar.gz>\n<https://storage.googleapis.com/gk-models/baml_7.tar.gz>\nCustom SQCServer with latest changes to BAML Swap interpreter is\n<https://storage.googleapis.com/gk-data/greenkey_sqcserver_single_baml.tar.gz>",
+      "transcript": "<@ubr six mgxm two > this is “blocked” by waiting for b a m l smes to respond to issues raised today but if decision is to deploy anyways updated models are at\n<https://storage googleapis dot com/gk models/nnet_baml_ seven tar gz>\n<https://storage googleapis dot com/gk models/baml_ seven tar gz>\ncustom sqcserver with latest changes to b a m l swap interpreter is\n<https://storage googleapis dot com/gk data/greenkey_sqcserver_single_baml tar gz>",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UBR6MGXM2",
+      "startTimeSec": "1554228026.02",
+      "endTimeSec": "1554228026.02",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "I will test this out now",
+      "transcript": "i will test this out now",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UBR6MGXM2",
+      "startTimeSec": "1554228019.02",
+      "endTimeSec": "1554228019.02",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "thanks guys",
+      "transcript": "thanks guys",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UFQRJVC5P",
+      "startTimeSec": "1554222852.02",
+      "endTimeSec": "1554222852.02",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "I’ll try to get a PR out later today",
+      "transcript": "i’ll try to get a p r out later today",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UFQRJVC5P",
+      "startTimeSec": "1554222824.02",
+      "endTimeSec": "1554222824.02",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "sigh… yeah",
+      "transcript": "sigh… yeah",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "U9RRC0G00",
+      "startTimeSec": "1554222255.02",
+      "endTimeSec": "1554222255.02",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "sounds like we’ve gotta make ssl &amp; basic auth independent after all",
+      "transcript": "sounds like we’ve gotta make ssl amp; basic auth independent after all",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "U6NCM1A05",
+      "startTimeSec": "1554219969.01",
+      "endTimeSec": "1554219969.02",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "I understand what this is now, but I'm wanting to get specificity around the language actually spoken here. I'll rephrase.",
+      "transcript": "i understand what this is now but i 'm wanting to get specificity around the language actually spoken here i 'll rephrase",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UBR6MGXM2",
+      "startTimeSec": "1554218787.02",
+      "endTimeSec": "1554218787.02",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "Great will try this on my lab deployment",
+      "transcript": "great will try this on my lab deployment",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UFQRJVC5P",
+      "startTimeSec": "1554218624.02",
+      "endTimeSec": "1554218624.02",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "I think if you just remove those two lines and restart nginx that should do the trick",
+      "transcript": "i think if you just remove those two lines and restart nginx that should do the trick",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UFQRJVC5P",
+      "startTimeSec": "1554218601.01",
+      "endTimeSec": "1554218601.02",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "<https://github.com/greenkeytech/scribe/blob/develop/deployments/swarm/dictation-machine/conf/nginx-ssl-enabled.conf#L25-L26>",
+      "transcript": "<https://github dot com/greenkeytech/scribe/blob/develop/deployments/swarm/dictation machine/conf/nginx ssl enabled conf#l twenty five l twenty six >",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UBR6MGXM2",
+      "startTimeSec": "1554218502.01",
+      "endTimeSec": "1554218502.02",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "Can we not hash out a few lines in the docker-compose yaml to avoid password?",
+      "transcript": "can we not hash out a few lines in the docker compose yaml to avoid password",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "U1DCTUUP9",
+      "startTimeSec": "1554218479.02",
+      "endTimeSec": "1554218479.02",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "oh that's interesting",
+      "transcript": "oh that 's interesting",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UBR6MGXM2",
+      "startTimeSec": "1554218460.02",
+      "endTimeSec": "1554218460.02",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "with out this is does not work",
+      "transcript": "with out this is does not work",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UBR6MGXM2",
+      "startTimeSec": "1554218451.01",
+      "endTimeSec": "1554218451.02",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "<@UFQRJVC5P> understood, we need to enable SSL to have their Chrome browser pick up the mic for dictation",
+      "transcript": "<@ufqrjvc five p> understood we need to enable s s l to have their chrome browser pick up the mic for dictation",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UFQRJVC5P",
+      "startTimeSec": "1554218425.02",
+      "endTimeSec": "1554218425.02",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "I don’t think that would work",
+      "transcript": "i don’t think that would work",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "U6NCM1A05",
+      "startTimeSec": "1554218400.01",
+      "endTimeSec": "1554218400.02",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "<@UFQRJVC5P> Can you just delete the .htpasswd file to turn the login off?",
+      "transcript": "<@ufqrjvc five p> can you just delete the htpasswd file to turn the login off",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UFQRJVC5P",
+      "startTimeSec": "1554215441.01",
+      "endTimeSec": "1554215441.02",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "<@UBR6MGXM2> FYI - the UI will not prompt for a password if you disable SSL on the deployment",
+      "transcript": "<@ubr six mgxm two > f y ithe u i will not prompt for a password if you disable s s l on the deployment",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UBR6MGXM2",
+      "startTimeSec": "1554207374.00",
+      "endTimeSec": "1554207374.01",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "<!here> Jefferies NYC have been upgraded to our Focus web tool 0.0.7. The latest ASR model with supporting interpreters have also been deployed - will wait for Patricks feedback - Lida has already stated they would like to have the UI login password removed. London upgrade is planned for tonight.",
+      "transcript": "< here> jefferies n y c have been upgraded to our focus web tool zero point zero zero the latest a s r model with supporting interpreters have also been deployedwill wait for patricks feedbacklida has already stated they would like to have the u i login password removed london upgrade is planned for tonight",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UGRN6UT8C",
+      "startTimeSec": "1554199992.01",
+      "endTimeSec": "1554199992.01",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "so a EUR 5v7v10 year fly could still have DV01 75k USD",
+      "transcript": "so a e u r five v seven v ten year fly could still have dv one seventy five k u s d",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UGRN6UT8C",
+      "startTimeSec": "1554199969.00",
+      "endTimeSec": "1554199969.01",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "Lalit's response for DV01 made sense i thought?  Basically they use DV01 in place of a notional amount, so it can be quoted in EUR/GBP/USD regardless of the underlying quote structure or currency",
+      "transcript": "lalit 's response for dv one made sense i thought basically they use dv one in place of a notional amount so it can be quoted in e u r/g b p/u s d regardless of the underlying quote structure or currency",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UGRN6UT8C",
+      "startTimeSec": "1554199901.01",
+      "endTimeSec": "1554199901.01",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "not sure about the prompt for LCH Clearing, nor the HICPXT !",
+      "transcript": "not sure about the prompt for l c h clearing nor the h i c p x t",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UGRN6UT8C",
+      "startTimeSec": "1554199849.00",
+      "endTimeSec": "1554199849.01",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "i think when they quote vs 3's or vs 6's it is basically short hand for vs 3 month Euribor basis or 6 month Euribor basis in answer to the first question....but they should confirm it anyway",
+      "transcript": "i think when they quote vs three 's or vs six 's it is basically short hand for vs three month euribor basis or six month euribor basis in answer to the first question but they should confirm it anyway",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "U6NCM1A05",
+      "startTimeSec": "1554154353.95",
+      "endTimeSec": "1554154354.01",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "First pass for BAML questions - please review in case you have any insight here <@UFYC0QQFK> <@UGRN6UT8C> <@UBR6MGXM2>\n```\n---\nTRANSCRIPT hi please can you show immy U9-15May24 EUR 6s IRS in 30k euro\nIMSTRING EUR U9-15May24 EURIBOR 6m\n\nWhat implies EURIBOR?\n\n---\nTRANSCRIPT \"19jun19 into 10y in 222 million\" \nIMSTRING  19jun19-10Y LCH Clearing 222m\n\nWhere does LCH come from?\n\n---\nTRANSCRIPT fives tens thirties out of the tenth of june nineteen in one hundred k of the belly\nIMSTRING   5x10x30 starting 10jun19 LCH 100k belly\n\nWhere does LCH come from?\n---\nWhat do you say out loud for HICPXT?\n---\nTRANSCRIPT \"zero by 3 for today's fix\"  \nIMSTRING 0x3m FRA vs 3m LIBOR\n\nDo we assume 3m LIBOR for all fixed rate agreements or should it be tied to the longer term of the FRA? Should it take the same term as the FRA? Should we leave off Libor and just return the following?\n\nIMSTRING 0x3m FRA\n\n----\nWhat do you say for dv01? From <http://baml.greenkeytech.com|baml.greenkeytech.com>, it looks like it's either 'd v oh one' or 'dollars'. Is this correct?\n```",
+      "transcript": "first pass for b a m l questionsplease review in case you have any insight here <@ufyc zero qqfk> <@ugrn six ut eight c> <@ubr six mgxm two >\n```\n \nt r a n s c r i p t hi please can you show immy u nine fifteen may twenty four e u r sixes i r s in thirty k euro\ni m s t r i n g e u r u nine fifteen may twenty four e u r i b o r six m\n\nwhat implies e u r i b o r \n\n \nt r a n s c r i p t \" nineteen jun nineteen into ten y in two hundred and twenty two million\" \ni m s t r i n g nineteen jun nineteen ten y l c h clearing two hundred and twenty two m\n\nwhere does l c h come from \n\n \nt r a n s c r i p t fives tens thirties out of the tenth of june nineteen in one hundred k of the belly\ni m s t r i n g five x ten x thirty starting ten jun nineteen l c h one hundred k belly\n\nwhere does l c h come from \n \nwhat do you say out loud for h i c p x t \n \nt r a n s c r i p t \"zero by three for today 's fix\" \ni m s t r i n g zero x three m f r a vs three m l i b o r\n\ndo we assume three m l i b o r for all fixed rate agreements or should it be tied to the longer term of the f r a should it take the same term as the f r a should we leave off libor and just return the following \n\ni m s t r i n g zero x three m f r a\n\n \nwhat do you say for dv one from <http://baml greenkeytech dot com|baml greenkeytech dot com> it looks like it 's either 'd v oh one ' or 'dollars ' is this correct \n```",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "U6NCM1A05",
+      "startTimeSec": "1554134446.95",
+      "endTimeSec": "1554134447.01",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "summary of client data processing catch-up with <@UFYC0QQFK> <@UBR6MGXM2> <@UGRN6UT8C> <@UH3RCR9A6>\n\nJefferies\n- UK completely blocked and unresponsive due to Brexit. Lida has not read any emails regarding perceived issues or onboarded how the EM bonds SMEs read quotes.\n- US (NY) able and willing to onboard. Patrick understands requirements and has not yet clarified lexicon around how IG brokers quote or what IG brokers are trading. Still operating on assumptions there, but Patrick is willing to proceed with unclear timeline. Gagan to work on remote access to view onboarding efforts from US. After response, we will update interpreters and US Jefferies team to provide large amounts of data.\n\nBAML\n- agreement to provide specific questions via email to Lalit - follow-up and weekly call on Wednesday\n- SMEs will not be on weekly call Wednesday, but we'll hope they respond to questions to be sent by EOD Chicago.\n- Deployment updates very hard, and Gagan is able to spearhead by going on person.",
+      "transcript": "summary of client data processing catch up with <@ufyc zero qqfk> <@ubr six mgxm two > <@ugrn six ut eight c> <@uh three rcr nine a six >\n\njefferies\n u k completely blocked and unresponsive due to brexit lida has not read any emails regarding perceived issues or onboarded how the e m bonds smes read quotes \n u s (n y) able and willing to onboard patrick understands requirements and has not yet clarified lexicon around how i g brokers quote or what i g brokers are trading still operating on assumptions there but patrick is willing to proceed with unclear timeline gagan to work on remote access to view onboarding efforts from u s after response we will update interpreters and u s jefferies team to provide large amounts of data \n\nb a m l\n agreement to provide specific questions via email to lalitfollow up and weekly call on wednesday\n smes will not be on weekly call wednesday but we 'll hope they respond to questions to be sent by e o d chicago \n deployment updates very hard and gagan is able to spearhead by going on person",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UH3RCR9A6",
+      "startTimeSec": "1553878140.98",
+      "endTimeSec": "1553878141.00",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "big thanks everyone! i've been having some erratic behavior -- it seems like the length of time i need to research because it's new tech _plus_ the issue is too long to get consistent errors :grimacing:  in addition, i'm documenting my troubleshooting steps for future cust engs, so i was just seeing if anyone had \"tribal knowledge\" they wanted to share. i really appreciate it :smiley:",
+      "transcript": "big thanks everyone i 've been having some erratic behavior it seems like the length of time i need to research because it 's new tech _plus_ the issue is too long to get consistent errors :grimacing: in addition i 'm documenting my troubleshooting steps for future cust engs so i was just seeing if anyone had \"tribal knowledge\" they wanted to share i really appreciate it :smiley:",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "U9RRC0G00",
+      "startTimeSec": "1553872926.98",
+      "endTimeSec": "1553872927.00",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "yeah, my process looks a lot like what  <@UFQRJVC5P> described. `calltester` first to test end-to-end success. if you get errors, then follow the data through the pipeline by tailing the logs of each service (freeswitch -&gt; ESH -&gt; decoder-pool -&gt; middleware -&gt; relayserver). sometimes it’s more useful to go from the end (relayserver) backwards to freeswitch",
+      "transcript": "yeah my process looks a lot like what <@ufqrjvc five p> described `calltester` first to test end to end success if you get errors then follow the data through the pipeline by tailing the logs of each service (freeswitchgt; e s hgt; decoder poolgt; middlewaregt; relayserver) sometimes it’s more useful to go from the end (relayserver) backwards to freeswitch",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UFQRJVC5P",
+      "startTimeSec": "1553872770.00",
+      "endTimeSec": "1553872770.00",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "run that and tail the logs of the various components (ESH, relayserver, decoder pool)",
+      "transcript": "run that and tail the logs of the various components (e s h relayserver decoder pool)",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UFQRJVC5P",
+      "startTimeSec": "1553872692.99",
+      "endTimeSec": "1553872693.00",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "<@UH3RCR9A6> I’m guessing you are already aware of `calltester`, but I make heavy use of that when troubleshooting deployment issues",
+      "transcript": "<@uh three rcr nine a six > i’m guessing you are already aware of `calltester` but i make heavy use of that when troubleshooting deployment issues",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UEKBXLYRH",
+      "startTimeSec": "1553872592.99",
+      "endTimeSec": "1553872593.00",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "I don’t really know.. but this repo <https://github.com/greenkeytech/client-deployments> has some client-specific things in it that may be useful",
+      "transcript": "i don’t really know but this repo <https://github dot com/greenkeytech/client deployments> has some client specific things in it that may be useful",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UH3RCR9A6",
+      "startTimeSec": "1553871499.99",
+      "endTimeSec": "1553871500.00",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "hi friends :wave:  are there deployment troubleshooting docs? or even someone's informal notes? asking specifically about call-dashboard for myself. :smiley: tia",
+      "transcript": "hi friends :wave: are there deployment troubleshooting docs or even someone 's informal notes asking specifically about call dashboard for myself :smiley: tia",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "U2983AF8V",
+      "startTimeSec": "1553638442.36",
+      "endTimeSec": "1553638442.36",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "corey pushed a new version earlier today -- i informed gagan",
+      "transcript": "corey pushed a new version earlier today i informed gagan",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "U6NCM1A05",
+      "startTimeSec": "1553636271.36",
+      "endTimeSec": "1553636271.36",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "Clearly we need to update this",
+      "transcript": "clearly we need to update this",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UBR6MGXM2",
+      "startTimeSec": "1553607098.36",
+      "endTimeSec": "1553607098.36",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "I am getting them to scan the focus-demo_latest",
+      "transcript": "i am getting them to scan the focus demo_latest",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UBR6MGXM2",
+      "startTimeSec": "1553606667.36",
+      "endTimeSec": "1553606667.36",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "the latest on there is from 27/02",
+      "transcript": "the latest on there is from twenty seven / two",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UBR6MGXM2",
+      "startTimeSec": "1553606645.36",
+      "endTimeSec": "1553606645.36",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "<!here> need the latest docker image for focus webtool on our google bucket",
+      "transcript": "< here> need the latest docker image for focus webtool on our google bucket",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "U6NCM1A05",
+      "startTimeSec": "1553546660.35",
+      "endTimeSec": "1553546660.36",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "Maybe we do want a wake word. Mistakes for wake words matter a lot.",
+      "transcript": "maybe we do want a wake word mistakes for wake words matter a lot",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "U6NCM1A05",
+      "startTimeSec": "1553546615.35",
+      "endTimeSec": "1553546615.36",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "it's not particularly about a \"new job\" but a fresh segment",
+      "transcript": "it 's not particularly about a \"new job\" but a fresh segment",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "U6NCM1A05",
+      "startTimeSec": "1553546572.35",
+      "endTimeSec": "1553546572.36",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "that sounds suspiciously like a wake word",
+      "transcript": "that sounds suspiciously like a wake word",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "U1DCTUUP9",
+      "startTimeSec": "1553546491.36",
+      "endTimeSec": "1553546491.36",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "right?",
+      "transcript": "right",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "U1DCTUUP9",
+      "startTimeSec": "1553546485.35",
+      "endTimeSec": "1553546485.36",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "It sounds vaguely like what we're going for is for the \"confirm\" hotword to trigger  a new transcription job",
+      "transcript": "it sounds vaguely like what we 're going for is for the \"confirm\" hotword to trigger a new transcription job",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "U6NCM1A05",
+      "startTimeSec": "1553546351.32",
+      "endTimeSec": "1553546351.35",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "From feedback from <@UFYC0QQFK>, <@UGRN6UT8C>, and <@UBR6MGXM2>, it sounds like our UI around the \"confirm\" keyword is very unintuitive to end users.\nCurrent behavior:\nImmediately begin quote interpretation and ignore everything before that word. This doesn't chop transcriptions into pieces.\nExpected behavior:\nStart a new line in transcription and immediately begin quote interpretation.\n\nA general question for <@U1DCTUUP9> <@UCW1YDJHH> and <@U2983AF8V> - when can we have a microservice change the number of segments in a call or recording? That would satisfy the expected behavior, but this may need more thought.\nAlternatively, should we consider just putting newlines in the transcript string?",
+      "transcript": "from feedback from <@ufyc zero qqfk> <@ugrn six ut eight c> and <@ubr six mgxm two > it sounds like our u i around the \"confirm\" keyword is very unintuitive to end users \ncurrent behavior:\nimmediately begin quote interpretation and ignore everything before that word this doesn 't chop transcriptions into pieces \nexpected behavior:\nstart a new line in transcription and immediately begin quote interpretation \n\na general question for <@u one dctuup nine > <@ucw one ydjhh> and <@u two thousand nine hundred and eighty three af eight v>when can we have a microservice change the number of segments in a call or recording that would satisfy the expected behavior but this may need more thought \nalternatively should we consider just putting newlines in the transcript string",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UFYC0QQFK",
+      "startTimeSec": "1553542301.35",
+      "endTimeSec": "1553542301.35",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "are you joining the call starting now?",
+      "transcript": "are you joining the call starting now",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UFYC0QQFK",
+      "startTimeSec": "1553542286.35",
+      "endTimeSec": "1553542286.35",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "yes, whatever you need",
+      "transcript": "yes whatever you need",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "U6NCM1A05",
+      "startTimeSec": "1553542261.33",
+      "endTimeSec": "1553542261.35",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "<@UFYC0QQFK> are you willing to test <http://webtool-general.greenkeytech.com|webtool-general.greenkeytech.com> (username greenkey, password gr33nk3y1!)? I spoke with <@U2983AF8V> and it's getting clearer that we'll want to migrate Jefferies from the old frontend (webtool) to focus-demo, especially if it continues to hold up well\n<@UBR6MGXM2> thoughts?",
+      "transcript": "<@ufyc zero qqfk> are you willing to test <http://webtool general greenkeytech dot com|webtool general greenkeytech dot com> (username greenkey password gr thirty three nk three y one ) i spoke with <@u two thousand nine hundred and eighty three af eight v> and it 's getting clearer that we 'll want to migrate jefferies from the old frontend (webtool) to focus demo especially if it continues to hold up well\n<@ubr six mgxm two > thoughts",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "U6NCM1A05",
+      "startTimeSec": "1553270808.34",
+      "endTimeSec": "1553270808.35",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "Any word on if NY Jefferies deployment works at all from end user perspective?",
+      "transcript": "any word on if n y jefferies deployment works at all from end user perspective",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UBR6MGXM2",
+      "startTimeSec": "1553270776.34",
+      "endTimeSec": "1553270776.35",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "<@U6NCM1A05> ha ha, I have requested more from him he sould be sending shortly",
+      "transcript": "<@u six ncm one a five > ha ha i have requested more from him he sould be sending shortly",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UGRN6UT8C",
+      "startTimeSec": "1553269667.34",
+      "endTimeSec": "1553269667.35",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "who doesn't like ketchup though right?  it's understandable :yum:",
+      "transcript": "who doesn 't like ketchup though right it 's understandable :yum:",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "U6NCM1A05",
+      "startTimeSec": "1553269600.33",
+      "endTimeSec": "1553269600.35",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "```\nKHC 3 26\t150\t145\t10000\t\tstc\t92.54\t92.85\t157\t152\nKHC 4.625 29\t170\t167\t\t5000\t\t101.81\t102.06\t170\t167\nKHC 6.75 32\t240\t235\t\t3610\t\t115.68\t116.22\t234\t229\nKHC 6.875 39\t270\t265\t\t1000\t\t113.39\t114.06\t287\t282\nKHC 5 42\t243\t238\t4000\t1000\t\t93.85\t94.5\t255\t250\nKHC 5.2 45\t247\t240\t7500\t\t\t95.71\t96.68\t253\t246\nKHC 4.375 46\t222\t217\t\t5000\t\t87.25\t87.93\t227\t222\n```",
+      "transcript": "```\nk h c three twenty six \t one hundred and fifty \t one hundred and forty five \t ten thousand \t\tstc\t ninety two point fifty four \t ninety two point eighty five \t one hundred and fifty seven \t one hundred and fifty two \nk h c four point six hundred and twenty five twenty nine \t one hundred and seventy \t one hundred and sixty seven \t\t five thousand \t\t one hundred and one point eighty one \t one hundred and two point zero six \t one hundred and seventy \t one hundred and sixty seven \nk h c six point seventy five thirty two \t two hundred and forty \t two hundred and thirty five \t\t three thousand six hundred and ten \t\t one hundred and fifteen point sixty eight \t one hundred and sixteen point twenty two \t two hundred and thirty four \t two hundred and twenty nine \nk h c six point eight hundred and seventy five thirty nine \t two hundred and seventy \t two hundred and sixty five \t\t one thousand \t\t one hundred and thirteen point thirty nine \t one hundred and fourteen point zero six \t two hundred and eighty seven \t two hundred and eighty two \nk h c five forty two \t two hundred and forty three \t two hundred and thirty eight \t four thousand \t one thousand \t\t ninety three point eighty five \t ninety four point five \t two hundred and fifty five \t two hundred and fifty \nk h c five point two forty five \t two hundred and forty seven \t two hundred and forty \t seven thousand five hundred \t\t\t ninety five point seventy one \t ninety six point sixty eight \t two hundred and fifty three \t two hundred and forty six \nk h c four point three hundred and seventy five forty six \t two hundred and twenty two \t two hundred and seventeen \t\t five thousand \t\t eighty seven point twenty five \t eighty seven point ninety three \t two hundred and twenty seven \t two hundred and twenty two \n```",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "U6NCM1A05",
+      "startTimeSec": "1553269577.34",
+      "endTimeSec": "1553269577.35",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "<@UBR6MGXM2> thanks for runs from Jefferies NY. Apparently they only trade ketchup companies",
+      "transcript": "<@ubr six mgxm two > thanks for runs from jefferies n y apparently they only trade ketchup companies",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UGRN6UT8C",
+      "startTimeSec": "1553268905.34",
+      "endTimeSec": "1553268905.34",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "<@U6NCM1A05> thanks for the notes - i will add to these and send out to us and the BAML attendees :grin:",
+      "transcript": "<@u six ncm one a five > thanks for the notesi will add to these and send out to us and the b a m l attendees :grin:",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "U2983AF8V",
+      "startTimeSec": "1553268553.33",
+      "endTimeSec": "1553268553.34",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "There's still an ongoing discussion about whether we allow users to add products themselves (i.e. update what the IM string can output themselves) or if they have to come to us...",
+      "transcript": "there 's still an ongoing discussion about whether we allow users to add products themselves (i e update what the i m string can output themselves) or if they have to come to us",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "U2983AF8V",
+      "startTimeSec": "1553268431.32",
+      "endTimeSec": "1553268431.34",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "<@U6NCM1A05> I mentioned this to <@UBR6MGXM2> as well today. I think the main reason to have them do IM string corrections would be (1) to have 100% data integrity in their own data base and (2) to be able to measure character level accuracy for the quotes easily. There's no automated training of it anytime soon, so users should know that only the transcript can get updated automatically in production.",
+      "transcript": "<@u six ncm one a five > i mentioned this to <@ubr six mgxm two > as well today i think the main reason to have them do i m string corrections would be ( one ) to have one hundred percent data integrity in their own data base and ( two ) to be able to measure character level accuracy for the quotes easily there 's no automated training of it anytime soon so users should know that only the transcript can get updated automatically in production",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "U6NCM1A05",
+      "startTimeSec": "1553268185.32",
+      "endTimeSec": "1553268185.34",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "<@UGRN6UT8C> <@UBR6MGXM2> One thing we need clarity around is the process for corrected imStrings. There is zero automated process for this presently. I have to manually go in to the data, identify where corrected imstrings are present, and understand whether it was a transcription error or an interpretation error, then apply fixes to the interpreter if it doesn't conflict with other assumptions we made.",
+      "transcript": "<@ugrn six ut eight c> <@ubr six mgxm two > one thing we need clarity around is the process for corrected imstrings there is zero automated process for this presently i have to manually go in to the data identify where corrected imstrings are present and understand whether it was a transcription error or an interpretation error then apply fixes to the interpreter if it doesn 't conflict with other assumptions we made",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "U6NCM1A05",
+      "startTimeSec": "1553267440.27",
+      "endTimeSec": "1553267440.34",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "Summary of BAML meeting:\n\nBAML to setup VMs Monday and contact Gagan after setup to get deployment working\nBAML to update example list with \"transcripts\" (how they would say them)\nGagan to provide documentation around other product classes to BAML\nMatthew to work on extending interpreters as follows:\n- add k to quantity for swap\n- add currency to quantity\n- add default currency for swap\n  - Best accomplished by using focus-demo to provide URLs that specify which interpreter is in use. I would then make GBP, USD, and EUR swap interpreters and we would provide hard-coded URLs that direct them to the different products. <@UBR6MGXM2>, can we deploy focus-demo *instead* of scribe-webtool? That makes this issue much easier to resolve as scribe-webtool doesn't support hard coding interpreters via url afaik.\n- BAML must have for POC success - add swap vs future structures\n  - we need more examples of which BAML has promised to provide a few with \"transcripts\"\n- BAML like to have - add swap vs bond structures\nTimeline for new data or for examples is unclear, but ASAP from BAML. Deliverables from GK to BAML were promised by April 1.\n\nThe audio on the webex was rough. I was missing 20-30% of the conversation for those two hours. Should we send a Jabra out to GK London?",
+      "transcript": "summary of b a m l meeting:\n\nb a m l to setup vms monday and contact gagan after setup to get deployment working\nb a m l to update example list with \"transcripts\" (how they would say them)\ngagan to provide documentation around other product classes to b a m l\nmatthew to work on extending interpreters as follows:\n add k to quantity for swap\n add currency to quantity\n add default currency for swap\n best accomplished by using focus demo to provide urls that specify which interpreter is in use i would then make g b p u s d and e u r swap interpreters and we would provide hard coded urls that direct them to the different products <@ubr six mgxm two > can we deploy focus demo instead of scribe webtool that makes this issue much easier to resolve as scribe webtool doesn 't support hard coding interpreters via url afaik \n b a m l must have for p o c successadd swap vs future structures\n we need more examples of which b a m l has promised to provide a few with \"transcripts\"\n b a m l like to haveadd swap vs bond structures\ntimeline for new data or for examples is unclear but a s a p from b a m l deliverables from g k to b a m l were promised by april one \n\nthe audio on the webex was rough i was missing twenty thirty percent of the conversation for those two hours should we send a jabra out to g k london",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "U2983AF8V",
+      "startTimeSec": "1553262911.33",
+      "endTimeSec": "1553262911.34",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "<@UBR6MGXM2> <@U6NCM1A05> you are now both owners on the runs email group.",
+      "transcript": "<@ubr six mgxm two > <@u six ncm one a five > you are now both owners on the runs email group",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UBR6MGXM2",
+      "startTimeSec": "1553256002.33",
+      "endTimeSec": "1553256002.33",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "Sounds good",
+      "transcript": "sounds good",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "U2983AF8V",
+      "startTimeSec": "1553255968.32",
+      "endTimeSec": "1553255968.33",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "Cool yeah that should be all we need to transfer. <@U6NCM1A05> may want to carve some time out next week to do the training and document it so it’s straightforward going forward. ",
+      "transcript": "cool yeah that should be all we need to transfer <@u six ncm one a five > may want to carve some time out next week to do the training and document it so it’s straightforward going forward",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UBR6MGXM2",
+      "startTimeSec": "1553255861.33",
+      "endTimeSec": "1553255861.33",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "Noted on your point above",
+      "transcript": "noted on your point above",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UBR6MGXM2",
+      "startTimeSec": "1553255854.33",
+      "endTimeSec": "1553255854.33",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "we can create tar- balls and scp between machines but cannot pull or transfer data.",
+      "transcript": "we can create tar balls and scp between machines but cannot pull or transfer data",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "U2983AF8V",
+      "startTimeSec": "1553255831.32",
+      "endTimeSec": "1553255831.33",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "We can sftp via the file transcription machine fairly easily, but don’t want to keep it up if they aren’t going to send us any files. For that, they’d need to share their public key for the instance they are sending files from. ",
+      "transcript": "we can sftp via the file transcription machine fairly easily but don’t want to keep it up if they aren’t going to send us any files for that they’d need to share their public key for the instance they are sending files from",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UBR6MGXM2",
+      "startTimeSec": "1553255763.32",
+      "endTimeSec": "1553255763.33",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "I think we should be prepared you never know - Jefferies have already said unlikely but I have good relationships with these guys so you never know",
+      "transcript": "i think we should be prepared you never knowjefferies have already said unlikely but i have good relationships with these guys so you never know",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "U2983AF8V",
+      "startTimeSec": "1553255703.32",
+      "endTimeSec": "1553255703.33",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "You mean for them to send us files? Are they willing to send the data that way?",
+      "transcript": "you mean for them to send us files are they willing to send the data that way",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UBR6MGXM2",
+      "startTimeSec": "1553255637.31",
+      "endTimeSec": "1553255637.33",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "<@U2983AF8V> From speaking with the tech server folks I think pulling the data may be challenging, on site training might be better. I think going forward we should have a GK FTP site setup for Jefferies and BAML as a back up.",
+      "transcript": "<@u two thousand nine hundred and eighty three af eight v> from speaking with the tech server folks i think pulling the data may be challenging on site training might be better i think going forward we should have a g k f t p site setup for jefferies and b a m l as a back up",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "U2983AF8V",
+      "startTimeSec": "1553255381.31",
+      "endTimeSec": "1553255381.32",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "<@UBR6MGXM2> <@UGRN6UT8C> <@U6NCM1A05> sounds like some corrections are being done at jefferies? At some point we need to (1) pull accuracy numbers. This should be doable via the scribedata API comparing their corrections. And (2) migrate the data / trigger on prem training. Unless they want to send data to us from the instance? ",
+      "transcript": "<@ubr six mgxm two > <@ugrn six ut eight c> <@u six ncm one a five > sounds like some corrections are being done at jefferies at some point we need to ( one ) pull accuracy numbers this should be doable via the scribedata a p i comparing their corrections and ( two ) migrate the data / trigger on prem training unless they want to send data to us from the instance",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UBR6MGXM2",
+      "startTimeSec": "1553255217.32",
+      "endTimeSec": "1553255217.32",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "Good information <@U6NCM1A05>",
+      "transcript": "good information <@u six ncm one a five >",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UFYC0QQFK",
+      "startTimeSec": "1553203860.32",
+      "endTimeSec": "1553203860.32",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "that's def helpful",
+      "transcript": "that 's def helpful",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "U6NCM1A05",
+      "startTimeSec": "1553203415.32",
+      "endTimeSec": "1553203415.32",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "<@UFYC0QQFK> these are what we need to focus on, apparently",
+      "transcript": "<@ufyc zero qqfk> these are what we need to focus on apparently",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "U6NCM1A05",
+      "startTimeSec": "1553203318.12",
+      "endTimeSec": "1553203318.32",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "```\nTicker               Frequency\n---------------|---------------\nTURKEY         |            279\nSOAF           |            120\nUKRAIN         |            117\nLEBAN          |            108\nRUSSIA         |             91\nQATAR          |             84\nGHANA          |             69\nOMAN           |             64\nNGERIA         |             61\nKSA            |             60\nBHRAIN         |             51\nESKOM          |             40\nTAQAUH         |             40\nQTELQD         |             37\nTURKSK         |             36\nIVYCST         |             34\nSENEGL         |             30\nSECO           |             28\nMUBAUH         |             26\nAFREXI         |             25\nDPWDU          |             23\nANGOL          |             22\nKENINT         |             20\nADGB           |             20\nKAZAKS         |             18\nREPNAM         |             16\nBTUN           |             16\nEXIMUK         |             16\nOMANGS         |             16\nZAMBIN         |             15\nEGYPT          |             14\nBENIN          |             13\nKWIPKK         |             12\nOILGAS         |             12\nGABON          |             12\nJORDAN         |             12\nTLWLN          |             10\nKUWIB          |             10\nAFRFIN         |             10\nBOAD           |             10\nEAPART         |             10\nERESQD         |             10\nKOS            |             10\nPUMAFN         |             10\nACCESS         |             10\nZENITH         |             10\nETHOPI         |              9\nREPCAM         |              9\nMHPSA          |              9\nOSCHAD         |              9\nMOZAM          |              9\nREPCON         |              9\nSHARSK         |              8\nSAFTRA         |              8\nMETINV         |              8\nSOAFSK         |              8\nMUMTAK         |              8\nEQPTRC         |              8\nADNOUH         |              8\nNOGLN          |              8\nSABIC          |              8\nDUGB           |              8\nKZOKZ          |              7\nIRAQ           |              6\nARMEN          |              6\nBELRUS         |              6\nINTLWT         |              6\nUZBEK          |              6\nAZERBJ         |              6\nUBANL          |              5\nDIAMBK         |              5\nSEPLLN         |              5\nDTEKUA         |              5\nHLSTWR         |              5\nDAMACR         |              5\nIHSHLD         |              5\nKUWAIE         |              5\nTNZNIA         |              5\nLIQTEL         |              5\nPTABNK         |              5\nFIDBAN         |              5\nECOTRA         |              5\nRWANDA         |              5\nSEYCHE         |              5\nFBNNL          |              5\nRAKS           |              4\nDIFCAE         |              4\nINVCOR         |              4\nRAILUA         |              4\nEMDEBK         |              4\nALHILA         |              4\nFINS           |              4\nOMGRID         |              4\nKERPW          |              4\nMOROC          |              4\nOTELOM         |              4\nOCPMR          |              3\nMAZOON         |              2\nTCGLN          |              2\nGEOCAP         |              2\nMRIYA          |              2\nPRBANK         |              2\nGEOROG         |              2\nGEBGG          |              2\nGRAIL          |              2\nGEORG          |              2\nEMDEDBK        |              1\nBSZ            |              1\nUKRLAN         |              1\nAGTPW          |              1\nFXPOLN         |              1\n```",
+      "transcript": "```\nticker frequency\n | \nt u r k e y | two hundred and seventy nine \ns o a f | one hundred and twenty \nu k r a i n | one hundred and seventeen \nl e b a n | one hundred and eight \nr u s s i a | ninety one \nq a t a r | eighty four \ng h a n a | sixty nine \no m a n | sixty four \nn g e r i a | sixty one \nk s a | sixty \nb h r a i n | fifty one \ne s k o m | forty \nt a q a u h | forty \nq t e l q d | thirty seven \nt u r k s k | thirty six \ni v y c s t | thirty four \ns e n e g l | thirty \ns e c o | twenty eight \nm u b a u h | twenty six \na f r e x i | twenty five \nd p w d u | twenty three \na n g o l | twenty two \nk e n i n t | twenty \na d g b | twenty \nk a z a k s | eighteen \nr e p n a m | sixteen \nb t u n | sixteen \ne x i m u k | sixteen \no m a n g s | sixteen \nz a m b i n | fifteen \ne g y p t | fourteen \nb e n i n | thirteen \nk w i p k k | twelve \no i l g a s | twelve \ng a b o n | twelve \nj o r d a n | twelve \nt l w l n | ten \nk u w i b | ten \na f r f i n | ten \nb o a d | ten \ne a p a r t | ten \ne r e s q d | ten \nk o s | ten \np u m a f n | ten \na c c e s s | ten \nz e n i t h | ten \ne t h o p i | nine \nr e p c a m | nine \nm h p s a | nine \no s c h a d | nine \nm o z a m | nine \nr e p c o n | nine \ns h a r s k | eight \ns a f t r a | eight \nm e t i n v | eight \ns o a f s k | eight \nm u m t a k | eight \ne q p t r c | eight \na d n o u h | eight \nn o g l n | eight \ns a b i c | eight \nd u g b | eight \nk z o k z | seven \ni r a q | six \na r m e n | six \nb e l r u s | six \ni n t l w t | six \nu z b e k | six \na z e r b j | six \nu b a n l | five \nd i a m b k | five \ns e p l l n | five \nd t e k u a | five \nh l s t w r | five \nd a m a c r | five \ni h s h l d | five \nk u w a i e | five \nt n z n i a | five \nl i q t e l | five \np t a b n k | five \nf i d b a n | five \ne c o t r a | five \nr w a n d a | five \ns e y c h e | five \nf b n n l | five \nr a k s | four \nd i f c a e | four \ni n v c o r | four \nr a i l u a | four \ne m d e b k | four \na l h i l a | four \nf i n s | four \no m g r i d | four \nk e r p w | four \nm o r o c | four \no t e l o m | four \no c p m r | three \nm a z o o n | two \nt c g l n | two \ng e o c a p | two \nm r i y a | two \np r b a n k | two \ng e o r o g | two \ng e b g g | two \ng r a i l | two \ng e o r g | two \ne m d e d b k | one \nb s z | one \nu k r l a n | one \na g t p w | one \nf x p o l n | one \n```",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "U6NCM1A05",
+      "startTimeSec": "1553203316.31",
+      "endTimeSec": "1553203316.32",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "Digesting the data from Jefferies so we know where to focus, here's the most active tickers in the runs emails over the last couple of days",
+      "transcript": "digesting the data from jefferies so we know where to focus here 's the most active tickers in the runs emails over the last couple of days",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UFQRJVC5P",
+      "startTimeSec": "1553192956.32",
+      "endTimeSec": "1553192956.32",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "sure thing - it was nothing",
+      "transcript": "sure thingit was nothing",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UBR6MGXM2",
+      "startTimeSec": "1553192909.32",
+      "endTimeSec": "1553192909.32",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "Great work",
+      "transcript": "great work",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UBR6MGXM2",
+      "startTimeSec": "1553192888.32",
+      "endTimeSec": "1553192888.32",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "<@UFQRJVC5P> massive thanks to you also",
+      "transcript": "<@ufqrjvc five p> massive thanks to you also",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UBR6MGXM2",
+      "startTimeSec": "1553192874.31",
+      "endTimeSec": "1553192874.32",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "This will work a treat when on-boarding financial clients going forward - will make them feel like we are really looking after and protecting their data",
+      "transcript": "this will work a treat when on boarding financial clients going forwardwill make them feel like we are really looking after and protecting their data",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "U6NCM1A05",
+      "startTimeSec": "1553192850.32",
+      "endTimeSec": "1553192850.32",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "thank <@UFQRJVC5P> for working out the bugs",
+      "transcript": "thank <@ufqrjvc five p> for working out the bugs",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UBR6MGXM2",
+      "startTimeSec": "1553192794.31",
+      "endTimeSec": "1553192794.32",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "Hey <@U6NCM1A05> this authentication on the dictation box you have spun up for BAML is awesome thank you !",
+      "transcript": "hey <@u six ncm one a five > this authentication on the dictation box you have spun up for b a m l is awesome thank you",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UBR6MGXM2",
+      "startTimeSec": "1553192597.31",
+      "endTimeSec": "1553192597.31",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "I will just hand it over as is",
+      "transcript": "i will just hand it over as is",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UBR6MGXM2",
+      "startTimeSec": "1553192565.31",
+      "endTimeSec": "1553192565.31",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "We are - its when we build and handover their on premise for initial testing",
+      "transcript": "we areits when we build and handover their on premise for initial testing",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "U6NCM1A05",
+      "startTimeSec": "1553192500.31",
+      "endTimeSec": "1553192500.31",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "I thought that we were managing the VM for this?",
+      "transcript": "i thought that we were managing the v m for this",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UBR6MGXM2",
+      "startTimeSec": "1553190974.31",
+      "endTimeSec": "1553190974.31",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "Which model and sqc should we originally deploy before we deploy their ASR",
+      "transcript": "which model and sqc should we originally deploy before we deploy their a s r",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UBR6MGXM2",
+      "startTimeSec": "1553190899.31",
+      "endTimeSec": "1553190899.31",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "<!here> for BAML we are setting up dictation for their rates desk - focusing initially on SWAPs and eventually others",
+      "transcript": "< here> for b a m l we are setting up dictation for their rates deskfocusing initially on swaps and eventually others",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UBR6MGXM2",
+      "startTimeSec": "1553187837.31",
+      "endTimeSec": "1553187837.31",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "<!here> we recovered 1d and 2d we have NYC Jefferies back up!",
+      "transcript": "< here> we recovered one d and two d we have n y c jefferies back up",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UBR6MGXM2",
+      "startTimeSec": "1553179794.31",
+      "endTimeSec": "1553179794.31",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "<@U6NCM1A05> thanks for send the email - good before our weekly call",
+      "transcript": "<@u six ncm one a five > thanks for send the emailgood before our weekly call",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UBR6MGXM2",
+      "startTimeSec": "1553178740.31",
+      "endTimeSec": "1553178740.31",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "Lets push the email and docs out",
+      "transcript": "lets push the email and docs out",
+      "confidence": 1
+    }
+  ]
+}
