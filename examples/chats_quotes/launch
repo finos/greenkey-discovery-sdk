@@ -1,0 +1,108 @@
+#!/usr/bin/env bash
+                                                                                               #!/usr/bin/env bashj
+#
+# Use chat_slack microservice to pull chat data from Slack channel (ageojo_test default) & POST response from chat_slack to Discovery. Discovery response is JSON - specifically the chat data from `chat_slack` augmented with key/val pairs that predict the likelihood of the message is a `quote` or a `not_quote` (first pass). The `fasttext` classifier that outputs intent classification labels was trained at Discovery launch. The specific intents considered as well as the data provided by the user must be present in the `custom/` directory mounted at Discovery launch (see Discovery SDK)
+#
+# 
+# Launch chat_slack and discovery - mounting a custom directory containing intents.json, which defines intents & provides training data
+# At launch, discovery trains intent classifier via fasttext
+# Send request to chat_slack specifying at minimum the name of the slack channel
+# Response is JSON; (dict with key 'segments', value is List]Dict], each Dict corresponds to a chat message or a 'segment' - current definition of segment relies upon ASR-based Segment object from asrtoolkit).
+# Pull chats from slack channel & POSTR to discovery /process
+# expected response: JSON; JSON input augmented with discovery key/vals -> intents and entities, includes probabilities
+# Write discovery augmented output to file in custom directory
+# Compute Metrics to evaluate classifier
+
+
+
+# run launch script (see deployments/swarm/focus/launch)
+
+# chat_quotes/launch contents:
+
+#!/usr/bin/env bash
+#
+# Launch a "call dashboard box" with docker-compose
+
+set -e
+set -u
+set -x
+
+# $1 ?
+SWARM_SERVICE='chats_quotes' # same as name of interpreter directory
+
+
+ensure_root() {
+  if [ "${EUID}" -ne 0 ]; then
+    echo "This script must be run as root!"
+    exit 1
+  fi
+}
+
+docker_install() {
+  ./docker-install
+}
+
+docker_login() {
+  docker login -u gktuser -p ac12dba5989f5e91bda1e213204d6bb7be3c36e4 docker.greenkeytech.com
+}
+
+is_docker_swarm_initialized() {
+  # no obvious command to check if node is in a swarm, so use this instead
+  docker node ls >/dev/null 2>&1
+}
+
+clean_all_docker_containers() {
+  printf "%s\n" "Cleaning existing docker containers"
+  containers=$(docker ps -a -q)
+  if [ ! -z "${containers}" ]; then
+    docker stop ${containers}
+    docker rm ${containers}
+  fi
+}
+
+docker_swarm_setup() {
+  if is_docker_swarm_initialized; then
+    printf "docker swarm already initialized!"
+  else
+    clean_all_docker_containers
+    docker swarm init
+  fi
+}
+
+launch_services() {
+  export SWARM_MASTER=$(hostname -I | awk '{print $1}') &&
+  docker stack deploy \
+         -c docker-compose.yaml \
+         --with-registry-auth \
+         --resolve-image always \
+         $SWARM_SERVICE
+}
+
+
+#TODO refactor to generalize regardless of data set --> also how to decide which is train vs test data if pulling from chat_slack? or does that happen here?
+setup_mounted_volumes() {
+	# run python scripts that set up directories, train/test data & write intents.json file      #TODO: modify so it takes in data other than unformatted quote and not quote strings used for training fasttext classifiers in `textclassifiers`) --> make get data a separate script?
+	python data_prep.py   # assumes you are in the same directory as the launch script and docker-compose.yaml - root
+}
+
+#TODO send each chat message that is written into tests.txt to slack
+#post_chats_to_slack(){
+#	# SEE API
+#}
+
+exit_message() {
+  printf "Error! %s\n" "$(caller)"
+}
+
+main() {
+  # trap exit_message INT TERM EXIT
+  ensure_root
+  docker_install
+  docker_login
+  docker_swarm_setup
+  setup_mounted_volumes   # TODO generalizing data acquisition
+#  post_chats_to_slack  #TODO this needs to be set up
+  launch_services
+}
+
+main
