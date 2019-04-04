@@ -14,7 +14,7 @@ services:
     image:
       "docker.greenkeytech.com/chat_slack:${CHAT_SLACK_DOCKER_TAG:-develop}"
     ports:
-      - "8003:80" # set ports -> was 8888:80
+      - "8005:80" #8004:80" # set ports -> was 8888:80
       ## make a request (curl, python repl) to chat_slack from your workstation /status
       ## then retrieve some chats, and make sure it can return json response with chats
     environment:
@@ -32,6 +32,8 @@ services:
       - greenkey
   # ----------------------------------------------------------------------
   discovery:
+    ports:
+      - "8006:80"
     image:
       "docker.greenkeytech.com/discovery:${DISCOVERY_DOCKER_TAG:-latest}"
     environment:
@@ -41,7 +43,6 @@ services:
       - PORT=80
       - NUMBER_OF_INTENTS=2
       - FILE_LOG_LEVEL=debug
-#      - DISCOVERY_DOMAINS=broker_quotes     #TODO change from `broker_quotes`
     networks:
       - greenkey
     volumes:
