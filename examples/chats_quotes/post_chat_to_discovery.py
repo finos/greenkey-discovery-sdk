@@ -4,7 +4,7 @@ import sys
 import json
 
 
-infile = 'output.json'
+infile = 'ageojo_test_latest.json'
 
 data = json.load(open(infile, 'r+'))
 
