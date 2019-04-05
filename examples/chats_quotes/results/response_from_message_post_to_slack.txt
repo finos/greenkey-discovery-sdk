@@ -1,0 +1,1 @@
+{"ok":true,"channel":"CEXMKJAJH","ts":"1554496637.000300","message":{"bot_id":"BEXVCK058","type":"message","text":"This is a test","user":"UA4KZ9Q3G","ts":"1554496637.000300"},"warning":"missing_charset","response_metadata":{"warnings":["missing_charset"]}}
