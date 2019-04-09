@@ -15,45 +15,57 @@ entities:
     - quarter
     - quarters
     - fourth
+    - fourths
     - half
     - eighth
     - eighths
     - eights
+  - numfive: # required for float_num regex
+    - "@num{1,5}"
+    - spacer: ''
+  - and:
+    - "and"
+  - spot:
+    - "spot"
+    - "point"
+  - frac_num:
+    - "@numfive (@and @one_through_seven @denominator)?"
 
-  - fraction:
-    - "and? @one_through_seven @denominator"
-
-  - spot_num:
-    - "(spot|point) @num{1,6}"  # NOTE: @num entity to be replaced by @digit
+  - float_num:
+    - "@numfive (@spot @numfive)?"
+    - spacer: ''
+    - formatting: "entity.replace('Spot', '.').replace('Point', '.').replace(' ','')"
 
   - cbond_product:
     - file: "tests/assets/cbond_products.txt"
 
   - upcoming_year:
     - "@num{1,6}"
+    - spacer: ''
     - validation: "int(entity) > 19 and int(entity) < 30" #"is_upcoming_year.py"  # ( datetime.now.year() < x < datetime.now.year() + 10 , x is an int)
-  
+
   - coupon:
-    - "@num{1,6}" #(@spot_num | @fraction)?"  # validation on spot_num and fraction may not work
-    - validation: "int(entity) > 0 and int(entity) < 20"  # formatting is done before float() is applied
-  
+    - "(@float_num|@frac_num)" #(@spot_num | @fraction)?"  # validation on spot_num and fraction may not work
+    - validation: "float(entity.split('And')[0]) > 0 and float(entity.split('And')[0]) < 20"
+
   - cbond_instrument:
     - "@cbond_product @coupon? @upcoming_year?"
     - spacing_threshold: 1
-  
+
   - price1:  # entity_requirements is needed. req: cbond_product for price database checking
-    - "@num{1,3}"
-    - validation: "int(entity) > 80 and int(entity) < 121"  # assuming price is +/- 20% of 100
-    
+    - "(@float_num|@frac_num)"
+    - spacer: ''
+    - validation: "float(entity.split('And')[0]) > 80 and float(entity.split('And')[0]) < 121"  # assuming price is +/- 20% of 100
   - price2:  # entity_requirements is needed. req: cbond_product, price1
-    - "@num{1,3}"
-    - validation: "int(entity) > 80 and int(entity) < 121"  # assuming price is +/- 20% of 100
+    - "(@float_num|@frac_num)"
+    - validation: "float(entity.split('And')[0]) > 80 and float(entity.split('And')[0]) < 121"  # assuming price is +/- 20% of 100
+
   - full_str:
     - "@cbond_instrument @price1? @price2?"
+    - spacing_threshold: 6
 
 intents:
   - cbond:
     - examples:
-      - "i have a @cbond_instrument for @price1 @price2"
+      #- "i have a @cbond_instrument for @price1 @price2?"
       - "i have a @full_str"
-    

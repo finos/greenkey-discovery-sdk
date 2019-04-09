@@ -46,5 +46,5 @@ entities:
 intents:
   - embond:
     - examples:
-      - "i have a @em_bond_rate_bare"
+      - "i have a @em_bond_rate_term"
       - "i have a @full_str"
