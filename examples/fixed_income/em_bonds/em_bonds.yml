@@ -1,39 +1,73 @@
 ## entities for class_em_bonds.py
 
 entities:
+  - one_through_seven:
+    - a
+    - an
+    - one
+    - two
+    - three
+    - four
+    - five
+    - six
+    - seven
+  - denominator:
+    - quarter
+    - quarters
+    - fourth
+    - fourths
+    - half
+    - eighth
+    - eighths
+    - eights
+  - numfive: # required for float_num regex
+    - "@num{1,5}"
+    - spacer: ''
+  - and:
+    - "and"
+  - spot:
+    - "spot"
+    - "point"
+  - frac_num:
+    - "@numfive (@and @one_through_seven @denominator)?"
+
+  - float_num:
+    - "@numfive (@spot @numfive)?"
+    - spacer: ''
+    - formatting: "entity.replace('Spot', '.').replace('Point', '.').replace(' ','')"
+
   - em_bond_product:
     - file: "tests/assets/embond_products.txt"
-  
   - bond_quantity:
     - mill
     - million
     - yard
     - k
     - up
+
   - upcoming_year_word_extend:
-    - "@num{1,4}"
+    - "@numfive"
     - validation: "int(entity) > 18 and int(entity) < 70"
   - ordinal:
     - file: "tests/assets/ordinals.txt"
-  - float_num:  # a primitive, # should be moved to a place with defs, primitives
-    - "@num{1,5}? @spot @num{1,5}"
-
-  - rate:
-    - "@num{1,5}"
   - ord_month:
     - "((@ordinal @time_month) | (@time_month @ordinal?))"
-  #- "@em_bond_product @float_num @num{1,2} ((@ordinal @time_month) | (@time_month @ordinal?))? @upcoming_year_word_extend" # excluding float_nums for now
+
+  - rate:
+    - "(@float_num|@frac_num)" #(@spot_num | @fraction)?"  # validation on spot_num and fraction may not work
+    - validation: "float(entity.split('And')[0]) > 0 and float(entity.split('And')[0]) < 20"
+  
   - em_bond_rate_term:
     - "@em_bond_product @rate? @ord_month? @upcoming_year_word_extend?"
-    #- "@em_bond_product @rate?"
 
-  #- em_bond_rate_bare:  # moved this pattern into em_bond_rate_term
-  #  - "@ordinal @em_bond_product (@float_num | @num{2,6})?"
+  - price1:  # entity_requirements is needed. req: cbond_product for price database checking
+    - "(@float_num|@frac_num)"
+    - spacer: ''
+    - validation: "float(entity.split('And')[0]) > 59 and float(entity.split('And')[0]) < 151"
+  - price2:  # entity_requirements is needed. req: cbond_product, price1
+    - "(@float_num|@frac_num)"
+    - validation: "float(entity.split('And')[0]) > 59 and float(entity.split('And')[0]) < 151"
 
-  - price1:
-    - "@num{1,4}"
-  - price2:
-    - "@num{1,4}"
   - quant1:
     - "@num{1,3}"
   - quant1_part:
