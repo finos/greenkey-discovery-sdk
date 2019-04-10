@@ -238,14 +238,18 @@ def test_all(test_file):
         (4) the entity character error rate
     """
     tests = load_tests(test_file)
+    
+    from collections import defaultdict
+    d = defaultdict(dict)
 
+    d['start_time'] = int(time.time())
     t1 = int(time.time())
 
-    total_tests = len(tests)
-    failed_tests = 0
-    total_errors = 0
-    total_char_errors = 0
-    total_characters = 0
+    d['total_tests'] = total_tests = len(tests)
+    d['failed_tests'] = failed_tests = 0
+    d['total_entity_errors'] = total_errors = 0
+    d['total_entity_char_errors'] = total_char_errors = 0
+    d['total_entity_characters'] = total_characters = 0
 
     for test in tests:
         print("======\nTesting: {}".format(test['test']))
@@ -267,34 +271,71 @@ def test_all(test_file):
             )
 
         if 'intent' in test and test['intent'] != most_likely_intent['label']:
-            failed_tests += 1
+            d["failed_tests"] += 1  #failed_tests += 1
             fail_test(resp, message="Observed intent does not match expected intent!", continued=True)
             continue
 
         (failure, errors, char_errors, characters) = test_single_case(test, most_likely_intent)
-        failed_tests += failure
-        total_errors += errors
-        total_char_errors += char_errors
-        total_characters += characters
+        d["failed_tests"] = d["failed_tests"] + failure #+= failure
+        d["total_entity_errors"] = d["total_entity_errors"] + errors  #+= errors  # = total_errors += errors
+        d['total_entity_char_errors'] = d["total_entity_char_errors"] + char_errors  #+= char_errors  #total_char_errors += char_errors
+        d["total_entity_characters"] = d["total_entity_characters"] + characters  #+= characters #total_characters += characters
 
+    # SUMMARY 
+    d["end_time"] = time.time()
+    d["total_time"] = d["end_time"] - d["start_time"]  # t1
+    
+    # passed, failed, total 
+    d["passed_tests"] = d["total_tests"] - d["failed_tests"]
+    d["overal_accuracy"] = d["passed_tests"]/d["total_tests"]
+   # d['overall_accuracy'], d['passed_tests'], d['failed_tests'] = overall_accuracy, passed_tests, failed_tests
+    
+    # entity
+   # d['total_entity_char_errors'], d['total_characters'] = total_errors, total_characters
+    d['total_entity_char_error_rate'] =  "{:.2f}".format(d["total_entity_char_errors"]/d["total_entity_characters"] * 100)
+
+    print("\n----\n{} / {} intent classification tests passed".format(d["passed_tests"], d["total_tests"]))
+    print("\nTotal Runtime: {}".format(d['total_time']))
+    
     if total_characters:
-        print(
-            "\n---\n({} / {}) tests passed in {}s with {} entity character errors, Entity character error rate: {}%".format(
-                total_tests - failed_tests, total_tests,
-                int(time.time()) - t1, total_errors,
-                "{:.2f}".format((total_char_errors / total_characters) * 100)
-            )
-        )
-    else:
-        print(
-             "\n---\n({} / {}) tests passed in {}s".format(
-                total_tests - failed_tests, total_tests,
-                int(time.time()) - t1
-            )
-        )
-    if total_errors > 0:
+        print("\nOverall Entity character errors: {} \n Overal Entity character error rate: {}%".format(d['total_entity_char_errors'], d['total_entity_char_error_rate']))
+   
+    print()
+    print(d)
+    if d["total_entity_errors"]: # = total_errors
         shutdown_discovery()
         exit(1)
+
+#    if total_errors:
+#        shutdown_discovery()
+#        exit(1)
+
+
+    # total_characters will be true so long as entities are found
+
+    # total_characters -> entities found
+#    if total_characters:    # whether tests passed depends on whether observed entity == expected_entity
+#        print("\n----\n{} / {} tests passed".format(passed_tests, total_tests)
+          
+
+#    if total_characters:
+#        print(
+#            "\n---\n({} / {}) tests passed in {}s with {} entity character errors, Entity character error rate: {}%".format(
+#                total_tests - failed_tests, total_tests,
+#                int(time.time()) - t1, total_errors,
+#                "{:.2f}".format((total_char_errors / total_characters) * 100)
+#            )
+#        )
+#    else:
+#        print(
+#             "\n---\n({} / {}) tests passed in {}s".format(
+#                total_tests - failed_tests, total_tests,
+#                int(time.time()) - t1
+#            )
+#        )
+#    if total_errors > 0:
+#        shutdown_discovery()
+#        exit(1)
 
 
 def fail_test(resp, message="", continued=False):
