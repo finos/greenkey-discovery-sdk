@@ -238,18 +238,20 @@ def test_all(test_file):
         (4) the entity character error rate
     """
     tests = load_tests(test_file)
-    
+       
     from collections import defaultdict
     d = defaultdict(dict)
 
     d['start_time'] = int(time.time())
-    t1 = int(time.time())
+#    t1 = int(time.time())
 
     d['total_tests'] = total_tests = len(tests)
     d['failed_tests'] = failed_tests = 0
     d['total_entity_errors'] = total_errors = 0
     d['total_entity_char_errors'] = total_char_errors = 0
     d['total_entity_characters'] = total_characters = 0
+    d["results"] = []
+    d["intents"] = []
 
     for test in tests:
         print("======\nTesting: {}".format(test['test']))
@@ -264,16 +266,28 @@ def test_all(test_file):
         most_likely_intent = resp["intents"][0]
 
         if 'intent' in test:
-            print(
-                "\n Expected Intent: {} \n Observed Intent: {}\n".format(
-                    test['intent'], most_likely_intent['label']
-                )
-            )
+            expected, observed = test['intent'], most_likely_intent['label']
+            if not expected in d["intents"]:
+                d["intents"].append(expected)
+            
+            tup = (expected, observed)
+            d["results"].append(tup)
 
-        if 'intent' in test and test['intent'] != most_likely_intent['label']:
-            d["failed_tests"] += 1  #failed_tests += 1
-            fail_test(resp, message="Observed intent does not match expected intent!", continued=True)
-            continue
+            if not (expected == observed):
+                d["failed_tests"] = d["failed_tests"] + 1
+                fail_test(resp, message="Observed intent does not match expected intent", continued=True)
+                continue
+
+#            print(
+#                "\n Expected Intent: {} \n Observed Intent: {}\n".format(
+#                    test['intent'], most_likely_intent['label']
+#                )
+#            )
+#
+#        if 'intent' in test and test['intent'] != most_likely_intent['label']:
+#            d["failed_tests"] += 1  #failed_tests += 1
+#            fail_test(resp, message="Observed intent does not match expected intent!", continued=True)
+#            continue
 
         (failure, errors, char_errors, characters) = test_single_case(test, most_likely_intent)
         d["failed_tests"] = d["failed_tests"] + failure #+= failure
@@ -288,10 +302,13 @@ def test_all(test_file):
     # passed, failed, total 
     d["passed_tests"] = d["total_tests"] - d["failed_tests"]
     d["overal_accuracy"] = d["passed_tests"]/d["total_tests"]
-   # d['overall_accuracy'], d['passed_tests'], d['failed_tests'] = overall_accuracy, passed_tests, failed_tests
-    
+
+    # compute stats for intents
+    #metrics_by_intent = compute_intent_metrics(d)
+    for intent in  d["intents"]:
+        d[intent] = compute_intent_metrics(intent, d["results"])
+      
     # entity
-   # d['total_entity_char_errors'], d['total_characters'] = total_errors, total_characters
     d['total_entity_char_error_rate'] =  "{:.2f}".format(d["total_entity_char_errors"]/d["total_entity_characters"] * 100)
 
     print("\n----\n{} / {} intent classification tests passed".format(d["passed_tests"], d["total_tests"]))
