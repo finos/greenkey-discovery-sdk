@@ -48,16 +48,13 @@ entities:
   - upcoming_year_word_extend:
     - "@numfive"
     - validation: "int(entity) > 18 and int(entity) < 70"
-  - ordinal:
-    - file: "tests/assets/ordinals.txt"
   - ord_month:
-    - "((@ordinal @time_month) | (@time_month @ordinal?))"
+    - "((@num_ord @time_month) | (@time_month @num_ord?))"
 
   - rate:
     - "(@float_num|@frac_num)" #(@spot_num | @fraction)?"  # validation on spot_num and fraction may not work
     - validation: "float(entity.split('And')[0]) > 0 and float(entity.split('And')[0]) < 20"
 
-  #- "@ig_bond_product @float_num @num{1,2} ((@ordinal @time_month) | (@time_month @ordinal?))? @upcoming_year_word_extend" # excluding float_nums for now
   - ig_bond_rate_term:
     - "@ig_bond_product @rate? @ord_month? @upcoming_year_word_extend?"
     #- "@ig_bond_product @rate?"
