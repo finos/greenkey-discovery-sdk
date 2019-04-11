@@ -39,9 +39,10 @@ entities:
   cbond_product:
     - file: "tests/assets/cbond_products.txt"
 
-  upcoming_year:
-    - "@num{1,6}"
-    - spacer: ''
+  - num_plur2:
+    - "@num_plural{1,2}"
+  - upcoming_year:
+    - "(@num_plur2|@numfive)"
     - validation: "int(entity) > 19 and int(entity) < 30" #"is_upcoming_year.py"  # ( datetime.now.year() < x < datetime.now.year() + 10 , x is an int)
 
   coupon:
