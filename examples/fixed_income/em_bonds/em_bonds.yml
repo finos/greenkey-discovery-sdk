@@ -46,9 +46,9 @@ entities:
     - k
     - up
 
-  - num_plur2:
+  num_plur2:
     - "@num_plural{1,2}"
-  - upcoming_year_word_extend:
+  upcoming_year_word_extend:
     - "(@num_plur2|@numfive)"
     - validation: "int(entity) > 18 and int(entity) < 70"
   ord_month:
