@@ -64,7 +64,7 @@ docker_swarm_setup() {
   if is_docker_swarm_initialized; then
     printf "docker swarm already initialized!"
   else
-    clean_all_docker_containers
+    #clean_all_docker_containers
     docker swarm init
   fi
 }
@@ -80,10 +80,10 @@ launch_services() {
 
 
 #TODO refactor to generalize regardless of data set --> also how to decide which is train vs test data if pulling from chat_slack? or does that happen here?
-setup_mounted_volumes() {
+#setup_mounted_volumes() {
 	# run python scripts that set up directories, train/test data & write intents.json file      #TODO: modify so it takes in data other than unformatted quote and not quote strings used for training fasttext classifiers in `textclassifiers`) --> make get data a separate script?
-	python data_prep.py   # assumes you are in the same directory as the launch script and docker-compose.yaml - root
-}
+#	python data_prep.py   # assumes you are in the same directory as the launch script and docker-compose.yaml - root
+#}
 
 #TODO send each chat message that is written into tests.txt to slack
 #post_chats_to_slack(){
@@ -96,11 +96,10 @@ exit_message() {
 
 main() {
   # trap exit_message INT TERM EXIT
-  ensure_root
-  docker_install
-  docker_login
+#  ensure_root
+#  docker_login
   docker_swarm_setup
-  setup_mounted_volumes   # TODO generalizing data acquisition
+#  setup_mounted_volumes   # TODO generalizing data acquisition
 #  post_chats_to_slack  #TODO this needs to be set up
   launch_services
 }
