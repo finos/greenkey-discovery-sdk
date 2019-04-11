@@ -1,0 +1,1104 @@
+{
+  "segments": [
+    {
+      "speakerInfo": "U6NCM1A05",
+      "startTimeSec": "1554928880.12",
+      "endTimeSec": "1554928880.12",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "Patrick Hartnett's imstring `AIG 4.25 29 160 / -- 15mm`",
+      "transcript": "patrick hartnett 's imstring `a i g four point twenty five twenty nine one hundred and sixty / fifteen mm`",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "U6NCM1A05",
+      "startTimeSec": "1554928853.11",
+      "endTimeSec": "1554928853.12",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "<@UFYC0QQFK> <@UGRN6UT8C>\nHave any clue what the `lifted on five million at one fifty eight` part below means?\n\nSource:\n```\na i g four and a quarter at twenty nine got lifted on five million at one fifty eight leaves us a one sixty buyer at fifteen million\n```",
+      "transcript": "<@ufyc zero qqfk> <@ugrn six ut eight c>\nhave any clue what the `lifted on five million at one fifty eight` part below means \n\nsource:\n```\na i g four and a quarter at twenty nine got lifted on five million at one fifty eight leaves us a one sixty buyer at fifteen million\n```",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "U6NCM1A05",
+      "startTimeSec": "1554928512.11",
+      "endTimeSec": "1554928512.12",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "I see I also used the tradeticket_benchmark data, nomura data, some bgc data, and probably some more buried in the jefferies_3 training data",
+      "transcript": "i see i also used the tradeticket_benchmark data nomura data some bgc data and probably some more buried in the jefferies_ three training data",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "U6NCM1A05",
+      "startTimeSec": "1554927970.09",
+      "endTimeSec": "1554927970.12",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "script used for jefferies_3\n```\nbash sdk/shared/data_clean.sh\nbash sdk/shared/data_preprocess.sh\n\nwget <https://storage.googleapis.com/gk-models/candidate_new_models/nnet_gk_tdnn.tar.gz>\ntar -xvzf nnet_gk_tdnn.tar.gz &amp;&amp; rm nnet_gk_tdnn.tar.gz\nexport LICENSE_KEY=\"S6CfFNz2YWZmfyNsBAHBSFAdMFluIIe5ggFiAF+BCxFen0LEvIgAkkb0fQ8iVqOSA+PAXk+NgUNc9ArBLBrZqw7KRyjnziORv18xst/NQiA=\"\nexport GPUS=2\nexport PRIMARY_LR_FACTOR=0.25\nexport BATCH_SIZE=16\nexport MIN_EPOCHS=2\nexport EPOCHS=4\nbash sdk/singleuse/extend.sh $MODEL_NAME $MODE $LICENSE_KEY | tee -a training.txt\n```",
+      "transcript": "script used for jefferies_ three \n```\nbash sdk/shared/data_clean sh\nbash sdk/shared/data_preprocess sh\n\nwget <https://storage googleapis dot com/gk models/candidate_new_models/nnet_gk_tdnn tar gz>\ntar xvzf nnet_gk_tdnn tar gz amp; amp; rm nnet_gk_tdnn tar gz\nexport license_key=\"s six cffnz two ywzmfynsbahbsfadmfluiie five ggfiaf plus bcxfen zero levigakkb zero fq eight ivqosa plus paxk plus ngunc nine arblbrzqw seven kryjnziorv eighteen xst/nqia=\"\nexport g p u s= two \nexport primary_lr_factor= zero point twenty five \nexport batch_size= sixteen \nexport min_epochs= two \nexport e p o c h s= four \nbash sdk/singleuse/extend sh $model_name $m o d e $license_key | tee a training txt\n```",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "U6NCM1A05",
+      "startTimeSec": "1554927905.11",
+      "endTimeSec": "1554927905.12",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "svt_tdnn with a bunch of ig_bonds and em_bonds quotes from the team (Chris, Hutch, myself, etc.) - this was a previous iteration of the gk_quotes corpus",
+      "transcript": "svt_tdnn with a bunch of ig_bonds and em_bonds quotes from the team (chris hutch myself etc )this was a previous iteration of the gk_quotes corpus",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "U2983AF8V",
+      "startTimeSec": "1554927831.12",
+      "endTimeSec": "1554927831.12",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "What is the `jefferies_3` base model heritage?",
+      "transcript": "what is the `jefferies_ three ` base model heritage",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UBR6MGXM2",
+      "startTimeSec": "1554927756.12",
+      "endTimeSec": "1554927756.12",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "Sounds good team :+1:",
+      "transcript": "sounds good team : plus one :",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "U2983AF8V",
+      "startTimeSec": "1554927637.11",
+      "endTimeSec": "1554927637.12",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "seems like the error rate was cut by more than half on fast quotes so it *should* seem noticeably better",
+      "transcript": "seems like the error rate was cut by more than half on fast quotes so it should seem noticeably better",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UGRN6UT8C",
+      "startTimeSec": "1554927615.11",
+      "endTimeSec": "1554927615.12",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "No probs - if we add it to <http://baml.greenkeytech.com> I'll get on it in the morning and run some faster quotes through it",
+      "transcript": "no probsif we add it to <http://baml greenkeytech dot com> i 'll get on it in the morning and run some faster quotes through it",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UBR6MGXM2",
+      "startTimeSec": "1554927358.11",
+      "endTimeSec": "1554927358.12",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "And quotes from <@UGRN6UT8C> if possible he says them fast",
+      "transcript": "and quotes from <@ugrn six ut eight c> if possible he says them fast",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "U2983AF8V",
+      "startTimeSec": "1554927269.11",
+      "endTimeSec": "1554927269.12",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "got it. results look impressive -- we should maybe get this on <http://baml.greenkeytech.com|baml.greenkeytech.com> and get some QA from <@UBR6MGXM2> and <@UFYC0QQFK> compared to the previous one before gagan deploys tomorrow.",
+      "transcript": "got it results look impressive we should maybe get this on <http://baml greenkeytech dot com|baml greenkeytech dot com> and get some q a from <@ubr six mgxm two > and <@ufyc zero qqfk> compared to the previous one before gagan deploys tomorrow",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "U6NCM1A05",
+      "startTimeSec": "1554927186.10",
+      "endTimeSec": "1554927186.12",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "<@U2983AF8V> no param opt yet, using\n```\n  -e BEAM=20 \\\n  -e AC_SCALE=1.0 \\\n  -e EXTRA_LEFT_CONTEXT_INITIAL=1 \\\n  -e MAX_ACTIVE=7000 \\\n``` at the moment for rapid testing\nthe `fast quotes` are the two emails from gagan (containing slow and fast quote files)",
+      "transcript": "<@u two thousand nine hundred and eighty three af eight v> no param opt yet using\n```\n e b e a m= twenty \\\n e ac_scale= one point zero zero \\\n e extra_left_context_initial= one \\\n e max_active= seven thousand \\\n``` at the moment for rapid testing\nthe `fast quotes` are the two emails from gagan (containing slow and fast quote files)",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "U2983AF8V",
+      "startTimeSec": "1554927145.11",
+      "endTimeSec": "1554927145.12",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "also, is baml fast quotes the samples gagan sent?",
+      "transcript": "also is baml fast quotes the samples gagan sent",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "U2983AF8V",
+      "startTimeSec": "1554927120.11",
+      "endTimeSec": "1554927120.12",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "<@U6NCM1A05> any optimize params run on this?",
+      "transcript": "<@u six ncm one a five > any optimize params run on this",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UBR6MGXM2",
+      "startTimeSec": "1554927069.11",
+      "endTimeSec": "1554927069.12",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "Btw the results look very promising thank you <@U6NCM1A05>",
+      "transcript": "btw the results look very promising thank you <@u six ncm one a five >",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UBR6MGXM2",
+      "startTimeSec": "1554926952.11",
+      "endTimeSec": "1554926952.11",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "Please share the links we will try and deploy tomorrow",
+      "transcript": "please share the links we will try and deploy tomorrow",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UBR6MGXM2",
+      "startTimeSec": "1554926927.11",
+      "endTimeSec": "1554926927.11",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "Ok",
+      "transcript": "ok",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "U6NCM1A05",
+      "startTimeSec": "1554924441.11",
+      "endTimeSec": "1554924441.11",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "FWIW, I'm not 100% confident on the baml_7 results above since I'm patching an `sqc`-style model with files from an `svt`-style model.",
+      "transcript": "f w i w i 'm not one hundred percent confident on the baml_ seven results above since i 'm patching an `sqc` style model with files from an `svt` style model",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "U6NCM1A05",
+      "startTimeSec": "1554924399.11",
+      "endTimeSec": "1554924399.11",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "fast_quotes is a 32 word corpus of a few quotes from Chris, Gagan, and a client",
+      "transcript": "fast_quotes is a thirty two word corpus of a few quotes from chris gagan and a client",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "U6NCM1A05",
+      "startTimeSec": "1554924137.11",
+      "endTimeSec": "1554924137.11",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "<@U2983AF8V> <@UBR6MGXM2> it looks like we should push out baml_13. Still missing `bobl eonia` occasionally",
+      "transcript": "<@u two thousand nine hundred and eighty three af eight v> <@ubr six mgxm two > it looks like we should push out baml_ thirteen still missing `bobl eonia` occasionally",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "U6NCM1A05",
+      "startTimeSec": "1554923985.89",
+      "endTimeSec": "1554923986.11",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "```\n+----------+----------------------------------+--------------------+-------------+-----------------------+-------------------------------------------+--------------------------------------+\n| MODEL    | WER on BAML quotes training data | WER on fast quotes | base model  | Additional changes    | Scribetrain dev set WER (Tradeticketbase) | Scribetrain test set (bgc euroswaps) |\n+----------+----------------------------------+--------------------+-------------+-----------------------+-------------------------------------------+--------------------------------------+\n| svt_lstm | 28.12%                           |                    | --          |                       |                                           | 9.2                                  |\n+----------+----------------------------------+--------------------+-------------+-----------------------+-------------------------------------------+--------------------------------------+\n| svt_tdnn | 25.59%                           |                    | --          |                       |                                           | 8.5                                  |\n+----------+----------------------------------+--------------------+-------------+-----------------------+-------------------------------------------+--------------------------------------+\n| baml_7   | 39.47%                           | 46.88              | jefferies_3 |                       | 5.2                                       | 8.5                                  |\n+----------+----------------------------------+--------------------+-------------+-----------------------+-------------------------------------------+--------------------------------------+\n| baml_9   | 16.93%                           |                    | svt_lstm    |                       | 14.0                                      | 10.3                                 |\n+----------+----------------------------------+--------------------+-------------+-----------------------+-------------------------------------------+--------------------------------------+\n| baml_10  | 12.18%                           |                    | svt_tdnn    |                       | 11.3                                      | 10.9                                 |\n+----------+----------------------------------+--------------------+-------------+-----------------------+-------------------------------------------+--------------------------------------+\n| baml_11  | 9.63%                            |                    | svt_tdnn    | noise perturbation    | 13.3                                      | 9.2                                  |\n+----------+----------------------------------+--------------------+-------------+-----------------------+-------------------------------------------+--------------------------------------+\n| baml_12  | 12.46%                           |                    | svt_tdnn    | noise+0.9, 1.4x speed | 13.6                                      | 10.3                                 |\n+----------+----------------------------------+--------------------+-------------+-----------------------+-------------------------------------------+--------------------------------------+\n| baml_13  | 8.91%                            | 18.75%             | jefferies_3 | noise+0.9, 1.1x speed | 5.8                                       | 8.5                                  |\n+----------+----------------------------------+--------------------+-------------+-----------------------+-------------------------------------------+--------------------------------------+\n| baml_14  | 9.01%                            | 18.75%             | jefferies_3 | noise+1.1, 1.2x speed | 5.9                                       | 8.3                                  |\n+----------+----------------------------------+--------------------+-------------+-----------------------+-------------------------------------------+--------------------------------------+\n```",
+      "transcript": "```\n plus plus plus plus plus plus plus plus \n| m o d e l | w e r on b a m l quotes training data | w e r on fast quotes | base model | additional changes | scribetrain dev set w e r (tradeticketbase) | scribetrain test set (bgc euroswaps) |\n plus plus plus plus plus plus plus plus \n| svt_lstm | twenty eight point twelve percent | | | | | nine point two |\n plus plus plus plus plus plus plus plus \n| svt_tdnn | twenty five point fifty nine percent | | | | | eight point five |\n plus plus plus plus plus plus plus plus \n| baml_ seven | thirty nine point forty seven percent | forty six point eighty eight | jefferies_ three | | five point two | eight point five |\n plus plus plus plus plus plus plus plus \n| baml_ nine | sixteen point ninety three percent | | svt_lstm | | fourteen point zero zero | ten point three |\n plus plus plus plus plus plus plus plus \n| baml_ ten | twelve point eighteen percent | | svt_tdnn | | eleven point three | ten point nine |\n plus plus plus plus plus plus plus plus \n| baml_ eleven | nine point sixty three percent | | svt_tdnn | noise perturbation | thirteen point three | nine point two |\n plus plus plus plus plus plus plus plus \n| baml_ twelve | twelve point forty six percent | | svt_tdnn | noise plus zero point nine one point four x speed | thirteen point six | ten point three |\n plus plus plus plus plus plus plus plus \n| baml_ thirteen | eight point ninety one percent | eighteen point seventy five percent | jefferies_ three | noise plus zero point nine one point one x speed | five point eight | eight point five |\n plus plus plus plus plus plus plus plus \n| baml_ fourteen | nine point zero one percent | eighteen point seventy five percent | jefferies_ three | noise plus one point one one point two x speed | five point nine | eight point three |\n plus plus plus plus plus plus plus plus \n```",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UBR6MGXM2",
+      "startTimeSec": "1554909603.10",
+      "endTimeSec": "1554909603.11",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "<@U9RRC0G00>  <@U1DCTUUP9> we just performed a test and the CDB UI did not start transcribing <@U2983AF8V> recommended adding a parameter AUTO_TRANSCRIBE=True or pressing # I will try this tomorrow. Do you have anything else to add here?",
+      "transcript": "<@u nine rrc zero g zero > <@u one dctuup nine > we just performed a test and the c d b u i did not start transcribing <@u two thousand nine hundred and eighty three af eight v> recommended adding a parameter auto_transcribe=true or pressing # i will try this tomorrow do you have anything else to add here",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UBR6MGXM2",
+      "startTimeSec": "1554906391.10",
+      "endTimeSec": "1554906391.11",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "Now need someone to test the transcription",
+      "transcript": "now need someone to test the transcription",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UBR6MGXM2",
+      "startTimeSec": "1554906360.10",
+      "endTimeSec": "1554906360.11",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "<@U9RRC0G00> restarting event-socket-handler did the trick :heavy_check_mark:",
+      "transcript": "<@u nine rrc zero g zero > restarting event socket handler did the trick :heavy_check_mark:",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UBR6MGXM2",
+      "startTimeSec": "1554904495.10",
+      "endTimeSec": "1554904495.11",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "<@U9RRC0G00> thanks will try that, I only tried re-launching till now",
+      "transcript": "<@u nine rrc zero g zero > thanks will try that i only tried re launching till now",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "U9RRC0G00",
+      "startTimeSec": "1554902786.10",
+      "endTimeSec": "1554902786.10",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "sorry, i know that issue is annoying. it’s one of the things kubernetes is better at",
+      "transcript": "sorry i know that issue is annoying it’s one of the things kubernetes is better at",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "U9RRC0G00",
+      "startTimeSec": "1554902728.09",
+      "endTimeSec": "1554902728.10",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "you put everything in the right place <@UBR6MGXM2> — unfortunately, docker swarm won’t restart containers for us when the config is updated. `docker kill` the event-socket-handler container and it should come back up with the new config and be working",
+      "transcript": "you put everything in the right place <@ubr six mgxm two > — unfortunately docker swarm won’t restart containers for us when the config is updated `docker kill` the event socket handler container and it should come back up with the new config and be working",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UBR6MGXM2",
+      "startTimeSec": "1554896666.10",
+      "endTimeSec": "1554896666.10",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "<@U2983AF8V> yep they were working on a fix for Gouthams labs @IPC",
+      "transcript": "<@u two thousand nine hundred and eighty three af eight v> yep they were working on a fix for gouthams labs @i p c",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "U2983AF8V",
+      "startTimeSec": "1554895403.09",
+      "endTimeSec": "1554895403.10",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "Bump on <@U9RRC0G00> and <@U1DCTUUP9> as I think this was an issue before?",
+      "transcript": "bump on <@u nine rrc zero g zero > and <@u one dctuup nine > as i think this was an issue before",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UBR6MGXM2",
+      "startTimeSec": "1554894595.09",
+      "endTimeSec": "1554894595.10",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "Should I hash out the whole of the `set-call-id-config` function in the docker-compose.yaml so it allows connectivity to all/any attempts?",
+      "transcript": "should i hash out the whole of the `set call id config` function in the docker compose yaml so it allows connectivity to all/any attempts",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UBR6MGXM2",
+      "startTimeSec": "1554894539.08",
+      "endTimeSec": "1554894539.10",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "```set-call-id-config:\n    image:\n      \"<http://docker.greenkeytech.com/populate-calltranscriber-config:${SET_CALL_ID_CONFIG_TAG:-latest}|docker.greenkeytech.com/populate-calltranscriber-config:${SET_CALL_ID_CONFIG_TAG:-latest}>\"\n    environment:\n      - ENTRIES=21206825000,+15555555555,15555555555,5555555555\n```",
+      "transcript": "```set call id config:\n image:\n \"<http://docker greenkeytech dot com/populate calltranscriber config:${set_call_id_config_tag: latest}|docker greenkeytech dot com/populate calltranscriber config:${set_call_id_config_tag: latest}>\"\n environment:\n e n t r i e s=two one two zero six eight two five zero zero zero plus one five five five five five five five five five five one five five five five five five five five five five five five five five five five five five five five\n```",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UBR6MGXM2",
+      "startTimeSec": "1554894534.09",
+      "endTimeSec": "1554894534.10",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "this does not seem to work on their call-dashboard stack I also added it to the ENTRIES variable",
+      "transcript": "this does not seem to work on their call dashboard stack i also added it to the e n t r i e s variable",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UBR6MGXM2",
+      "startTimeSec": "1554894420.09",
+      "endTimeSec": "1554894420.10",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "I have added 21206825000 to the endpoints.txt file which I found in \"/var/lib/docker/volumes/call-dashboard_call_id_config/_data/\"",
+      "transcript": "i have added two one two zero six eight two five zero zero zero to the endpoints txt file which i found in \"/var/lib/docker/volumes/call dashboard_call_id_config/_data/\"",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UBR6MGXM2",
+      "startTimeSec": "1554894342.06",
+      "endTimeSec": "1554894342.10",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "```2019/04/10 10:49:02.551412 1 Endpoint number not in endpoints.txt, or isn't covered by prefix\n2019/04/10 10:49:02.573164 2b09d261-439a-453c-b6f0-c022f952b840 CHANNEL_DESTROY\n2019/04/10 10:50:02.292630 173195bf-c06f-4888-87c9-0618a6156318 CHANNEL_PARK 21206825000 21206825000\n2019/04/10 10:50:02.292651 1 Endpoint number not in endpoints.txt, or isn't covered by prefix\n2019/04/10 10:50:02.314514 173195bf-c06f-4888-87c9-0618a6156318 CHANNEL_DESTROY\n2019/04/10 10:51:02.070808 68dc8058-a093-4d52-84ad-31f6c2301557 CHANNEL_PARK 21206825000 21206825000\n2019/04/10 10:51:02.070830 1 Endpoint number not in endpoints.txt, or isn't covered by prefix\n```",
+      "transcript": "``` two thousand and nineteen / four / ten ten : forty nine :zero two five five one four one two one endpoint number not in endpoints txt or isn 't covered by prefix\n two thousand and nineteen / four / ten ten : forty nine :zero two five seven three one six four two b nine d two hundred and sixty one four hundred and thirty nine a four hundred and fifty three c b six f zero c twenty two f nine hundred and fifty two b eight hundred and forty channel_destroy\n two thousand and nineteen / four / ten ten : fifty :zero two two nine two six three zero one hundred and seventy three thousand one hundred and ninety five bf c six f four thousand eight hundred and eighty eight eighty seven c nine six hundred and eighteen a six million one hundred and fifty six thousand three hundred and eighteen channel_park two one two zero six eight two five zero zero zero two one two zero six eight two five zero zero zero\n two thousand and nineteen / four / ten ten : fifty :zero two two nine two six five one one endpoint number not in endpoints txt or isn 't covered by prefix\n two thousand and nineteen / four / ten ten : fifty :zero two three one four five one four one hundred and seventy three thousand one hundred and ninety five bf c six f four thousand eight hundred and eighty eight eighty seven c nine six hundred and eighteen a six million one hundred and fifty six thousand three hundred and eighteen channel_destroy\n two thousand and nineteen / four / ten ten : fifty one :zero two zero seven zero eight zero eight sixty eight dc eight thousand and fifty eight a ninety three four d fifty two eighty four ad thirty one f six c two million three hundred and one thousand five hundred and fifty seven channel_park two one two zero six eight two five zero zero zero two one two zero six eight two five zero zero zero\n two thousand and nineteen / four / ten ten : fifty one :zero two zero seven zero eight three zero one endpoint number not in endpoints txt or isn 't covered by prefix\n```",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UBR6MGXM2",
+      "startTimeSec": "1554894338.09",
+      "endTimeSec": "1554894338.09",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "<!here> been working with IPC Services team on their Connexus Lab deployment on PWs coming into Greenkey. Getting the below:",
+      "transcript": "< here> been working with i p c services team on their connexus lab deployment on pws coming into greenkey getting the below:",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "U6NCM1A05",
+      "startTimeSec": "1554830029.08",
+      "endTimeSec": "1554830029.09",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "This won't work the same way with e2e training. I think that'll be okay. That [e2e training] requires the % difference relative to normal speed as the input.",
+      "transcript": "this won 't work the same way with e two e training i think that 'll be okay that [e two e training] requires the percent difference relative to normal speed as the input",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "U2983AF8V",
+      "startTimeSec": "1554829718.09",
+      "endTimeSec": "1554829718.09",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "sure",
+      "transcript": "sure",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "U6NCM1A05",
+      "startTimeSec": "1554828688.08",
+      "endTimeSec": "1554828688.09",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "An env var sound okay? Something like `SPEED_PERTURBATIONS=${SPEED_PERTURBATIONS:=\"0.9 1.1\"}` where the default is 10% less than and greater than normal speed",
+      "transcript": "an env var sound okay something like `speed_perturbations=${speed_perturbations:=\" zero point nine one point one \"}` where the default is ten percent less than and greater than normal speed",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "U6NCM1A05",
+      "startTimeSec": "1554828641.09",
+      "endTimeSec": "1554828641.09",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "Agreed. I'm doing that presently",
+      "transcript": "agreed i 'm doing that presently",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "U2983AF8V",
+      "startTimeSec": "1554828620.08",
+      "endTimeSec": "1554828620.09",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "<@U6NCM1A05> may be worthwhile doing this? <https://github.com/greenkeytech/scribe/issues/2121> or at least manually speeding up training set",
+      "transcript": "<@u six ncm one a five > may be worthwhile doing this <https://github dot com/greenkeytech/scribe/issues/ two thousand one hundred and twenty one > or at least manually speeding up training set",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "U6NCM1A05",
+      "startTimeSec": "1554828431.08",
+      "endTimeSec": "1554828431.09",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "This seems like probably a greater priority, so I'll work on this first. Please update me as you get data for testing <@UBR6MGXM2>",
+      "transcript": "this seems like probably a greater priority so i 'll work on this first please update me as you get data for testing <@ubr six mgxm two >",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "U6NCM1A05",
+      "startTimeSec": "1554828227.08",
+      "endTimeSec": "1554828227.09",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "This is strongly suggesting that the data we're testing on was said fairly slowly. We can work on fixing this and test on whatever data we can get. What's the priority compared to adjusting the product interpreter based on Lucy's feedback?",
+      "transcript": "this is strongly suggesting that the data we 're testing on was said fairly slowly we can work on fixing this and test on whatever data we can get what 's the priority compared to adjusting the product interpreter based on lucy 's feedback",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UBR6MGXM2",
+      "startTimeSec": "1554827599.08",
+      "endTimeSec": "1554827599.09",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "I will request the audio from BAML when it was not working with the new model",
+      "transcript": "i will request the audio from b a m l when it was not working with the new model",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UBR6MGXM2",
+      "startTimeSec": "1554827578.08",
+      "endTimeSec": "1554827578.09",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "You will be able to play the audio and see the transcript output",
+      "transcript": "you will be able to play the audio and see the transcript output",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UBR6MGXM2",
+      "startTimeSec": "1554827552.08",
+      "endTimeSec": "1554827552.09",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "I have just the quotes through that were working with the previous model and now not working \"Boble eonia in 50 k\"",
+      "transcript": "i have just the quotes through that were working with the previous model and now not working \"boble eonia in fifty k\"",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "U2983AF8V",
+      "startTimeSec": "1554827147.09",
+      "endTimeSec": "1554827147.09",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "sounds good.",
+      "transcript": "sounds good",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "U6NCM1A05",
+      "startTimeSec": "1554827133.07",
+      "endTimeSec": "1554827133.09",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "Just spoke with <@UBR6MGXM2> - he's going to have BAML send out some of the quotes that appeared to do worse with baml_10 than with baml_7. We'll use those as a test set rather than testing on the training data, as above.",
+      "transcript": "just spoke with <@ubr six mgxm two >he 's going to have b a m l send out some of the quotes that appeared to do worse with baml_ ten than with baml_ seven we 'll use those as a test set rather than testing on the training data as above",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "U2983AF8V",
+      "startTimeSec": "1554826943.07",
+      "endTimeSec": "1554826943.09",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "<@UBR6MGXM2> <@UFYC0QQFK> are there samples on <http://baml.greenkeytech.com|baml.greenkeytech.com> that you thought weren't transcribing well? Matthew can then add them to the test set.",
+      "transcript": "<@ubr six mgxm two > <@ufyc zero qqfk> are there samples on <http://baml greenkeytech dot com|baml greenkeytech dot com> that you thought weren 't transcribing well matthew can then add them to the test set",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "U6NCM1A05",
+      "startTimeSec": "1554826840.03",
+      "endTimeSec": "1554826840.08",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "With noise perturbation, we learn the training set much better\n```\n+----------+--------+-------------+--------------------+\n| MODEL    | WER    | base model  | Additional changes |\n+----------+--------+-------------+--------------------+\n| svt_lstm | 28.12% | --          |                    |\n+----------+--------+-------------+--------------------+\n| svt_tdnn | 25.59% | --          |                    |\n+----------+--------+-------------+--------------------+\n| baml_7   | 39.47% | jefferies_3 |                    |\n+----------+--------+-------------+--------------------+\n| baml_9   | 16.93% | svt_lstm    |                    |\n+----------+--------+-------------+--------------------+\n| baml_10  | 12.18% | svt_tdnn    |                    |\n+----------+--------+-------------+--------------------+\n| baml_11  | 9.63%  | svt_tdnn    | noise perturbation |\n+----------+--------+-------------+--------------------+\n```",
+      "transcript": "with noise perturbation we learn the training set much better\n```\n plus plus plus plus plus \n| m o d e l | w e r | base model | additional changes |\n plus plus plus plus plus \n| svt_lstm | twenty eight point twelve percent | | |\n plus plus plus plus plus \n| svt_tdnn | twenty five point fifty nine percent | | |\n plus plus plus plus plus \n| baml_ seven | thirty nine point forty seven percent | jefferies_ three | |\n plus plus plus plus plus \n| baml_ nine | sixteen point ninety three percent | svt_lstm | |\n plus plus plus plus plus \n| baml_ ten | twelve point eighteen percent | svt_tdnn | |\n plus plus plus plus plus \n| baml_ eleven | nine point sixty three percent | svt_tdnn | noise perturbation |\n plus plus plus plus plus \n```",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "U6NCM1A05",
+      "startTimeSec": "1554823478.07",
+      "endTimeSec": "1554823478.08",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "We have two kinds of packaged models, and that's a bit of a mess. This confusion should go away with the deprecation of sqcserver. I wanted to use the kind that can be tested via svtserver for benchmarking.",
+      "transcript": "we have two kinds of packaged models and that 's a bit of a mess this confusion should go away with the deprecation of sqcserver i wanted to use the kind that can be tested via svtserver for benchmarking",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "U6NCM1A05",
+      "startTimeSec": "1554823428.06",
+      "endTimeSec": "1554823428.08",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "I'm rather alarmed that the baml_10 model is worse since my own tests strongly suggested otherwise\nTesting on the baml_quotes corpus I'm using for training:\n```\n+----------+--------+\n| MODEL    | WER    |\n+----------+--------+\n| svt_lstm | 28.12% |\n+----------+--------+\n| svt_tdnn | 25.59% |\n+----------+--------+\n| baml_7   | 39.47% |\n+----------+--------+\n| baml_9   | 16.93% |\n+----------+--------+\n| baml_10  | 12.18% |\n+----------+--------+\n```",
+      "transcript": "i 'm rather alarmed that the baml_ ten model is worse since my own tests strongly suggested otherwise\ntesting on the baml_quotes corpus i 'm using for training:\n```\n plus plus plus \n| m o d e l | w e r |\n plus plus plus \n| svt_lstm | twenty eight point twelve percent |\n plus plus plus \n| svt_tdnn | twenty five point fifty nine percent |\n plus plus plus \n| baml_ seven | thirty nine point forty seven percent |\n plus plus plus \n| baml_ nine | sixteen point ninety three percent |\n plus plus plus \n| baml_ ten | twelve point eighteen percent |\n plus plus plus \n```",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UBR6MGXM2",
+      "startTimeSec": "1554818151.08",
+      "endTimeSec": "1554818151.08",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "Lets have a chat later to dicsuss",
+      "transcript": "lets have a chat later to dicsuss",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UBR6MGXM2",
+      "startTimeSec": "1554818084.08",
+      "endTimeSec": "1554818084.08",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "They were working very well for us on site, before the _10 update",
+      "transcript": "they were working very well for us on site before the _ ten update",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UFYC0QQFK",
+      "startTimeSec": "1554818043.08",
+      "endTimeSec": "1554818043.08",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "not very good on bund eonia, but they have not done well for me previously",
+      "transcript": "not very good on bund eonia but they have not done well for me previously",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UBR6MGXM2",
+      "startTimeSec": "1554818012.08",
+      "endTimeSec": "1554818012.08",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "How are the futures quotes?",
+      "transcript": "how are the futures quotes",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UBR6MGXM2",
+      "startTimeSec": "1554817988.08",
+      "endTimeSec": "1554817988.08",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "<@UFYC0QQFK> how are the eonia quotes?",
+      "transcript": "<@ufyc zero qqfk> how are the eonia quotes",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UFYC0QQFK",
+      "startTimeSec": "1554817935.07",
+      "endTimeSec": "1554817935.08",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "had similar to better results on most recent shouts, some errors the same as last week, but some words/quotes that were not transcribed or quoted correctly last week were correct today",
+      "transcript": "had similar to better results on most recent shouts some errors the same as last week but some words/quotes that were not transcribed or quoted correctly last week were correct today",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UBR6MGXM2",
+      "startTimeSec": "1554817455.07",
+      "endTimeSec": "1554817455.08",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "<@U6NCM1A05> why did we have to change MODEL_TYPE= general and deploy the new ASR model in svt/ and remap",
+      "transcript": "<@u six ncm one a five > why did we have to change model_type= general and deploy the new a s r model in svt/ and remap",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UBR6MGXM2",
+      "startTimeSec": "1554817352.07",
+      "endTimeSec": "1554817352.08",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "Thanks for the confirmation - we should be good then",
+      "transcript": "thanks for the confirmationwe should be good then",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "U6NCM1A05",
+      "startTimeSec": "1554817219.07",
+      "endTimeSec": "1554817219.08",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "We do not need to couple the sqcserver version with the model version.  It is fine to roll back the ASR model alone.",
+      "transcript": "we do not need to couple the sqcserver version with the model version it is fine to roll back the a s r model alone",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UBR6MGXM2",
+      "startTimeSec": "1554815715.06",
+      "endTimeSec": "1554815715.08",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "rolling back the model to SQC (_7) and MODEL_TYPE=tradervoice is already working better picking up 'eonia'.  The interpreter could not be rolled back to the previous released with _7 because it has been over written in the google bucket. Is the one tagged single_latest the _07 the one to use?",
+      "transcript": "rolling back the model to s q c (_ seven ) and model_type=tradervoice is already working better picking up 'eonia ' the interpreter could not be rolled back to the previous released with _ seven because it has been over written in the google bucket is the one tagged single_latest the _ seven the one to use",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UBR6MGXM2",
+      "startTimeSec": "1554814257.06",
+      "endTimeSec": "1554814257.07",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "the _7 was definitely working better <@UFYC0QQFK> and <@UGRN6UT8C> can you test the new baml model on their cloud onboarding machine and report back with your thoughts",
+      "transcript": "the _ seven was definitely working better <@ufyc zero qqfk> and <@ugrn six ut eight c> can you test the new baml model on their cloud onboarding machine and report back with your thoughts",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UBR6MGXM2",
+      "startTimeSec": "1554813649.06",
+      "endTimeSec": "1554813649.07",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "<@U6NCM1A05> the new model has been deployed as per the instructions, the 'bobl eonia in fifty k' keeps getting picked up as 'sonia fifty k' and other quotes are not as accurate the previous model _7 seemed to work better.",
+      "transcript": "<@u six ncm one a five > the new model has been deployed as per the instructions the 'bobl eonia in fifty k ' keeps getting picked up as 'sonia fifty k ' and other quotes are not as accurate the previous model _ seven seemed to work better",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UBR6MGXM2",
+      "startTimeSec": "1554812676.06",
+      "endTimeSec": "1554812676.07",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "No problem, let us know if you require more examples we can arrange for this - in the meantime we will request them to keep correcting them on their on premise machine",
+      "transcript": "no problem let us know if you require more examples we can arrange for thisin the meantime we will request them to keep correcting them on their on premise machine",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "U2983AF8V",
+      "startTimeSec": "1554810697.06",
+      "endTimeSec": "1554810697.07",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "good feedback to know, though. we can talk internally about automatically speeding up some of the training data further to get better fast quote recognition.",
+      "transcript": "good feedback to know though we can talk internally about automatically speeding up some of the training data further to get better fast quote recognition",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UBR6MGXM2",
+      "startTimeSec": "1554810508.07",
+      "endTimeSec": "1554810508.07",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "Thanks Tejas",
+      "transcript": "thanks tejas",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UBR6MGXM2",
+      "startTimeSec": "1554810478.06",
+      "endTimeSec": "1554810478.07",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "That is what we advised we will keep requesting they correct these transcripts v voice",
+      "transcript": "that is what we advised we will keep requesting they correct these transcripts v voice",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "U2983AF8V",
+      "startTimeSec": "1554810409.06",
+      "endTimeSec": "1554810409.07",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "nothing parameter wise that can be tweaked. if they make corrections to the fast quotes, the ASR model can be trained to pick up the fast speech better.",
+      "transcript": "nothing parameter wise that can be tweaked if they make corrections to the fast quotes the a s r model can be trained to pick up the fast speech better",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UBR6MGXM2",
+      "startTimeSec": "1554810094.03",
+      "endTimeSec": "1554810094.06",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "<!here> BAML reported a few quotes not getting captured properly for people using the system for the first time, the second time was good. Looking closely at the issue we were not able to replicate this with 7-8 new people on site at BAML - Listening to the problem quotes I could hear the speed of the first voice quote was fast and then the second quote was slower. We have requested BAML to send examples of the voice files when this happened occured fast quote and second. Are there any params we can tweak to pick up fast quotes ?",
+      "transcript": "< here> b a m l reported a few quotes not getting captured properly for people using the system for the first time the second time was good looking closely at the issue we were not able to replicate this with seven negative eight new people on site at b a m llistening to the problem quotes i could hear the speed of the first voice quote was fast and then the second quote was slower we have requested b a m l to send examples of the voice files when this happened occured fast quote and second are there any params we can tweak to pick up fast quotes",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UBR6MGXM2",
+      "startTimeSec": "1554790686.06",
+      "endTimeSec": "1554790686.06",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "How come switching mount to SVT and MODEL_TYPE to general ?",
+      "transcript": "how come switching mount to s v t and model_type to general",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UBR6MGXM2",
+      "startTimeSec": "1554790622.06",
+      "endTimeSec": "1554790622.06",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "<@U6NCM1A05> thanks",
+      "transcript": "<@u six ncm one a five > thanks",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "U6NCM1A05",
+      "startTimeSec": "1554787725.05",
+      "endTimeSec": "1554787725.06",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "Issue with focus-demo cross posted in the appropriate channel at <https://greenkeytech.slack.com/archives/CFRV9B789/p1554787380021500>\nI’ll update and verify if real or not in the morning. Could definitely just be my laptop",
+      "transcript": "issue with focus demo cross posted in the appropriate channel at <https://greenkeytech slack dot com/archives/cfrv nine b seven hundred and eighty nine /p one quadrillion five hundred and fifty four trillion seven hundred and eighty seven billion three hundred and eighty million twenty one thousand five hundred >\ni’ll update and verify if real or not in the morning could definitely just be my laptop",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "U6NCM1A05",
+      "startTimeSec": "1554787653.05",
+      "endTimeSec": "1554787653.06",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "NB I updated baml_10.tar.gz to fix a typo in a config file. I’ve documented the issue at <https://github.com/greenkeytech/scribe/issues/2120> and will investigate tomorrow.",
+      "transcript": "n b i updated baml_ ten tar gz to fix a typo in a config file i’ve documented the issue at <https://github dot com/greenkeytech/scribe/issues/ two thousand one hundred and twenty > and will investigate tomorrow",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "U6NCM1A05",
+      "startTimeSec": "1554787283.04",
+      "endTimeSec": "1554787283.06",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "Just updated the deployment at <http://baml.greenkeytech.com|baml.greenkeytech.com> - confirming that the key changes are model_type and the mount target. Having trouble with Chrome at the moment, but firefox confirms the new model is working better.",
+      "transcript": "just updated the deployment at <http://baml greenkeytech dot com|baml greenkeytech dot com>confirming that the key changes are model_type and the mount target having trouble with chrome at the moment but firefox confirms the new model is working better",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "U6NCM1A05",
+      "startTimeSec": "1554764247.04",
+      "endTimeSec": "1554764247.06",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "<@UBR6MGXM2>\n\nUpdated BAML model - need to switch MODEL_TYPE from `tradervoice` to `general` in deployment yaml and map into `/scribe/gkt/models/svt` instead of `/scribe/gkt/models/sqc`\n<https://storage.googleapis.com/gk-models/baml_10.tar.gz>\n\nUpdated sqcserver-single at <https://storage.googleapis.com/gk-data/greenkey_sqcserver-single_baml.tar.gz>",
+      "transcript": "<@ubr six mgxm two >\n\nupdated b a m l modelneed to switch model_type from `tradervoice` to `general` in deployment yaml and map into `/scribe/gkt/models/svt` instead of `/scribe/gkt/models/sqc`\n<https://storage googleapis dot com/gk models/baml_ ten tar gz>\n\nupdated sqcserver single at <https://storage googleapis dot com/gk data/greenkey_sqcserver single_baml tar gz>",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UGRN6UT8C",
+      "startTimeSec": "1554747979.05",
+      "endTimeSec": "1554747979.05",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "But i'm making an assumption, so again i'd say it's a fair one to clarify",
+      "transcript": "but i 'm making an assumption so again i 'd say it 's a fair one to clarify",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UGRN6UT8C",
+      "startTimeSec": "1554747958.05",
+      "endTimeSec": "1554747958.05",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "futures contract i meant to say :grin:",
+      "transcript": "futures contract i meant to say :grin:",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UGRN6UT8C",
+      "startTimeSec": "1554747926.05",
+      "endTimeSec": "1554747926.05",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "regarding the last one - H/39 is a future contracts so i guess the quote is a request for a price in March-39 contract in 25k EUR DV01 ?",
+      "transcript": "regarding the last oneh/ thirty nine is a future contracts so i guess the quote is a request for a price in march thirty nine contract in twenty five k e u r dv one",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UGRN6UT8C",
+      "startTimeSec": "1554747881.05",
+      "endTimeSec": "1554747881.05",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "Looks good Matt, all valid questions - seems like we're really down to the finer details now",
+      "transcript": "looks good matt all valid questionsseems like we 're really down to the finer details now",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "U6NCM1A05",
+      "startTimeSec": "1554742475.95",
+      "endTimeSec": "1554742476.05",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "<@UGRN6UT8C> email draft for review before sending to Lucy @ baml - anything trivial I'm missing? I want to keep the noise minimal for our clients.\n```\nHi Everyone,\n\nI've just finished adding more structures to our product interpreter based on the input from <http://baml.greenkeytech.com|baml.greenkeytech.com>. We've added several missing structures and about 130 new test cases to our code base. Further, we've standardized our abbreviation for year in the output to be 'y' instead of 'yr'. These fixes should be deployed tomorrow during Gagan's on site visit.\n\nThere are a few examples from the test cases that remain somewhat unclear to us that we'd like to support after getting more detail around them. I enumerate the unclear structures below.\n\n---\nTRANSCRIPT 'can you please show me sep nineteen by fifteenth may twenty four euro sixes in thirty k d v oh one'\nIMSTRING   'EUR u19 x 15/May/24 v6m in 30K DV01'\n\nIs this a hedge? Do you normally say \"versus sixes\" to indicate a hedge?\n\n---\nTRANSCRIPT 'locking twenty fourth sep twenty into one year at eleven and a half show me twenty fourth sep twenty four into five year in fifty two million all versus sixes'\nIMSTRING   '24/Sep/20-1y Lock -11.5 v 24/Sep/24-5y in 52MM v6m'\n\nIs this a hedge here? \nAlso, when can a spread with two switches take a rate? What are the rules around this structure?\n\n--- \n\nTRANSCRIPT 'forty five million june immy two years standard rolls at zero percent versus uh four point five million june immy ten years at one percent'\nIMSTRING   '45MM Jun IMM 2y std rolls 0.0% vs 4.5MM Jun IMM 10y 1.00%'\n\nIs this another instance we found where a rate is used for each leg of a trade? What are the rules around when rates can go with a leg?\n\nAlso, are these notionals used instead of pricing?\n---\n\nTRANSCRIPT 'h thirty nine twenty five k euro in oh one'\nIMSTRING   'H/39 25K EUR DV01'\n\nWhat's the implied product here?\n```",
+      "transcript": "<@ugrn six ut eight c> email draft for review before sending to lucy @ bamlanything trivial i 'm missing i want to keep the noise minimal for our clients \n```\nhi everyone \n\ni 've just finished adding more structures to our product interpreter based on the input from <http://baml greenkeytech dot com|baml greenkeytech dot com> we 've added several missing structures and about one hundred and thirty new test cases to our code base further we 've standardized our abbreviation for year in the output to be 'y ' instead of 'yr ' these fixes should be deployed tomorrow during gagan 's on site visit \n\nthere are a few examples from the test cases that remain somewhat unclear to us that we 'd like to support after getting more detail around them i enumerate the unclear structures below \n\n \nt r a n s c r i p t 'can you please show me sep nineteen by fifteenth may twenty four euro sixes in thirty k d v oh one '\ni m s t r i n g 'e u r u nineteen x fifteen /may/ twenty four v six m in thirty k dv one '\n\nis this a hedge do you normally say \"versus sixes\" to indicate a hedge \n\n \nt r a n s c r i p t 'locking twenty fourth sep twenty into one year at eleven and a half show me twenty fourth sep twenty four into five year in fifty two million all versus sixes '\ni m s t r i n g ' twenty four /sep/ twenty one y lock eleven point five v twenty four /sep/ twenty four five y in fifty two mm v six m '\n\nis this a hedge here \nalso when can a spread with two switches take a rate what are the rules around this structure \n\n \n\nt r a n s c r i p t 'forty five million june immy two years standard rolls at zero percent versus uh four point five million june immy ten years at one percent '\ni m s t r i n g ' forty five mm jun i m m two y std rolls zero point zero zero percent vs four point five mm jun i m m ten y one point zero zero zero percent '\n\nis this another instance we found where a rate is used for each leg of a trade what are the rules around when rates can go with a leg \n\nalso are these notionals used instead of pricing \n \n\nt r a n s c r i p t 'h thirty nine twenty five k euro in oh one '\ni m s t r i n g 'h/ thirty nine twenty five k e u r dv one '\n\nwhat 's the implied product here \n```",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "U6NCM1A05",
+      "startTimeSec": "1554496885.01",
+      "endTimeSec": "1554496885.05",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "I just finished processing a lot of data from our BAML onboarding instance. We have about 140 more tests for our product interpreter from the input on that machine. I resolved a few edge cases which are either from our own testing or theirs.\n\nI'll have another batch of questions for them to try to\na) get more information on the odd imstrings we observed as well as\nb) the one remaining odd example from the initial batch.\n\nI'll mint a new SQCServer which can be deployed. It's probably up to you, <@UBR6MGXM2>if we should be sending this out or if we should wait until we get another iteration in.\n\nWe'll hopefully get more feedback in response to these questions Monday/Tuesday (I won't be able to send until Monday due to time constraints), and then we can ship further improvements midweek.",
+      "transcript": "i just finished processing a lot of data from our b a m l onboarding instance we have about one hundred and forty more tests for our product interpreter from the input on that machine i resolved a few edge cases which are either from our own testing or theirs \n\ni 'll have another batch of questions for them to try to\na) get more information on the odd imstrings we observed as well as\nb) the one remaining odd example from the initial batch \n\ni 'll mint a new sqcserver which can be deployed it 's probably up to you <@ubr six mgxm two >if we should be sending this out or if we should wait until we get another iteration in \n\nwe 'll hopefully get more feedback in response to these questions monday/tuesday (i won 't be able to send until monday due to time constraints) and then we can ship further improvements midweek",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UBR6MGXM2",
+      "startTimeSec": "1554410647.03",
+      "endTimeSec": "1554410647.05",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "<!here> <@UH3RCR9A6> and I just upgraded Jefferies London to their latest ASR model, SQCserver and focus demo. To upgrade to the Focus webtool we went through updating new base.env and docker-compose.yaml and conf files. Patrick H in New-York was able to connect to the London POC machine and confirm everything was working OK.",
+      "transcript": "< here> <@uh three rcr nine a six > and i just upgraded jefferies london to their latest a s r model sqcserver and focus demo to upgrade to the focus webtool we went through updating new base env and docker compose yaml and conf files patrick h in new york was able to connect to the london p o c machine and confirm everything was working o k",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UH3RCR9A6",
+      "startTimeSec": "1554389995.04",
+      "endTimeSec": "1554389995.04",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "\"god[n]\"",
+      "transcript": "\"god[n]\"",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UBR6MGXM2",
+      "startTimeSec": "1554389990.04",
+      "endTimeSec": "1554389990.04",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "Correct its a monthly update",
+      "transcript": "correct its a monthly update",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "U6NCM1A05",
+      "startTimeSec": "1554389953.02",
+      "endTimeSec": "1554389953.04",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "<@U4B1LHD0R> <@U9RRC0G00> <@UH3RCR9A6> <@UBR6MGXM2> heads up to anyone doing jefferies support that you'll need to rotate your password to <http://support.jefferies.com|support.jefferies.com> frequently. I've already been *required* to update my own (from \"Welcome1\" to \"password1\" to \"password2\")",
+      "transcript": "<@u four b one lhd zero r> <@u nine rrc zero g zero > <@uh three rcr nine a six > <@ubr six mgxm two > heads up to anyone doing jefferies support that you 'll need to rotate your password to <http://support jefferies dot com|support jefferies dot com> frequently i 've already been required to update my own (from \"welcome one \" to \"password one \" to \"password two \")",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UBR6MGXM2",
+      "startTimeSec": "1554378935.04",
+      "endTimeSec": "1554378935.04",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "Keep the team posted with further updates",
+      "transcript": "keep the team posted with further updates",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UBR6MGXM2",
+      "startTimeSec": "1554378863.03",
+      "endTimeSec": "1554378863.04",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "<@U6NCM1A05> and team thank you for your efforts on this thus far.",
+      "transcript": "<@u six ncm one a five > and team thank you for your efforts on this thus far",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UBR6MGXM2",
+      "startTimeSec": "1554378813.03",
+      "endTimeSec": "1554378813.04",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "The above SQC parameters were updated. Dictation quotes from their example list were read out and seemed to work successfully during my checkouts",
+      "transcript": "the above s q c parameters were updated dictation quotes from their example list were read out and seemed to work successfully during my checkouts",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UBR6MGXM2",
+      "startTimeSec": "1554378739.01",
+      "endTimeSec": "1554378739.04",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "``` - ACOUSTIC_SCALE=1.0\n      - BEAM=20.0\n      - CHUNK_LENGTH=1.0\n      - WORD_CONFUSIONS=False\n      - WORD_ALIGNMENTS=True\n      - CONSOLE_LOG=verbose\n      - ROOT_LOG=verbose\n      - TRACEBACK_PERIOD=1.0\n      - DATA_OUT=/scribe/data\n      - ENDPOINTING=True\n      - INTERPRETERS=True\n      - MAX_ACTIVE=5000\n      - MODEL_TYPE=tradervoice\n      - PRODUCT_CLASS=swap\n      - QUOTE_ACTIVATION_KEYWORD=confirm\n      - SILENCE_TIMEOUT=10\n      - USERS=4\n      - VERBOSE_LOGGING=True```",
+      "transcript": "```acoustic_scale= one point zero zero \n b e a m= twenty point zero zero \n chunk_length= one point zero zero \n word_confusions=false\n word_alignments=true\n console_log=verbose\n root_log=verbose\n traceback_period= one point zero zero \n data_out=/scribe/data\n e n d p o i n t i n g=true\n i n t e r p r e t e r s=true\n max_active= five thousand \n model_type=tradervoice\n product_class=swap\n quote_activation_keyword=confirm\n silence_timeout= ten \n u s e r s= four \n verbose_logging=true```",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UBR6MGXM2",
+      "startTimeSec": "1554378732.03",
+      "endTimeSec": "1554378732.04",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "<!here> BAML update: sqcserver_single_baml, baml_7 model have been deployed on their on premise machine.",
+      "transcript": "< here> b a m l update: sqcserver_single_baml baml_ seven model have been deployed on their on premise machine",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UBR6MGXM2",
+      "startTimeSec": "1554364268.03",
+      "endTimeSec": "1554364268.03",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "OK thanks Matthew",
+      "transcript": "o k thanks matthew",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "U6NCM1A05",
+      "startTimeSec": "1554346247.02",
+      "endTimeSec": "1554346247.03",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "baml_7 for now. I’m seeing indications of slight degradation in model quality with more data which might mean I need to dial back the number of epochs and the learning rate.",
+      "transcript": "baml_ seven for now i’m seeing indications of slight degradation in model quality with more data which might mean i need to dial back the number of epochs and the learning rate",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UBR6MGXM2",
+      "startTimeSec": "1554334566.03",
+      "endTimeSec": "1554334566.03",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "Cheers",
+      "transcript": "cheers",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UBR6MGXM2",
+      "startTimeSec": "1554334557.03",
+      "endTimeSec": "1554334557.03",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "<@U6NCM1A05> thanks. Let me know of we go with baml_8 or _7",
+      "transcript": "<@u six ncm one a five > thanks let me know of we go with baml_ eight or _ seven",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "U6NCM1A05",
+      "startTimeSec": "1554330013.01",
+      "endTimeSec": "1554330013.03",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "<@UBR6MGXM2> this link is updated: <https://storage.googleapis.com/gk-data/greenkey_scribe_sqcserver_single_baml.tar.gz>\nI don't think we've received more client data since yesterday when baml_7 was minted. baml_8 is ongoing with more data from Hutch.\nI'll set some small scale experiments going to assess where we stand and see if we can make further improvements.",
+      "transcript": "<@ubr six mgxm two > this link is updated: <https://storage googleapis dot com/gk data/greenkey_scribe_sqcserver_single_baml tar gz>\ni don 't think we 've received more client data since yesterday when baml_ seven was minted baml_ eight is ongoing with more data from hutch \ni 'll set some small scale experiments going to assess where we stand and see if we can make further improvements",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UBR6MGXM2",
+      "startTimeSec": "1554262792.02",
+      "endTimeSec": "1554262792.03",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "<@U6NCM1A05> makes sense will wait. When we deploy will set their PRODUCT_CLASS=swap plus any other recommended changes.....will cover with you tomorrow.",
+      "transcript": "<@u six ncm one a five > makes sense will wait when we deploy will set their product_class=swap plus any other recommended changes will cover with you tomorrow",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "U6NCM1A05",
+      "startTimeSec": "1554258853.01",
+      "endTimeSec": "1554258853.02",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "I strongly advocate for their deployment to be locked to the swap product interpreter to remove any issues with the `any` product classifier. That’s accomplished by setting `PRODUCT_CLASS=swap` in the docker-compose.yaml",
+      "transcript": "i strongly advocate for their deployment to be locked to the swap product interpreter to remove any issues with the `any` product classifier that’s accomplished by setting `product_class=swap` in the docker compose yaml",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "U6NCM1A05",
+      "startTimeSec": "1554258779.00",
+      "endTimeSec": "1554258779.02",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "<@UBR6MGXM2> This is “blocked” by waiting for BAML SMEs to respond to issues raised today but if decision is to deploy anyways, updated models are at\n<https://storage.googleapis.com/gk-models/nnet_baml_7.tar.gz>\n<https://storage.googleapis.com/gk-models/baml_7.tar.gz>\nCustom SQCServer with latest changes to BAML Swap interpreter is\n<https://storage.googleapis.com/gk-data/greenkey_sqcserver_single_baml.tar.gz>",
+      "transcript": "<@ubr six mgxm two > this is “blocked” by waiting for b a m l smes to respond to issues raised today but if decision is to deploy anyways updated models are at\n<https://storage googleapis dot com/gk models/nnet_baml_ seven tar gz>\n<https://storage googleapis dot com/gk models/baml_ seven tar gz>\ncustom sqcserver with latest changes to b a m l swap interpreter is\n<https://storage googleapis dot com/gk data/greenkey_sqcserver_single_baml tar gz>",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UBR6MGXM2",
+      "startTimeSec": "1554228026.02",
+      "endTimeSec": "1554228026.02",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "I will test this out now",
+      "transcript": "i will test this out now",
+      "confidence": 1
+    },
+    {
+      "speakerInfo": "UBR6MGXM2",
+      "startTimeSec": "1554228019.02",
+      "endTimeSec": "1554228019.02",
+      "genderInfo": {
+        "gender": "male"
+      },
+      "punctuated_transcript": "thanks guys",
+      "transcript": "thanks guys",
+      "confidence": 1
+    }
+  ]
+}
