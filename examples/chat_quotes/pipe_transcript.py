@@ -15,7 +15,7 @@ args = parser.parse_args()
 
 outfile = args.outfile
 if not outfile:
-    OUTFILE = "{}_{}_().json".format(args.latest_ts, args.expected_intent, args.test_no)
+    OUTFILE = "{}_{}_{}.json".format(args.latest_ts, args.expected_intent, args.test_no)
 
 chat_slack_url = "http://localhost:{}/process".format(args.chat_slack_port)
 discovery_url = "http://localhost:{}/process".format(args.discovery_port)

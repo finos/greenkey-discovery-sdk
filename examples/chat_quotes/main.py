@@ -64,7 +64,8 @@ quotes_dir.exists() and quotes_dir.is_dir()
 ##############
 # Quotes
 quotes_test = 'test_quotes_10.txt'
-quotes_test = quotes_dir / quotes_test
+quotes_test = Path(quotes_test)
+# quotes_test = quotes_dir / quotes_test
 assert quotes_test.exists() and quotes_test.is_file()
 
 test_quotes = quotes_test.read_text().strip().splitlines()
@@ -82,12 +83,13 @@ quotes_df["expected_intent"] = "quote"
 ################
 # Not_Quotes
 not_quotes_test = 'test_not_quotes_10.txt'
-not_quotes_test = quotes_dir / not_quotes_test
+not_quotes_test = Path(not_quotes_test)
+# not_quotes_test = quotes_dir / not_quotes_test
 not_quotes_test.exists() and not_quotes_test.is_file()
 test_not_quotes = not_quotes_test.read_text().strip().splitlines()
 # test_not_quotes[:10]
-# len(test_not_quotes)
 
+# len(test_not_quotes)
 not_quotes_df = pd.DataFrame(data=test_not_quotes, columns=["transcript"])
 not_quotes_df.drop_duplicates(inplace=True)
 not_quotes_df['is_quote'] = 0
@@ -113,6 +115,10 @@ df["is_posted_to_slack"] = 0                      #df.posted_to_slack_json.apply
 df["chat_segments"] = empty_dict_array            #df.transcript.apply(fetch_chats_via_chat_slack)
 df['discovery_segments'] = empty_dict_array      #df.chat_segments.apply(extract_intents_via_discovery)
 
+import json
+def dump_json(data, outfile):
+    json.dump(data, open(outfile, 'w+'))
+dump_json(data=df.to_json(orient="records") , outfile="df_test_data_4.17.18.json")
 
 # df.shape
 # df.columns
