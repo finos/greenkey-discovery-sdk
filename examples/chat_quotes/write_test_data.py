@@ -6,8 +6,8 @@ from pathlib import Path
 
 parser = argparse.ArgumentParser(description="Write intent-specific test files and tests.txt")
 parser.add_argument("--intents", default="quote not_quote", help="String with each intent separated by a space")
-parser.add_argument("--directory", help="Path to directory containing test data files")
-parser.add_argument("--test_size", default=10, type=int, help="Percent of original data reserved for testing")
+parser.add_argument("--directory", default=None, help="Path to directory containing test data files")
+parser.add_argument("--test-size", default=10, type=int, help="Percent of original data reserved for testing")
 parser.add_argument("--outfile", default="tests.txt", help="Name to write tests containing quotes and not quotes data")
 parser.add_argument(
     "--shuffle",
@@ -27,8 +27,9 @@ def read_tests(intent_label, directory, test_size):
   :param infile: path to file containing new-line separated strings, each an instance of intent_label
   :return: List[Tuple(intent_label, str)]  where the str is a line in the file
   """
-    infile = Path(directory) / "test_{}_{}".format(intent_label, test_size)
-    assert infile.exists() and infile.is_file()
+    infile = Path(directory) / "test_{}s_{}.txt".format(intent_label, test_size)
+    print(infile)
+    # assert infile.exists() and infile.is_file()
     return [(intent_label, line.strip()) for line in open(infile, 'r+') if line.strip()]
 
 

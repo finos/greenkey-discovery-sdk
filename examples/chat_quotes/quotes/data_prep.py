@@ -82,7 +82,8 @@ def write_file(outfile, data):
       f.write("{}\n".format(line))
 
 
-def train_test_split_and_write(directory, train_size, train_dir=None, test_dir=None, ext='.txt'):
+def train_test_split_and_write(directory, train_size=args.train_size, train_dir=None, test_dir=None,
+                               ext='.txt'):
   """
   :param directory: str, directory containing data files
   :param train_dir: directory to save training data
@@ -111,7 +112,7 @@ def train_test_split_and_write(directory, train_size, train_dir=None, test_dir=N
 
     if not test_dir:
       test_dir = dirname(infile)
-    test_outfile = join_path(test_dir, "test_{}_{}.txt".format(stem, train_size))   # int(100 - size * 100)
+    test_outfile = join_path(test_dir, "test_{}_{}.txt".format(stem, 100-train_size))   # int(100 - size * 100)
 
     write_file(data=train, outfile=train_outfile)
     write_file(data=test, outfile=test_outfile)
@@ -134,7 +135,7 @@ def write_tests(directory):
 
   print("Writing `tests.txt` file in `quotes/` directory")
   try:
-    cmd = f"python write_tests.py --quotes={quotes_test} --not-quotes={not_quotes_test} --outfile={args.test_outfile} " \
+    cmd = f"python write_tests.py --quotes={quotes_test} --not-quotes={not_quotes_test} --outfile={args.outfile} " \
       f"--shuffle={args.shuffle}"
     subprocess.call(cmd, shell=True)
     # call write_test_data.py to generate test data files + tests.txt           # path, path, tests.txt
@@ -222,12 +223,15 @@ def main():
       continue
 
   # (3) shuffle quotes/not quotes and split into train/test & write to files (saved to data_dir)
+  # List[str] for training and test
+  # BUT function also wrote them to files that were labeled "test_{intent_label}_{test_size}.txt"
   train_files, test_files = train_test_split_and_write(directory=data_dir, train_size=args.train_size,
                                                        train_dir=custom_dir, test_dir=DIRECTORY, ext='.txt')
 
   ###################################################################
   # (4) generate `tests.txt` from `test_quote_10.txt` and `test_not_quote_10.txt`  (in quotes_dir)
-  write_tests(test_files)
+  write_tests(directory=args.directory)   # not making use of List[str]; reading in files instead
+  # write_tests(test_files)
   write_intents_config()
 
 
