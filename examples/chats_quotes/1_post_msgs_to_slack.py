@@ -12,7 +12,8 @@ from time import sleep
 
 
 def get_test_transcripts(infile='tests.txt'):
-	return [line.split(":")[1].strip() for line in Path(infile).read_text().split() if line.split(":")[0].strip() == "transcript"]
+	return [line.split(":", maxsplit=1)[1].strip() for line in Path(infile).read_text().split() if line.split(":")[
+		0].strip() == "transcript"]
 
 
 def post_message_to_slack(transcript, channel_id, slack_access_token):

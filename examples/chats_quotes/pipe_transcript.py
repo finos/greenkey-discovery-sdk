@@ -175,7 +175,7 @@ def extract_intents_via_discovery(chat_segments):
 
 def insert_expected_intent(discovery_segments):
   try:
-    for i in range(len(discover_segments["segments"])):
+    for i in range(len(discovery_segments["segments"])):
       discovery_segments["segments"][i]["intents"]["expected_intent"] = args.expected_intent
   except Exception as e:
     print("Error when trying to insert expected intent: {}".format(e))
