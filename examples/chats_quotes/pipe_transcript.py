@@ -91,30 +91,19 @@ def post(url, headers, payload, timeout=10, delay=3, max_tries=5):
 ####################################################################################
 # STEP 1 - transcript posted to slack
 # test_dict=None): #transcript, channel_id, # slack_access_token, outfile):
-def post_message_to_slack(request_dict=None, outfile=None):
+def post_message_to_slack(transcript=None, channel_id=None, slack_access_token=None):#, outfile=None):
     """
     transcript str; chat to post to Slack channel given by channnel id
        OUTFILE and SLACK_ACCESS_TOKEN are globals
     """
     url = "https://slack.com/api/chat.postMessage"
-    transcript = request_dict["transcript"]
-    headers = dict(Authorization="Bearer {}".format(request_dict["slack_access_token"]))
-    payload = dict(channel=request_dict["channel_id"], text=transcript, as_user="true")
-    posted_json = post(url, headers=headers, payload=payload)                 # post json output
-    dump_json(data=posted_json, outfile="post_message_{}".format(outfile))    # request_dict["outfile"]
-    return validate_post_messaage(posted_json, transcript), posted_json
-
-
-# Post transcript to channel : channel_id
-def validate_post_messaage(posted_json, transcript):
-    """
-    :param posted_json: dict, JSON response from POST
-        message to Slack at endpoint postMessage
-    :return: bool; True if succesfully posted message, else False
-    """
-    return posted_json and posted_json["ok"] is True and posted_json["message"]["text"] == transcript
-    # print("Step 1: Success. Transcript posted to Slack /post.Message")
-
+    # transcript, channel_id = request_dict["transcript"], request_dict["channel_id"]
+    headers = dict(Authorization="Bearer {}".format(slack_access_token))  #request_dict["slack_access_token"]))
+    payload = dict(channel=channel_id, text=transcript, as_user="true")
+    posted_json = post(url, headers=headers, payload=payload) # post json output
+    return posted_json
+    # dump_json(data=posted_json, outfile="post_message_{}".format(outfile))    # request_dict["outfile"]
+    # return validate_post_messaage(posted_json, transcript), posted_json
 
 ####################################################################################
 # For Chat_slack and Discovery
@@ -132,56 +121,17 @@ def post_to_microservice(url, payload):
 # Chat_Slack -> fetch posted message
 #def chat_slack_request_dict(latest_ts=args.latest_ts, channel_name=args.channel_name, channel_id=args.channel_id, count=args.count, max_pages=args.max_pages, service_type=args.service_type, expected_intent=args.expected_intent, expected_transcript=args.expected_transcript, test_no=args.test_no):
 
-def chat_slack_request_dict(service_name=None, channel_name=None, channel_id=None, count=None, max_pages=None,
-                            latest_ts=None, transcript=None):
-    """add other params: count, pages, latest/ts, chats"""
-    if not latest_ts:
-        latest_ts = datetime.now().timestamp()
-
-    #service_type = "slack"
-    # slack_api_url
-    # slack_access_token
-
-    params = dict(
-        channel_name=channel_name,
-        channel_id=channel_id,
-        message=transcript,
-        count=count,
-        max_pages=max_pages,
-        latest_ts=latest_ts
-    )
-    request_dict = dict(service_name=service_name, params=params)
-    return request_dict
-
-
-def build_test_dict(test_no, transcript, expected_intent):
-    """
-    #=args.test_no, test_transcript=args.transcript, expected_intent=args.expected_intent, outfile=args.outfile):
-    :param test_no:
-    :param transcript:
-    :param expected_intent:
-    :param outfile:
-    :return: dict
-    """
-    test_dict = {
-        "expected_intent": expected_intent,
-        "transcript": transcript,
-        "test_no": test_no#,
-        # "outfile": outfile
-    }
-    return test_dict
-
-
 def fetch_chats_via_chat_slack(request_dict=None, test_dict=None, outfile=None, chat_slack_url=None):
-    print("fetching chat via chat_slack")
+    print("\n#2 Fetching posted chat via chat_slack\n")
+    # logger.info("\n#2 Fetching posted chat via chat_slack\n")
     chat_segments = post_to_microservice(url=chat_slack_url, payload=request_dict)
-    if chat_segments:
+    if chat_segments and chat_segments["segments"][0]["transcript"] == test_dict["transcript"]:
         print("Chat Slack Successfully fetched Chat")
-        chat_segments.update(test_dict)     # add on all test info including expected_intent
-        chat_segments["expected_intent"] = expected_intent  # Adding in expected intent
-        outfile = "chat_segments_{}".format(outfile)#test_dict["outfile"])        #TODO add `result_dir` path so all
-        # files are dumped there)
-        dump_json(data=chat_segments, outfile=outfile) #outfile="chat_segments_{}".format(OUTFILE))
+        # chat_segments.update(test_dict)     # add on all test info including expected_intent
+        chat_segments["expected_intent"] = test_dict["expected_intent"]  # Adding in expected intent
+        chat_segments["test_no"] = test_dict["test_no"]
+        outfile = "chat_segments_{}".format(outfile)
+        dump_json(data=chat_segments, outfile=outfile)
     return chat_segments
 
 
@@ -193,6 +143,8 @@ def extract_intents_via_discovery(chat_segments, outfile=None, discovery_url=Non
         print("Discovery returned augmented lattice with intents!")
         dump_json(data=discovery_segments, outfile="discovery_segments_{}".format(outfile))
         pp.pprint("Discovery Lattice: {}".format(discovery_segments))
+    else:
+        print("------- Post to Discovery Failed ----------- \n Output: {}".format(discovery_segments))
     return discovery_segments
 
 # def insert_expected_intent(discovery_segments):
@@ -206,9 +158,13 @@ def extract_intents_via_discovery(chat_segments, outfile=None, discovery_url=Non
 #     return discovery_segments
 
 
-def main(test_dict=None, request_dict=None, outfile=None):
-    test_no, transcript, expected_intent = test_dict["test_no"], test_dict["transcript"], test_dict["expected_intent"]
+def main(test_dict=None, request_dict=None, outfile=None, chat_slack_port=None, discovery_port=None):
+    chat_slack_url = "http://localhost:{}/process".format(chat_slack_port)
+    discovery_url = "http://localhost:{}/process".format(discovery_port)
 
+    test_no, transcript, expected_intent = test_dict["test_no"], test_dict["transcript"], test_dict["expected_intent"]
+    if not outfile:
+        outfile = "{}_{}.json".format(test_no, expected_intent)
     print("--------------------------------------------")
     print("\n Test Number: {}\n".format(test_no))
     logger.info("\n#1 Posting message to chat_slack: \n Intent: {} \n Transcript: {}\n".format(expected_intent, transcript))
@@ -217,19 +173,15 @@ def main(test_dict=None, request_dict=None, outfile=None):
     #     test_dict = track_test_fields(test_no, transcript, expected_intent, outfile)
     chat_segments, discovery_segments = {}, {}
 
-    message_was_posted, response_json = post_message_to_slack(request_dict, outfile)
+    # message_was_posted, response_json = post_message_to_slack(request_dict, outfile)
+    posted_json = post_message_to_slack(transcript=transcript, channel_id=channel_id, slack_access_token=slack_access_token)
+    message_was_posted = posted_json and posted_json["ok"] is True and posted_json["message"]["text"] == transcript
     if message_was_posted:
         logger.info("Step 1: Success. Transcript posted to Slack /post.Message")
-    # if post_message_to_slack(transcript):  # returns bool b/c validation function
-        try:
-            # ONLY FETCH chat with `chat_slack` IF transcript POSTED SUCCESSFULLY
-            logger.info("\n#2 Fetching posted chat via chat_slack\n")
-            # chat_slack_request_dict(service_name, channel_name, channel_id, count, max_pages, latest_ts)
-            # TODO  chat_slack_url_not necessary
+        try:  # ONLY FETCH chat with `chat_slack` IF transcript POSTED SUCCESSFULLY
             chat_segments = fetch_chats_via_chat_slack(request_dict, test_dict, outfile, chat_slack_url)
             assert chat_segments["segments"]["transcript"] == transcript
             # only post to discovery if chat_segments retrieve   ^^ assertion fails no transcript and no discovery
-
             print("\n#3 Sending chat_segment to discovery:\n {}".format(chat_segments))
             discovery_segments = extract_intents_via_discovery(chat_segments, outfile,  discovery_url)
             if not discovery_segments:
@@ -237,7 +189,7 @@ def main(test_dict=None, request_dict=None, outfile=None):
         except (KeyError, AssertionError):
             print("Failed: Chat_Slack did NOT retrieve chat data for test: {}\n".format(test_no))
             print("Nothing will be posted to Discovery. Program Terminating")
-    return response_json, chat_segments, discovery_segments
+    return posted_json, chat_segments, discovery_segments
 
 
 if __name__ == '__main__':
@@ -246,17 +198,14 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     # in Docker-compose
-    chat_slack_url = "http://localhost:{}/process".format(args.chat_slack_port)
-    discovery_url = "http://localhost:{}/process".format(args.discovery_port)
+    chat_slack_port, discovery_port = args.chat_slack_port, args.discovery_port
     service_name = args.service_name
     slack_access_token = args.slack_access_token
 
     outfile = args.outfile
-    if not args.outfile:
-        outfile = "{}_{}.json".format(args.test_no, args.expected_intent)
 
     test_no, transcript, expected_intent = args.test_no, args.transcript, args.expected_intent
-    test_dict = build_test_dict(test_no=test_no, transcript=transcript, expected_intent=expected_intent)
+    test_dict = {"test_no": test_no, "transcript": transcript, "expected_intent": expected_intent}
     # test_dict = dict(test_no=test_no, transcript=transcript, expected_intent=expected_intent)
 
     # for params_dict
@@ -268,30 +217,9 @@ if __name__ == '__main__':
         count=count, max_pages=max_pages, latest_ts=latest_ts, message=transcript,
     )
 
-    main(test_dict=test_dict, request_dict=chat_slack_request_dict, outfile=outfile)
+    main(test_dict=test_dict, request_dict=chat_slack_request_dict, outfile=outfile,
+         chat_slack_port=chat_slack_port, discovery_port=discovery_port)
     sys.exit()
-
-
-def chat_slack_request_dict(service_name=None, channel_name=None, channel_id=None, count=None, max_pages=None,
-                            latest_ts=None, transcript=None):
-    """add other params: count, pages, latest/ts, chats"""
-    if not latest_ts:
-        latest_ts = datetime.now().timestamp()
-    # service_type = "slack"
-    # slack_api_url
-    # slack_access_token
-
-    params = dict(
-        channel_name=channel_name,
-        channel_id=channel_id,
-        message=transcript,
-        count=count,
-        max_pages=max_pages,
-        latest_ts=latest_ts
-    )
-    request_dict = dict(service_name=service_name, params=params)
-    return request_dict
-
 
 
  # #############################################################################################################
@@ -325,7 +253,7 @@ def chat_slack_request_dict(service_name=None, channel_name=None, channel_id=Non
  #            expected_intent = test["expected_intent"]
  #            outfile = "{}_{}".format(test_no, len(results))   #expected_intent, len(results))
  #            json.dump(test, open(outfile, 'w+'))
- #
+
 
    
     # chat_segments = {}
