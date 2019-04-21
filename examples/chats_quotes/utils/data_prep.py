@@ -131,11 +131,11 @@ def write_tests(test_files=None):
     print("Test File Written")
     print(Path('tests.txt').read_text().splitlines()[0])
   # Remove separate quote and not_quote test files (with 10%
-    try:
-      os.remove(quotes_test)
-      os.remove(not_quotes_test)
-    except (ValueError, FileNotFoundError) as e:
-      print("Could not remove file: {}".format(e))
+    #try:
+    #  os.remove(quotes_test)
+    #  os.remove(not_quotes_test)
+    #except (ValueError, FileNotFoundError) as e:
+    #  print("Could not remove file: {}".format(e))
 
   print("Files in `quotes` directory:\n {}".format(os.listdir(DIRECTORY)))
 
@@ -153,9 +153,9 @@ def write_intents_config():
   os.makedirs(custom_dir, exist_ok=True)
 
   # TODO generalize to accomodate n number of intents and training files
-
-  train_quotes = "train_quotes_{}.txt".format(TRAIN_SIZE*100)
-  train_not_quotes = "train_not_quotes_{}.txt".format(TRAIN_SIZE*100)
+  train_n = int(TRAIN_SIZE*100)
+  train_quotes = "train_quotes_{}.txt".format(train_n)#(TRAIN_SIZE*100)
+  train_not_quotes = "train_not_quotes_{}.txt".format(train_n)#TRAIN_SIZE*100)
 
   training_data = [train_quotes, train_not_quotes]
 
@@ -250,7 +250,7 @@ if __name__ == '__main__':
   try:
     TRAIN_SIZE = float(sys.argv[2])
   except IndexError:
-    TRAIN_SIZE = 0.8
+    TRAIN_SIZE = 0.9
 
   for directory_name in ['data', 'custom', 'results']:
     os.makedirs(join_path(DIRECTORY, directory_name), exist_ok=True)
