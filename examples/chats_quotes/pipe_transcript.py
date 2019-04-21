@@ -212,10 +212,12 @@ if __name__ == '__main__':
     channel_name, channel_id,  = args.channel_name, args.channel_id
     count, max_pages, latest_ts = args.count, args.max_pages, args.latest_ts
 
-    chat_slack_request_dict = dict(
-        service_name=service_name, channel_name=channel_name, channel_id=channel_id,
+    params = dict(
+        channel_name=channel_name, channel_id=channel_id,
         count=count, max_pages=max_pages, latest_ts=latest_ts, message=transcript,
     )
+
+    chat_slack_request_dict = dict(service_name=service_name, params=params)
 
     main(test_dict=test_dict, request_dict=chat_slack_request_dict, outfile=outfile,
          chat_slack_port=chat_slack_port, discovery_port=discovery_port)

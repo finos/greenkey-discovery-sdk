@@ -26,7 +26,7 @@ def general_opts():
     parser.add_argument("--chat-slack-port", default=8005, help="Port chat_slack is listening on")
 
     # Data
-    parser.add_argument("--test-no", required=False, type=int, help="Unique number for test of this transcript")
+    parser.add_argument("--test-no", required=False,  help="Unique number for test of this transcript")
     parser.add_argument(
      	"--transcript",
      	required=False,
