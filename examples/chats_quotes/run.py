@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-# import argparse
 import os
 import requests
 import json
@@ -11,9 +10,7 @@ from pathlib import Path
 from datetime import datetime
 import pprint as pp
 
-
 logger = logging.getLogger(__name__)
-
 
 
 def dump_json(data, outfile):
@@ -40,24 +37,23 @@ def bucket(items, n):
     return bucket
 
 
-def load_tests(test_file):
+def load_tests(test_file="tests.txt"):
     """
-	 reads in tests.txt and returns an iterator of dicts corresponding to each test
-	 :param test_file:
-	 :return:
-     """
+    :param test_file: str; default tests.txt; tests in format required for test_discovery.py
+    :return:  iterator of dicts, each with all fields for a single test
+        reads in tests.txt and returns an iterator of dicts corresponding to each test
+    """
     test_data = Path(test_file).read_text().splitlines()
+    assert Path(test_file).exists() and Path(test_file).is_file()
     tests = [
         line.split(":", maxsplit=1)
-        # line.strip().split(":", maaxsplit) #[1].strip()  ??
         for line in test_data
         if line.strip() and line.split(":")[0].strip() in ['test', 'transcript', 'intent']
     ]
-    return map(dict, bucket(tests, 3))
+    test_dicts = map(dict, bucket(tests, 3))
+    return test_dicts    # return list(test_dicts)
 
-####################################################################################
 
-####################################################################################
 # Generic Post - STEP 0
 def post(url, headers, payload, timeout=10, delay=4, max_tries=5):
     """ post to url """
@@ -75,9 +71,7 @@ def post(url, headers, payload, timeout=10, delay=4, max_tries=5):
         return {}
 
 
-####################################################################################
 # STEP 1 - transcript posted to slack
-# test_dict=None): #transcript, channel_id, # slack_access_token, outfile):
 def post_message_to_slack(transcript=None, channel_id=None, slack_access_token=None):#, outfile=None):
     """
     transcript str; chat to post to Slack channel given by channnel id
@@ -92,8 +86,8 @@ def post_message_to_slack(transcript=None, channel_id=None, slack_access_token=N
     # dump_json(data=posted_json, outfile="post_message_{}".format(outfile))    # request_dict["outfile"]
     # return validate_post_messaage(posted_json, transcript), posted_json
 
-####################################################################################
-# For Chat_slack and Discovery
+
+# STEP 2 & 3: Chat_slack and Discovery
 def post_to_microservice(url, payload):
     if not payload:
         return {}
@@ -105,132 +99,109 @@ def post_to_microservice(url, payload):
     return response_json
 
 
-
-
-chat_slack_port = os.environ.get("CHAT_SLACK_PORT", 8000)
-discovery_port = os.environ.get("DISCOVERY_PORT", 8001)
-
-
-SLACK_ACCESS_TOKEN = "xoxp-4953937137-344679330118-509400138422-a20f349799113ba21f5c91e8a190cd14"
-slack_access_token = os.environ.get("SLACK_ACCESS_TOKEN", SLACK_ACCESS_TOKEN)
-
-CHANNEL_NAME = channel_name = os.environ.get("CHANNEL_NAME", "ageojo_test")
-channel_id = os.environ.get("CHANNEL_ID", "CEXMKJAJH")
-
-service_type = "slack"
-
-
-
-
-chat_slack_url = "http://localhost:{}/process".format(chat_slack_port)
-discovery_url = "http://localhost:{}/process".format(discovery_port)
-
-
-
 def set_params(**kwargs):
+    """dict; optional; update chat_slack params"""
     params = dict(
         channel_name=CHANNEL_NAME
     )
-    for k,v in kwargs.items():
+    for k, v in kwargs.items():
         params[k] = v
+    if "latest_ts" not in params:
+        params["latest_ts"] = datetime.now().timestamp()
     return params
 
 
+def main(tests, expected_intent, service_type, channel_id, slack_access_token, chat_slack_port, discovery_port, params):
+    """
+    :param tests: List[str], each str is a transcript/chat
+    :param expected_intent: str; intent label
+    :param service_type: str; chat service; presently, 'chat_slack'
+    :param channel_id: str;  id corresponding to channel to post message to; default id is for channel #ageojo_test
+    :param slack_access_token: str;
+    :param chat_slack_port: int; port chat_slack is listening on
+    :param discovery_port: int; port discovery is listening on
+    :param count: int; number of messages chat_slack should retrieve
+    :param max_pages: int; max number of pages chat_slack should retrieve messages from; default 100 messages
+    per page
+    :param latest_ts: float; timestamp of most recent message to returun
+    :return:
+        posts each str in tests to Slack channel with id channel_id,
+        retrieves that chat message with chat_slack and converts to JSON segments
+        posts chat segment(s) to Discovery
+        adds test information (test_no, expected_intent, transcript) to Discovery output segments
+        saves final output as JSON
+      if any of the above steps fails, logs test information: test_no, expected_intent, and transcript
+    """
+    chat_slack_url = "http://localhost:{}/process".format(chat_slack_port)
+    discovery_url = "http://localhost:{}/process".format(discovery_port)
+    for i, transcript in enumerate(tests):
+        test_no = i
+        outfile = "{}_{}.json".format(test_no, expected_intent)
+        try:  # post message to Slack
+            posted_json = post_message_to_slack(transcript, channel_id, slack_access_token)
+
+            # get message from chat slack
+            if posted_json and posted_json["ok"] is True:
+                payload = {
+                    "service_type": service_type,
+                    "params": params
+                }
+                chat_segments = post_to_microservice(url=chat_slack_url, payload=payload)
+
+                # to discovery
+                if chat_segments:
+                    discovery_segments = post_to_microservice(url=discovery_url, payload=chat_segments)
+
+                    # update discovery output with test information
+                    if discovery_segments:
+                        test = {
+                            "test_no": test_no,
+                            "test_transcript": transcript,
+                            "expected_intent": expected_intent
+                        }
+                        discovery_segments.update(test)
+
+                        # SAVE augmented discovery segments
+                        dump_json(discovery_segments, outfile)
+                        print("\nDiscovery Output for Test: {}\n {}\n".format(test_no, discovery_segments))
+        except Exception as e:
+            print("\nException: {}\n".format(e))
+            logger.info("\nFailed: Number={} Expected={} Transcript={}\n".format(test_no, expected_intent, transcript))
 
 
+if __name__ == '__main__':
+    SLACK_ACCESS_TOKEN = "xoxp-4953937137-344679330118-509400138422-a20f349799113ba21f5c91e8a190cd14"
+    slack_access_token = os.environ.get("SLACK_ACCESS_TOKEN", SLACK_ACCESS_TOKEN)
+
+    CHANNEL_NAME = channel_name = os.environ.get("CHANNEL_NAME", "ageojo_test")
+    channel_id = os.environ.get("CHANNEL_ID", "CEXMKJAJH")
+
+    service_type = "slack"
+
+    chat_slack_port = os.environ.get("CHAT_SLACK_PORT", 8000)
+    discovery_port = os.environ.get("DISCOVERY_PORT", 8001)
+
+    COUNT, MAX_PAGES = 1, 1
+    # LATEST_TS = None
+
+    # --infile  --expected-intent
+    quotes_infile = "test_quotes_10.txt"
+    not_quote_infile = "test_not_quotes_10.txt"
+
+    test_files = [
+        (quotes_infile, "quote"),
+        (not_quote_infile, "not_quote")
+    ]
+    for infile, expected_intent in test_files:
+        assert Path(infile).exists() and Path(infile).is_file()
+        tests = Path(infile).read_text().strip().splitlines()
+
+        for i, transcript in enumerate(tests, start=1):
+            params = set_params(kwargs=dict(count=COUNT, max_pages=MAX_PAGES))
+            main(tests, expected_intent, service_type, channel_id, slack_access_token, chat_slack_port, discovery_port,
+                 params)
 
 
-
-############################################################################
-# Start
-############################################################################
-
-try:
-    start, end = sys.argv[1], sys.argv[2] #test_file = sys.argv[1]
-except IndexError:
-    start, end = 0, 1
-
-START, END = start, end
-    
-
-#test_file = "tests.txt"
-#assert Path(test_file).exists() and Path(test_file).is_file()
-
-#tests = list(load_tests(test_file))
-#tests = tests[START:END]
-#print(tests)
-
-
-#quote_tests = "test_quotes_10.txt"
-#expected_intent = "quote"
-
-not_quote_tests = "test_not_quotes_10.txt"
-expected_intent = "not_quote"
-
-infile = not_quote_tests
-tests = Path(infile).read_text().strip().splitlines()
-
-#not_quotes = Path(not_quote_tests).read_text().strip().splitlines()
-#tests = not_quotes
-
-#expected_intent = "quote"
-
-#for i, test in enumerate(tests, START):
-#    test_name = test["test"]
-#    transcript = test["transcript"]
-#    expected_intent = test["intent"]
-#    print(test_name)
-
-
-#for i, transcript in enumerate(quotes, START):
-
-
-#infile = "test_not_quotes_10.txt"
-
-#with open(infile, 'r+') as f:
-#  tests = [line.strip() for line in f.readlines() if line.strip()]
-
-#tests =  Path("test_not_quotes_10.txt").read_text().strip().splitlines()
-#expected_intent = "not_quote"
-
-
-
-
-for i, transcript in enumerate(tests, START):
-    test_no = i
-    outfile = "{}_{}.json".format(test_no, expected_intent)
-
-    try:
-        posted_json = post_message_to_slack(transcript, channel_id, slack_access_token)
-
-        if posted_json and posted_json["ok"] is True:
-
-            # get from chat slack
-
-            kwargs = dict(latest_ts=datetime.now().timestamp(), count=1, max_pages=1)
-
-            payload = {"service_type": service_type, "params": set_params(kwargs=kwargs)}
-
-            chat_segments = post_to_microservice(url=chat_slack_url, payload=payload)
-            
-            # to discovery
-
-            if chat_segments:
-
-                discovery_segments = post_to_microservice(url=discovery_url, payload=chat_segments)
-
-                if discovery_segments:
-                    
-                    test = {"test_no": test_no, "test_transcript": transcript, "expected_intent": expected_intent}
-                    discovery_segments.update(test)
-                   
-                    # SAVE 
-                    dump_json(discovery_segments, outfile)
-
-                    print("\nDiscovery Output for Test: {}\n {}\n".format(test_no, discovery_segments))
-    except Exception as e:
-        print("\nException: {}\n".format(e))
-        logger.info("\nFailed: Number={} Expected={} Transcript={}\n".format(test_no, expected_intent, transcript))
 
 
 
