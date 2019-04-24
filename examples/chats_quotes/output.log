@@ -1,0 +1,761 @@
+Starting
+Loading Tests
+
+ (1390, 'ntc three zero seven two\n') 
+
+Test Number: 1400  (Loop: 1400)
+
+Discovery Output:
+
+{'expected_intent': 'not_quote',
+ 'identified_quotes': [],
+ 'identified_trades': [],
+ 'intents': [{'entities': [], 'label': 'not_quote', 'probability': 1.0},
+             {'entities': [], 'label': 'quote', 'probability': 0.0}],
+ 'segments': [{'confidence': 1.0,
+               'endTimeSec': '1556140095.03',
+               'genderInfo': {'gender': 'male'},
+               'intents': [{'entities': [],
+                            'label': 'not_quote',
+                            'probability': 1.0},
+                           {'entities': [],
+                            'label': 'quote',
+                            'probability': 0.0}],
+               'punctuated_transcript': 'aun minus two seven two five\n',
+               'speakerInfo': 'UA4KZ9Q3G',
+               'startTimeSec': '1556140095.03',
+               'transcript': 'aun minus two seven two five'}],
+ 'test_no': 1400,
+ 'test_transcript': 'aun minus two seven two five\n'}
+
+Test Number: 1425  (Loop: 1425)
+
+Discovery Output:
+
+{'expected_intent': 'not_quote',
+ 'identified_quotes': [],
+ 'identified_trades': [],
+ 'intents': [{'entities': [], 'label': 'not_quote', 'probability': 1.0},
+             {'entities': [], 'label': 'quote', 'probability': 0.0}],
+ 'segments': [{'confidence': 1.0,
+               'endTimeSec': '1556140366.04',
+               'genderInfo': {'gender': 'male'},
+               'intents': [{'entities': [],
+                            'label': 'not_quote',
+                            'probability': 1.0},
+                           {'entities': [],
+                            'label': 'quote',
+                            'probability': 0.0}],
+               'punctuated_transcript': 'minus six five zero three eight three '
+                                        'six seven five minus one seven three '
+                                        'seven seven seven five three seven\n',
+               'speakerInfo': 'UA4KZ9Q3G',
+               'startTimeSec': '1556140366.03',
+               'transcript': 'minus six five zero three eight three six seven '
+                             'five minus one seven three seven seven seven '
+                             'five three seven'}],
+ 'test_no': 1425,
+ 'test_transcript': 'minus six five zero three eight three six seven five '
+                    'minus one seven three seven seven seven five three '
+                    'seven\n'}
+
+Test Number: 1450  (Loop: 1450)
+
+Discovery Output:
+
+{'expected_intent': 'not_quote',
+ 'identified_quotes': [],
+ 'identified_trades': [],
+ 'intents': [{'entities': [], 'label': 'not_quote', 'probability': 1.0},
+             {'entities': [], 'label': 'quote', 'probability': 0.0}],
+ 'segments': [{'confidence': 1.0,
+               'endTimeSec': '1556140640.04',
+               'genderInfo': {'gender': 'male'},
+               'intents': [{'entities': [],
+                            'label': 'not_quote',
+                            'probability': 1.0},
+                           {'entities': [],
+                            'label': 'quote',
+                            'probability': 0.0}],
+               'punctuated_transcript': 'one nine sixteen point one fifteen '
+                                        'seventeen point fifteen aug '
+                                        'thirteenth six\n',
+               'speakerInfo': 'UA4KZ9Q3G',
+               'startTimeSec': '1556140640.03',
+               'transcript': 'one nine sixteen point one fifteen seventeen '
+                             'point fifteen aug thirteenth six'}],
+ 'test_no': 1450,
+ 'test_transcript': 'one nine sixteen point one fifteen seventeen point '
+                    'fifteen aug thirteenth six\n'}
+
+Test Number: 1475  (Loop: 1475)
+
+Discovery Output:
+
+{'expected_intent': 'not_quote',
+ 'identified_quotes': [],
+ 'identified_trades': [],
+ 'intents': [{'entities': [], 'label': 'not_quote', 'probability': 1.0},
+             {'entities': [], 'label': 'quote', 'probability': 0.0}],
+ 'segments': [{'confidence': 1.0,
+               'endTimeSec': '1556140911.04',
+               'genderInfo': {'gender': 'male'},
+               'intents': [{'entities': [],
+                            'label': 'not_quote',
+                            'probability': 1.0},
+                           {'entities': [],
+                            'label': 'quote',
+                            'probability': 0.0}],
+               'punctuated_transcript': 'drive compelling portals\n',
+               'speakerInfo': 'UA4KZ9Q3G',
+               'startTimeSec': '1556140911.04',
+               'transcript': 'drive compelling portals'}],
+ 'test_no': 1475,
+ 'test_transcript': 'drive compelling portals\n'}
+
+Test Number: 1500  (Loop: 1500)
+
+Discovery Output:
+
+{'expected_intent': 'not_quote',
+ 'identified_quotes': [],
+ 'identified_trades': [],
+ 'intents': [{'entities': [], 'label': 'not_quote', 'probability': 1.0},
+             {'entities': [], 'label': 'quote', 'probability': 0.0}],
+ 'segments': [{'confidence': 1.0,
+               'endTimeSec': '1556141181.04',
+               'genderInfo': {'gender': 'male'},
+               'intents': [{'entities': [],
+                            'label': 'not_quote',
+                            'probability': 1.0},
+                           {'entities': [],
+                            'label': 'quote',
+                            'probability': 0.0}],
+               'punctuated_transcript': 'along respond nov seventh four one '
+                                        'fifty six thirteen twelve point '
+                                        'thirteen beat before week\n',
+               'speakerInfo': 'UA4KZ9Q3G',
+               'startTimeSec': '1556141181.04',
+               'transcript': 'along respond nov seventh four one fifty six '
+                             'thirteen twelve point thirteen beat before '
+                             'week'}],
+ 'test_no': 1500,
+ 'test_transcript': 'along respond nov seventh four one fifty six thirteen '
+                    'twelve point thirteen beat before week\n'}
+
+Failure. Segment lattice not returned: 
+ {}
+Test Number: 1525  (Loop: 1525)
+
+Discovery Output:
+
+{'expected_intent': 'not_quote',
+ 'identified_quotes': [],
+ 'identified_trades': [],
+ 'intents': [{'entities': [], 'label': 'not_quote', 'probability': 1.0},
+             {'entities': [], 'label': 'quote', 'probability': 0.0}],
+ 'segments': [{'confidence': 1.0,
+               'endTimeSec': '1556141457.05',
+               'genderInfo': {'gender': 'male'},
+               'intents': [{'entities': [],
+                            'label': 'not_quote',
+                            'probability': 1.0},
+                           {'entities': [],
+                            'label': 'quote',
+                            'probability': 0.0}],
+               'punctuated_transcript': 'eight four zero four seven rice plaza '
+                                        'suite four six four grosshaven id '
+                                        'four eight two six four minus seven '
+                                        'eight six four\n',
+               'speakerInfo': 'UA4KZ9Q3G',
+               'startTimeSec': '1556141457.04',
+               'transcript': 'eight four zero four seven rice plaza suite four '
+                             'six four grosshaven id four eight two six four '
+                             'minus seven eight six four'}],
+ 'test_no': 1525,
+ 'test_transcript': 'eight four zero four seven rice plaza suite four six four '
+                    'grosshaven id four eight two six four minus seven eight '
+                    'six four\n'}
+
+Test Number: 1550  (Loop: 1550)
+
+Discovery Output:
+
+{'expected_intent': 'not_quote',
+ 'identified_quotes': [],
+ 'identified_trades': [],
+ 'intents': [{'entities': [], 'label': 'not_quote', 'probability': 0.999},
+             {'entities': [], 'label': 'quote', 'probability': 0.001}],
+ 'segments': [{'confidence': 1.0,
+               'endTimeSec': '1556141730.05',
+               'genderInfo': {'gender': 'male'},
+               'intents': [{'entities': [],
+                            'label': 'not_quote',
+                            'probability': 0.999},
+                           {'entities': [],
+                            'label': 'quote',
+                            'probability': 0.001}],
+               'punctuated_transcript': 'minus three nine six six one one zero '
+                                        'four five minus nine four seven four '
+                                        'five one zero\n',
+               'speakerInfo': 'UA4KZ9Q3G',
+               'startTimeSec': '1556141730.04',
+               'transcript': 'minus three nine six six one one zero four five '
+                             'minus nine four seven four five one zero'}],
+ 'test_no': 1550,
+ 'test_transcript': 'minus three nine six six one one zero four five minus '
+                    'nine four seven four five one zero\n'}
+
+Failure. Segment lattice not returned: 
+ {}
+Test Number: 1575  (Loop: 1575)
+
+Discovery Output:
+
+{'expected_intent': 'not_quote',
+ 'identified_quotes': [],
+ 'identified_trades': [],
+ 'intents': [{'entities': [], 'label': 'not_quote', 'probability': 1.0},
+             {'entities': [], 'label': 'quote', 'probability': 0.0}],
+ 'segments': [{'confidence': 1.0,
+               'endTimeSec': '1556142018.05',
+               'genderInfo': {'gender': 'male'},
+               'intents': [{'entities': [],
+                            'label': 'not_quote',
+                            'probability': 1.0},
+                           {'entities': [],
+                            'label': 'quote',
+                            'probability': 0.0}],
+               'punctuated_transcript': 'eleven twelve ten point one fifteen '
+                                        'ten point thirteen one two\n',
+               'speakerInfo': 'UA4KZ9Q3G',
+               'startTimeSec': '1556142018.05',
+               'transcript': 'eleven twelve ten point one fifteen ten point '
+                             'thirteen one two'}],
+ 'test_no': 1575,
+ 'test_transcript': 'eleven twelve ten point one fifteen ten point thirteen '
+                    'one two\n'}
+
+Test Number: 1600  (Loop: 1600)
+
+Discovery Output:
+
+{'expected_intent': 'not_quote',
+ 'identified_quotes': [],
+ 'identified_trades': [],
+ 'intents': [{'entities': [], 'label': 'not_quote', 'probability': 1.0},
+             {'entities': [], 'label': 'quote', 'probability': 0.0}],
+ 'segments': [{'confidence': 1.0,
+               'endTimeSec': '1556142288.05',
+               'genderInfo': {'gender': 'male'},
+               'intents': [{'entities': [],
+                            'label': 'not_quote',
+                            'probability': 1.0},
+                           {'entities': [],
+                            'label': 'quote',
+                            'probability': 0.0}],
+               'punctuated_transcript': 'one six three minusoag\n',
+               'speakerInfo': 'UA4KZ9Q3G',
+               'startTimeSec': '1556142288.05',
+               'transcript': 'one six three minusoag'}],
+ 'test_no': 1600,
+ 'test_transcript': 'one six three minusoag\n'}
+
+Test Number: 1625  (Loop: 1625)
+
+Discovery Output:
+
+{'expected_intent': 'not_quote',
+ 'identified_quotes': [],
+ 'identified_trades': [],
+ 'intents': [{'entities': [], 'label': 'not_quote', 'probability': 1.0},
+             {'entities': [], 'label': 'quote', 'probability': 0.0}],
+ 'segments': [{'confidence': 1.0,
+               'endTimeSec': '1556142557.06',
+               'genderInfo': {'gender': 'male'},
+               'intents': [{'entities': [],
+                            'label': 'not_quote',
+                            'probability': 1.0},
+                           {'entities': [],
+                            'label': 'quote',
+                            'probability': 0.0}],
+               'punctuated_transcript': 'eight twelve seven point six oct '
+                                        'eleventh ten fifteen point sixteen '
+                                        'july third point six\n',
+               'speakerInfo': 'UA4KZ9Q3G',
+               'startTimeSec': '1556142557.05',
+               'transcript': 'eight twelve seven point six oct eleventh ten '
+                             'fifteen point sixteen july third point six'}],
+ 'test_no': 1625,
+ 'test_transcript': 'eight twelve seven point six oct eleventh ten fifteen '
+                    'point sixteen july third point six\n'}
+
+Test Number: 1650  (Loop: 1650)
+
+Discovery Output:
+
+{'expected_intent': 'not_quote',
+ 'identified_quotes': [],
+ 'identified_trades': [],
+ 'intents': [{'entities': [], 'label': 'not_quote', 'probability': 1.0},
+             {'entities': [], 'label': 'quote', 'probability': 0.0}],
+ 'segments': [{'confidence': 1.0,
+               'endTimeSec': '1556142829.06',
+               'genderInfo': {'gender': 'male'},
+               'intents': [{'entities': [],
+                            'label': 'not_quote',
+                            'probability': 1.0},
+                           {'entities': [],
+                            'label': 'quote',
+                            'probability': 0.0}],
+               'punctuated_transcript': 'uss carter fpo ae zero five eight '
+                                        'seven six\n',
+               'speakerInfo': 'UA4KZ9Q3G',
+               'startTimeSec': '1556142829.06',
+               'transcript': 'uss carter fpo ae zero five eight seven six'}],
+ 'test_no': 1650,
+ 'test_transcript': 'uss carter fpo ae zero five eight seven six\n'}
+
+Test Number: 1675  (Loop: 1675)
+
+Discovery Output:
+
+{'expected_intent': 'not_quote',
+ 'identified_quotes': [],
+ 'identified_trades': [],
+ 'intents': [{'entities': [], 'label': 'not_quote', 'probability': 1.0},
+             {'entities': [], 'label': 'quote', 'probability': 0.0}],
+ 'segments': [{'confidence': 1.0,
+               'endTimeSec': '1556143099.06',
+               'genderInfo': {'gender': 'male'},
+               'intents': [{'entities': [],
+                            'label': 'not_quote',
+                            'probability': 1.0},
+                           {'entities': [],
+                            'label': 'quote',
+                            'probability': 0.0}],
+               'punctuated_transcript': 'ovh minus two two two\n',
+               'speakerInfo': 'UA4KZ9Q3G',
+               'startTimeSec': '1556143099.06',
+               'transcript': 'ovh minus two two two'}],
+ 'test_no': 1675,
+ 'test_transcript': 'ovh minus two two two\n'}
+
+Test Number: 1700  (Loop: 1700)
+
+Discovery Output:
+
+{'expected_intent': 'not_quote',
+ 'identified_quotes': [],
+ 'identified_trades': [],
+ 'intents': [{'entities': [], 'label': 'not_quote', 'probability': 0.999},
+             {'entities': [], 'label': 'quote', 'probability': 0.001}],
+ 'segments': [{'confidence': 1.0,
+               'endTimeSec': '1556143369.06',
+               'genderInfo': {'gender': 'male'},
+               'intents': [{'entities': [],
+                            'label': 'not_quote',
+                            'probability': 0.999},
+                           {'entities': [],
+                            'label': 'quote',
+                            'probability': 0.001}],
+               'punctuated_transcript': 'three two five seven one seven zero '
+                                        'six five one two nine three zero '
+                                        'seven eight six eight\n',
+               'speakerInfo': 'UA4KZ9Q3G',
+               'startTimeSec': '1556143369.06',
+               'transcript': 'three two five seven one seven zero six five one '
+                             'two nine three zero seven eight six eight'}],
+ 'test_no': 1700,
+ 'test_transcript': 'three two five seven one seven zero six five one two nine '
+                    'three zero seven eight six eight\n'}
+
+Test Number: 1725  (Loop: 1725)
+
+Discovery Output:
+
+{'expected_intent': 'not_quote',
+ 'identified_quotes': [],
+ 'identified_trades': [],
+ 'intents': [{'entities': [], 'label': 'not_quote', 'probability': 1.0},
+             {'entities': [], 'label': 'quote', 'probability': 0.0}],
+ 'segments': [{'confidence': 1.0,
+               'endTimeSec': '1556143639.07',
+               'genderInfo': {'gender': 'male'},
+               'intents': [{'entities': [],
+                            'label': 'not_quote',
+                            'probability': 1.0},
+                           {'entities': [],
+                            'label': 'quote',
+                            'probability': 0.0}],
+               'punctuated_transcript': 're minusintermediate one minusto '
+                                        'minusone models\n',
+               'speakerInfo': 'UA4KZ9Q3G',
+               'startTimeSec': '1556143639.06',
+               'transcript': 're minusintermediate one minusto minusone '
+                             'models'}],
+ 'test_no': 1725,
+ 'test_transcript': 're minusintermediate one minusto minusone models\n'}
+
+Test Number: 1750  (Loop: 1750)
+
+Discovery Output:
+
+{'expected_intent': 'not_quote',
+ 'identified_quotes': [],
+ 'identified_trades': [],
+ 'intents': [{'entities': [], 'label': 'not_quote', 'probability': 1.0},
+             {'entities': [], 'label': 'quote', 'probability': 0.0}],
+ 'segments': [{'confidence': 1.0,
+               'endTimeSec': '1556143908.07',
+               'genderInfo': {'gender': 'male'},
+               'intents': [{'entities': [],
+                            'label': 'not_quote',
+                            'probability': 1.0},
+                           {'entities': [],
+                            'label': 'quote',
+                            'probability': 0.0}],
+               'punctuated_transcript': 'staff stop no enter together quality '
+                                        'service air education sixteen ninety '
+                                        'six point aug twenty eighth six dot '
+                                        'sixteen two point five thirty three '
+                                        'eight simple together enjoy mention '
+                                        'die mind\n',
+               'speakerInfo': 'UA4KZ9Q3G',
+               'startTimeSec': '1556143908.06',
+               'transcript': 'staff stop no enter together quality service air '
+                             'education sixteen ninety six point aug twenty '
+                             'eighth six dot sixteen two point five thirty '
+                             'three eight simple together enjoy mention die '
+                             'mind'}],
+ 'test_no': 1750,
+ 'test_transcript': 'staff stop no enter together quality service air '
+                    'education sixteen ninety six point aug twenty eighth six '
+                    'dot sixteen two point five thirty three eight simple '
+                    'together enjoy mention die mind\n'}
+
+Test Number: 1775  (Loop: 1775)
+
+Discovery Output:
+
+{'expected_intent': 'not_quote',
+ 'identified_quotes': [],
+ 'identified_trades': [],
+ 'intents': [{'entities': [], 'label': 'not_quote', 'probability': 0.967},
+             {'entities': [], 'label': 'quote', 'probability': 0.033}],
+ 'segments': [{'confidence': 1.0,
+               'endTimeSec': '1556144178.07',
+               'genderInfo': {'gender': 'male'},
+               'intents': [{'entities': [],
+                            'label': 'not_quote',
+                            'probability': 0.967},
+                           {'entities': [],
+                            'label': 'quote',
+                            'probability': 0.033}],
+               'punctuated_transcript': 'ten fifty eight point forty six two '
+                                        'point three fifty two fifteen six\n',
+               'speakerInfo': 'UA4KZ9Q3G',
+               'startTimeSec': '1556144178.07',
+               'transcript': 'ten fifty eight point forty six two point three '
+                             'fifty two fifteen six'}],
+ 'test_no': 1775,
+ 'test_transcript': 'ten fifty eight point forty six two point three fifty two '
+                    'fifteen six\n'}
+
+Test Number: 1800  (Loop: 1800)
+
+Discovery Output:
+
+{'expected_intent': 'not_quote',
+ 'identified_quotes': [],
+ 'identified_trades': [],
+ 'intents': [{'entities': [], 'label': 'not_quote', 'probability': 1.0},
+             {'entities': [], 'label': 'quote', 'probability': 0.0}],
+ 'segments': [{'confidence': 1.0,
+               'endTimeSec': '1556144448.07',
+               'genderInfo': {'gender': 'male'},
+               'intents': [{'entities': [],
+                            'label': 'not_quote',
+                            'probability': 1.0},
+                           {'entities': [],
+                            'label': 'quote',
+                            'probability': 0.0}],
+               'punctuated_transcript': 'productize proactive markets\n',
+               'speakerInfo': 'UA4KZ9Q3G',
+               'startTimeSec': '1556144448.07',
+               'transcript': 'productize proactive markets'}],
+ 'test_no': 1800,
+ 'test_transcript': 'productize proactive markets\n'}
+
+Test Number: 1825  (Loop: 1825)
+
+Discovery Output:
+
+{'expected_intent': 'not_quote',
+ 'identified_quotes': [],
+ 'identified_trades': [],
+ 'intents': [{'entities': [], 'label': 'not_quote', 'probability': 1.0},
+             {'entities': [], 'label': 'quote', 'probability': 0.0}],
+ 'segments': [{'confidence': 1.0,
+               'endTimeSec': '1556144717.08',
+               'genderInfo': {'gender': 'male'},
+               'intents': [{'entities': [],
+                            'label': 'not_quote',
+                            'probability': 1.0},
+                           {'entities': [],
+                            'label': 'quote',
+                            'probability': 0.0}],
+               'punctuated_transcript': 'ever future picture old safe\n',
+               'speakerInfo': 'UA4KZ9Q3G',
+               'startTimeSec': '1556144717.07',
+               'transcript': 'ever future picture old safe'}],
+ 'test_no': 1825,
+ 'test_transcript': 'ever future picture old safe\n'}
+
+Test Number: 1850  (Loop: 1850)
+
+Discovery Output:
+
+{'expected_intent': 'not_quote',
+ 'identified_quotes': [],
+ 'identified_trades': [],
+ 'intents': [{'entities': [], 'label': 'not_quote', 'probability': 1.0},
+             {'entities': [], 'label': 'quote', 'probability': 0.0}],
+ 'segments': [{'confidence': 1.0,
+               'endTimeSec': '1556144987.08',
+               'genderInfo': {'gender': 'male'},
+               'intents': [{'entities': [],
+                            'label': 'not_quote',
+                            'probability': 1.0},
+                           {'entities': [],
+                            'label': 'quote',
+                            'probability': 0.0}],
+               'punctuated_transcript': 'polarized empowering success\n',
+               'speakerInfo': 'UA4KZ9Q3G',
+               'startTimeSec': '1556144987.08',
+               'transcript': 'polarized empowering success'}],
+ 'test_no': 1850,
+ 'test_transcript': 'polarized empowering success\n'}
+
+Test Number: 1875  (Loop: 1875)
+
+Discovery Output:
+
+{'expected_intent': 'not_quote',
+ 'identified_quotes': [],
+ 'identified_trades': [],
+ 'intents': [{'entities': [], 'label': 'not_quote', 'probability': 0.999},
+             {'entities': [], 'label': 'quote', 'probability': 0.001}],
+ 'segments': [{'confidence': 1.0,
+               'endTimeSec': '1556145257.08',
+               'genderInfo': {'gender': 'male'},
+               'intents': [{'entities': [],
+                            'label': 'not_quote',
+                            'probability': 0.999},
+                           {'entities': [],
+                            'label': 'quote',
+                            'probability': 0.001}],
+               'punctuated_transcript': 'is firms rationalizing their needs '
+                                        'all the time bryan you might want to '
+                                        'add\n',
+               'speakerInfo': 'UA4KZ9Q3G',
+               'startTimeSec': '1556145257.08',
+               'transcript': 'is firms rationalizing their needs all the time '
+                             'bryan you might want to add'}],
+ 'test_no': 1875,
+ 'test_transcript': 'is firms rationalizing their needs all the time bryan you '
+                    'might want to add\n'}
+
+Test Number: 1900  (Loop: 1900)
+
+Discovery Output:
+
+{'expected_intent': 'not_quote',
+ 'identified_quotes': [],
+ 'identified_trades': [],
+ 'intents': [{'entities': [], 'label': 'not_quote', 'probability': 0.999},
+             {'entities': [], 'label': 'quote', 'probability': 0.001}],
+ 'segments': [{'confidence': 1.0,
+               'endTimeSec': '1556145527.08',
+               'genderInfo': {'gender': 'male'},
+               'intents': [{'entities': [],
+                            'label': 'not_quote',
+                            'probability': 0.999},
+                           {'entities': [],
+                            'label': 'quote',
+                            'probability': 0.001}],
+               'punctuated_transcript': 'six four four seven zero eight three '
+                                        'zero minus one six seven nine three '
+                                        'zero five four six\n',
+               'speakerInfo': 'UA4KZ9Q3G',
+               'startTimeSec': '1556145527.08',
+               'transcript': 'six four four seven zero eight three zero minus '
+                             'one six seven nine three zero five four six'}],
+ 'test_no': 1900,
+ 'test_transcript': 'six four four seven zero eight three zero minus one six '
+                    'seven nine three zero five four six\n'}
+
+Test Number: 1925  (Loop: 1925)
+
+Discovery Output:
+
+{'expected_intent': 'not_quote',
+ 'identified_quotes': [],
+ 'identified_trades': [],
+ 'intents': [{'entities': [], 'label': 'not_quote', 'probability': 1.0},
+             {'entities': [], 'label': 'quote', 'probability': 0.0}],
+ 'segments': [{'confidence': 1.0,
+               'endTimeSec': '1556145797.09',
+               'genderInfo': {'gender': 'male'},
+               'intents': [{'entities': [],
+                            'label': 'not_quote',
+                            'probability': 1.0},
+                           {'entities': [],
+                            'label': 'quote',
+                            'probability': 0.0}],
+               'punctuated_transcript': 'usnv johnston fpo ap seven zero one '
+                                        'nine five minus five seven five one\n',
+               'speakerInfo': 'UA4KZ9Q3G',
+               'startTimeSec': '1556145797.08',
+               'transcript': 'usnv johnston fpo ap seven zero one nine five '
+                             'minus five seven five one'}],
+ 'test_no': 1925,
+ 'test_transcript': 'usnv johnston fpo ap seven zero one nine five minus five '
+                    'seven five one\n'}
+
+Test Number: 1950  (Loop: 1950)
+
+Discovery Output:
+
+{'expected_intent': 'not_quote',
+ 'identified_quotes': [],
+ 'identified_trades': [],
+ 'intents': [{'entities': [], 'label': 'not_quote', 'probability': 1.0},
+             {'entities': [], 'label': 'quote', 'probability': 0.0}],
+ 'segments': [{'confidence': 1.0,
+               'endTimeSec': '1556146067.09',
+               'genderInfo': {'gender': 'male'},
+               'intents': [{'entities': [],
+                            'label': 'not_quote',
+                            'probability': 1.0},
+                           {'entities': [],
+                            'label': 'quote',
+                            'probability': 0.0}],
+               'punctuated_transcript': 'play analysis fourteen dot two six '
+                                        'point thirteen ten point sixteen one '
+                                        'fourteen nov seventeenth dot three '
+                                        'name bar center\n',
+               'speakerInfo': 'UA4KZ9Q3G',
+               'startTimeSec': '1556146067.08',
+               'transcript': 'play analysis fourteen dot two six point '
+                             'thirteen ten point sixteen one fourteen nov '
+                             'seventeenth dot three name bar center'}],
+ 'test_no': 1950,
+ 'test_transcript': 'play analysis fourteen dot two six point thirteen ten '
+                    'point sixteen one fourteen nov seventeenth dot three name '
+                    'bar center\n'}
+
+Test Number: 1975  (Loop: 1975)
+
+Discovery Output:
+
+{'expected_intent': 'not_quote',
+ 'identified_quotes': [],
+ 'identified_trades': [],
+ 'intents': [{'entities': [], 'label': 'not_quote', 'probability': 1.0},
+             {'entities': [], 'label': 'quote', 'probability': 0.0}],
+ 'segments': [{'confidence': 1.0,
+               'endTimeSec': '1556146336.09',
+               'genderInfo': {'gender': 'male'},
+               'intents': [{'entities': [],
+                            'label': 'not_quote',
+                            'probability': 1.0},
+                           {'entities': [],
+                            'label': 'quote',
+                            'probability': 0.0}],
+               'punctuated_transcript': 'brand two four three six five '
+                                        'networks\n',
+               'speakerInfo': 'UA4KZ9Q3G',
+               'startTimeSec': '1556146336.09',
+               'transcript': 'brand two four three six five networks'}],
+ 'test_no': 1975,
+ 'test_transcript': 'brand two four three six five networks\n'}
+
+Test Number: 2000  (Loop: 2000)
+
+Discovery Output:
+
+{'expected_intent': 'not_quote',
+ 'identified_quotes': [],
+ 'identified_trades': [],
+ 'intents': [{'entities': [], 'label': 'not_quote', 'probability': 1.0},
+             {'entities': [], 'label': 'quote', 'probability': 0.0}],
+ 'segments': [{'confidence': 1.0,
+               'endTimeSec': '1556146606.09',
+               'genderInfo': {'gender': 'male'},
+               'intents': [{'entities': [],
+                            'label': 'not_quote',
+                            'probability': 1.0},
+                           {'entities': [],
+                            'label': 'quote',
+                            'probability': 0.0}],
+               'punctuated_transcript': 'three two eight three uv\n',
+               'speakerInfo': 'UA4KZ9Q3G',
+               'startTimeSec': '1556146606.09',
+               'transcript': 'three two eight three uv'}],
+ 'test_no': 2000,
+ 'test_transcript': 'three two eight three uv\n'}
+
+Test Number: 2025  (Loop: 2025)
+
+Discovery Output:
+
+{'expected_intent': 'not_quote',
+ 'identified_quotes': [],
+ 'identified_trades': [],
+ 'intents': [{'entities': [], 'label': 'not_quote', 'probability': 1.0},
+             {'entities': [], 'label': 'quote', 'probability': 0.0}],
+ 'segments': [{'confidence': 1.0,
+               'endTimeSec': '1556146875.10',
+               'genderInfo': {'gender': 'male'},
+               'intents': [{'entities': [],
+                            'label': 'not_quote',
+                            'probability': 1.0},
+                           {'entities': [],
+                            'label': 'quote',
+                            'probability': 0.0}],
+               'punctuated_transcript': 'four zero two minus eight six three '
+                                        'minus six eight zero four\n',
+               'speakerInfo': 'UA4KZ9Q3G',
+               'startTimeSec': '1556146875.09',
+               'transcript': 'four zero two minus eight six three minus six '
+                             'eight zero four'}],
+ 'test_no': 2025,
+ 'test_transcript': 'four zero two minus eight six three minus six eight zero '
+                    'four\n'}
+
+Test Number: 2050  (Loop: 2050)
+
+Discovery Output:
+
+{'expected_intent': 'not_quote',
+ 'identified_quotes': [],
+ 'identified_trades': [],
+ 'intents': [{'entities': [], 'label': 'not_quote', 'probability': 0.998},
+             {'entities': [], 'label': 'quote', 'probability': 0.002}],
+ 'segments': [{'confidence': 1.0,
+               'endTimeSec': '1556147145.10',
+               'genderInfo': {'gender': 'male'},
+               'intents': [{'entities': [],
+                            'label': 'not_quote',
+                            'probability': 0.998},
+                           {'entities': [],
+                            'label': 'quote',
+                            'probability': 0.002}],
+               'punctuated_transcript': 'four six three one one seven seven '
+                                        'nine five nine nine five seven seven '
+                                        'seven five five\n',
+               'speakerInfo': 'UA4KZ9Q3G',
+               'startTimeSec': '1556147145.09',
+               'transcript': 'four six three one one seven seven nine five '
+                             
