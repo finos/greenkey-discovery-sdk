@@ -2,9 +2,11 @@ import requests
 import os
 import sys
 import json
+import time
 import pprint as pp
 from collections import defaultdict
 from pathlib import Path
+from os.path import dirname, basename, exists, join as join_path
 
 import logging
 logging.basicConfig(level=logging.DEBUG)
@@ -19,8 +21,8 @@ logger = logging.getLogger(__name__)
 # pp.pprint(out)
 ############################################
 
-
-
+#INPUT_DIR = sys.argv[1]
+#OUTPUT_DIR = sys.argv[2]
 
 ###################################
 
@@ -35,7 +37,7 @@ def load_json(infile):
 
 
 def dump_json(data, outfile):
-  json.dump(open(outfile, 'w+'))
+  json.dump(data, open(outfile, 'w+'))
 
 
 def post_to_formatter(data): #(transcript, test_no, expected_intent):
@@ -55,22 +57,23 @@ def post_to_formatter(data): #(transcript, test_no, expected_intent):
     except Exception as e:
       print("Exception: {}".format(e))
       msg = "Failed Test: {}".format(test_no)
+      time.sleep(10)
      # logger.error(msg)
       print(msg)
   return {}
 
 
 
-project_dir = os.getcwd()
-data_dir = os.path.join(project_dir, 'results/quotes')
+#project_dir = os.getcwd()
+#data_dir = os.path.join(project_dir, 'results/quotes')
 
-project_dir = Path.cwd()
-results_dir = project_dir / 'results'
-assert results_dir.exists() and results_dir.is_dir()
+#project_dir = Path.cwd()
+#results_dir = project_dir / 'results'
+#assert results_dir.exists() and results_dir.is_dir()
 
 
-quotes_dir = results_dir / 'quote'
-assert quotes_dir.exists() and quotes_dir.is_dir()
+#quotes_dir = results_dir / 'quote'
+#assert quotes_dir.exists() and quotes_dir.is_dir()
 
 
 
@@ -78,33 +81,57 @@ assert quotes_dir.exists() and quotes_dir.is_dir()
 
 
 
-def format_all(list_of_fpaths, verbose=True):
+def format_all(list_of_files, output_dir=None, verbose=True):
   results = []
-  for i, infile in enumerate(list_of_fpaths):
+  for i, infile in enumerate(list_of_files):
+    if i==0 or i%25==0:
+      print("\nFile Number {}: {}\n".format(i, infile))
     data = load_json(infile)
     try:
       out = post_to_formatter(data)
       if verbose:
-        pp.pprint(out)
-      outfile = "formatted_{}.json".format(infile.stem)
-      dump_json(outfile, out)
+        if i==0 or i%25==0:
+          pp.pprint(out)
+      outfile = "formatted_{}".format(basename(infile))  # file.json <- basename
+      if output_dir:
+        outfile = join_path(output_dir, outfile)
+      dump_json(out, outfile) #outfile, out)
       results.append(out)
     except Exception as e:
-      logger.exception("Failed: {}".format(infile))
+      logger.exception("\nFailed: {}\n".format(infile))
   return results
 
 
-quotes_dir = str(quotes_dir)
-
-list_of_files = [os.path.join(quotes_dir, filename) for filename in sorted(os.listdir(quotes_dir)) if filename.endswith(".json")]
 
 
-list_of_fpaths = list_of_files[0:5]
+#quotes_dir = str(quotes_dir)
 
-print(list_of_fpaths)
+def get_files(input_dir):
+  list_of_files = [join_path(input_dir, filename) for filename in sorted(os.listdir(input_dir)) if filename.endswith(".json")]
+  return list_of_files
 
 
-#results = format_all(list_of_fpaths, verbose=True)
+
+# see sample of files
+#list_of_fpaths = list_of_files[0:5]
+#print("\nSample File names: {}\n".format(list_of_fpaths))
+
+
+# RUN FORMATTER
+
+if __name__ == "__main__":
+  
+  intent_dir = os.getcwd()
+  INPUT_DIR = join_path(intent_dir, "unformatted")
+  OUTPUT_DIR = join_path(intent_dir, "formatted") 
+
+  print("\nStarting Formatter\n")
+  list_of_files = get_files(input_dir=INPUT_DIR)
+  print(list_of_files[:5], "\n")
+
+  results = format_all(list_of_files, output_dir=OUTPUT_DIR,  verbose=True)
+
+
 
 #print()
 #print("Results: \n")

@@ -13,6 +13,11 @@ import pprint as pp
 logger = logging.getLogger(__name__)
 
 
+# test number (line in file) to start 
+START = 1390
+
+
+
 SLACK_ACCESS_TOKEN = "xoxp-4953937137-344679330118-509400138422-a20f349799113ba21f5c91e8a190cd14"
 slack_access_token = os.environ.get("SLACK_ACCESS_TOKEN", SLACK_ACCESS_TOKEN)
 
@@ -99,7 +104,7 @@ if __name__ == "__main__":
     except:
        infile = "test_not_quotes_10.txt"
        expected_intent = "not_quote"
-
+     
 
     SLACK_ACCESS_TOKEN = "xoxp-4953937137-344679330118-509400138422-a20f349799113ba21f5c91e8a190cd14"
     slack_access_token = os.environ.get("SLACK_ACCESS_TOKEN", SLACK_ACCESS_TOKEN)
@@ -117,11 +122,14 @@ if __name__ == "__main__":
     # Load Tests   ->  List[Tuple(test_no, transcript)]
     print("Loading Tests")
     tests = load_tests(infile)
-    print("\n", tests[0], "\n")
+    print("\n", tests[START], "\n")
+    
+    # Start from where script stopped running
+    tests = tests[START:]
 
     # IF make into a function -- need all of the params below
     # for i, transcript in enumerate(tests):  
-    for i, (test_no, transcript) in enumerate(tests):  # when tests = load_tests(infile)
+    for i, (test_no, transcript) in enumerate(tests, start=START):  # when tests = load_tests(infile)
       if i==1 or i%25==0:
         print("Test Number: {}  (Loop: {})".format(test_no, i))
       if i%25==0:
