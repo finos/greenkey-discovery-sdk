@@ -11,21 +11,26 @@ likely found intent. Tests are also assumed to always return a valid intent
 with entities.
 """
 
-from __future__ import print_function
+# from __future__ import print_function    # Not required. Discovery only supports Python 3+
 import requests
 import subprocess
 import json
+import logging
 import os
 import time
 import glob
 import sys
 import editdistance
+from collections import defaultdict
+from pathlib import Path
 
 from importlib import import_module
 from discovery_sdk_utils import find_errors_in_entity_definition
 from discovery_config import DISCOVERY_PORT, DISCOVERY_HOST, DISCOVERY_SHUTDOWN_SECRET
 from discovery_config import CONTAINER_NAME, TIMEOUT, RETRIES
 from launch_discovery import launch_discovery
+
+logger = logging.getLogger(__name__)
 
 # STATUS_CHECK_RETRIES, STATUS_CHECK_TIMEOUT
 
@@ -94,36 +99,52 @@ def shutdown_discovery():
 Testing functions
 """
 
+def bucket(items, n):
+    """ 
+    Breaks items (List) into a List[List] of n (int) items each. Retains Order.
+    >>> bucket([1,2,3,4,5,6], 2)
+    [[1, 2], [3, 4], [5, 6]]
+    """
+    bucket = []
+    start = 0
+    sub = items[start:start + n]
+    while sub:
+        bucket.append(sub)
+        start += n
+        sub = items[start:start + n]
+    return bucket
 
-def load_tests(test_file_argument):
+def load_tests(infile, n=3, intent=True, entity_list=None): 
     """
     Loads and parses the test file
+        infile (str); default name: tests.txt
+        n (int): number of fields per test; default=3
+            "test", "transcript" and either "intent" or one entity name required per test
+    Returns Iterator[Dicts], each a test with required keys:
+        'test': arbitrary name for test
+        'transcript': test to POST to Discovery
+      and at least one of the following:
+         'intent' (one/test): test intent classification
+         '<name_of_entity> (as many as defined in intents config): test entity(ies) extraction
     """
-    test_file = [x.rstrip() for x in open(test_file_argument)]
-    tests = []
-    current_test = {}
-    for line in test_file:
-        key = line.split(":")[0]
-        value = line.split(": ")[-1]
-        if key == "test":
-            if len(current_test.keys()) > 0:
-                tests.append(current_test)
-            current_test = {key: value}
-        elif len(key) > 0:
-            current_test[key] = value
-    if len(current_test.keys()) > 0:
-        tests.append(current_test)
-    return tests
+    test_file = Path(infile)
+    assert test_file.exists() and test_file.isfile()
+    test_data = Path(infile).read_text().splitlines()
+    tests = [line.split(":", maxsplit=1) for line in test_data if line.strip()]
+    if not len(tests) % n == 0:
+        logger.error("Error: Each test in file {} must contain the same number
+                of fields")
+    return map(dict, bucket(tests, n)) 
 
 
 def submit_transcript(transcript):
     """
     Submits a transcript to Discovery
+      'Content-type' must be JSOn
     """
     data = {"transcript": transcript}
     response = requests.post("http://{}:{}/process".format(DISCOVERY_HOST, DISCOVERY_PORT), json=data)
-
-    return json.loads(response.text)
+    return response.json() 
 
 
 def is_valid_response(resp):
@@ -438,26 +459,33 @@ def validate_json(discovery_directory):
 
 
 if __name__ == '__main__':
-    if len(sys.argv) > 1:
-        DISCOVERY_DIRECTORY = os.path.abspath(sys.argv[1])
-    else:
-        DISCOVERY_DIRECTORY = os.getcwd()
+    try:
+        DISCOVERY_DIRECTORY = Path(sys.argv[1])
+    except (IndexError, ValueError):
+        DISCOVERY_DIRECTORY = Path.cwd().absolute()
+    try:
+        test_file = DISCOVERY_DIRECTORY/"tests.txt"
+        custom_directory = DISCOVERY_DIRECTORY / "custom" 
+        assert  test_file.exists() and test_file.isfile() and custom_directory.exists() and custom_directory.isdir()
+        results_file = custom_directory / "results.csv"   # save evaluation metrics in custom directoy
+    except AssertionError:
+        logger.exception("File 'tests.txt' and directory named 'custom' not found at: {}".format(DICOVERY_DIRECTORY), exc_info=True) 
+        shutdown_discovery()
 
-    TEST_FILE = os.path.join(DISCOVERY_DIRECTORY, "tests.txt")
-
+    # validate entity files and intent configuration file (validate_json)  
     validate_entities(DISCOVERY_DIRECTORY)
     validate_json(DISCOVERY_DIRECTORY)
-    custom_directory = os.path.join(DISCOVERY_DIRECTORY, 'custom')
     try:
-        launch_discovery(custom_directory=custom_directory)
+        launch_discovery(custom_directory)
         wait_for_discovery_launch()
-
         if wait_for_discovery_status():
             print("Discovery Ready")
-
-        test_all(TEST_FILE)
+        # Run Tests
+        results = test_all(test_file)
+        # Save Metrics
+        evaluate_performance(results, outfile)
     except Exception as e:
         shutdown_discovery()
+        logger.exception("Error: Shutting down Discovery", exc_info=True)
         raise e
-
     shutdown_discovery()
