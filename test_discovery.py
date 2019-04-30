@@ -10,29 +10,26 @@ likely found intent. Tests are also assumed to always return a valid intent
 with entities.
 """
 
-from __future__ import print_function
-import requests
-import subprocess
+import glob
 import json
 import os
-import time
-import glob
+import subprocess
 import sys
-import editdistance
-
+import time
 from importlib import import_module
-from discovery_sdk_utils import find_errors_in_entity_definition
-from discovery_config import DISCOVERY_PORT, DISCOVERY_HOST, DISCOVERY_SHUTDOWN_SECRET
+from pathlib import Path
+
+import editdistance
+import requests
+
 from discovery_config import CONTAINER_NAME
+from discovery_config import DISCOVERY_PORT, DISCOVERY_HOST, DISCOVERY_SHUTDOWN_SECRET
+from discovery_sdk_utils import find_errors_in_entity_definition
 from launch_discovery import launch_discovery
 
 """
 Functions for handling the Discovery Docker container
 """
-
-#TODO Remap the following Bash codes; confusing as opposite of standard Python codes
-BAD_EXIT_CODE = 1
-GOOD_EXIT_CODE = 0
 
 
 def docker_log_and_stop():
@@ -96,25 +93,38 @@ Testing functions
 """
 
 
-def load_tests(test_file_argument):
+def _bucket(items, n):
+    """
+    Breaks items into a list of lists of n items each. Retains order.
+    >>> _bucket([1,2,3,4,5,6],2)
+    [[1,2],[3,4],[5,6]]
+    """
+    bucket = []
+    start = 0
+    sub = items[start:start + n]
+    while sub:
+        bucket.append(sub)
+        start += n
+        sub = items[start:start + n]
+    return bucket
+
+
+def load_tests(test_file):
     """
     Loads and parses the test file
+    :param test_file: str, path to 'tests.txt'
+    :return Tuple(Iterator[Dict], int); each dict is a test; second element: total number of tests
     """
-    test_file = [x.rstrip() for x in open(test_file_argument)]
-    tests = []
-    current_test = {}
-    for line in test_file:
-        key = line.split(":")[0]
-        value = line.split(": ")[-1]
-        if key == "test":
-            if len(current_test.keys()) > 0:
-                tests.append(current_test)
-            current_test = {key: value}
-        elif len(key) > 0:
-            current_test[key] = value
-    if len(current_test.keys()) > 0:
-        tests.append(current_test)
-    return tests
+    test_file = Path(test_file).absolute()
+    assert test_file.exists() and test_file.is_file()
+    test_data = test_file.read_text().splitlines()
+    tests = [line.split(":", maxsplit=1) for line in test_data if line.strip() and ":" in line]
+    n = sum([1 for line in tests if line[0].lower().startswith('test')])  # n = total number of tests
+    try:
+        assert len(tests) % n == 0
+    except AssertionError:
+        raise Exception("Format of test file is incorrect.")
+    return map(dict, _bucket(tests, n)), n
 
 
 def submit_transcript(transcript):
@@ -123,7 +133,6 @@ def submit_transcript(transcript):
     """
     data = {"transcript": transcript}
     response = requests.post("http://{}:{}/process".format(DISCOVERY_HOST, DISCOVERY_PORT), json=data)
-
     return json.loads(response.text)
 
 
@@ -238,11 +247,11 @@ def test_all(test_file):
         (3) total number of character errors in entities tested
         (4) the entity character error rate
     """
-    tests = load_tests(test_file)
+    tests, total_tests = load_tests(test_file)
 
     t1 = int(time.time())
 
-    total_tests = len(tests)
+    # total_tests = len(tests)
     failed_tests = 0
     total_errors = 0
     total_char_errors = 0
