@@ -265,7 +265,7 @@ def test_all(test_file):
     total_characters = 0
 
     for test in tests:
-        print("======\nTesting: {}".format(test['test']))
+        logger.info("======\nTesting: {}".format(test['test']))
 
         resp = submit_transcript(test['transcript'])
 
@@ -286,17 +286,6 @@ def test_all(test_file):
                 failed_tests += 1
                 fail_test(resp, message=observed_not_expected_msg, continued=True)
 
-            # print(
-            #     "\n Expected Intent: {} \n Observed Intent: {}\n".format(
-            #         test['intent'], most_likely_intent['label']
-            #     )
-            # )
-
-        # if 'intent' in test and test['intent'] != most_likely_intent['label']:
-        #     failed_tests += 1
-        #     fail_test(resp, message="Observed intent does not match expected intent!", continued=True)
-        #     continue
-
         (failure, errors, char_errors, characters) = test_single_case(test, most_likely_intent)
         failed_tests += failure
         total_errors += errors
@@ -304,40 +293,23 @@ def test_all(test_file):
         total_characters += characters
 
     time_lapsed = int(time.time()) - t1
+    total_entity_character_errors = total_errors
     correct_tests = total_tests - failed_tests
     accuracy = correct_tests / total_tests
-
-
 
     # record message regardless of number of entity errors
     message = f"\n---\n({correct_tests} / {total_tests}) tests passed in {time_lapsed} seconds\n"
     logger.info(message)
+
     if total_characters:
-        total_entity_character_errors = total_errors
         entity_character_error_rate = 100 * (total_char_errors / total_characters)
         msg = "\nTotal number of entity character errors: {} \nEntity Character Error Rate: {}".format(
             total_entity_character_errors, "{:.2f}".format(entity_character_error_rate))
         logger.info(msg)
 
-    #     print(
-    #         "\n---\n({} / {}) tests passed in {}s with {} entity character errors, Entity character error rate: {}%".format(
-    #             total_tests - failed_tests, total_tests,
-    #             int(time.time()) - t1, total_errors,
-    #             "{:.2f}".format((total_char_errors / total_characters) * 100)
-    #         )
-    #     )
-    # else:
-    #     print(
-    #          "\n---\n({} / {}) tests passed in {}s".format(
-    #             total_tests - failed_tests, total_tests,
-    #             int(time.time()) - t1
-    #         )
-    #     )
-
     # total_errors
     if total_entity_character_errors > 0:
-        logger.error(
-            "Total of {} entity character errors found. Shutting down Discovery".format(total_entity_character_errors))
+        logger.error("\nTotal entity characters found: {}\nShutting down Discovery\n".format(total_entity_character_errors))
         shutdown_discovery()
         exit(1)
 
