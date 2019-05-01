@@ -10,7 +10,6 @@ likely found intent. Tests are also assumed to always return a valid intent
 with entities.
 """
 
-from __future__ import print_function
 import requests
 import subprocess
 import json
@@ -19,20 +18,34 @@ import time
 import glob
 import sys
 import editdistance
+import logging
 
 from importlib import import_module
 from discovery_sdk_utils import find_errors_in_entity_definition
 from discovery_config import DISCOVERY_PORT, DISCOVERY_HOST, DISCOVERY_SHUTDOWN_SECRET
 from discovery_config import CONTAINER_NAME
+from discovery_config import TIMEOUT, RETRIES
 from launch_discovery import launch_discovery
+
+# TODO move to ini file
+logger = logging.getLogger(__name__)
+formatter = logging.Formatter('%(asctime)s %(name)-12s %(levelname)-8s %(lineno)d %(message)s')
+
+console_handler = logging.StreamHandler()
+console_handler.setLevel(logging.ERROR)
+
+file_handler = logging.FileHandler('test_discovery.log')
+file_handler.setLevel(logging.DEBUG)
+
+console_handler.setFormatter(formatter)
+file_handler.setFormatter(formatter)
+
+logger.addHandler(console_handler)
+logger.addHandler(file_handler)
 
 """
 Functions for handling the Discovery Docker container
 """
-
-#TODO Remap the following Bash codes; confusing as opposite of standard Python codes
-BAD_EXIT_CODE = 1
-GOOD_EXIT_CODE = 0
 
 
 def docker_log_and_stop():
@@ -50,21 +63,20 @@ def check_discovery_status():
     Checks whether Discovery is ready to receive new jobs
     """
     r = requests.get("http://{}:{}/status".format(DISCOVERY_HOST, DISCOVERY_PORT))
-    if 'listening' in json.loads(r.text)['message']:
-        return True
-    return False
+    return True if 'listening' in r.json()['message'] else False
 
 
-def wait_for_discovery_status(timeout=1, retries=5):
+def wait_for_discovery_status():
     """
     Wait for Discovery to be ready
     """
-    for i in range(retries):
+    for i in range(RETRIES):
         try:
             check_discovery_status()
             return True
         except Exception:
-            time.sleep(timeout)
+            logger.exception("Error: Exception during status check", exc_info=True)
+            time.sleep(TIMEOUT)
     return False
 
 
@@ -73,7 +85,7 @@ def wait_for_discovery_launch():
     Wait for launch to complete
     """
     # Timeout of 25 seconds for launch
-    if not wait_for_discovery_status(timeout=5, retries=5):
+    if not wait_for_discovery_status():
         print("Couldn't launch Discovery, printing Docker logs:\n---\n")
         docker_log_and_stop()
         exit(1)
@@ -84,7 +96,8 @@ def shutdown_discovery():
     Shuts down the Discovery engine Docker container
     """
     try:
-        requests.get("http://{}:{}/shutdown?secret_key={}".format(DISCOVERY_HOST, DISCOVERY_PORT, DISCOVERY_SHUTDOWN_SECRET))
+        requests.get(
+            "http://{}:{}/shutdown?secret_key={}".format(DISCOVERY_HOST, DISCOVERY_PORT, DISCOVERY_SHUTDOWN_SECRET))
     # Windows throws a ConnectionError for a request to shutdown a server which makes it looks like the test fail
     except requests.exceptions.ConnectionError:
         pass
@@ -96,16 +109,16 @@ Testing functions
 """
 
 
-def load_tests(test_file_argument):
+def load_tests(test_file):
     """
     Loads and parses the test file
     """
-    test_file = [x.rstrip() for x in open(test_file_argument)]
+    test_file = [x.rstrip() for x in open(test_file)]
     tests = []
     current_test = {}
     for line in test_file:
         key = line.split(":")[0]
-        value = line.split(": ")[-1]
+        value = line.split(": ", maxsplit=1)[-1]
         if key == "test":
             if len(current_test.keys()) > 0:
                 tests.append(current_test)
@@ -122,9 +135,13 @@ def submit_transcript(transcript):
     Submits a transcript to Discovery
     """
     data = {"transcript": transcript}
-    response = requests.post("http://{}:{}/process".format(DISCOVERY_HOST, DISCOVERY_PORT), json=data)
+    r = requests.post("http://{}:{}/process".format(DISCOVERY_HOST, DISCOVERY_PORT), json=data)
+    if r.status_code in requests.codes.ok:
+        return r.json()
+    logger.error("Request was not successful. Response Status Code: {}".format(r.status_code))
+    return {}
 
-    return json.loads(response.text)
+    # return json.loads(response.text)
 
 
 def is_valid_response(resp):
@@ -163,7 +180,6 @@ def test_single_entity(entities, test_name, test_value):
             continued=True
         )
         return (1, editdistance.eval(test_value, entities[test_name]))
-
     return (0, 0)
 
 
@@ -261,16 +277,25 @@ def test_all(test_file):
         most_likely_intent = resp["intents"][0]
 
         if 'intent' in test:
-            print(
-                "\n Expected Intent: {} \n Observed Intent: {}\n".format(
-                    test['intent'], most_likely_intent['label']
-                )
-            )
+            expected_intent, observed_intent = test['intent'], most_likely_intent['label']
+            message = f"\nExpected Intent: {expected_intent} \nObserved Intent{observed_intent}"
+            logger.info(message)
 
-        if 'intent' in test and test['intent'] != most_likely_intent['label']:
-            failed_tests += 1
-            fail_test(resp, message="Observed intent does not match expected intent!", continued=True)
-            continue
+            if expected_intent != observed_intent:
+                observed_not_expected_msg = "Observed intent does not match expected intent!"
+                failed_tests += 1
+                fail_test(resp, message=observed_not_expected_msg, continued=True)
+
+            # print(
+            #     "\n Expected Intent: {} \n Observed Intent: {}\n".format(
+            #         test['intent'], most_likely_intent['label']
+            #     )
+            # )
+
+        # if 'intent' in test and test['intent'] != most_likely_intent['label']:
+        #     failed_tests += 1
+        #     fail_test(resp, message="Observed intent does not match expected intent!", continued=True)
+        #     continue
 
         (failure, errors, char_errors, characters) = test_single_case(test, most_likely_intent)
         failed_tests += failure
@@ -278,22 +303,41 @@ def test_all(test_file):
         total_char_errors += char_errors
         total_characters += characters
 
+    time_lapsed = int(time.time()) - t1
+    correct_tests = total_tests - failed_tests
+    accuracy = correct_tests / total_tests
+
+
+
+    # record message regardless of number of entity errors
+    message = f"\n---\n({correct_tests} / {total_tests}) tests passed in {time_lapsed} seconds\n"
+    logger.info(message)
     if total_characters:
-        print(
-            "\n---\n({} / {}) tests passed in {}s with {} entity character errors, Entity character error rate: {}%".format(
-                total_tests - failed_tests, total_tests,
-                int(time.time()) - t1, total_errors,
-                "{:.2f}".format((total_char_errors / total_characters) * 100)
-            )
-        )
-    else:
-        print(
-             "\n---\n({} / {}) tests passed in {}s".format(
-                total_tests - failed_tests, total_tests,
-                int(time.time()) - t1
-            )
-        )
-    if total_errors > 0:
+        total_entity_character_errors = total_errors
+        entity_character_error_rate = 100 * (total_char_errors / total_characters)
+        msg = "\nTotal number of entity character errors: {} \nEntity Character Error Rate: {}".format(
+            total_entity_character_errors, "{:.2f}".format(entity_character_error_rate))
+        logger.info(msg)
+
+    #     print(
+    #         "\n---\n({} / {}) tests passed in {}s with {} entity character errors, Entity character error rate: {}%".format(
+    #             total_tests - failed_tests, total_tests,
+    #             int(time.time()) - t1, total_errors,
+    #             "{:.2f}".format((total_char_errors / total_characters) * 100)
+    #         )
+    #     )
+    # else:
+    #     print(
+    #          "\n---\n({} / {}) tests passed in {}s".format(
+    #             total_tests - failed_tests, total_tests,
+    #             int(time.time()) - t1
+    #         )
+    #     )
+
+    # total_errors
+    if total_entity_character_errors > 0:
+        logger.error(
+            "Total of {} entity character errors found. Shutting down Discovery".format(total_entity_character_errors))
         shutdown_discovery()
         exit(1)
 
@@ -314,6 +358,7 @@ Interpreter validation
 
 class cleanText(object):
     """Mock up a module that is imported by entities so they can be imported and inspected."""
+
     @staticmethod
     def text2int(word_list):
         return word_list
