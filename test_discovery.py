@@ -19,13 +19,16 @@ import glob
 import sys
 import editdistance
 import logging
-
+from os.path import join as join_path, dirname, exists
+from collections import defaultdict, OrderedDict
 from importlib import import_module
 from discovery_sdk_utils import find_errors_in_entity_definition
 from discovery_config import DISCOVERY_PORT, DISCOVERY_HOST, DISCOVERY_SHUTDOWN_SECRET
 from discovery_config import CONTAINER_NAME
 from discovery_config import TIMEOUT, RETRIES
 from launch_discovery import launch_discovery
+
+from metrics import precision_recall_f1_accuracy
 
 # TODO move to ini file
 logger = logging.getLogger(__name__)
@@ -108,6 +111,12 @@ def shutdown_discovery():
 Testing functions
 """
 
+
+def json_dump(data, outfile, directory=None):
+    if not directory:
+        directory = os.getcwd()
+    outfile = join_path(directory, outfile)
+    json.dump(data, open(outfile, 'w+'))
 
 def load_tests(test_file):
     """
@@ -233,6 +242,7 @@ def test_single_case(test_dict, response_intent_dict):
         return 0, 0, 0, characters
 
 
+#TODO Add label argument & use as reference when computing scores?
 def test_all(test_file):
     """
     Runs all defined tests
@@ -264,6 +274,9 @@ def test_all(test_file):
     total_char_errors = 0
     total_characters = 0
 
+    y_true = []
+    y_pred = []
+
     for test in tests:
         logger.info("======\nTesting: {}".format(test['test']))
 
@@ -278,7 +291,9 @@ def test_all(test_file):
 
         if 'intent' in test:
             expected_intent, observed_intent = test['intent'], most_likely_intent['label']
-            message = f"\nExpected Intent: {expected_intent} \nObserved Intent{observed_intent}"
+            y_true.append(expected_intent)
+            y_pred.append(observed_intent)
+            message = "\nExpected Intent: {} \nObserved Intent{}".format(expected_intent, observed_intent)
             logger.info(message)
 
             if expected_intent != observed_intent:
@@ -297,15 +312,40 @@ def test_all(test_file):
     correct_tests = total_tests - failed_tests
     accuracy = correct_tests / total_tests
 
+    output_dir = dirname(test_file)
+
+    # save output variables computed across tests
+    output_dict = dict(
+        total_tests=total_tests,
+        test_time_sec=time_lapsed,
+        sexpected_intents=y_true,
+        observed_intents=y_pred,
+        total_entity_character_errors=total_errors,
+        total_character_errors=total_char_errors,
+        total_characters=total_characters
+    )
+    json_dump(data=output_dict, outfile='test_results.json', directory=output_dir)
+
     # record message regardless of number of entity errors
     message = f"\n---\n({correct_tests} / {total_tests}) tests passed in {time_lapsed} seconds\n"
     logger.info(message)
 
     if total_characters:
         entity_character_error_rate = 100 * (total_char_errors / total_characters)
-        msg = "\nTotal number of entity character errors: {} \nEntity Character Error Rate: {}".format(
-            total_entity_character_errors, "{:.2f}".format(entity_character_error_rate))
+        msg = "\nTotal number of entity character errors: {} \nEntity Character Error Rate: {}".format(total_entity_character_errors, "{:.2f}".format(entity_character_error_rate))
         logger.info(msg)
+
+    # evaluate metrics; treat each possible intent as the reference label
+    # (key=label; value=dict with performance metrics)
+    metrics_dict = defaultdict(dict)
+    intent_labels = set(y_true)
+    for label in intent_labels:
+        try:
+            metrics = precision_recall_f1_accuracy(y_true, y_pred, label=label)  # -> Dict
+        except ZeroDivisionError:
+            metrics = {"accuracy": accuracy}
+        metrics_dict[label] = metrics
+    json_dump(metrics_dict, outfile='test_metrics.json', directory=output_dir)
 
     # total_errors
     if total_entity_character_errors > 0:
