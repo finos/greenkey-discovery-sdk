@@ -78,7 +78,7 @@ def wait_for_discovery_status():
             check_discovery_status()
             return True
         except Exception:
-            logger.exception("Error: Exception during status check", exc_info=True)
+            # logger.exception("Error: Exception during status check", exc_info=True)
             time.sleep(TIMEOUT)
     return False
 
@@ -118,6 +118,7 @@ def json_dump(data, outfile, directory=None):
     outfile = join_path(directory, outfile)
     json.dump(data, open(outfile, 'w+'))
 
+
 def load_tests(test_file):
     """
     Loads and parses the test file
@@ -145,7 +146,7 @@ def submit_transcript(transcript):
     """
     data = {"transcript": transcript}
     r = requests.post("http://{}:{}/process".format(DISCOVERY_HOST, DISCOVERY_PORT), json=data)
-    if r.status_code in requests.codes.ok:
+    if r.status_code == 200: #in requests.codes.ok:
         return r.json()
     logger.error("Request was not successful. Response Status Code: {}".format(r.status_code))
     return {}
@@ -318,7 +319,7 @@ def test_all(test_file):
     output_dict = dict(
         total_tests=total_tests,
         test_time_sec=time_lapsed,
-        sexpected_intents=y_true,
+        expected_intents=y_true,
         observed_intents=y_pred,
         total_entity_character_errors=total_errors,
         total_character_errors=total_char_errors,
@@ -329,6 +330,7 @@ def test_all(test_file):
     # record message regardless of number of entity errors
     message = f"\n---\n({correct_tests} / {total_tests}) tests passed in {time_lapsed} seconds\n"
     logger.info(message)
+    print(message)
 
     if total_characters:
         entity_character_error_rate = 100 * (total_char_errors / total_characters)
@@ -338,12 +340,14 @@ def test_all(test_file):
     # evaluate metrics; treat each possible intent as the reference label
     # (key=label; value=dict with performance metrics)
     metrics_dict = defaultdict(dict)
+    metrics_dict['accuracy_score'] = accuracy*100
     intent_labels = set(y_true)
     for label in intent_labels:
         try:
-            metrics = precision_recall_f1_accuracy(y_true, y_pred, label=label)  # -> Dict
+            metrics = precision_recall_f1_accuracy(y_true, y_pred, label=label)
+            del metrics['accuracy']   # -> Dict
         except ZeroDivisionError:
-            metrics = {"accuracy": accuracy}
+            metrics = {}
         metrics_dict[label] = metrics
     json_dump(metrics_dict, outfile='test_metrics.json', directory=output_dir)
 
