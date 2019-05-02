@@ -46,6 +46,7 @@ file_handler.setFormatter(formatter)
 logger.addHandler(console_handler)
 logger.addHandler(file_handler)
 
+
 """
 Functions for handling the Discovery Docker container
 """
@@ -243,7 +244,6 @@ def test_single_case(test_dict, response_intent_dict):
         return 0, 0, 0, characters
 
 
-#TODO Add label argument & use as reference when computing scores?
 def test_all(test_file):
     """
     Runs all defined tests
@@ -328,7 +328,7 @@ def test_all(test_file):
     json_dump(data=output_dict, outfile='test_results.json', directory=output_dir)
 
     # record message regardless of number of entity errors
-    message = f"\n---\n({correct_tests} / {total_tests}) tests passed in {time_lapsed} seconds\n"
+    message = "\n---\n({} / {}) tests passed in {} seconds\n".format(correct_tests, total_tests, time_lapsed)
     logger.info(message)
     print(message)
 
