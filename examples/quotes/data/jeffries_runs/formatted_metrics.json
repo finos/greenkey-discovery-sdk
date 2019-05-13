@@ -1,0 +1,118 @@
+# Formatted metrics
+
+// ################################################################
+# FORMATTED
+# imstrings.txt (N = 23,578), accuracy=0.10%, TP=24, FN=23,555
+# security_db.txt (N = 394), accuracy=0.00%, TP=0, FN=394
+
+// #################################################################
+
+# training data - formatted text classifiers quotes and not quotes (90% of data) - formatted via formatter microservice
+
+# test data 
+  - not_quotes: formatted text classifiers test_not_quote_10.txt - formatted via formatter microservice
+  - quotes: imstrings.txt and security_db.txt as extracted from Jeffries Runs (already formatted so data in the same format as procured) 
+
+// ###########################################################################################################################################
+# test quote = imstrings.txt (N = 23,578)       (test_not_quote: formatted_test_not_quote_10.txt)
+# tests.txt filelname: formatted_runs_imstrings_tests.txt
+
+// /home/amelie/src/greenkey-discovery-sdk-private/examples/quotes/ageojo_runs/formatted/imstrings
+
+(cmd)amelie@amu:~/src/gree.../formatted/imstrings$ cat test_metrics.json | jq .
+
+// *****************
+# not valid to compute confusion matrix and precision etc b/c of severely imbalanced classes
+# accuracy_score if test only imstrings (formatted): 0.10% accuracy, TP=24, FN=23,555
+// *****************
+# accuracy (quotes only): 0.10%
+{
+  // "accuracy_score": 18.131658396085644,
+  "quote": {          
+    "TP": 24,
+    "FN": 23555,
+    // "FP": 37,
+    // "TN": 5201,
+    // "precision": 0.39344262295081966,
+    "recall": 0.0010178548708596634,
+    // "f1_score": 0.0020304568527918787,
+    // "normalized_cm": [
+    //   [
+    //     0.39344262295081966,
+    //     0.6065573770491803
+    //   ],
+    //   [
+    //     0.8191333982473223,
+    //     0.1808666017526777
+    //   ]
+    // ]
+  },
+  // "not_quote": {
+  //   "TP": 5201,
+  //   "FN": 37,
+  //   "FP": 23555,
+  //   "TN": 24,
+  //   "precision": 0.1808666017526777,
+  //   "recall": 0.9929362352042764,
+  //   "f1_score": 0.30599517561922696,
+  //   "normalized_cm": [
+  //     [
+  //       0.1808666017526777,
+  //       0.8191333982473223
+  //     ],
+  //     [
+  //       0.6065573770491803,
+  //       0.39344262295081966
+  //     ]
+  //   ]
+  // }
+}
+
+// ###########################################################################################################################################
+
+# test quote = security_db.txt (N = 394)  (test not_quote: formatted_test_not_quote_10.txt)
+# test filename: formatted_runs_security_db_tests.txt
+
+# accuracy_score if test only security_db.txt : 0.00%, TP=0, FN=394
+ // (ins)amelie@amu:~/src/gree...ormatted/security_db$ cat test_metrics.json | jq 
+# accuracy (quotes only): 0.00%
+{
+  // "accuracy_score": 92.36505681818183,
+  // "not_quote": {
+  //   "TP": 5202,
+  //   "FN": 36,
+  //   "FP": 394,
+  //   "TN": 0,
+  //   "precision": 0.9295925661186561,
+  //   "recall": 0.993127147766323,
+  //   "f1_score": 0.9603101347609377,
+  //   "normalized_cm": [
+  //     [
+  //       0.9295925661186561,
+  //       0.07040743388134382
+  //     ],
+  //     [
+  //       1,
+  //       0
+  //     ]
+  //   ]
+  // },
+  "quote": {
+    "TP": 0,
+    "FN": 394,
+    // "FP": 36,
+    // "TN": 5202
+  }
+}
+
+
+// #####################################################################
+# FORMATTED
+# imstrings.txt (N = 23,578), accuracy=0.10%, TP=24, FN=23,555
+# security_db.txt (N = 394), accuracy=0.00%, TP=0, FN=394
+
+
+// # UNFORMATTED
+// # imstrings.txt (N = 23,578), accuracy=99.57%, TP=24, FN=23,555
+// # security_db.txt (N = 394), accuracy=5.58%, TP=22, FN=372 
+// # security_db round3 (N = 394), accuracy=97.46%, TP=384, FN=10

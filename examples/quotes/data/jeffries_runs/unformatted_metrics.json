@@ -1,0 +1,95 @@
+(ins)amelie@amu:~/src/gree...ojo_runs/unformatted$ ls
+// imstrings
+// security_db
+// security_round3
+
+
+(ins)amelie@amu:~/src/gree...ojo_runs/unformatted$ cat imstrings/metrics_unformatted_imstrings.json 
+# accuracy (quotes only: 97.57%)
+{
+  // "accuracy_score": 98.8687233230385,
+  // "not_quote": {
+  //   "TP": 5013,
+  //   "FN": 225,
+  //   "FP": 101,
+  //   "TN": 23478,
+  //   "precision": 0.9802502933124756,
+  //   "recall": 0.9570446735395189,
+  //   "f1_score": 0.9685085007727975
+  // },
+  "quote": {
+    "TP": 23478,
+    "FN": 101,
+    // "FP": 225,
+    // "TN": 5013,
+    // "precision": 0.9905075306923175,
+    "recall": 0.9957165274184656,
+    // "f1_score": 0.99310519859566
+  }
+}
+
+
+(ins)amelie@amu:~/src/gree...ojo_runs/unformatted$ cat security_db/metrics_security.json 
+# accuracy (quotes only) = 5.58%
+{
+  // "accuracy_score": 89.08025568181817,
+  // "quote": {
+    "TP": 22,
+    "FN": 372,
+  //   "FP": 243,
+  //   "TN": 4995,
+  //   "precision": 0.0830188679245283,
+    "recall": 0.05583756345177665,
+  //   "f1_score": 0.06676783004552353
+  },
+  // "not_quote": {
+  //   "TP": 4995,
+  //   "FN": 243,
+  //   "FP": 372,
+  //   "TN": 22,
+  //   "precision": 0.9306875349357183,
+    // "recall": 0.9536082474226805,
+  //   "f1_score": 0.9420084865629421
+  // }
+}
+
+
+# (ins)amelie@amu:~/src/gree...ojo_runs/unformatted$ cat security_round3/metrics_security_round3.json 
+# accuracy (quotes only) = 99.46%
+
+{
+  // "accuracy_score": 99.75146458370318,
+  // "not_quote": {
+  //   "TP": 5235,
+  //   "FN": 4,
+  //   "FP": 10,
+  //   "TN": 384,
+  //   "precision": 0.998093422306959,
+  //   "recall": 0.9992364955144112,
+  //   "f1_score": 0.998664631819916
+  // },
+  "quote": {
+    "TP": 384,
+    "FN": 10,
+    // "FP": 4,
+    // "TN": 5235,
+    // "precision": 0.9896907216494846,
+    // "recall": 0.9746192893401016,
+    // "f1_score": 0.9820971867007673
+  }
+}
+(ins)amelie@amu:~/src/gree...ojo_runs/unformatted$     
+
+
+
+// *****************************************************************
+// # IMPORTANT: comparisons above not valid given significant class imbalance; true for imstrings and security_db (vs. textclassifiers test_not_quotes_10.txt)
+
+# UNFORMATTED
+# imstrings.txt (N = 23,578), accuracy=99.57%, TP=24, FN=23,555
+# security_db.txt (N = 394), accuracy=5.58%, TP=22, FN=372 
+# security_db round3 (N = 394), accuracy=97.46%, TP=384, FN=10
+
+// # FORMATTED
+// # imstrings.txt (N = 23,578), accuracy=0.10%, TP=24, FN=23,555
+// # security_db.txt (N = 394), accuracy=0.00%, TP=0, FN=394

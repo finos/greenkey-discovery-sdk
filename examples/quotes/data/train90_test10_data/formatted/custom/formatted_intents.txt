@@ -1,0 +1,1 @@
+{"intents": [{"label": "quote", "examples": ["/custom/train_unformatted_quotes_90.txt"], "domain": "quote_or_not"}, {"label": "not_quote", "examples": ["/custom/train_unformatted_not_quotes_90.txt"], "domain": "quote_or_not"}]}

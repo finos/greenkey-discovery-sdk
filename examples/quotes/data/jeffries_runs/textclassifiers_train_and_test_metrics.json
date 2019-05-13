@@ -1,0 +1,70 @@
+
+# Unformatted textclassifiers Data
+- textclassifiers data from gcloud     -->  asrtoolkit.clean_formatting.clean_up
+
+// /home/amelie/src/greenkey-discovery-sdk-private/examples/quotes/train90_test10_data/unformatted
+
+(ins)amelie@amu:~/src/gree...t10_data/unformatted$ ls
+// custom        test_not_quotes_10.txt  unformatted_intents.json            unformatted_tests.txt
+// intents.json  test_quotes_10.txt      unformatted_test_not_quotes_10.txt
+// output        tests.txt               unformatted_test_quotes_10.txt
+
+
+(ins)amelie@amu:~/src/gree...t10_data/unformatted$ wc -l *.txt
+   
+   5239 test_not_quotes_10.txt
+   6505 test_quotes_10.txt
+  46976 tests.txt
+   5239 unformatted_test_not_quotes_10.txt
+   5239 unformatted_test_quotes_10.txt
+  46976 unformatted_tests.txt
+ 116174 total
+
+
+
+(ins)amelie@amu:~/src/gree...t10_data/unformatted$ ls output
+// metrics.json  results.json
+
+(ins)amelie@amu:~/src/gree...t10_data/unformatted$ cat output/metrics.json | jq
+// reference = quotes
+{    
+  "precision": 0.9993852773935762,
+  "recall": 0.9996925441967717,
+  "f1_score": 0.9995388871810635,
+  "accuracy": 99.94891008174388,
+  "TP": 6503,
+  "FN": 2,
+  "FP": 4,
+  "TN": 5235
+}
+
+######################################################################################################################
+
+# Formatted textclassifiers data (for training & test)
+- formatted via formatter microservice
+
+// /home/amelie/src/greenkey-discovery-sdk-private/examples/quotes/train90_test10_data/formatted
+(ins)amelie@amu:~/src/gree...est10_data/formatted$ wc -l *.txt
+
+   5238 formatted_test_not_quotes_10.txt
+   6505 formatted_test_quotes_10.txt
+  46972 formatted_tests.txt
+  58715 total
+
+
+(ins)amelie@amu:~/src/gree...est10_data/formatted$ cat output/
+// metrics.json  results.json  
+
+
+(ins)amelie@amu:~/src/gree...est10_data/formatted$ cat output/metrics.json | jq
+// reference = quotes
+{
+  "precision": 0.9944611489159677,
+  "recall": 0.9660261337432744,
+  "f1_score": 0.9800374298190891,
+  "accuracy": 97.81997785915013,
+  "TP": 6284,
+  "FN": 221,
+  "FP": 35,
+  "TN": 5203
+}
