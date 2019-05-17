@@ -26,6 +26,8 @@ from discovery_config import DISCOVERY_PORT, DISCOVERY_HOST, DISCOVERY_SHUTDOWN_
 from discovery_config import CONTAINER_NAME
 from launch_discovery import launch_discovery
 
+from asrtoolkit.clean_formatting import clean_up
+
 """
 Functions for handling the Discovery Docker container
 """
@@ -33,6 +35,8 @@ Functions for handling the Discovery Docker container
 #TODO Remap the following Bash codes; confusing as opposite of standard Python codes
 BAD_EXIT_CODE = 1
 GOOD_EXIT_CODE = 0
+
+UNFORMATTED_CHARS = set(list("abcdefghijklmnopqrstuvwxyz-' "))
 
 
 def docker_log_and_stop():
@@ -121,7 +125,14 @@ def submit_transcript(transcript):
     """
     Submits a transcript to Discovery
     """
-    data = {"transcript": transcript, "word_confusions": [{w: "1.0"} for w in transcript.split(" ")]}
+    data = {"word_confusions": [{w: "1.0"} for w in transcript.split(" ")]}
+    
+    if len(set(list(transcript)).symmetric_difference(UNFORMATTED_CHARS)) > 0:
+      data['punctuated_transcript'] = transcript
+      data['transcript'] = clean_up(transcript)
+    else:
+      data['transcript'] = transcript
+    
     response = requests.post("http://{}:{}/process".format(DISCOVERY_HOST, DISCOVERY_PORT), json=data)
 
     return json.loads(response.text)
