@@ -121,7 +121,7 @@ def submit_transcript(transcript):
     """
     Submits a transcript to Discovery
     """
-    data = {"transcript": transcript}
+    data = {"transcript": transcript, "word_confusions": [{w: "1.0"} for w in transcript.split(" ")]}
     response = requests.post("http://{}:{}/process".format(DISCOVERY_HOST, DISCOVERY_PORT), json=data)
 
     return json.loads(response.text)
