@@ -10,3 +10,8 @@ mirror_public_sdk_repo.sh
 README_private_SDK.md
 quotes/utils/
 tmp/
+
+.idea/
+private_sdk/
+public_sdk/
+results_and_metrics/
