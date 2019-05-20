@@ -9,6 +9,9 @@ dico/
 *.bin
 
 
+Pipfile
+Pipfile.lock
+
 .idea/
 data/
 notes/
