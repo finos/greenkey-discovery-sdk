@@ -4,3 +4,14 @@ dico/
 *.egg-info/
 .pytest_cache/
 .eggs/
+
+*.log
+*.bin
+
+
+.idea/
+data/
+notes/
+models/
+logs/
+secrets.py

@@ -97,7 +97,7 @@ def _launch_container(custom_directory, port, discovery_config, container_name):
     subprocess.call(launch_command, shell=True)
 
 
-def _launch_binaries(custom_directory, port, discovery_config):
+def _launch_binaries(custom_directory):
     """launches Discovery from the compiled binaries."""
     binaries_directory = _detect_binaries_file()
     if binaries_directory:
@@ -127,5 +127,10 @@ def _detect_binaries_file():
 
 
 if __name__ == '__main__':
-    directions_custom_directory = os.path.join(os.getcwd(), 'examples', 'directions', 'custom')
-    launch_discovery(custom_directory=directions_custom_directory)
+    try:
+        project_name = sys.argv[1]
+    except IndexError:
+        project_name = 'directions'     # defaults to examples/directions
+
+    project_custom_directory = os.path.join(os.getcwd(), 'examples', project_name, 'custom')
+    launch_discovery(custom_directory=project_custom_directory)
