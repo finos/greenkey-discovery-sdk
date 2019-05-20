@@ -15,3 +15,6 @@ tmp/
 private_sdk/
 public_sdk/
 results_and_metrics/
+
+data/
+models/
