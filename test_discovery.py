@@ -19,8 +19,8 @@ import glob
 import sys
 import editdistance
 import logging
-from os.path import join as join_path, dirname, exists
-from collections import defaultdict, OrderedDict
+from os.path import join as join_path, dirname
+from collections import defaultdict
 from importlib import import_module
 from discovery_sdk_utils import find_errors_in_entity_definition
 from discovery_config import DISCOVERY_PORT, DISCOVERY_HOST, DISCOVERY_SHUTDOWN_SECRET
@@ -28,7 +28,7 @@ from discovery_config import CONTAINER_NAME
 from discovery_config import TIMEOUT, RETRIES
 from launch_discovery import launch_discovery
 
-from metrics import precision_recall_f1_accuracy
+from metrics import compute_counts, precision_recall_f1_accuracy
 
 # TODO move to ini file
 logger = logging.getLogger(__name__)
