@@ -36,7 +36,7 @@ Functions for handling the Discovery Docker container
 BAD_EXIT_CODE = 1
 GOOD_EXIT_CODE = 0
 
-UNFORMATTED_CHARS = set(list("abcdefghijklmnopqrstuvwxyz-' "))
+UNFORMATTED_CHARS = set("abcdefghijklmnopqrstuvwxyz-' ")
 
 
 def docker_log_and_stop():
