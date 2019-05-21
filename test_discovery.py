@@ -127,7 +127,7 @@ def submit_transcript(transcript):
     """
     data = {"word_confusions": [{w: "1.0"} for w in transcript.split(" ")]}
     
-    if len(set(list(transcript)).difference(UNFORMATTED_CHARS)) > 0:
+    if any(map(lambda c: c not in UNFORMATTED_CHARS, transcript)):
       data['punctuated_transcript'] = transcript
       data['transcript'] = clean_up(transcript)
     else:
