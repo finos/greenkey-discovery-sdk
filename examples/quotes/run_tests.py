@@ -38,7 +38,8 @@ COUNT, MAX_PAGES = 1, 1
 
 
 def dump_json(data, outfile):
-    json.dump(data, open(outfile, 'w+'))
+    with open(outfile, 'w+') as f:
+      json.dump(data, f)
 
 
 def load_json(infile):
