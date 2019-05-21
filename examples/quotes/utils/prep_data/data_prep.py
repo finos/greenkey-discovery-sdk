@@ -172,7 +172,7 @@ def write_intents_config():
              examples=["/custom/{}".format(train_not_quotes)])
       ]
   }
-
+  # TODO definitions.yaml 
   DEFINITIONS_FILENAME = 'intents.json'
   try:
     print("Writing {} file".format(DEFINITIONS_FILENAME))
