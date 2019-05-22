@@ -1,14 +1,14 @@
 import os
 
 DISCOVERY_CONFIG = {
-  "GKT_USERNAME": os.environ.get("GKT_USERNAME", "username"),
-  "GKT_SECRETKEY": os.environ.get("GKT_SECRETKEY", "password"),
-  "GKT_API": "https://scribeapi.greenkeytech.com/",
-  "NUMBER_OF_INTENTS": "1",
-  "MAX_NUMBER_OF_ENTITIES": "3",
-  "STRUCTURE_CONFIDENCE_THRESHOLD": "0.8",
-  "SORT_ENTITIES_BY_LENGTH": "True",
-  "PORT": "1234",  # Port that Discovery will bind to on the Docker daemon, change if port is taken already
+    "GKT_USERNAME": os.environ.get("GKT_USERNAME", "username"),
+    "GKT_SECRETKEY": os.environ.get("GKT_SECRETKEY", "password"),
+    "GKT_API": "https://scribeapi.greenkeytech.com/",
+    "NUMBER_OF_INTENTS": "1",
+    "MAX_NUMBER_OF_ENTITIES": "3",
+    "STRUCTURE_CONFIDENCE_THRESHOLD": "0.8",
+    "SORT_ENTITIES_BY_LENGTH": "True",
+    "PORT": "1234",  # Port that Discovery will bind to on the Docker daemon, change if port is taken already
 }
 
 CONTAINER_NAME = "discovery-dev"

@@ -130,7 +130,7 @@ if __name__ == '__main__':
     try:
         project_name = sys.argv[1]
     except IndexError:
-        project_name = 'directions'     # defaults to examples/directions
+        project_name = 'directions'  # defaults to examples/directions
 
     project_custom_directory = os.path.join(os.getcwd(), 'examples', project_name, 'custom')
     launch_discovery(custom_directory=project_custom_directory)
