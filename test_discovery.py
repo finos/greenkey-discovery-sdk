@@ -52,26 +52,26 @@ Functions for handling the Discovery Docker container
 
 def docker_log_and_stop():
     """
-	name assigned to Docker container;
-	defalut='discovery-dev'
-	to modify: set DOCKER_CONTAINER in discovery_config.py
-	"""
+    name assigned to Docker container; modify CONTAINER_NAME in
+    discovery_config.py
+        defalut='discovery-dev'
+    """
     subprocess.call("docker logs {}".format(CONTAINER_NAME), shell=True)
     subprocess.call("docker stop {}".format(CONTAINER_NAME), shell=True)
 
 
 def check_discovery_status():
     """
-	Checks whether Discovery is ready to receive new jobs
-	"""
+    Checks whether Discovery is ready to receive new jobs
+    """
     r = requests.get("http://{}:{}/status".format(DISCOVERY_HOST, DISCOVERY_PORT))
     return True if 'listening' in r.json()['message'] else False
 
 
 def wait_for_discovery_status():
     """
-	Wait for Discovery to be ready
-	"""
+    Wait for Discovery to be ready
+    """
     for i in range(RETRIES):
         try:
             check_discovery_status()
@@ -84,8 +84,8 @@ def wait_for_discovery_status():
 
 def wait_for_discovery_launch():
     """
-	Wait for launch to complete
-	"""
+    Wait for launch to complete
+    """
     # Timeout of 25 seconds for launch
     if not wait_for_discovery_status():
         print("Couldn't launch Discovery, printing Docker logs:\n---\n")
@@ -95,8 +95,8 @@ def wait_for_discovery_launch():
 
 def shutdown_discovery():
     """
-	Shuts down the Discovery engine Docker container
-	"""
+    Shuts down the Discovery engine Docker container
+    """
     try:
         requests.get(
             "http://{}:{}/shutdown?secret_key={}".format(DISCOVERY_HOST, DISCOVERY_PORT, DISCOVERY_SHUTDOWN_SECRET)
@@ -121,8 +121,8 @@ def json_dump(data, outfile, directory=None):
 
 def load_tests(test_file):
     """
-	Loads and parses the test file
-	"""
+    Loads and parses the test file
+    """
     test_file = [x.rstrip() for x in open(test_file)]
     tests = []
     current_test = {}
@@ -142,8 +142,8 @@ def load_tests(test_file):
 
 def submit_transcript(transcript):
     """
-	Submits a transcript to Discovery
-	"""
+    Submits a transcript to Discovery
+    """
     data = {"transcript": transcript}
     r = requests.post("http://{}:{}/process".format(DISCOVERY_HOST, DISCOVERY_PORT), json=data)
     if r.status_code == 200:  # in requests.codes.ok:
@@ -156,9 +156,9 @@ def submit_transcript(transcript):
 
 def is_valid_response(resp):
     """
-	Validates a Discovery response
-	Fail if a failure response was received
-	"""
+    Validates a Discovery response
+    Fail if a failure response was received
+    """
     if "result" in resp and resp['result'] == "failure":
         return False
 
@@ -176,8 +176,8 @@ def is_valid_response(resp):
 
 def test_single_entity(entities, test_name, test_value):
     """
-	Tests a single entity within a test case
-	"""
+    Tests a single entity within a test case
+    """
 
     if test_name not in entities.keys():
         fail_test({}, "Entity not found: {}".format(test_name), continued=True)
@@ -195,24 +195,20 @@ def test_single_entity(entities, test_name, test_value):
 
 def test_single_case(test_dict, response_intent_dict):
     """
-	Run a single test case
-	Return the number of errors
+    Run a single test case and return the number of errors
 
-	:param test_dict: dict;
-			key: str; name of entity
-			value: str; first occurrence of entity in transcript
+    :param test_dict: dict;
+	key: str; name of entity
+	value: str; first occurrence of entity in transcript
 
-	:param response_intent_dict: dict, single intent from Discovery response
+    :param response_intent_dict: dict, single intent from Discovery response
 
-	:return: 4-Tuple
-		 first: 0 if tests pass, 1 if tests fails
-
-		 total_errors: number of entities in test whose observed value (str) differs from expected
-
-		 total_char_errors: sum of number of char that differ between observed and expected values for each entity
-
-		 characters:
-	"""
+    :return: 4-Tuple
+        first element: bool; 0 if tests pass, 1 if tests fails
+	total_errors: int; number of entities in test whose observed value (str) differs from expected
+	total_char_errors: int; sum of number of char that differ between observed and expected values for each entity
+        characters: int; 
+    """
     # Get all values of entities
     entities = {ent["label"]: ent["matches"][0][0]["value"] for ent in response_intent_dict["entities"]}
 
@@ -244,25 +240,28 @@ def test_single_case(test_dict, response_intent_dict):
 
 def test_all(test_file):
     """
-	Runs all defined tests
+    Runs all defined tests
 
-	Compares expected intent and entities (from test)
-	with discovery returned intents and entities
+    Compares expected intent and entities (from test) with discovery returned intents and entities
 
-	:param test_file: str, test file
-			each intent tested must contain the following key/value pairs:
-					test: name of test
-					transcript: text to send to discovery
-			optionally:
-					intent: name of intent (only one label for each intent tested)
-					entity_name: text that Discovery identified as an instance of the entity
-							as many entities as defined for a given intent
-	:return prints to stdout
-			(1) the number of tests that pass
-			(2) the time it took to run the tests
-			(3) total number of character errors in entities tested
-			(4) the entity character error rate
-	"""
+    :param test_file: str, test file
+        each intent tested must contain the following key/value pairs:
+        test: name of test
+        transcript: text to send to discovery
+	optionally:
+	    intent: name of intent (only one label for each intent tested)
+	    entity_name: text that Discovery identified as an instance of the entity
+			as many entities as defined for a given intent
+    :return 
+        prints to stdout
+	    (1) the number of tests that pass
+	    (2) the time it took to run the tests
+	    (3) total number of character errors in entities tested
+	    (4) the entity character error rate
+         saves 2 json files: 
+            (1) test_results.json: contains expected intent labels and corresponding model predicted labels
+            (2) test_metrics.json: computes precision, recall, f1_score and accuracy is possibe; else returns accuracy and count confusion matrix
+    """
     tests = load_tests(test_file)
 
     t1 = int(time.time())
@@ -384,8 +383,8 @@ class cleanText(object):
 
 def validate_entities(discovery_directory):
     """
-	Validate entities
-	"""
+    Validate entities
+    """
     # mock up nlp.cleanText so that entities can be imported
     sys.modules['nlp.cleanText'] = cleanText()
 
@@ -431,8 +430,8 @@ def _log_entity_definition_error_results(errors):
 
 def validate_json(discovery_directory):
     """
-	Validate intents.json
-	"""
+    Validate intents.json
+    """
     intents_config_file = os.path.join(discovery_directory, 'custom', 'intents.json')
     try:
         json.loads(''.join([x.rstrip() for x in open(intents_config_file)]))
