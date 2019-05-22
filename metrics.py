@@ -3,11 +3,11 @@
 
 def compute_counts(y_true, y_pred, label):
     """
-	:param y_true: List[str/int] : List of true labels (expected value) for each test
-	:param y_pred: List[str/int]: List of classifier predicted labels (observed_values) / test
-	:param label: label to use as reference for computing counts
-	:return: 5-tuple: Tuple(int, int, int, int, int, dict (contains same information as int but with headers)
-	"""
+    :param y_true: List[str/int] : List of true labels (expected value) for each test
+    :param y_pred: List[str/int]: List of classifier predicted labels (observed_values) / test
+    :param label: label to use as reference for computing counts
+    :return: 5-tuple: Tuple(int, int, int, int, int, dict (contains same information as int but with headers)
+    """
     true_pos, false_neg, false_pos, true_neg = 0, 0, 0, 0
     for y, y_ in zip(y_true, y_pred):
         expected_matches_label = y == label
@@ -27,11 +27,11 @@ def compute_counts(y_true, y_pred, label):
 
 def precision_recall_f1_accuracy(y_true, y_pred, label=1):
     """
-	:param y_true:
-	:param y_pred:
-	:param label:
-	:return:
-	"""
+    :param y_true: List[str/int], true labels
+    :param y_pred: List[str/int], model predicted labels
+    :param label: str, referemce label for confusion matrix 
+    :return: dict with precision, recall, f1_score and accuracy as percent
+    """
     d = compute_counts(y_true, y_pred, label)
     TP, FN, FP, TN = d["TP"], d["FN"], d["FP"], d["TN"]
     precision = TP / (TP + FP)
@@ -43,15 +43,16 @@ def precision_recall_f1_accuracy(y_true, y_pred, label=1):
     return metrics
 
 
-def confusion_matrix(y_true, y_pred, label=1, normalize=True):
+def confusion_matrix(y_true, y_pred, label, normalize=True):
     """
-	:param y_true:
-	:param y_pred:
-	:param label:
-	:param normalize:
-	:return:
-	# # np.asarray(normalized_cm)
-	"""
+    :param y_true: List[str/int], true labels
+    :param y_pred: List[str/int], model predicted labels
+    :param label: str, label to use as reference for confusion matrix
+    :param normalize: bool; if True, returns normalized confusion matrix
+    :return: List[List[int/float, int/float], List[int/float, int/float]]
+        Lists contain ints if count matrix, if normalized, floats
+
+    """
     d = compute_counts(y_true, y_pred, label)
     TP, FN, FP, TN = d["TP"], d["FN"], d["FP"], d["TN"]
     cm = [[TP, FP], [FN, TN]]
