@@ -163,7 +163,7 @@ def submit_transcript(transcript):
     
     response = requests.post("http://{}:{}/process".format(DISCOVERY_HOST, DISCOVERY_PORT), json=data)
     if response.status_code == 200:
-      return r.json()
+      return response.json()
     logger.error("Request was not successful. Response Status Code: {}".format(r.status_code))
     return {}
 
