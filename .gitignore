@@ -10,6 +10,8 @@ dico/
 *.txt
 *.bin
 *.json
+*.log
+
 
 .idea/
 
