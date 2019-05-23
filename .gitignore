@@ -5,13 +5,15 @@ dico/
 .pytest_cache/
 .eggs/
 
+
 # specific
 
 *.txt
 *.bin
 *.json
 *.log
-
+*.train
+*.dat
 
 .idea/
 
@@ -25,3 +27,14 @@ secrets.py
 mirror_public_sdk_repo.sh
 README_private_SDK.md
 tmp/
+
+
+Pipfile
+Pipfile.lock
+
+.idea/
+data/
+notes/
+models/
+logs/
+secrets.py
