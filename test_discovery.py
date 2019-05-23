@@ -28,6 +28,8 @@ from discovery_config import CONTAINER_NAME
 from discovery_config import TIMEOUT, RETRIES
 from launch_discovery import launch_discovery
 
+from asrtoolkit.clean_formatting import clean_up
+
 from metrics import compute_counts, precision_recall_f1_accuracy
 
 # TODO move to ini file
@@ -45,9 +47,16 @@ file_handler.setFormatter(formatter)
 
 logger.addHandler(console_handler)
 logger.addHandler(file_handler)
+
 """
 Functions for handling the Discovery Docker container
 """
+
+#TODO Remap the following Bash codes; confusing as opposite of standard Python codes
+BAD_EXIT_CODE = 1
+GOOD_EXIT_CODE = 0
+
+UNFORMATTED_CHARS = set("abcdefghijklmnopqrstuvwxyz-' ")
 
 
 def docker_log_and_stop():
@@ -144,14 +153,19 @@ def submit_transcript(transcript):
     """
     Submits a transcript to Discovery
     """
-    data = {"transcript": transcript}
-    r = requests.post("http://{}:{}/process".format(DISCOVERY_HOST, DISCOVERY_PORT), json=data)
-    if r.status_code == 200:  # in requests.codes.ok:
-        return r.json()
+    data = {"word_confusions": [{w: "1.0"} for w in transcript.split(" ")]}
+    
+    if any(map(lambda c: c not in UNFORMATTED_CHARS, transcript)):
+      data['punctuated_transcript'] = transcript
+      data['transcript'] = clean_up(transcript)
+    else:
+      data['transcript'] = transcript
+    
+    response = requests.post("http://{}:{}/process".format(DISCOVERY_HOST, DISCOVERY_PORT), json=data)
+    if response.status_code == 200:
+      return r.json()
     logger.error("Request was not successful. Response Status Code: {}".format(r.status_code))
     return {}
-
-    # return json.loads(response.text)
 
 
 def is_valid_response(resp):
