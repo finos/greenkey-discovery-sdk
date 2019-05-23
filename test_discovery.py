@@ -35,18 +35,16 @@ logger = logging.getLogger(__name__)
 formatter = logging.Formatter('%(asctime)s %(name)-12s %(levelname)-8s %(lineno)d %(message)s')
 
 console_handler = logging.StreamHandler()
-console_handler.setLevel(logging.DEBUG)
+console_handler.setLevel(logging.ERROR)
 
 file_handler = logging.FileHandler('test_discovery.log')
-file_handler.setLevel(logging.INFO)
+file_handler.setLevel(logging.DEBUG)
 
 console_handler.setFormatter(formatter)
 file_handler.setFormatter(formatter)
 
 logger.addHandler(console_handler)
 logger.addHandler(file_handler)
-
-
 """
 Functions for handling the Discovery Docker container
 """
@@ -54,9 +52,9 @@ Functions for handling the Discovery Docker container
 
 def docker_log_and_stop():
     """
-    name assigned to Docker container; 
-    defalut='discovery-dev' 
-    to modify: set DOCKER_CONTAINER in discovery_config.py
+    name assigned to Docker container; modify CONTAINER_NAME in
+    discovery_config.py
+        defalut='discovery-dev'
     """
     subprocess.call("docker logs {}".format(CONTAINER_NAME), shell=True)
     subprocess.call("docker stop {}".format(CONTAINER_NAME), shell=True)
@@ -101,7 +99,8 @@ def shutdown_discovery():
     """
     try:
         requests.get(
-            "http://{}:{}/shutdown?secret_key={}".format(DISCOVERY_HOST, DISCOVERY_PORT, DISCOVERY_SHUTDOWN_SECRET))
+            "http://{}:{}/shutdown?secret_key={}".format(DISCOVERY_HOST, DISCOVERY_PORT, DISCOVERY_SHUTDOWN_SECRET)
+        )
     # Windows throws a ConnectionError for a request to shutdown a server which makes it looks like the test fail
     except requests.exceptions.ConnectionError:
         pass
@@ -147,7 +146,7 @@ def submit_transcript(transcript):
     """
     data = {"transcript": transcript}
     r = requests.post("http://{}:{}/process".format(DISCOVERY_HOST, DISCOVERY_PORT), json=data)
-    if r.status_code == 200:
+    if r.status_code == 200:  # in requests.codes.ok:
         return r.json()
     logger.error("Request was not successful. Response Status Code: {}".format(r.status_code))
     return {}
@@ -196,27 +195,22 @@ def test_single_entity(entities, test_name, test_value):
 
 def test_single_case(test_dict, response_intent_dict):
     """
-    Run a single test case
-    Return the number of errors
+    Run a single test case and return the number of errors
 
     :param test_dict: dict;
-        key: str; name of entity
-        value: str; first occurrence of entity in transcript
+	key: str; name of entity
+	value: str; first occurrence of entity in transcript
 
     :param response_intent_dict: dict, single intent from Discovery response
 
     :return: 4-Tuple
-       first: 0 if tests pass, 1 if tests fails
-
-       total_errors: number of entities in test whose observed value (str) differs from expected
-
-       total_char_errors: sum of number of char that differ between observed and expected values for each entity
-
-       characters:
+        first element: bool; 0 if tests pass, 1 if tests fails
+	total_errors: int; number of entities in test whose observed value (str) differs from expected
+	total_char_errors: int; sum of number of char that differ between observed and expected values for each entity
+        characters: int; 
     """
     # Get all values of entities
-    entities = {ent["label"]: ent["matches"][0][0]["value"]
-                for ent in response_intent_dict["entities"]}
+    entities = {ent["label"]: ent["matches"][0][0]["value"] for ent in response_intent_dict["entities"]}
 
     total_errors = 0
     total_char_errors = 0
@@ -248,22 +242,25 @@ def test_all(test_file):
     """
     Runs all defined tests
 
-    Compares expected intent and entities (from test)
-    with discovery returned intents and entities
+    Compares expected intent and entities (from test) with discovery returned intents and entities
 
     :param test_file: str, test file
         each intent tested must contain the following key/value pairs:
-            test: name of test
-            transcript: text to send to discovery
-        optionally:
-            intent: name of intent (only one label for each intent tested)
-            entity_name: text that Discovery identified as an instance of the entity
-                as many entities as defined for a given intent
-    :return prints to stdout
-        (1) the number of tests that pass
-        (2) the time it took to run the tests
-        (3) total number of character errors in entities tested
-        (4) the entity character error rate
+        test: name of test
+        transcript: text to send to discovery
+	optionally:
+	    intent: name of intent (only one label for each intent tested)
+	    entity_name: text that Discovery identified as an instance of the entity
+			as many entities as defined for a given intent
+    :return 
+        prints to stdout
+	    (1) the number of tests that pass
+	    (2) the time it took to run the tests
+	    (3) total number of character errors in entities tested
+	    (4) the entity character error rate
+         saves 2 json files: 
+            (1) test_results.json: contains expected intent labels and corresponding model predicted labels
+            (2) test_metrics.json: computes precision, recall, f1_score and accuracy is possibe; else returns accuracy and count confusion matrix
     """
     tests = load_tests(test_file)
 
@@ -334,18 +331,20 @@ def test_all(test_file):
 
     if total_characters:
         entity_character_error_rate = 100 * (total_char_errors / total_characters)
-        msg = "\nTotal number of entity character errors: {} \nEntity Character Error Rate: {}".format(total_entity_character_errors, "{:.2f}".format(entity_character_error_rate))
+        msg = "\nTotal number of entity character errors: {} \nEntity Character Error Rate: {}".format(
+            total_entity_character_errors, "{:.2f}".format(entity_character_error_rate)
+        )
         logger.info(msg)
 
     # evaluate metrics; treat each possible intent as the reference label
     # (key=label; value=dict with performance metrics)
     metrics_dict = defaultdict(dict)
-    metrics_dict['accuracy_score'] = accuracy*100
+    metrics_dict['accuracy_score'] = accuracy * 100
     intent_labels = set(y_true)
     for label in intent_labels:
         try:
             metrics = precision_recall_f1_accuracy(y_true, y_pred, label=label)
-            #Odel metrics['accuracy']   # -> Dict
+            # del metrics['accuracy']  # -> Dict
         except ZeroDivisionError:
             metrics = compute_counts(y_true, y_pred, label=label)
         metrics_dict[label] = metrics
@@ -353,7 +352,9 @@ def test_all(test_file):
 
     # total_errors
     if total_entity_character_errors > 0:
-        logger.error("\nTotal entity characters found: {}\nShutting down Discovery\n".format(total_entity_character_errors))
+        logger.error(
+            "\nTotal entity characters found: {}\nShutting down Discovery\n".format(total_entity_character_errors)
+        )
         shutdown_discovery()
         exit(1)
 
