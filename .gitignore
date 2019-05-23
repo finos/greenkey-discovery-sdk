@@ -5,8 +5,16 @@ dico/
 .pytest_cache/
 .eggs/
 
-# specific
-mirror_public_sdk_repo.sh
-README_private_SDK.md
-quotes/utils/
-tmp/
+*.log
+*.bin
+
+
+Pipfile
+Pipfile.lock
+
+.idea/
+data/
+notes/
+models/
+logs/
+secrets.py
