@@ -9,11 +9,14 @@ from asrtoolkit.clean_formatting import clean_up
 
 
 def json_load(infile):
-    return json.load(open(infile, 'r+'))
-def json_dump(data, outfile):
-    return json.dump(data, open(outfile, 'w+'))
+    with open(infile, 'r+') as f:
+        return json.load(f)
 
-os.getcwd()
+
+def json_dump(data, outfile):
+    with open(outfile, 'w+') as fw:
+        return json.dump(data, fw)
+
 
 def get_directory():
     root_dir = os.getcwd()
@@ -28,7 +31,6 @@ def get_directory():
     return quotes_dir
 
 
-
 def unformat(infile):
     """
     :param infile: str, path to txt file
@@ -39,12 +41,9 @@ def unformat(infile):
     """
     with open(infile, 'r+') as f:
         return [
-            {'formatted': " ".join(line.strip().split()),
-             'unformatted': line.strip()
-             }
+                {'formatted': " ".join(line.strip().split()), 'unformatted': line.strip()}
                 for line in f.readlines() if line.strip()
         ]
-
 
 
 def write_test_data(quotes_test_file, not_quotes_test_file, outfile, shuffle=False):
@@ -80,33 +79,25 @@ if __name__ == '__main__':
 
 
     infile = imstrings
-infile
     unformatted_imstrings = unformat(infile)
 
-formatted_security = 'security/formatted_security_db.txt'
-unformatted_security = 'security/unformatted_security_db.txt'
+    formatted_security = 'security/formatted_security_db.txt'
+    unformatted_security = 'security/unformatted_security_db.txt'
 
-infile = unformatted_security
-    quotes_test_file = infile = join_path(runs_dir, infile)
-quotes_test_file
+   # infile = unformatted_security
+   # quotes_test_file = infile = join_path(runs_dir, infile)
     # use not quotes test data from textclassifiers
     # not_quotes_test_file = 'formatted_test_not_quotes_10.txt'
     # not_quotes_test_file = join_path(directory, not_quotes_test_file)
 
-stem = 'security_db'
+    stem = 'security_db'
     outfile = 'unformatted_runs_{}_tests.txt'.format(stem)
     outfile = join_path(runs_dir, outfile)
-quotes_test_file
-infile
+    assert exists(runs_dir)
 
-
-assert exists(runs_dir)
-
-security_infile = 'security_db.txt'
-security_infile = join_path(
-    directory, runs_dir, 'raw_data', security_infile
-)
-assert exists(security_infile)
+    security_infile = 'security_db.txt'
+    security_infile = join_path(directory, runs_dir, 'raw_data', security_infile)
+    assert exists(security_infile)
 
 
 
@@ -171,43 +162,43 @@ def unformat_and_round_runs(file, precision=3):
 
 ##########################################################################
 
-file = join_path(runs_dir, 'security', 'formatted_and_unformatted_security_db.json')
-unformat_and_round_runs(file, precision=3)
+#file = join_path(runs_dir, 'security', 'formatted_and_unformatted_security_db.json')
+#unformat_and_round_runs(file, precision=3)
 ##########################################################################
 
 # Write to txt file
-precision=3
-outfile_round = 'unformatted_security_db_round_{}.txt'.format(precision)
-outfile_round = join_path(runs_dir, 'security', outfile_round)
-assert exists(outfile_round)
+#precision=3
+#outfile_round = 'unformatted_security_db_round_{}.txt'.format(precision)
+#outfile_round = join_path(runs_dir, 'security', outfile_round)
+#assert exists(outfile_round)
 
-security_infile = outfile_round
-exists(security_infile)
+#security_infile = outfile_round
+#exists(security_infile)
 
 # tests.txt file: write unformated tests for security_db.txt but with floats rounded to 3 places
-outfile = 'unformatted_security_db_round_{}_tests.txt'.format(precision)
-outfile = join_path(runs_dir, outfile)
+#outfile = 'unformatted_security_db_round_{}_tests.txt'.format(precision)
+#outfile = join_path(runs_dir, outfile)
 
 
 # unformatted not_quotes -> test data (10% from textclassifiers)
-unformatted_not_quotes_test_file_10 = join_path(
-    directory, 'train90_test10_data',
-    'unformatted', 'unformatted_test_not_quotes_10.txt'
-)
-assert exists(unformatted_not_quotes_test_file_10)
+#unformatted_not_quotes_test_file_10 = join_path(
+#    directory, 'train90_test10_data',
+#    'unformatted', 'unformatted_test_not_quotes_10.txt'
+#)
+#assert exists(unformatted_not_quotes_test_file_10)
 
 
-quotes_test_file = security_infile
-not_quotes_test_file = unformatted_not_quotes_test_file_10
+#quotes_test_file = security_infile
+#not_quotes_test_file = unformatted_not_quotes_test_file_10
 
-assert exists(quotes_test_file) and is_file(quotes_test_file)
-assert exists(not_quotes_test_file) and is_file(not_quotes_test_file)
+#assert exists(quotes_test_file) and is_file(quotes_test_file)
+#assert exists(not_quotes_test_file) and is_file(not_quotes_test_file)
 # not_quotes_test_file
 
-write_test_data(quotes_test_file=quotes_test_file,
-                not_quotes_test_file=not_quotes_test_file,
-                outfile=outfile,
-                shuffle=False)
+#write_test_data(quotes_test_file=quotes_test_file,
+#                not_quotes_test_file=not_quotes_test_file,
+#                outfile=outfile,
+#                shuffle=False)
 
 
 
@@ -254,33 +245,31 @@ write_test_data(quotes_test_file=quotes_test_file,
 
 ##################################################################
 # raw data from runs
-security_infile = 'security_db.txt'
-security_infile = join_path(runs_dir,'raw_data', security_infile)
-assert exists(security_infile) and is_file(security_infile)
+#security_infile = 'security_db.txt'
+#security_infile = join_path(runs_dir,'raw_data', security_infile)
+#assert exists(security_infile) and is_file(security_infile)
 
 # creates mapping between formatted & unformatted -> only difference from current is that numbers are rounded
-n = 2
-unformatted_security_round3 = unformat(infile=security, precision=n)
-outfile = 'formatted_and_unformatted_security_db_round_().json'.format(n)
-outfile = join_path(runs_dir, 'security', outfile)
-json.dump(unformatted_security_round3, open(outfile, 'w+'))
+#n = 2
+#unformatted_security_round3 = unformat(infile=security, precision=n)
+#outfile = 'formatted_and_unformatted_security_db_round_().json'.format(n)
+#outfile = join_path(runs_dir, 'security', outfile)
+#json.dump(unformatted_security_round3, open(outfile, 'w+'))
 
 
-list_of_tuples = unformatted_security_round3
+#list_of_tuples = unformatted_security_round3
 
 
-directory = os.getcwd()
-assert basename(directory)=='quotes'
+#directory = os.getcwd()
+#assert basename(directory)=='quotes'
 # from text classifiers --> use for negative exemplars for test
-unformatted_test_not_quotes_10 = join_path(
-    directory, 'train90_test10_data',
-    'unformatted', 'unformatted_test_not_quotes_10.txt'
-)
+#unformatted_test_not_quotes_10 = join_path(
+#    directory, 'train90_test10_data',
+#    'unformatted', 'unformatted_test_not_quotes_10.txt'
+#)
 
-
-
-infile = 'formatted_and_unformatted_security_db.json'
-security_json = json.load(open(infile, 'r+'))
+#infile = 'formatted_and_unformatted_security_db.json'
+#security_json = json.load(open(infile, 'r+'))
 
 
 

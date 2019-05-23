@@ -40,14 +40,13 @@ def evaluate(infile):
     y_ = observed[:stop]
 
     cm = _compute(y_true=y, y_pred=y_, label='quote')
-    accuracy = (cm["TP"] + cm["TN"])/len(y)
+    accuracy = (cm["TP"] + cm["TN"]) / len(y)
     return {"accuracy": accuracy, "cm": cm}
 
 
 quotes_dir = os.getcwd()
 print(quotes_dir)
 # '/home/amelie/src/greenkey-discovery-sdk-private/examples/quotes'
-
 
 #########################################################################
 # imstrings.txt     N=23,579
@@ -57,7 +56,7 @@ print(quotes_dir)
 # formatted imstrings
 infile = formatted_imstrings_results = get_path('imstrings', formatted=True, dir=quotes_dir)
 formatted_imstrings = evaluate(infile)
-print(formatted_imstrings)        # accuracy: 0.10%
+print(formatted_imstrings)  # accuracy: 0.10%
 # {
 #   'accuracy': 0.0010178548708596634,
 #   'cm': {
@@ -68,12 +67,11 @@ print(formatted_imstrings)        # accuracy: 0.10%
 #   }
 # }
 
-
 # UNFORMATTED
 # unformatted imstrings (clean_up function)
 infile = unformatted_imstrings_results = get_path('imstrings', formatted=False, dir=quotes_dir)
 unformatted_imstrings = evaluate(infile)
-print(unformatted_imstrings)     # accuracy = 99.57%
+print(unformatted_imstrings)  # accuracy = 99.57%
 # {
 #   'accuracy': 0.9957165274184656,
 #   'cm': {
@@ -84,7 +82,6 @@ print(unformatted_imstrings)     # accuracy = 99.57%
 #   }
 # }
 
-
 #########################################################################
 # security_db.txt     N=394
 #########################################################################
@@ -92,7 +89,7 @@ print(unformatted_imstrings)     # accuracy = 99.57%
 # formatted security_db
 infile = formatted_security_db_results = get_path('security_db', formatted=True, dir=quotes_dir)
 formatted_security = evaluate(infile=infile)
-print(formatted_security)        # accuracy = 0.00%
+print(formatted_security)  # accuracy = 0.00%
 # {
 #   'accuracy': 0.0,
 #   'cm': {
@@ -103,12 +100,11 @@ print(formatted_security)        # accuracy = 0.00%
 #   }
 # }
 
-
 # UNFORMATTED
 # unformatted security_db via clean_up function
 infile = unformatted_security_db_results = get_path('security_db', formatted=False, dir=quotes_dir)
 unformatted_security_db = evaluate(infile)
-print(unformatted_security_db)    # accuracy = 5.58%
+print(unformatted_security_db)  # accuracy = 5.58%
 # {
 #   'accuracy': 0.05583756345177665,
 #   'cm': {
@@ -132,8 +128,6 @@ print(unformatted_security_round3)  # accuracy = 97.46%
 #   }
 # }
 
-
-
 ##############################
 # #######################################
 # (ins)amelie@amu:~/src/gree...es/equal_sample_size$ wc -l *
@@ -147,7 +141,6 @@ print(unformatted_security_round3)  # accuracy = 97.46%
 #    58543 unformatted_train_quotes_90.txt
 #   245712 total
 #####################################################################
-
 
 # #####################################################################
 # # RUNS - All QUOTES

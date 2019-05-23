@@ -69,13 +69,13 @@ def main(infile, label='quote'):
         segments = post_to_discovery(text=text)
         if segments:
             results.append(segments)
-            observed = segments['intents'][0]   # TODO check
+            observed = segments['intents'][0]  # TODO check
     TP, FN = 0, 0
     for y_pred in observed:
         if y_pred == label:
-            TP +=1
+            TP += 1
         else:
-            FN +=1
+            FN += 1
     return dict(TP=TP, FN=FN, results=results)
 
 

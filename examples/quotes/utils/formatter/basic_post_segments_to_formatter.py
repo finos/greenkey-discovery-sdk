@@ -3,7 +3,6 @@ import os
 import sys
 import json
 
-
 #infile = 'ageojo_test_latest.json'
 #data = json.load(open(infile, 'r+'))
 #print(data)
@@ -21,13 +20,12 @@ print(formatter_port)
 
 url = "http://localhost:{}/process".format(formatter_port)
 
-headers = {"Content-type":"application/json"}
+headers = {"Content-type": "application/json"}
 
 try:
-  r = requests.post(url, headers=headers, json=data)
+    r = requests.post(url, headers=headers, json=data)
 except Exception as e:
-  print("Exception: {}".format(e))
-
+    print("Exception: {}".format(e))
 
 print(r.status_code)
 
