@@ -6,7 +6,20 @@ dico/
 .eggs/
 
 # specific
+
+*.txt
+*.bin
+*.json
+
+.idea/
+
+data/
+models/
+results/
+notes/
+
+secrets.py
+
 mirror_public_sdk_repo.sh
 README_private_SDK.md
-quotes/utils/
 tmp/
