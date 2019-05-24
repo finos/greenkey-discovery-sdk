@@ -149,11 +149,36 @@ def load_tests(test_file):
     return tests
 
 
+def generate_confusions(transcript):
+    data = {"word_confusions": [{w: "1.0"} for w in transcript.split(" ")]}
+    
+    i = 0
+    while True:
+      if i >= (len(data['word_confusions']) - 1):
+        break
+        
+      word = list(data['word_confusions'][i].keys())[0]
+      confidence = data['word_confusions'][i][word]
+      
+      if confidence == "1.0" and any(map(lambda c: c not in UNFORMATTED_CHARS, word)):
+        additional_words = clean_up(word).split(" ")
+        data['word_confusions'][i][additional_words[0]] = "0.1"
+        
+        if len(additional_words) > 1:
+          for w in reversed(additional_words[1:]):
+            data['word_confusions'].insert(i+1, {"<unk>": "0.9", w: "0.1"})
+                
+      i += 1
+          
+    return data
+          
+      
+
 def submit_transcript(transcript):
     """
     Submits a transcript to Discovery
     """
-    data = {"word_confusions": [{w: "1.0"} for w in transcript.split(" ")]}
+    data = generate_confusions(transcript)
     
     if any(map(lambda c: c not in UNFORMATTED_CHARS, transcript)):
       data['punctuated_transcript'] = transcript
