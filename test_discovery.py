@@ -149,8 +149,21 @@ def load_tests(test_file):
     return tests
 
 
+def bson_format(s):
+  if s.startswith("$"):
+    s = s.replace("$", "_$", 1)
+
+  if s.endswith("."):
+    s = s[:-1]
+
+  if "." in s:
+    s = s.replace(".", ",")
+
+  return s
+  
+  
 def generate_confusions(transcript):
-    data = {"word_confusions": [{w: "1.0"} for w in transcript.split(" ")]}
+    data = {"word_confusions": [{bson_format(w): "1.0"} for w in transcript.split(" ")]}
     
     i = 0
     while True:
@@ -170,8 +183,7 @@ def generate_confusions(transcript):
                 
       i += 1
           
-    return data
-          
+    return data    
       
 
 def submit_transcript(transcript):
