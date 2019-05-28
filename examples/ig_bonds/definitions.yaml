@@ -59,12 +59,12 @@ entities:
     - validation: "int(entity) > 0 and int(entity) <= 31"
   ord_month:
     - "(((@num_ord|possible_date) @time_month) | (@time_month (@num_ord|possible_date)?))"
-    - spacer: '/'
+    - spacer: ' '
   ig_bond_product:
     - file: "custom/ig_bond_products.txt"
   maturity:
     - "@ord_month? @upcoming_year"
-    - spacer: '/'
+    - spacer: ', '
   upcoming_year:
     - "(@num|@num_plural){1,2}"
     - spacer: ''
@@ -74,7 +74,7 @@ entities:
     - validation: "float(entity) > 0 and float(entity) < 20"
   instrument:
     - "@ig_bond_product @coupon? @maturity?"
-    - spacing_threshold: 5
+    - spacing_threshold: 1
   wholepart:
     - "(@numfive|@par_num)"
     - spacer: ''
