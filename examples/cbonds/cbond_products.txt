@@ -1,0 +1,93 @@
+a d r bid -> ADRBID
+adient -> ADNT
+adr bid -> ADRBID
+adrbid -> ADRBID
+alberta -> ALTA
+alta -> ALTA
+altees -> ATCNA
+argos -> ARGID
+b l l -> BLL
+barc -> BARC
+ball -> BLL
+bar clay -> BARC
+bar clays -> BARC
+barclay -> BARC
+barclays -> BARC
+c -> C
+c c k -> CCK
+c m a c g -> CMACG
+caffil -> CAFFIL
+caisse francaise de fin -> CAFFIL
+caja rural -> CRUNAV
+caja rural de navarra -> CRUNAV
+car -> CAR
+catalent -> CTLT
+cbsbkf -> CBSBKF
+cck -> CCK
+central -> CBSBKF
+central bank -> CBSBKF
+central bank of savings -> CBSBKF
+citi -> C
+citi group -> C
+cmacg -> CMACG
+crunav -> CRUNAV
+ctlt -> CTLT
+daigr -> DAIGR
+daimler -> DAIGR
+euro car -> EUROCA
+euroca -> EUROCA
+europe car -> EUROCA
+faurecia -> EOFP
+federal mobiles -> FDML
+fedmob -> FDML
+game net -> GAMENT
+gamenet -> GAMENT
+gament -> GAMENT
+i j s s -> IJSS
+ijss -> IJSS
+ing -> INTNET
+intnet -> INTNET
+levi -> LEVI
+levi straus -> LEVI
+levi strauss -> LEVI
+matter horn -> MATTER
+matterhorn -> MATTER
+negrp -> NEGRP
+netflix -> NFLX
+northeastern -> NEGRP
+northeastern group -> NEGRP
+o e f p -> EOFP
+o i -> OI
+oi -> OI
+r x -> RX
+rx -> RX
+sek -> SEK
+sfr -> SFRFP
+smurf -> SKGID
+soft bank -> SOFTBK
+softbk -> SOFTBK
+sunshine -> SUNSHM
+sunshm -> SUNSHM
+svensk -> SEK
+t net b b -> TNETBB
+t net broadband -> TNETBB
+tata -> TTMTIN
+tata motors -> TTMTIN
+telenet -> TNETBB
+tnetbb -> TNETBB
+ttmtin -> TTMTIN
+u k t bill -> UKTB
+u k treasury bill -> UKTB
+u p c b -> UPCB
+uk t bill -> UKTB
+uk treasury bill -> UKTB
+ukt bill -> UKTB
+uktb -> UKTB
+united kingdom treasury bill -> UKTB
+unity -> UNITY
+upcb -> UPCB
+v med -> VMED
+vmed -> VMED
+win dim -> WINDIM
+windim -> WINDIM
+ziggo -> ZIGGO
