@@ -28,6 +28,8 @@ from discovery_config import CONTAINER_NAME
 from discovery_config import TIMEOUT, RETRIES
 from launch_discovery import launch_discovery
 
+from asrtoolkit.clean_formatting import clean_up
+
 from metrics import compute_counts, precision_recall_f1_accuracy
 
 # TODO move to ini file
@@ -45,9 +47,16 @@ file_handler.setFormatter(formatter)
 
 logger.addHandler(console_handler)
 logger.addHandler(file_handler)
+
 """
 Functions for handling the Discovery Docker container
 """
+
+#TODO Remap the following Bash codes; confusing as opposite of standard Python codes
+BAD_EXIT_CODE = 1
+GOOD_EXIT_CODE = 0
+
+UNFORMATTED_CHARS = set("abcdefghijklmnopqrstuvwxyz-' ")
 
 
 def docker_log_and_stop():
@@ -144,14 +153,19 @@ def submit_transcript(transcript):
     """
     Submits a transcript to Discovery
     """
-    data = {"transcript": transcript}
-    r = requests.post("http://{}:{}/process".format(DISCOVERY_HOST, DISCOVERY_PORT), json=data)
-    if r.status_code == 200:  # in requests.codes.ok:
-        return r.json()
+    data = {"word_confusions": [{w: "1.0"} for w in transcript.split(" ")]}
+    
+    if any(map(lambda c: c not in UNFORMATTED_CHARS, transcript)):
+      data['punctuated_transcript'] = transcript
+      data['transcript'] = clean_up(transcript)
+    else:
+      data['transcript'] = transcript
+    
+    response = requests.post("http://{}:{}/process".format(DISCOVERY_HOST, DISCOVERY_PORT), json=data)
+    if response.status_code == 200:
+      return r.json()
     logger.error("Request was not successful. Response Status Code: {}".format(r.status_code))
     return {}
-
-    # return json.loads(response.text)
 
 
 def is_valid_response(resp):
@@ -443,15 +457,29 @@ def validate_json(discovery_directory):
 
 
 if __name__ == '__main__':
-    if len(sys.argv) > 1:
-        DISCOVERY_DIRECTORY = os.path.abspath(sys.argv[1])
-    else:
+    # if len(sys.argv) > 1:
+    DISCOVERY_DIRECTORY = os.getcwd()  # typically given: examples/{project_directory}
+    infile = "tests.txt"  # default filename: DISCOVERY_DIRECTORY/tests.txt
+
+    # to specify project directory and name of file with tests
+    # python test_discovery.py examples/fruits tests_sample.txt
+    try:
+        DISCOVERY_DIRECTORY = os.path.abspath(sys.argv[1])   # project directory
+    except IndexError:
         DISCOVERY_DIRECTORY = os.getcwd()
+    try:
+        infile = sys.argv[2]  # "tests_complete.txt" vs "tests_sample.txt"; select one as defalt
+    except IndexError:
+        infile = "tests.txt"
 
-    TEST_FILE = os.path.join(DISCOVERY_DIRECTORY, "tests.txt")
+    TEST_FILE = os.path.join(DISCOVERY_DIRECTORY, infile)
 
+    # validation
     validate_entities(DISCOVERY_DIRECTORY)
     validate_json(DISCOVERY_DIRECTORY)
+
+    # DISCOVERY_DIRECTORY project name; contains tests.txt & directory 'custom'
+    # DISCOVERY_DIRECTORY/custom/intents.json (and/or schema.json and/or entities/ directory)
     custom_directory = os.path.join(DISCOVERY_DIRECTORY, 'custom')
     try:
         launch_discovery(custom_directory=custom_directory)
