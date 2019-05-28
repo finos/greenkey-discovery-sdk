@@ -1,0 +1,14 @@
+alley
+avenue
+street
+boulevard
+way
+ave
+place
+highway
+lane
+drive
+route
+square
+road
+expressway
