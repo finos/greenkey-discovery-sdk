@@ -8,39 +8,54 @@ entities:
 
 
 intents:
-  domain: conversation_type
+# classifer #1 for conversation_type
     inquiry:
       - inquiries.txt
+      domain: conversation_type
     quote:
       - quotes.txt
+      domain: conversation_type
     trade:
       - trades.txt
+      domain: conversation_type
     general:
       - general.txt
+      domain: conversation_type
 
-  domain: product_classifier
+# classifier #2 for product class type
     rates:
       - swaps.txt
       - gilts.txt
+      domain: conversation_type
+
     sovereign_bonds:
       - sovereign_bonds.txt
+      domain: product_classifier
     fx:
       - fx_forwards.txt
       - fx_options.txt
+      domain: conversation_type
 #    emerging_market_bonds:
 #      -emerging_market_bonds.txt
-
+#      domain: conversation_type
     corporate_bonds:
 #      - investment_grade_bonds.txt
       - credit.txt
+      domain: conversation_type
     commodities:
       - energy.txt
       - distillates.txt
       - softs.txt
+      domain: conversation_type
 
+# classsifier $3 - binary financial or not
+    # intended to run over only intents from domain conversation_type that were labeled "general"
+    # (intention - to identify market color)
   domain: financial_or_not
     financial:
       - financial.txt
+      domain: conversation_type
     not_financial:
       - not_financial.txt
+      domain: conversation_type
 
