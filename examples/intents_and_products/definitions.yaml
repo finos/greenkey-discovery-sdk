@@ -1,10 +1,10 @@
 entities:
   ticker:
-    - pass
+    regex: '[A-Z]{3,5}'
   coupon:
-    - pass
+    regex: '\d{,2}\.\d+%?'
   maturity:
-    - pass
+    regex: '(\d{2}?\/)?(\d{2}\/)?(\d{2}(\'?s)?)?|\d{4}'
 
 
 intents:
