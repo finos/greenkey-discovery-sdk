@@ -1,7 +1,12 @@
 # nom = net operation margin? nuveen missouri remium fund (american stock exchange [AMEX]
 import random
+import string
 from faker import Faker
 fake = Faker()
+
+
+
+
 
 
 PLEASE = ['please', 'pls']
@@ -12,8 +17,8 @@ DATE_SIZE = ['17Jul19-6m']
 DATE_PRICE = ['1.875arl 22 nom']
 
 
-PLEASE CAN_I get/have a quote/price ON TICKER DATE COUPON
-PLEASE quote/price TICKER DATE COUPON
+# PLEASE CAN_I get/have a quote/price ON TICKER DATE COUPON
+# PLEASE quote/price TICKER DATE COUPON
 
 
 # can I buy 40k (of the) AAPL 43s for (under) 42
@@ -65,26 +70,21 @@ DATE = ["23s",
 
 
 # this returns ALL tickers at once rather than 1 by 1
-def gen_ticker(infile=None, shuffle=False):
-    ticker = random.choice(["AAPL", 'HD', 'MOZAM', 'EUR'])
-    # import string
-    # letters = " ".join(string.ascii_letters).split()
-    # num_letters = random.choice([2,3,4])
-    # ticker = ''.join(random.sample(letters, num_letters))
+def gen_ticker():
+    # ticker = random.choice(["AAPL", 'HD', 'MOZAM', 'EUR'])
+    letters = " ".join(string.ascii_letters).split()
+    num_letters = random.choice([1,2,2, 2,3,3,3,4,4,4,5])
+    ticker = ''.join(random.sample(letters, num_letters))
+    if len(ticker) < 3:
+        return ticker.upper()
     return ticker.upper() if random.random() >= 0.5 else ticker.lower()
 
-    # with open(infile, 'r+'):
-    #     for ticker in infile:
-    #         yield ticker
-
-    # tickers = load_tickers(infile)
-    # if shuffle:
-        # random.shuffle(tickers)
-    # random.sample(tickers, 1)
-    # return tickers
+# gen_ticker()
+# [gen_ticker() for _ in range(20)]
 
 
-def coupon_generator():
+
+def gen_coupon():
     """ decimal with 1-4 decimal points +/- %"""
     coupon_num = random.random()
     precision = random.choice([1,2,3,4])
@@ -95,6 +95,8 @@ def coupon_generator():
         include_at, coupon_value, include_percent)
     return coupon
 
+# [gen_coupon() for _ in range(20)]
+# fake.add_provider(date_time)
 
 def gen_maturity():
     pass
@@ -102,41 +104,50 @@ def gen_maturity():
 
 #TODO include par > 100
 def gen_price(precision=2):
-    random.seed(0)
-    price = round(random.choice([100, 0]) + random.random(), precision)
-    price
-    if price <= 100:
-        price = int(price*100)
-    price = str(round(price, 2))
-    price
-    if price >= 100:
-        price = str(round(price, precision))
+    par = random.choice([100,0])
+    decimal = random.random()
+    if par:
+        price = round(par + decimal, precision)
     else:
-        price = price.split(".")[-1][:2]
-    return
-    price
-    price = (price*100) if price <= 0 else price
-    price
+        price = int("{}{}".format(random.randrange(1,9), random.randrange(1,9)))
+        # price = int(decimal*100)
+    return price
+
+# [gen_price() for _ in range(20)]
 
 
 
-    par = "100." if random.random() >= 0.5 else ''
-    "{}{}"
-
-    price =  "{}{}{}".format(par, random.randint(0,99), random.randint(0,99))
-
-    # two_digits = random.randint(start, stop)
-    # par = "100." if random.random() >= 0.5 else ''
-    # return "{}{}".format(par, two_digits)
+def gen_size():
+    # decide whether to include ['k', 'm', 'mm'] and whether it should be .upper() or .lower()
+    # decide whether to include commas 1,900 1.9mm -> 1,900,000
+    pass
 
 
+def gen_quote():
+    pass
+
+
+def gen_price(precision=2):
+    """include $ or USD"""
+    par = random.choice([100, 0])
+    decimal = random.choice()
+    if par:  # 100.42
+        price = round(par + decimal, precision)
+    else:  # 42
+        # incl_bps = 'bps' if random.random() >= 0.8 else ''
+        price = int("{}{}".format(random.randrange(1, 9), random.randrange(1, 9)))
+    currency = random.choice('', '$', 'USD')
+    price = "{}{} {}".format(currency, price, currency)
+    if currency != 'USD':
+        price = price.split()[0].strip()
+    return price
 
 
 
 
 # TESTS
 
-def test_gen_ticker():
+def test_gen_ticker_fixed_tickers():
     random.seed(99)
     expected = ['eur', 'hd', 'HD', 'MOZAM', 'AAPL']
     t1, t2, t3, t4, t5 = [gen_ticker() for _ in range(5)]
@@ -146,7 +157,7 @@ def test_gen_ticker():
     assert len(observed) == 5
     assert expected == observed
 
-def test_coupon_generator():
+def test_gen_coupon():
     print("Random seed is zero. coupon_generator() returns values in order present in list of expected outcomes")
     random.seed(0)
     expected = [
@@ -154,16 +165,16 @@ def test_coupon_generator():
         '@ 0.9655%',
         '0.968'
     ]
-    assert all([coupon_generator() == coupon for coupon in expected]) is True
+    assert all([gen_coupon() == coupon for coupon in expected]) is True
 
     print("Seed is one. coupon_generator will not return values ordered as in 'expected' list")
     random.seed(1)
-    assert all([coupon_generator()==coupon for coupon in expected]) is False
+    assert all([gen_coupon()==coupon for coupon in expected]) is False
 
-def test_coupon_generator2():
+def test_gen_coupon2():
     random.seed(99)
     expected = ['0.4', '@ 0.2%', '0.5%', '@ 0.42%', '@ 0.86']
-    first, second, third, fourth, fifth = [coupon_generator() for _ in range(5)]
+    first, second, third, fourth, fifth = [gen_coupon() for _ in range(5)]
     assert not '@' in first and not '%' in first
     assert second.startswith('@') and second.endswith("%")
     assert not '@' in third and third.endswith('%')
@@ -179,11 +190,32 @@ def test_coupon_generator2():
     assert expected == observed
 
 
-# RUN TESTS
-test_gen_ticker()
-test_coupon_generator()
-test_coupon_generator2()
+def test_gen_ticker():
+    ticker = gen_ticker()
+    if len(ticker) < 3:
+        assert ticker.lower()
+    assert len(ticker) <= 5
 
+def test_gen_price():
+    precision = 2
+    price = gen_price(precision)
+    print(price)
+    if price - 100 >= 0:
+        assert isinstance(price, float)
+        assert len(str(price)) == 3 + precision + 1 #for the decimal point
+    else:
+        assert isinstance(price, int)
+        assert len(str(price)) == 2
+    # print(gen_price)
+
+
+# RUN TESTS
+# test_gen_ticker_fixed_tickers()
+test_gen_ticker()
+test_gen_coupon()
+test_gen_coupon2()
+
+test_gen_price()
 
 
 
@@ -251,27 +283,27 @@ content = [   # looking to buy 50k of the March 23 9.25%
 
 
 
-
-#SIZE_UNIT (of the) PRODUCT for (under) PRICE
-SIZE, SIZE_UNIT = 1.9, 'M'
-SIZE_UNIT = "{}{}".format(SIZE, SIZE_UNIT)
-
-
-Price = ("40", "100.40", "USD 40", "40 USD")
-
-
-verbs = ["get", "have"]
-
-can_i_frames = [
-    "Can I {verb} a {quote/price} on {TICKER} {COUPON}% {MATURITY}"
-]
-
-
-
-
-
-
-# verbs = ["buy", "sell"]
+#
+# #SIZE_UNIT (of the) PRODUCT for (under) PRICE
+# SIZE, SIZE_UNIT = 1.9, 'M'
+# SIZE_UNIT = "{}{}".format(SIZE, SIZE_UNIT)
+#
+#
+# Price = ("40", "100.40", "USD 40", "40 USD")
+#
+#
+# verbs = ["get", "have"]
+#
+# can_i_frames = [
+#     "Can I {verb} a {quote/price} on {TICKER} {COUPON}% {MATURITY}"
+# ]
+#
+#
+#
+#
+#
+#
+# # verbs = ["buy", "sell"]
 #
 # please_words = ['please', 'pls']
 #
