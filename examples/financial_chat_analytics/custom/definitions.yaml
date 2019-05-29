@@ -1,0 +1,75 @@
+intents:
+
+  #-- Conversation type --
+  inquiry:
+    domain: conversation_type
+    examples: 
+      - /custom/inquiries.txt
+    
+  quote:
+    domain: conversation_type
+    examples: 
+      - /custom/quotes.txt
+    
+  trade:
+    domain: conversation_type
+    examples: 
+      - /custom/trades.txt
+    
+  general:
+    domain: conversation_type
+    examples: 
+      - /custom/general.txt
+    
+  #-- Product class --
+  rates:
+    domain: product_class
+    examples:
+      - /custom/swaps.txt
+      - /custom/gilts.txt
+      
+  sovereign_bonds:
+    domain: product_class
+    examples:
+      - /custom/egbs.txt
+      
+  rate_derivatives:
+    domain: product_class
+    examples:
+      - /custom/swaptions.txt
+      
+  fx:
+    domain: product_class
+    examples:
+      - /custom/fx_forwards.txt
+      - /custom/fx_options.txt
+      
+  em_bonds:
+    domain: product_class
+    examples:
+      - /custom/em_bonds.txt
+      
+  corporate_bonds:
+    domain: product_class
+    examples:
+      - /custom/credit.txt
+      - /custom/ig_bonds.txt
+      
+  commodities:
+    domain: product_class
+    examples:
+      - /custom/energy.txt
+      - /custom/distillates.txt
+      - /custom/softs.txt
+  
+  #-- Market color --
+  market_color:
+    domain: market_color
+    examples:
+      - /custom/financial.txt
+  
+  no_market_color:
+    domain: market_color
+    examples:
+      - /custom/not_financial.txt
+      - /custom/general.txt
