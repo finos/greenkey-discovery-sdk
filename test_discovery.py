@@ -148,8 +148,8 @@ def load_tests(test_file):
 
 
 def bson_format(s):
-  if s.startswith("$"):
-    s = s.replace("$", "_$", 1)
+  if "$" in s:
+    s = s.replace("$", "_$")
 
   if "." in s:
     s = s.replace(".", ";")
