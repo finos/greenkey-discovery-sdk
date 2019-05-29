@@ -89,32 +89,62 @@ entities:
     - "(@float_num|@frac_num)"
     - spacer: ''
     - validation: "float(entity) > 0 and float(entity) < 300"
-  price2:  # entity_requirements is needed. req: ig_bond_product, price1
+  price2:
+    # entity_requirements is needed. req: ig_bond_product, price1
     - "(@float_num|@frac_num)"
     - validation: "float(entity) > 0 and float(entity) < 300"
+  quantity_preposition:
+    - in
+    - for
+    - "on"
+    - formatting: "''"
+  quantity_amount:
+    - k
+    - million
+    - mill
+    - yard
+    - billion
+    - yards
+    - mills
+    - millions
+    - thousand
+    - formatting: custom/format_quantity_amount.py
+  quantity:
+    - "@quantity_preposition @float_num @quantity_amount?"  # in 500k
+    - "@float_num @quantity_amount"  # 500k
+    - spacer: ""
+  by:
+    - by
+  up:
+    - up
+  # insert bid/ask keywords below
+  # loosely, the bid quantity
+  quantity1:
+    - "@quantity"  # 50k
+    - "@quantity @up?"  # 500k up
+    - formatting: custom/format_bid_quantity.py
+  # loosely, the ask quantity
+  quantity2:
+    - "@by @quantity"  # 50k by 50k
+    - formatting: custom/format_ask_quantity.py
 intents:
   ig_bond:
     domain: "quotes_2.0"
     skip_training: true
     examples:
-      - "i have a @instrument for @price1 @price2?"
+      - "i have a @instrument for @price1 @price2? quantity1?"
       - "i have a @instrument for @price1_vague @price2?"
       - "i have a @instrument for @price1 @price2_vague?"
       - "i have a @instrument for @price1_vague @price2_vague?"
       - "i have a @instrument for @price1 @numthree?"
       - "i have a @instrument for @price1_vague @numthree?"
     entity_patterns:
-      - ["instrument", "price1"]
-      - ["instrument", "price1", "price2"]
-      - ["instrument", "price1_vague", "price2"]
-      - ["instrument", "price1", "price2_vague"]
-      - ["instrument", "price1_vague", "price2_vague"]
-      - ["instrument", "price1", "numthree"]
-      - ["instrument", "price1_vague", "numthree"]
+      - "instrument (price1|price1_vague) (price2|price2_vague|numthree)? quantity1? quantity2?"
+
     structure_enforcement: true
     schema:
       return_json:
-        im_string: "@instrument @price1 / @price2"
+        im_string: "@instrument @price1 / @price2 @quantity1 @quantity2"
         product: "@instrument"
         product_details:
           ticker: " "

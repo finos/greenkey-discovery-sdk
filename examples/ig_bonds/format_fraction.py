@@ -6,4 +6,3 @@ def formatting(entity):
     return entity.split('and')[0].strip() + clean_fractions(entity.split('and')[-1]).strip()
   else:
     return entity
-  #return entity.upper()
