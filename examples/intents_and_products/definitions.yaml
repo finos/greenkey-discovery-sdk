@@ -4,7 +4,7 @@ entities:
   coupon:
     regex: '\d{,2}\.\d+%?'
   maturity:
-    regex: '(\d{2}?\/)?(\d{2}\/)?(\d{2}(\'?s)?)?|\d{4}'
+    regex: '(\d{1,2}?\/)?(\d{1,2}\/)?(\d{1,2}(\''?s)?)?|\d{4}'
 
 
 intents:
