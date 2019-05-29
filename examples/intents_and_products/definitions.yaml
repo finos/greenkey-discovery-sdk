@@ -1,0 +1,46 @@
+entities:
+  ticker:
+    - pass
+  coupon:
+    - pass
+  maturity:
+    - pass
+
+
+intents:
+  domain: conversation_type
+    inquiry:
+      - inquiries.txt
+    quote:
+      - quotes.txt
+    trade:
+      - trades.txt
+    general:
+      - general.txt
+
+  domain: product_classifier
+    rates:
+      - swaps.txt
+      - gilts.txt
+    sovereign_bonds:
+      - sovereign_bonds.txt
+    fx:
+      - fx_forwards.txt
+      - fx_options.txt
+#    emerging_market_bonds:
+#      -emerging_market_bonds.txt
+
+    corporate_bonds:
+#      - investment_grade_bonds.txt
+      - credit.txt
+    commodities:
+      - energy.txt
+      - distillates.txt
+      - softs.txt
+
+  domain: financial_or_not
+    financial:
+      - financial.txt
+    not_financial:
+      - not_financial.txt
+
