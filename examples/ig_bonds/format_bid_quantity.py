@@ -13,9 +13,9 @@ def formatting(entity):
 
     entity = str(entity).split()
     stop_word_index = entity.index('by') if 'by' in entity else None
-    stop_word_index = entity.index('up') if 'up' in entity and stop_word_index is None else stop_word_index
+    stop_word_index = 1 + entity.index('up') if 'up' in entity and stop_word_index is None else stop_word_index
 
-    return 'on ' + " ".join(_ for _ in (entity[:stop_word_index] if stop_word_index is not None else entity))
+    return " ".join(_ for _ in (entity[:stop_word_index] if stop_word_index is not None else entity))
 
 if __name__=="__main__":
     import doctest

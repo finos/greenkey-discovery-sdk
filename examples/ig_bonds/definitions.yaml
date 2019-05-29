@@ -59,15 +59,18 @@ entities:
     - validation: "int(entity) > 0 and int(entity) <= 31"
   ord_month:
     - "(((@num_ord|possible_date) @time_month) | (@time_month (@num_ord|possible_date)?))"
-    - spacer: ' '
+    - formatting: custom/format_date.py
   ig_bond_product:
     - file: "custom/ig_bond_products.txt"
   maturity:
     - "@ord_month? @upcoming_year"
-    - spacer: ', '
+    - spacer: '/'
   upcoming_year:
     - "(@num|@num_plural){1,2}"
     - spacer: ''
+    # Uncomment if you want long form years
+    # - validation: "int(entity) > 2017 and int(entity) <= 2050"
+    # - formatting: '"20"+str(entity)'
     - validation: "int(entity) > 17 and int(entity) <= 50"
   coupon:
     - "(@float_num|@frac_num)"
@@ -140,11 +143,10 @@ intents:
       - "i have a @instrument for @price1_vague @numthree?"
     entity_patterns:
       - "instrument (price1|price1_vague) (price2|price2_vague|numthree)? quantity1? quantity2?"
-
     structure_enforcement: true
     schema:
       return_json:
-        im_string: "@instrument @price1 / @price2 @quantity1 @quantity2"
+        im_string: "@instrument @price1 / @price2 on @quantity1 / @quantity2 "
         product: "@instrument"
         product_details:
           ticker: " "

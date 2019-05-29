@@ -22,7 +22,7 @@ def formatting(entity):
   # trim off beginning
   entity = " ".join(_ for _ in (entity[start_word_index + 1:] if start_word_index is not None else entity))
 
-  return 'on ' + entity
+  return entity
 
 
 if __name__ == "__main__":
