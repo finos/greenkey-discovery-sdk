@@ -161,7 +161,7 @@ def submit_transcript(transcript):
     """
     Submits a transcript to Discovery
     """
-    data['transcript'] = bson_format(transcript)
+    data = {"transcript": bson_format(transcript)}
     
     response = requests.post("http://{}:{}/process".format(DISCOVERY_HOST, DISCOVERY_PORT), json=data)
     if response.status_code == 200:
