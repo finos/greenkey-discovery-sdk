@@ -1,7 +1,7 @@
 # GreenKey Scribe Discovery SDK [![Build Status](https://travis-ci.org/finos-voice/greenkey-discovery-sdk.svg?branch=master)](https://travis-ci.org/finos-voice/greenkey-discovery-sdk)
 > Speed up business workflows through creating custom 'voice skills' and text interpreters
 
-<img src="https://github.com/finos-voice/greenkey-voice-sdk/raw/master/logo/greenkey-logo.png" width="100" />
+<img src="https://greenkeytech.com/wp-content/uploads/2019/02/gk_logo_colorlight.png" width="300" />
 
 ---
 
