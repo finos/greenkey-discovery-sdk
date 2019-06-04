@@ -2,4 +2,3 @@
 ./gk_cli
 requests
 editdistance
-asrtoolkit
