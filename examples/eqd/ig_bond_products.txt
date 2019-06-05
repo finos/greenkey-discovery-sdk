@@ -1,0 +1,1664 @@
+a a l -> AAL
+a a l l n -> AALLN
+a a p l -> AAPL
+a b b -> ABBNVX
+a b b n v x -> ABBNVX
+a b b v -> ABBV
+a b i b b -> ABIBB
+a b n -> ABNANV
+a b n a n v -> ABNANV
+a b t -> ABT
+a b x c n -> ABXCN
+a c a f p -> ACAFP
+a d i -> ADI
+a d m -> ADM
+a d r bid -> ADRBID
+a double e -> AEE
+a e e -> AEE
+a e p -> AEP
+a e r -> AER
+a e s -> AES
+a e t -> AET
+a f l -> AFL
+a g n -> AGN
+a i a -> AIA
+a i f p -> AIFP
+a i g -> AIG
+a l -> AL
+a l l -> ALL
+a m a t -> AMAT
+a m g n -> AMGN
+a m t -> AMT
+a m z n -> AMZN
+a mat -> AMAT
+a n d v -> ANDV
+a n t m -> ANTM
+a n z -> ANZ
+a n z -> ANZNZ
+a n z n z -> ANZNZ
+a o n -> AON
+a p a -> APA
+a p c -> APC
+a p t v -> APTV
+a r e -> ARE
+a t -> AT
+a t and t -> T
+a t d b c n -> ATDBCN
+a t h -> ATH
+a t o -> ATO
+a t t -> T
+a t v i -> ATVI
+a v b -> AVB
+a v g o -> AVGO
+a w k -> AWK
+a x a s a h -> AXASAH
+a x p -> AXP
+a y r -> AYR
+a z n -> AZN
+aal -> AAL
+aalln -> AALLN
+aapl -> AAPL
+abbnvx -> ABBNVX
+abbott -> ABT
+abbott lab -> ABT
+abbott laboratories -> ABT
+abbott labs -> ABT
+abbv -> ABBV
+abbvie -> ABBV
+abibb -> ABIBB
+abnanv -> ABNANV
+abt -> ABT
+abxcn -> ABXCN
+acafp -> ACAFP
+activision -> ATVI
+adi -> ADI
+adient -> ADNT
+adm -> ADM
+adr bid -> ADRBID
+adrbid -> ADRBID
+aee -> AEE
+aeon -> AON
+aep -> AEP
+aer -> AER
+aes -> AES
+aet -> AET
+aetna -> AET
+afl -> AFL
+aflac -> AFL
+agn -> AGN
+aia -> AIA
+aifp -> AIFP
+aig -> AIG
+air castle -> AYR
+air lease -> AL
+air liquid -> AIFP
+aircastle -> AYR
+al -> AL
+alberta -> ALTA
+alexandria -> ARE
+alimentation -> ATDBCN
+all -> ALL
+all state -> ALL
+allergan -> AGN
+allstate -> ALL
+alta -> ALTA
+altees -> ATCNA
+altria -> MO
+amat -> AMAT
+amazon -> AMZN
+ameren -> AEE
+americal tower -> AMT
+american air -> AAL
+american airlines -> AAL
+american tower corp -> AMT
+american water -> AWK
+american water cap -> AWK
+amex -> AXP
+amgen -> AMGN
+amgn -> AMGN
+amt -> AMT
+amzn -> AMZN
+anadarko -> APC
+anadarko petrol -> APC
+analog -> ADI
+andeavor -> ANDV
+andv -> ANDV
+anglo -> AALLN
+anglo american capital -> AALLN
+annheuser busch -> ABIBB
+anthem -> ANTM
+antm -> ANTM
+anz -> ANZ
+anznz -> ANZNZ
+aon -> AON
+apa -> APA
+apache -> APA
+apc -> APC
+apple -> AAPL
+applied mat -> AMAT
+aptiv -> APTV
+aptv -> APTV
+aqua -> WTR
+arcelor mittal -> MTNA
+archer -> ADM
+archer daniels -> ADM
+archer daniels midland -> ADM
+are -> ARE
+argos -> ARGID
+arizone -> PNW
+astrazeneca -> AZN
+at -> AT
+atdbcn -> ATDBCN
+ath -> ATH
+athene -> ATH
+atlantic -> AT
+atlantic power -> AT
+atmos -> ATO
+ato -> ATO
+atvi -> ATVI
+australia and new zealand banking group -> ANZ
+avalon bay -> AVB
+avalonbay -> AVB
+avb -> AVB
+avgo -> AVGO
+awk -> AWK
+axasah -> AXASAH
+axp -> AXP
+ayr -> AYR
+azn -> AZN
+b a -> BA
+b a c -> BAC
+b a c a r d -> BACARD
+b a c r -> BACR
+b a m a c n -> BAMACN
+b a t s -> BATS
+b a t s l n -> BATSLN
+b a y n g r -> BAYNGR
+b b and t -> BBT
+b b t -> BBT
+b b y -> BBY
+b d x -> BDX
+b f b -> BFB
+b f c m -> BFCM
+b g -> BG
+b h f -> BHF
+b h i -> BHI
+b h p -> BHP
+b i i b -> BIIB
+b k -> BK
+b k i r -> BKIR
+b k n g -> BKNG
+b k u -> BKU
+b l k -> BLK
+b l l -> BLL
+b m o -> BMO
+b m w -> BMW
+b m y -> BMY
+b n f p -> BNFP
+b n p -> BNP
+b n s -> BNS
+b n s f -> BNSF
+b n y -> BK
+b o a -> BAC
+b p c e -> BPCEGP
+b p c e g p -> BPCEGP
+b p cap -> BPLN
+b p l -> BPL
+b p l n -> BPLN
+b r i t e l -> BRITEL
+b r k -> BRK
+b r k h e c -> BRKHEC
+b r o -> BRO
+b s x -> BSX
+b t -> BRITEL
+b w p -> BWP
+b x -> BX
+b x p -> BXP
+ba -> BA
+bac -> BAC
+bacard -> BACARD
+bacardi -> BACARD
+bacr -> BACR
+baker -> BHI
+baker hughes -> BHI
+ball -> BLL
+bamacn -> BAMACN
+baml -> BAC
+bank america -> BAC
+bank ny -> BK
+bank of america -> BAC
+bank of ireland -> BKIR
+bank of nova scotia -> BNS
+bank united -> BKU
+bar clay -> BARC
+bar clays -> BARC
+barc -> BACR
+barc -> BARC
+barclay -> BARC
+barclays -> BACR
+barclays -> BARC
+barrick -> ABXCN
+bat cap -> BATSLN
+bats -> BATS
+bats -> BATSLN
+bats holding -> BATS
+batsln -> BATSLN
+bayer -> BAYNGR
+bayngr -> BAYNGR
+bbt -> BBT
+bby -> BBY
+bdx -> BDX
+becton -> BDX
+becton dickinson -> BDX
+beemo -> BMO
+berk -> BRK
+berkshire -> BRK
+berkshire energy -> BRKHEC
+berkshire hathaway -> BRK
+best buy -> BBY
+bfb -> BFB
+bfcm -> BFCM
+bg -> BG
+bhf -> BHF
+bhi -> BHI
+bhp -> BHP
+big blue -> IBM
+biib -> BIIB
+biogen -> BIIB
+bk -> BK
+bkir -> BKIR
+bkng -> BKNG
+bku -> BKU
+black rock -> BLK
+black stone -> BX
+blackrock -> BLK
+blackstone -> BX
+blizzard -> ATVI
+blk -> BLK
+bmo -> BMO
+bmw -> BMW
+bmy -> BMY
+bnfp -> BNFP
+bnp -> BNP
+bns -> BNS
+bnsf -> BNSF
+boa -> BAC
+boardwalk -> BWP
+boeing -> BA
+booking -> BKNG
+bosox -> BSX
+boston -> BXP
+boston prop -> BXP
+boston props -> BXP
+boston scientific -> BSX
+bpcegp -> BPCEGP
+bpl -> BPL
+bpln -> BPLN
+bright house -> BHF
+brighthouse -> BHF
+bristol -> BMY
+bristol myers squibb -> BMY
+britel -> BRITEL
+british tel -> BRITEL
+british telecom -> BRITEL
+brk -> BRK
+brkhec -> BRKHEC
+bro -> BRO
+broad com -> AVGO
+broadcom -> AVGO
+brookfield -> BAMACN
+brown -> BRO
+brown and brown -> BRO
+brown foreman -> BFB
+bsx -> BSX
+buck eye -> BPL
+buckeye -> BPL
+bud -> ABIBB
+budweiser -> ABIBB
+bunge -> BG
+burlington -> BNSF
+busch -> ABIBB
+bwp -> BWP
+bx -> BX
+bxp -> BXP
+c -> C
+c a g -> CAG
+c a h -> CAH
+c a n t o r -> CANTOR
+c a t -> CAT
+c b -> CB
+c b a a u -> CBAAU
+c b s -> CBS
+c c i -> CCI
+c c k -> CCK
+c e l g -> CELG
+c f g -> CFG
+c h g -> COMHEA
+c h t r -> CHTR
+c i -> CI
+c l -> CL
+c l x -> CLX
+c m -> CM
+c m a c g -> CMACG
+c m c s a -> CMCSA
+c m e -> CME
+c m s -> CMS
+c n a -> CNA
+c n p -> CNP
+c n q c n -> CNQCN
+c n r c n -> CNRCN
+c o f -> COF
+c o l -> COL
+c o l p l n -> COLPLN
+c o m h e a -> COMHEA
+c o p -> COP
+c o s t -> COST
+c o x e n t -> COXENT
+c p -> CP
+c p b -> CPB
+c r h -> CRHID
+c r h i d -> CRHID
+c r m -> CRM
+c s -> CS
+c s c o -> CSCO
+c s x -> CSX
+c t a s -> CTAS
+c v e c n -> CVECN
+c v s -> CVS
+c v x -> CVX
+c vs -> CVS
+c x o -> CXO
+caffil -> CAFFIL
+cag -> CAG
+cah -> CAH
+caisse francaise de fin -> CAFFIL
+caja rural -> CRUNAV
+caja rural de navarra -> CRUNAV
+campbell -> CPB
+campbells pork and beans -> CPB
+can pac -> CP
+canadian imperial -> CM
+canadian imperial bank -> CM
+canadian national resources -> CNQCN
+canadian pacific -> CP
+canadian rail -> CNRCN
+cantor -> CANTOR
+cap one -> COF
+capital one -> COF
+car -> CAR
+cardinal -> CAH
+cardinal health -> CAH
+cat -> CAT
+catalent -> CTLT
+caterpillar -> CAT
+cb -> CB
+cbaau -> CBAAU
+cbs -> CBS
+cbsbkf -> CBSBKF
+cci -> CCI
+cck -> CCK
+celg -> CELG
+celgene -> CELG
+cenovus -> CVECN
+center point -> CNP
+centerpoint -> CNP
+central -> CBSBKF
+central bank -> CBSBKF
+central bank of savings -> CBSBKF
+cfg -> CFG
+charles scwab -> SCHW
+charter -> CHTR
+chevron -> CVX
+chevy -> CVX
+chtr -> CHTR
+chubb -> CB
+chuck schwab -> SCHW
+ci -> CI
+cigna -> CI
+cimarex -> XEC
+cintas -> CTAS
+cisco -> CSCO
+citi -> C
+citi bank -> C
+citi group -> C
+citizens -> CFG
+city -> C
+cl -> CL
+clear channel -> IHRT
+clorox -> CLX
+clx -> CLX
+cm -> CM
+cmacg -> CMACG
+cmcsa -> CMCSA
+cme -> CME
+cms -> CMS
+cna -> CNA
+cnp -> CNP
+cnqcn -> CNQCN
+cnrcn -> CNRCN
+cof -> COF
+coke -> KO
+col -> COL
+colgate -> CL
+colgate palmolive -> CL
+colonial -> COLPLN
+colpln -> COLPLN
+comcast -> CMCSA
+comed -> EXC
+comhea -> COMHEA
+commonwealth bank -> CBAAU
+commonwealth edison -> EXC
+conagra -> CAG
+concho -> CXO
+connecticut -> ES
+conoco -> COP
+conoco phillips -> COP
+constellation -> STZ
+consumers -> CMS
+consumers ed -> CMS
+coors -> TAP
+cop -> COP
+corning -> GLW
+cost -> COST
+cost co -> COST
+costco -> COST
+cox -> COXENT
+coxent -> COXENT
+cp -> CP
+cpb -> CPB
+credit agricole -> ACAFP
+credit mutual -> BFCM
+credit suisse -> CS
+crhid -> CRHID
+crm -> CRM
+crown -> CCI
+crunav -> CRUNAV
+cs -> CS
+csco -> CSCO
+csx -> CSX
+ctas -> CTAS
+ctlt -> CTLT
+cvecn -> CVECN
+cvs -> CVS
+cvx -> CVX
+cxo -> CXO
+d -> D
+d a i g r -> DAIGR
+d a n b n k -> DANBNK
+d b -> DB
+d c p -> DCP
+d d -> DWDP
+d e -> DE
+d e l l -> DELL
+d f s -> DFS
+d g -> DG
+d g e l n -> DGELN
+d i s -> DIS
+d i s c a -> DISCA
+d l r -> DLR
+d l t r -> DLTR
+d t -> DT
+d t e -> DTE
+d u k -> DUK
+d w d p -> DWDP
+daigr -> DAIGR
+daimler -> DAIGR
+danbnk -> DANBNK
+danone -> BNFP
+danske bank -> DANBNK
+db -> DB
+dcp -> DCP
+de -> DE
+deere -> DE
+dell -> DELL
+detroit ed -> DTE
+deutsche -> DB
+deutsche bank -> DB
+deutsche telecom -> DT
+dfs -> DFS
+dg -> DG
+dgeln -> DGELN
+diageo -> DGELN
+digital -> DLR
+dis -> DIS
+disca -> DISCA
+discover -> DFS
+discovery -> DISCA
+disney -> DIS
+dlr -> DLR
+dltr -> DLTR
+dolar tree -> DLTR
+dollar gen -> DG
+dollar general -> DG
+double d -> DWDP
+dow -> DWDP
+dow dupont -> DWDP
+dt -> DT
+dte -> DTE
+duk -> DUK
+duke -> DUK
+dupont -> DWDP
+dwdp -> DWDP
+e a -> EA
+e b a y -> EBAY
+e c l -> ECL
+e d -> ED
+e d f -> EDF
+e e p -> EEP
+e f x -> EFX
+e i x -> EIX
+e l -> EL
+e m a c n -> EMACN
+e m n -> EMN
+e n b c n -> ENBCN
+e n b l -> ENBL
+e n e l i m -> ENELIM
+e n i i m -> ENIIM
+e n t e r p -> ENTERP
+e o g -> EOG
+e p d -> EPD
+e q h -> EQH
+e q n r -> EQNR
+e q r -> EQR
+e q t -> EQT
+e r a c -> ENTERP
+e r p -> EQR
+e s -> ES
+e s r x -> ESRX
+e t f c -> ETFC
+e t n -> ETN
+e t p -> ETP
+e t r -> ETR
+e trade -> ETFC
+e x c -> EXC
+e x p -> EXP
+ea -> EA
+eagle -> EXP
+eastman -> EMN
+eastman chemical -> EMN
+eaton -> ETN
+ebay -> EBAY
+ecl -> ECL
+eco lab -> ECL
+ecolab -> ECL
+ed -> ED
+eddie -> ED
+edf -> EDF
+edison -> ED
+eep -> EEP
+efx -> EFX
+eix -> EIX
+el -> EL
+electricity france -> EDF
+emacn -> EMACN
+emera -> EMACN
+emn -> EMN
+enable -> ENBL
+enbcn -> ENBCN
+enbl -> ENBL
+enbridge -> ENBCN
+enbridge energy -> EEP
+enel -> ENELIM
+enelim -> ENELIM
+energy transfer -> ETP
+eni spa -> ENIIM
+eniim -> ENIIM
+entergy -> ETR
+enterp -> ENTERP
+enterprise -> EPD
+eog -> EOG
+epd -> EPD
+eqh -> EQH
+eqnr -> EQNR
+eqr -> EQR
+eqt -> EQT
+equinor -> EQNR
+equitable -> EQH
+erectile dysfunction -> ED
+es -> ES
+esrx -> ESRX
+estee -> EL
+estee lauder -> EL
+etfc -> ETFC
+etn -> ETN
+etp -> ETP
+etr -> ETR
+etrade -> ETFC
+euro car -> EUROCA
+euroca -> EUROCA
+europe car -> EUROCA
+exc -> EXC
+exp -> EXP
+express -> ESRX
+extra large -> XL
+exxon -> XOM
+f -> F
+f a r m e r -> FARMER
+f d x -> FDX
+f e -> FE
+f i d i n v -> FIDINV
+f i s -> FIS
+f i s v -> FISV
+f i t b -> FITB
+f m r -> FIDINV
+f n f -> FNF
+f o x a -> FOXA
+farmer -> FARMER
+farmers -> FARMER
+faurecia -> EOFP
+fdx -> FDX
+fe -> FE
+federal mobiles -> FDML
+fedex -> FDX
+fedmob -> FDML
+fidelity -> FIS
+fidelity national -> FNF
+fidinv -> FIDINV
+fifth third -> FITB
+fis -> FIS
+fiserv -> FISV
+fisv -> FISV
+fitb -> FITB
+florida -> NEE
+fnf -> FNF
+ford -> F
+fox -> FOXA
+foxa -> FOXA
+foxy a -> FOXA
+g d -> GD
+g dub -> GWW
+g e -> GE
+g i l d -> GILD
+g i s -> GIS
+g l e n l n -> GLENLN
+g l w -> GLW
+g m -> GM
+g p -> GP
+g s -> GS
+g s k -> GSK
+g w w -> GWW
+game net -> GAMENT
+gamenet -> GAMENT
+gament -> GAMENT
+gd -> GD
+ge -> GE
+genentech -> ROSW
+general dynamics -> GD
+general electric -> GE
+general mills -> GIS
+general motors -> GM
+georga pacific -> GP
+georgia -> GP
+georgia pac -> GP
+georgia peach -> GP
+gild -> GILD
+gilead -> GILD
+gis -> GIS
+glassworks -> GLW
+glaxo -> GSK
+glaxosmithkline -> GSK
+glen core -> GLENLN
+glenln -> GLENLN
+glw -> GLW
+gm -> GM
+goldman -> GS
+goldman sachs -> GS
+gp -> GP
+grainger -> GWW
+green bank -> ACAFP
+gs -> GS
+gsk -> GSK
+gww -> GWW
+h a l -> HAL
+h b a n -> HBAN
+h c a -> HCA
+h c p -> HCP
+h d -> HD
+h e s -> HES
+h i g -> HIG
+h i w -> HIW
+h n d a -> HNDA
+h o g -> HOG
+h o n -> HON
+h p -> HPE
+h p e -> HPE
+h r s -> HRS
+h s b c -> HSBC
+h u m -> HUM
+h y n m t r -> HYNMTR
+hal -> HAL
+halliburton -> HAL
+hallie -> HAL
+harley -> HOG
+harley davidson -> HOG
+harris -> HRS
+hartford -> HIG
+hban -> HBAN
+hca -> HCA
+hcp -> HCP
+hd -> HD
+heinz -> KHC
+hes -> HES
+hess -> HES
+hig -> HIG
+higgy -> HIG
+high street -> PFG
+highwoods -> HIW
+hiw -> HIW
+hnda -> HNDA
+hog -> HOG
+home depot -> HD
+hon -> HON
+honda -> HNDA
+honey -> HON
+honey well -> HON
+honeywell -> HON
+hpe -> HPE
+hrs -> HRS
+hsbc -> HSBC
+hum -> HUM
+humana -> HUM
+hummer -> HUM
+huntington -> HBAN
+hynmtr -> HYNMTR
+hyundai -> HYNMTR
+i b m -> IBM
+i beam -> IBM
+i c e -> ICE
+i d a -> IDA
+i f f -> IFF
+i flavors -> IFF
+i h r t -> IHRT
+i heart -> IHRT
+i heart communications -> IHRT
+i j s s -> IJSS
+i l f c -> AER
+i m b l n -> IMBLN
+i n g -> INTNED
+i n t c -> INTC
+i n t n e d -> INTNED
+i p -> IP
+i p g -> IPG
+i paper -> IP
+i r -> IR
+i s p i m -> ISPIM
+i t w -> ITW
+ibm -> IBM
+ice -> ICE
+ida -> IDA
+idaho -> IDA
+idaho power -> IDA
+if -> IFF
+iff -> IFF
+ihrt -> IHRT
+ijss -> IJSS
+illinois tools -> ITW
+imbln -> IMBLN
+imperial -> IMBLN
+indianapolis power -> AES
+indianapolis power and light -> AES
+ing -> INTNED
+ing -> INTNET
+ingersoll -> IR
+ingersoll rand -> IR
+intc -> INTC
+intel -> INTC
+inter public -> IPG
+international flavor -> IFF
+international paper -> IP
+interpublic -> IPG
+intesa -> ISPIM
+intned -> INTNED
+intnet -> INTNET
+ip -> IP
+ipg -> IPG
+ir -> IR
+ispim -> ISPIM
+itw -> ITW
+j a c l i f -> JACLIF
+j c i -> JCI
+j e f -> JEF
+j n j -> JNJ
+j p -> JPM
+j p m -> JPM
+j p morgan -> JPM
+j w n -> JWN
+jackson -> JACLIF
+jaclif -> JACLIF
+jci -> JCI
+jef -> JEF
+jeff -> JEF
+jefferies -> LUK
+jnj -> JNJ
+john john -> JNJ
+johnny john -> JNJ
+johnson -> JNJ
+johnson and johnson -> JNJ
+johnson controls -> JCI
+jpm -> JPM
+jpmorgan -> JPM
+jwn -> JWN
+k -> K
+k d p -> KDP
+k e y -> KEY
+k h c -> KHC
+k i m -> KIM
+k m b -> KMB
+k m i -> KMI
+k o -> KO
+k r -> KR
+kdp -> KDP
+kellogg -> K
+kenny roger -> KR
+kentucky -> PPL
+key -> KEY
+key bank -> KEY
+khc -> KHC
+kim -> KIM
+kim co -> KIM
+kimberly -> KMB
+kimberly clark -> KMB
+kimco -> KIM
+kinder -> KMI
+kinder morgan -> KMI
+kmb -> KMB
+kmi -> KMI
+knockout -> KO
+ko -> KO
+kr -> KR
+kraft -> KHC
+kraft heinz -> KHC
+kroger -> KR
+l a z -> LAZ
+l h -> LH
+l i b m u t -> LIBMUT
+l i n -> LIN
+l l l -> LLL
+l l o y d s -> LLOYDS
+l l y -> LLY
+l m -> LM
+l m t -> LMT
+l n c -> LNC
+l o w -> LOW
+l r c x -> LRCX
+l u k -> LUK
+l y b -> LYB
+lab corp -> LH
+labcorp -> LH
+lam -> LRCX
+laz -> LAZ
+lazard -> LAZ
+leggs -> LM
+letter c -> C
+letter d -> D
+letter f -> F
+letter k -> K
+letter m -> M
+letter o -> O
+letter r -> R
+letter v -> V
+lettyer t -> T
+leucadia -> LUK
+levi -> LEVI
+levi straus -> LEVI
+levi strauss -> LEVI
+lh -> LH
+liberty -> LIBMUT
+liberty mutual -> LIBMUT
+libmut -> LIBMUT
+lilly -> LLY
+lin -> LIN
+lincoln -> LNC
+linde -> LIN
+lll -> LLL
+lloyds -> LLOYDS
+lly -> LLY
+llyods -> LLOYDS
+lm -> LM
+lmt -> LMT
+lnc -> LNC
+lockheed -> LMT
+lockheed martin -> LMT
+low -> LOW
+lowes -> LOW
+lrcx -> LRCX
+luk -> LUK
+lyb -> LYB
+lyondell -> LYB
+m -> M
+m a -> MA
+m a p l e e -> MAPLEE
+m a r -> MAR
+m a s s m u -> MASSMU
+m and t -> MTB
+m c d -> MCD
+m c k -> MCK
+m c o -> MCO
+m d l z -> MDLZ
+m d t -> MDT
+m e t -> MET
+m i z u h o -> MIZUHO
+m k c -> MKC
+m m c -> MMC
+m m m -> MMM
+m m p -> MMP
+m o -> MO
+m o n -> MON
+m o s -> MOS
+m p c -> MPC
+m p l x -> MPLX
+m q g a u -> MQGAU
+m r k -> MRK
+m r o -> MRO
+m s -> MS
+m s f t -> MSFT
+m s i -> MSI
+m t -> MTNA
+m t b -> MTB
+m t n a -> MTNA
+m u f g -> MUFG
+m y l -> MYL
+ma -> MA
+macquarie -> MQGAU
+macys -> M
+magellan -> MMP
+maplee -> MAPLEE
+mar -> MAR
+marathon -> MRO
+marathon oil -> MRO
+marathon pete -> MPC
+marathon petrol -> MPC
+marriot -> MAR
+mars -> MARS
+marsh mac -> MMC
+mass elec -> NGGLN
+mass mutual -> MASSMU
+massmu -> MASSMU
+master card -> MA
+mastercard -> MA
+matter horn -> MATTER
+matterhorn -> MATTER
+mcburgers -> MCD
+mccormick -> MKC
+mcd -> MCD
+mcdonald 's -> MCD
+mcdonald -> MCD
+mcdonald s -> MCD
+mcdonald's -> MCD
+mcdonalds -> MCD
+mck -> MCK
+mckesson -> MCK
+mco -> MCO
+mdlz -> MDLZ
+mdt -> MDT
+medtronic -> MDT
+mellon -> BK
+merck -> MRK
+met -> MET
+met life -> MET
+metlife -> MET
+metropolitan -> FE
+mets -> MET
+microsoft -> MSFT
+miockey dees -> MCD
+mister softee -> MSFT
+mitsubishi -> MUFG
+mittal -> MTNA
+mizuho -> MIZUHO
+mkc -> MKC
+mmc -> MMC
+mmm -> MMM
+mmp -> MMP
+mo -> MO
+mobil -> XOM
+molson -> TAP
+mon -> MON
+mondelez -> MDLZ
+monsant -> MON
+montreal -> BMO
+moody -> MCO
+moody s -> MCO
+moody's -> MCO
+moodys -> MCO
+morgan stanley -> MS
+mos -> MOS
+mosaic -> MOS
+mot -> MSI
+motorola -> MSI
+mouse -> DIS
+mouse house -> DIS
+mpc -> MPC
+mplx -> MPLX
+mqgau -> MQGAU
+mrk -> MRK
+mro -> MRO
+ms -> MS
+msft -> MSFT
+msi -> MSI
+mtb -> MTB
+mtna -> MTNA
+mufg -> MUFG
+myl -> MYL
+mylan -> MYL
+n a b -> NAB
+n a c n -> NACN
+n b l -> NBL
+n d a s s -> NDASS
+n e e -> NEE
+n e s n v x -> NESNVX
+n g g l n -> NGGLN
+n i -> NI
+n o c -> NOC
+n o v -> NOV
+n o v n v x -> NOVNVX
+n r u c -> NRUC
+n s a n y -> NSANY
+n s c -> NSC
+n t r c n -> NTRCN
+n u e -> NUE
+n w i d e -> NWIDE
+n w l -> NWL
+n x p -> NXPI
+n x p i -> NXPI
+n y l i f e -> NYLIFE
+nab -> NAB
+nacn -> NACN
+national australia bank -> NAB
+national bank canada -> NACN
+national bank of canada -> NACN
+national rural -> NRUC
+nationwide -> NWIDE
+nbl -> NBL
+ndass -> NDASS
+nee -> NEE
+negrp -> NEGRP
+nesnvx -> NESNVX
+nestle -> NESNVX
+netflix -> NFLX
+new core -> NUE
+new york life -> NYLIFE
+newell -> NWL
+nggln -> NGGLN
+ni -> NI
+nisource -> NI
+nissan -> NSANY
+noble -> NBL
+noc -> NOC
+nordea -> NDASS
+nordstrom -> JWN
+norfolk -> NSC
+northeastern -> NEGRP
+northeastern group -> NEGRP
+northern power -> XEL
+northrop -> NOC
+nov -> NOV
+nova scotia -> BNS
+novartis -> NOVNVX
+novnvx -> NOVNVX
+nruc -> NRUC
+nsany -> NSANY
+nsc -> NSC
+ntrcn -> NTRCN
+nue -> NUE
+nutrien -> NTRCN
+nwide -> NWIDE
+nwl -> NWL
+nxpi -> NXPI
+nylife -> NYLIFE
+o -> O
+o c -> OC
+o e f p -> EOFP
+o g e -> OGE
+o h i -> OHI
+o i -> OI
+o k e -> OKE
+o m c -> OMC
+o n c r t x -> ONCRTX
+o r a f p -> ORAFP
+o r c l -> ORCL
+o r l y -> ORLY
+o reilly -> ORLY
+o x y -> OXY
+oc -> OC
+occidental -> OXY
+oge -> OGE
+ogee -> OGE
+ohi -> OHI
+ohio -> AEP
+ohio power -> AEP
+oi -> OI
+oke -> OKE
+okee -> OKE
+oklahoma -> OGE
+omc -> OMC
+omega -> OHI
+omnicom -> OMC
+on core -> ONCRTX
+oncrtx -> ONCRTX
+oneok -> OKE
+oracle -> ORCL
+orafp -> ORAFP
+orange -> ORAFP
+orcl -> ORCL
+orly -> ORLY
+owens -> OC
+oxy -> OXY
+p a a -> PAA
+p a c l i f -> PACLIF
+p and g -> PG
+p b i -> PBI
+p c a r -> PCAR
+p c g -> PCG
+p car -> PCAR
+p e g -> PEG
+p e n s k e -> PENSKE
+p e p -> PEP
+p f e -> PFE
+p f g -> PFG
+p g -> PG
+p g and e -> PCG
+p g r -> PGR
+p gas -> PCG
+p h -> PH
+p l -> PL
+p m -> PM
+p n c -> PNC
+p n w -> PNW
+p p g -> PPG
+p p l -> PPL
+p r u -> PRU
+p s d -> PSD
+p s x -> PSX
+p x d -> PXD
+paa -> PAA
+pac car -> PCAR
+pac gas -> PCG
+pac life -> PACLIF
+pacific gas -> PCG
+paclif -> PACLIF
+par too -> par two
+parker -> PH
+parker hannifin -> PH
+pbi -> PBI
+pcar -> PCAR
+pcg -> PCG
+peg -> PEG
+peggy -> PEG
+penske -> PENSKE
+pep -> PEP
+pepsi -> PEP
+pepsi co -> PEP
+pepsico -> PEP
+pf g -> PFG
+pfe -> PFE
+pfg -> PFG
+pfizer -> PFE
+pg -> PG
+pgr -> PGR
+ph -> PH
+philip morris -> PM
+phillips -> PSX
+pinnacle west -> PNW
+pitney -> PBI
+pitney bowes -> PBI
+pl -> PL
+plains -> PAA
+pm -> PM
+pnc -> PNC
+pnw -> PNW
+power play goal -> PPG
+ppg -> PPG
+ppl -> PPL
+praxair -> LIN
+proctor and gamble -> PG
+progressive -> PGR
+protectives -> PL
+pru -> PRU
+prudential -> PRU
+psd -> PSD
+psx -> PSX
+public service -> PEG
+puget -> PSD
+puget sound -> PSD
+pxd -> PXD
+q c o m -> QCOM
+q comm -> QCOM
+qcom -> QCOM
+qual comm -> QCOM
+qualcomm -> QCOM
+r -> R
+r a b o b k -> RABOBK
+r a d -> RAD
+r b c -> RY
+r b l n -> RBLN
+r b s -> RBS
+r c i c n -> RCICN
+r d s a l n -> RDSALN
+r f -> RF
+r g a -> RGA
+r h h b y -> RHHBY
+r i o l n -> RIOLN
+r j f -> RJF
+r o p -> ROP
+r o s w -> ROSW
+r s g -> RSG
+r x -> RX
+r y -> RY
+rabo -> RABOBK
+rabobk -> RABOBK
+rad -> RAD
+ray jay -> RJF
+rbln -> RBLN
+rbs -> RBS
+rcicn -> RCICN
+rdsaln -> RDSALN
+realty -> O
+reckitt -> RBLN
+regions -> RF
+regions fi -> RF
+reinsurance -> RGA
+republic -> RSG
+rf -> RF
+rga -> RGA
+rhhby -> RHHBY
+right aid -> RAD
+right aide -> RAD
+rio -> RIOLN
+rioln -> RIOLN
+rite aid -> RAD
+rite aide -> RAD
+rjf -> RJF
+roche -> RHHBY
+rock well -> COL
+rockwell -> COL
+rogers -> RCICN
+rop -> ROP
+roper -> ROP
+rosw -> ROSW
+royal bank canada -> RY
+royal bank of canada -> RY
+royal bank of scotland -> RBS
+royal bank scotland -> RBS
+rsg -> RSG
+rx -> RX
+ry -> RY
+ryder -> R
+s a n f p -> SANFP
+s a n t a n -> SANTAN
+s a n u k -> SANUK
+s and p -> SPGI
+s b u x -> SBUX
+s bucks -> SBUX
+s c g -> SCG
+s c h w -> SCHW
+s e b -> SEB
+s e k -> SEK
+s e p -> SEP
+s f g i n c -> SFGINC
+s h b a s s -> SHBASS
+s h p l n -> SHPLN
+s h w -> SHW
+s i e g r -> SIEGR
+s j m -> SJM
+s l b -> SLB
+s o -> SO
+s o a f -> SOAF
+s o c g e n -> SOCGEN
+s o v -> SOV
+s p g -> SPG
+s p g i -> SPGI
+s p l l l c -> SPLLLC
+s p r -> SPR
+s r e -> SRE
+s t a n l n -> STANLN
+s t i -> STI
+s t t -> STT
+s t z -> STZ
+s u c n -> SUCN
+s u m i b k -> SUMIBK
+s u m i t r -> SUMITR
+s v b -> SVB
+s w k -> SWK
+s y f -> SYF
+s y k -> SYK
+s y n n v x -> SYNNVX
+s y y -> SYY
+sabine pass -> SPLLLC
+sales force -> CRM
+salesforce -> CRM
+san diego -> SRE
+san tan -> SANTAN
+san tan u k -> SANUK
+san tan u s -> SOV
+sanfp -> SANFP
+sanofi -> SANFP
+santan -> SANTAN
+santan u s -> SOV
+santander -> SANTAN
+sanuk -> SANUK
+sbux -> SBUX
+scg -> SCG
+schlumber jay -> SLB
+schlumberger -> SLB
+schw -> SCHW
+schwab -> SCHW
+seb -> SEB
+securian -> SFGINC
+sek -> SEK
+sep -> SEP
+sfginc -> SFGINC
+sfr -> SFRFP
+shbass -> SHBASS
+shell -> RDSALN
+sherwin -> SHW
+sherwin williams -> SHW
+shire -> SHPLN
+shpln -> SHPLN
+shw -> SHW
+siegr -> SIEGR
+siemens -> SIEGR
+silicon valley -> SVB
+silicon valley bank -> SVB
+simon -> SPG
+sjm -> SJM
+slb -> SLB
+slob -> SLB
+smuckers -> SJM
+smurf -> SKGID
+so -> SO
+so cal -> EIX
+so s o -> SO
+soaf -> SOAF
+soc gen -> SOCGEN
+socgen -> SOCGEN
+soft bank -> SOFTBK
+softbk -> SOFTBK
+south carolina -> SCG
+south carolina electric -> SCG
+southern -> SO
+sov -> SOV
+special k -> K
+spg -> SPG
+spgi -> SPGI
+spirit -> SPR
+spirit air -> SPR
+splllc -> SPLLLC
+spr -> SPR
+sre -> SRE
+standard -> STANLN
+standard chartered -> STANLN
+stanley -> SWK
+stanley works -> SWK
+stanln -> STANLN
+star bucks -> SBUX
+starbucks -> SBUX
+starz -> STZ
+state -> STT
+state street -> STT
+sti -> STI
+stryker -> SYK
+stt -> STT
+stz -> STZ
+sucn -> SUCN
+sumibk -> SUMIBK
+sumitomo -> SUMIBK
+sumitomo fin -> SUMIBK
+sumitomo financial -> SUMIBK
+sumitomo trust -> SUMITR
+sumitr -> SUMITR
+sun -> STI
+sun core -> SUCN
+sun trust -> STI
+suncor -> SUCN
+sunshine -> SUNSHM
+sunshm -> SUNSHM
+svb -> SVB
+svensk -> SEK
+svenska -> SHBASS
+swedish export -> SEK
+swk -> SWK
+syf -> SYF
+syk -> SYK
+synchrony -> SYF
+syngenta -> SYNNVX
+synnvx -> SYNNVX
+sysco -> SYY
+syy -> SYY
+t -> T
+t a c h e m -> TACHEM
+t a p -> TAP
+t d -> TD
+t e -> TE
+t e l e f o -> TELEFO
+t g t -> TGT
+t i -> TXN
+t i a a g l -> TIAAGL
+t m o -> TMO
+t net b b -> TNETBB
+t net broadband -> TNETBB
+t o t a l -> TOTAL
+t o y o t a -> TOYOTA
+t p r -> TPR
+t r p c n -> TRPCN
+t r v -> TRV
+t s n -> TSN
+t s s -> TSS
+t w c -> TWC
+t w x -> TWX
+t x n -> TXN
+t x t -> TXT
+tachem -> TACHEM
+takeda -> TACHEM
+tampa -> TE
+tampa electric -> TE
+tap -> TAP
+tapestry -> TPR
+target -> TGT
+tata -> TTMTIN
+tata motors -> TTMTIN
+td -> TD
+te -> TE
+teachers -> TIAAGL
+tel -> T
+telefo -> TELEFO
+telefonica -> TELEFO
+telenet -> TNETBB
+telephone -> T
+tell -> T
+texan -> TXN
+texas eastern -> SEP
+texas instruments -> TXN
+text -> TXT
+textron -> TXT
+tgt -> TGT
+the jef -> JEF
+the jeff -> JEF
+the old dominion -> D
+thermo -> TMO
+thermo fisher -> TMO
+thermos -> TMO
+three m -> MMM
+tiaagl -> TIAAGL
+time warner -> TWC
+time warner cable -> TWC
+tmo -> TMO
+tnetbb -> TNETBB
+tool works -> ITW
+toronto -> TD
+total -> TOTAL
+total cap -> TOTAL
+total system -> TSS
+toyota -> TOYOTA
+tpr -> TPR
+trans canada -> TRPCN
+transcanada -> TRPCN
+transcontinental -> WMB
+transcontinental gas -> WMB
+travelers -> TRV
+trinity -> WLTW
+triple l -> LLL
+triple m -> MMM
+trpcn -> TRPCN
+trv -> TRV
+tsn -> TSN
+tss -> TSS
+ttmtin -> TTMTIN
+twc -> TWC
+twix -> TWX
+twx -> TWX
+txn -> TXN
+txt -> TXT
+tyson -> TSN
+u a l -> UAL
+u b s -> UBS
+u c g i m -> UCGIM
+u k t bill -> UKTB
+u k treasury bill -> UKTB
+u n a n a -> UNANA
+u n h -> UNH
+u n m -> UNM
+u n p -> UNP
+u p c b -> UPCB
+u p s -> UPS
+u s b -> USB
+u s bank -> USB
+u t x -> UTX
+ual -> UAL
+ubs -> UBS
+ucgim -> UCGIM
+uk t bill -> UKTB
+uk treasury bill -> UKTB
+ukt bill -> UKTB
+uktb -> UKTB
+unana -> UNANA
+unh -> UNH
+unicredit -> UCGIM
+unilever -> UNANA
+union pac -> UNP
+union pacific -> UNP
+united -> UTX
+united continental -> UAL
+united health -> UNH
+united kingdom treasury bill -> UKTB
+unity -> UNITY
+unm -> UNM
+unp -> UNP
+upcb -> UPCB
+ups -> UPS
+usb -> USB
+utx -> UTX
+v -> V
+v dub -> VW
+v i a -> VIA
+v l o -> VLO
+v l p -> VLP
+v m c -> VMC
+v m w -> VMW
+v m ware -> VMW
+v med -> VMED
+v o d -> VOD
+v o y a -> VOYA
+v t r -> VTR
+v w -> VW
+v z -> VZ
+valero -> VLO
+valero energy -> VLO
+valero energy group -> VLO
+valero energy partners -> VLP
+ventas -> VTR
+verizon -> VZ
+via -> VIA
+viacom -> VIA
+virginia -> D
+visa -> V
+vlo -> VLO
+vlp -> VLP
+vmc -> VMC
+vmed -> VMED
+vmw -> VMW
+vmware -> VMW
+vod -> VOD
+voda fone -> VOD
+vodafone -> VOD
+volkswagen -> VW
+voya -> VOYA
+vtr -> VTR
+vulcan -> VMC
+vw -> VW
+vz -> VZ
+w a b -> WAB
+w b a -> WBA
+w e b -> WEB
+w e c -> WEC
+w e l l -> WELL
+w e s -> WES
+w f c -> WFC
+w l k -> WLK
+w l t w -> WLTW
+w m -> WM
+w m b -> WMB
+w m t -> WMT
+w p z -> WPZ
+w r k -> WRK
+w s t p -> WSTP
+w t r -> WTR
+w y -> WY
+wab -> WAB
+wab tech -> WAB
+walgreens -> WBA
+walmart -> WMT
+waste -> WM
+water -> WTR
+wba -> WBA
+web -> WEB
+wec -> WEC
+well -> WELL
+well tower -> WELL
+wells -> WFC
+wells fargo -> WFC
+welltower -> WELL
+wes -> WES
+west lake -> WLK
+west pack -> WSTP
+west rock -> WRK
+western -> WES
+western gas -> WES
+westlake -> WLK
+weyerhaeuser -> WY
+wfc -> WFC
+williams -> WPZ
+win dim -> WINDIM
+windim -> WINDIM
+wisconsin -> WEC
+wlk -> WLK
+wltw -> WLTW
+wm -> WM
+wmb -> WMB
+wmt -> WMT
+wpz -> WPZ
+wrk -> WRK
+wstp -> WSTP
+wtr -> WTR
+wy -> WY
+x e c -> XEC
+x e l -> XEL
+x l -> XL
+x o m -> XOM
+x r x -> XRX
+x rocks -> XRX
+xec -> XEC
+xel -> XEL
+xerox -> XRX
+xl -> XL
+xom -> XOM
+xrx -> XRX
+z b h -> ZBH
+z f -> ZFFNGR
+z f f n g r -> ZFFNGR
+z t s -> ZTS
+zbh -> ZBH
+zffngr -> ZFFNGR
+ziggo -> ZIGGO
+zimmer -> ZBH
+zoetis -> ZTS
+zts -> ZTS
