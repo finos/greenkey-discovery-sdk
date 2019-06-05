@@ -160,3 +160,4 @@ intents:
           - value: "@price2"
             category: "ask"
             type: " "
+
