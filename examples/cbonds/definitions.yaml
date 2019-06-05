@@ -32,7 +32,7 @@ entities:
     - par -> one hundred
   par_num:
     - "@par @one_through_nine?"
-    - formatting: custom/format_par.py
+    - formatting: format_par.py
   numthree:
     - "(@num{1,3}|@doubles)"
     - spacer: ''
@@ -47,14 +47,14 @@ entities:
     - "point"
   frac_num:
     - "(@numfive|@par_num) (@and @one_through_seven? @denominator)?"
-    - formatting: custom/format_fraction.py
+    - formatting: format_fraction.py
   float_num:
     - "(@numfive|@par_num) (@spot (@numfive|@doubles))?"
     - spacer: ''
     - formatting: "entity.replace('spot', '.').replace('point', '.').replace(' ', '')"
   # IG_BONDS specific stuff
   cbond_product:
-    - file: "custom/cbonds_products.txt"
+    - file: "cbonds_products.txt"
   upcoming_year:
     - "(@num_plur2|@numfive)"
     - validation: "int(entity) > 17 and int(entity) < 30"

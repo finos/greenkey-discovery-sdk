@@ -61,7 +61,7 @@ entities:
     - "(((@num_ord|possible_date) @time_month) | (@time_month (@num_ord|possible_date)?))"
     - formatting: format_date.py
   # eqd_product:
-  #  - file: "custom/eqd_products.txt"
+  #  - file: "eqd_products.txt"
   maturity:
     - "@ord_month? @upcoming_year"
     - spacer: '/'
