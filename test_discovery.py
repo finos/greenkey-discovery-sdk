@@ -28,8 +28,6 @@ from discovery_config import CONTAINER_NAME
 from discovery_config import TIMEOUT, RETRIES
 from launch_discovery import launch_discovery
 
-from asrtoolkit.clean_formatting import clean_up
-
 from metrics import compute_counts, precision_recall_f1_accuracy
 
 # TODO move to ini file
@@ -149,17 +147,21 @@ def load_tests(test_file):
     return tests
 
 
+def bson_format(s):
+  if "$" in s:
+    s = s.replace("$", "_$")
+
+  if "." in s:
+    s = s.replace(".", ";")
+
+  return s
+
+
 def submit_transcript(transcript):
     """
     Submits a transcript to Discovery
     """
-    data = {"word_confusions": [{w: "1.0"} for w in transcript.split(" ")]}
-    
-    if any(map(lambda c: c not in UNFORMATTED_CHARS, transcript)):
-      data['punctuated_transcript'] = transcript
-      data['transcript'] = clean_up(transcript)
-    else:
-      data['transcript'] = transcript
+    data = {"transcript": bson_format(transcript)}
     
     response = requests.post("http://{}:{}/process".format(DISCOVERY_HOST, DISCOVERY_PORT), json=data)
     if response.status_code == 200:

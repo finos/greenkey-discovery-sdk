@@ -1,0 +1,59 @@
+test: conversation_type - inquiry
+intent: inquiry
+transcript: inquiry
+
+test: conversation_type - quote
+intent: quote
+transcript: quote
+
+test: conversation_type - trade
+intent: trade
+transcript: trade
+
+test: conversation_type - general
+intent: general
+transcript: general
+
+test: product_class - rates
+intent: rates
+transcript: gilts
+
+test: product_class - rates
+intent: rates
+transcript: gilts
+
+test: product_class - sovereign_bonds
+intent: sovereign_bonds
+transcript: egbs
+
+test: product_class - rate_derivatives
+intent: rate_derivatives
+transcript: swaptions
+
+test: product_class - fx
+intent: fx
+transcript: fx_forwards
+
+test: product_class - fx
+intent: fx
+transcript: fx_options
+
+test: product_class - corporate_bonds
+intent: corporate_bonds
+transcript: credit
+
+test: product_class - corporate_bonds
+intent: corporate_bonds
+transcript: ig_bonds
+
+test: product_class - commodities
+intent: commodities
+transcript: energy
+
+test: product_class - commodities
+intent: commodities
+transcript: distillates
+
+test: product_class - commodities
+intent: commodities
+transcript: softs

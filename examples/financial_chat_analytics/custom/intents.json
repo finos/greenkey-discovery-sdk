@@ -1,0 +1,101 @@
+{
+  "intents": [
+    {
+      "label": "inquiry",
+      "domain": "conversation_type",
+      "examples": [
+        "/custom/inquiries.txt"
+      ]
+    },
+    {
+      "label": "quote",
+      "domain": "conversation_type",
+      "examples": [
+        "/custom/quotes.txt"
+      ]
+    },
+    {
+      "label": "trade",
+      "domain": "conversation_type",
+      "examples": [
+        "/custom/trades.txt"
+      ]
+    },
+    {
+      "label": "general",
+      "domain": "conversation_type",
+      "examples": [
+        "/custom/general.txt"
+      ]
+    },
+    {
+      "label": "rates",
+      "domain": "product_class",
+      "examples": [
+        "/custom/swaps.txt",
+        "/custom/gilts.txt"
+      ]
+    },
+    {
+      "label": "sovereign_bonds",
+      "domain": "product_class",
+      "examples": [
+        "/custom/egbs.txt"
+      ]
+    },
+    {
+      "label": "rate_derivatives",
+      "domain": "product_class",
+      "examples": [
+        "/custom/swaptions.txt"
+      ]
+    },
+    {
+      "label": "fx",
+      "domain": "product_class",
+      "examples": [
+        "/custom/fx_forwards.txt",
+        "/custom/fx_options.txt"
+      ]
+    },
+    {
+      "label": "em_bonds",
+      "domain": "product_class",
+      "examples": [
+        "/custom/em_bonds.txt"
+      ]
+    },
+    {
+      "label": "corporate_bonds",
+      "domain": "product_class",
+      "examples": [
+        "/custom/credit.txt",
+        "/custom/ig_bonds.txt"
+      ]
+    },
+    {
+      "label": "commodities",
+      "domain": "product_class",
+      "examples": [
+        "/custom/energy.txt",
+        "/custom/distillates.txt",
+        "/custom/softs.txt"
+      ]
+    },
+    {
+      "label": "market_color",
+      "domain": "market_color",
+      "examples": [
+        "/custom/financial.txt"
+      ]
+    },
+    {
+      "label": "no_market_color",
+      "domain": "market_color",
+      "examples": [
+        "/custom/not_financial.txt",
+        "/custom/general.txt"
+      ]
+    }
+  ]
+}
