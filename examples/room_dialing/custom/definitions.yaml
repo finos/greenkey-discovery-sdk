@@ -1,0 +1,7 @@
+---
+entities:
+  digit:
+    regex: "\d"
+
+intents:
+  room_dialing:
