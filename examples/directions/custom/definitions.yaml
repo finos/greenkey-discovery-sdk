@@ -14,8 +14,6 @@ entities:
   address_number:
     - "@num{1,4}"
     - spacer: ''
-#  transportation_type:
-#    file: "/custom/transportation_type.txt"
   address:
     - "@address_number @direction? (@street_name|@number_ord) @street_type?"
     - spacing_threshold: 2
@@ -32,4 +30,3 @@ intents:
     schema:
       return_json:
         destination_address: "@address"
-#        transportation_method: "@transportation_type"
