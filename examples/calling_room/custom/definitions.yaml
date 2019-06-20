@@ -1,3 +1,3 @@
 entities:
   room_number:
-    - @num @
+    regex: "\d{1,2}[A-z]"
