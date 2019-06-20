@@ -1,0 +1,37 @@
+entities:
+  direction:
+    - north
+    - south
+    - east
+    - west
+    - formatting: "entity.capitalize()"
+  street_name:
+    file: "/custom/chicago_street_names.txt"
+    formatting: "entity.capitalize()"
+  street_type:
+    file: "/custom/street_types.txt"
+    formatting: "entity.capitalize()"
+  address_number:
+    - "@num{1,4}"
+    - spacer: ""
+#  transportation_type:
+#    file: "/custom/transportation_type.txt"
+  address:
+    - "@address_number @direction? (@street_name|@number_ord) @street_type?"
+    - - "@address_number @direction? (@street_name|@number_ord)? @street_type?"
+  //    - ["address_number", "direction", "street_type"], --> pattern not accounted for by above pattern
+  str
+
+
+
+#{
+#  "schemas": [
+#    {
+#      "label": "directions",
+#      "return_json": {
+#        "destination_address": "{complete_address}",
+#        "transportation_method": "{transportation_type}"
+#      }
+#    }
+#  ]
+#}
