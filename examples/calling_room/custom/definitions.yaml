@@ -1,3 +1,6 @@
 entities:
   room_number:
-    regex: "\d{1,2}[A-z]"
+    regex: "\d{1,2}\s[a-z]"
+
+intents:
+  calling_room:
