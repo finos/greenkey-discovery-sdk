@@ -1,7 +1,7 @@
 ---
 entities:
   room_number:
-    regex: "\d"
+    - "@num"
 
 intents:
   digit:
