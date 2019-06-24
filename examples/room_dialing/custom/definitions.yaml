@@ -4,4 +4,9 @@ entities:
     regex: "\d"
 
 intents:
-  room_dialing:
+  digit:
+    examples:
+      - please select seven to speak to the operator
+      - to change your order press nine
+      - if this is an emergency dial nine one one
+      - for animal control services press four
