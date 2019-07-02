@@ -16,6 +16,7 @@ from importlib import import_module
 import json
 import logging
 import os
+import re
 import subprocess
 import sys
 import time
@@ -132,23 +133,19 @@ def load_tests(test_file):
     Loads and parses the test file
     """
     with open(test_file) as f:
-        test_file = [x.rstrip() for x in f]
+        test_file = [_.strip() for _ in f]
+
+    test_file = remove_comments(test_file)
+
+    test_file, intent_whitelist, domain_whitelist = find_whitelists(test_file)
+
     tests = []
     current_test = {}
-    intent_whitelist = []
-    domain_whitelist = []
+
     for line in test_file:
         key = line.split(":")[0]
         value = line.split(": ", maxsplit=1)[-1]
-        if key == "intent_whitelist":
-            if ',' in value:
-                value = [_.strip() for _ in value.split(',')]
-            intent_whitelist = value
-        elif key == "domain_whitelist":
-            if ',' in value:
-                value = [_.strip() for _ in value.split(',')]
-            domain_whitelist = value
-        elif key == "test":
+        if key == "test":
             if len(current_test.keys()) > 0:
                 tests.append(current_test)
             current_test = {key: value}
@@ -157,13 +154,46 @@ def load_tests(test_file):
     if len(current_test.keys()) > 0:
         tests.append(current_test)
 
-    if not intent_whitelist:
-        intent_whitelist = "any"
-
-    if not domain_whitelist:
-        domain_whitelist = "any"
-
     return tests, intent_whitelist, domain_whitelist
+
+
+def remove_comments(test_file):
+    """
+    Return test file with blank lines and comments removed.
+    """
+    return [_ for _ in test_file if _ and not _.startswith('#')]
+
+
+def find_whitelists(test_file):
+    """
+    If testfile starts with any whitelists, separate them from the test file.
+    """
+    intent_whitelist = domain_whitelist = "any"
+
+    for i, line in enumerate(test_file):
+        if line.startswith("intent_whitelist"):
+            intent_whitelist = format_whitelist(line)
+            continue
+        if line.startswith("domain_whitelist"):
+            domain_whitelist = format_whitelist(line)
+            continue
+        # we only want to return whatever is leftover after the comments and
+        # whitelists are removed from the test_file
+        test_file = test_file[i:]
+        break
+
+    return test_file, intent_whitelist, domain_whitelist
+
+
+def format_whitelist(line):
+    """
+    Ensure whitelist is a list if it contains commas.
+    """
+    _, whitelist = line.split(":", maxsplit=1)
+
+    if ',' in whitelist:
+        whitelist = [_.strip() for _ in value.split(',')]
+    return whitelist
 
 
 def bson_format(s):
@@ -451,7 +481,6 @@ if __name__ == '__main__':
 
     TEST_FILE = os.path.join(DISCOVERY_DIRECTORY, "tests.txt")
 
-    validate_entities(DISCOVERY_DIRECTORY)
     validate_yaml(DISCOVERY_DIRECTORY)
     custom_directory = os.path.join(DISCOVERY_DIRECTORY, 'custom')
     try:
