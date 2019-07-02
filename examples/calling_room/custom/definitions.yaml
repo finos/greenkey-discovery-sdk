@@ -1,6 +1,10 @@
-entities:
-  room_number:
-    regex: "\d{1,2}\s[a-z]"
-
 intents:
   calling_room:
+    examples:
+      - "@room_number"
+      - "I will be staying in room @room_number"
+      - "Forward my call to room @room_number"
+      - "I need a change of linens in suite @room_number"
+entities:
+  room_number:
+    - "@num{1,2} @letter"

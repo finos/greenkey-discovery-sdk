@@ -1,3 +1,5 @@
+intent_whitelist: telephone_number
+
 test: telephone number
 transcript: Dial five five five three one two five three one nine
 phone_number: 555-312-5319

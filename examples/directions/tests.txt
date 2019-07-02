@@ -1,3 +1,5 @@
+intent_whitelist: directions
+
 test: directions by car
 transcript: I need directions to fifty five west monroe avenue by car
 complete_address: 55 West Monroe Avenue
@@ -23,5 +25,5 @@ transcript: Take me to four o two wacker drive
 complete_address: 402 Wacker Drive
 
 test: directions with complex zero patterns
-transcript: Can you pick me up at nine oh two zero one west lake street?
+transcript: Can you pick me up at nine oh two zero one west lake street
 complete_address: 90201 West Lake Street

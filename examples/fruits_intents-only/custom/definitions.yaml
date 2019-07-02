@@ -1,0 +1,20 @@
+intents:
+  - inquiry:
+    - domain: fruits
+    - examples:
+      - "what is your price on green apples"
+      - "how many oranges can i get for twenty three dollars"
+      - "what is going on with red tomatoes today"
+  - quote:
+    - domain: fruits
+    - file: "pre_deal.txt"
+  - trade:
+    - domain: fruits
+    - file: "post_deal.txt"
+  - correction:
+    - domain: fruits
+    - examples:
+      - "scratch that i can sell ninety oranges for two dollars each"
+      - "correction my price on twenty three carrots is six dollars"
+      - "i need to revise my offer i will give you forty dollars for sixty oranges"
+      - "i have to correct my offer to fifteen red apples for thiry dollars"

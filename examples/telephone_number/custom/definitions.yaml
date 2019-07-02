@@ -1,0 +1,21 @@
+intents:
+  telephone_number:
+    - "please call me at @phone_number"
+    - "save the number @phone_number"
+    - "his telephone number is @phone_number"
+    - "please call me at @phone_number"
+    - "I'm going to give you the best number to reach me at @phone_number"
+  schema:
+    phone_numbers: ["@phone_number"]
+entities:
+  phone_number:
+    patterns:
+      - "@three_digits @three_digits @four_digits"
+    spacing_threshold: 2
+    spacer: '-'
+  three_digits:
+    - "@num{3}"
+    - spacer: ''
+  four_digits:
+    - "@num{4}"
+    - spacer: ''

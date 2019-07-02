@@ -14,4 +14,3 @@ install:
 # command to run tests
 script:
   - python -m pytest .tests/test_sdk.py -s
-  - cd discovery_sdk_utils; pytest

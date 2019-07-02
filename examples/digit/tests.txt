@@ -1,7 +1,9 @@
+intent_whitelist: digit
+
 test: dial number
 transcript: please dial eight
-digit: 8
+room_number: 8
 
 test: dial number
 transcript: press one eight
-digit: 1
+room_number: 1

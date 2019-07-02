@@ -1,4 +1,15 @@
+intents:
+  directions:
+    entities:
+      - transportation_type
+      - complete_address
+    schema:
+      destination_address: "@complete_address"
+      transportation_method: "@transportation_type"
 entities:
+  complete_address:
+    - "@address_number @direction? (@street_name|@num_ord) @street_type?"
+    - spacing_threshold: 2
   direction:
     - north
     - south
@@ -6,27 +17,26 @@ entities:
     - west
     - formatting: "entity.capitalize()"
   street_name:
-    file: "/custom/chicago_street_names.txt"
+    file: chicago_street_names.txt
     formatting: "entity.capitalize()"
   street_type:
-    file: "/custom/street_types.txt"
+    file: street_types.txt
     formatting: "entity.capitalize()"
+  zero:
+    - oh
+    - zero
+    - o
+    - formatting: "0"
   address_number:
-    - "@num{1,4}"
+    - "(@zero|@num){1,5}"
     - spacer: ''
-  address:
-    - "@address_number @direction? (@street_name|@number_ord) @street_type?"
-    - spacing_threshold: 2
-
-intents:
-  address:
-    domain: "safety"
-    examples:
-      - "I live at @address"
-      - "Turn right at @address"
-      - "Please take me to @address"
-      - "his address is @address"
-      - "@address"
-    schema:
-      return_json:
-        destination_address: "@address"
+  transportation_type:
+    - foot
+    - walk
+    - walking
+    - bicycle
+    - bike
+    - bus
+    - train
+    - car
+    - formatting: "entity"
