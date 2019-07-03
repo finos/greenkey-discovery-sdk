@@ -10,25 +10,27 @@ likely found intent. Tests are also assumed to always return a valid intent
 with entities.
 """
 
-import requests
-import subprocess
-import json
-import os
-import time
-import glob
-import sys
-import editdistance
-import logging
-from os.path import join as join_path, dirname
 from collections import defaultdict
+import glob
 from importlib import import_module
-from discovery_sdk_utils import find_errors_in_entity_definition
+import json
+import logging
+import os
+import re
+import subprocess
+import sys
+import time
+
+import editdistance
+from metrics import compute_counts, precision_recall_f1_accuracy
+import requests
+import yaml
+
 from discovery_config import DISCOVERY_PORT, DISCOVERY_HOST, DISCOVERY_SHUTDOWN_SECRET
 from discovery_config import CONTAINER_NAME
 from discovery_config import TIMEOUT, RETRIES
 from launch_discovery import launch_discovery
 
-from metrics import compute_counts, precision_recall_f1_accuracy
 
 # TODO move to ini file
 logger = logging.getLogger(__name__)
@@ -122,7 +124,7 @@ Testing functions
 def json_dump(data, outfile, directory=None):
     if not directory:
         directory = os.getcwd()
-    outfile = join_path(directory, outfile)
+    outfile = os.path.join(directory, outfile)
     json.dump(data, open(outfile, 'w+'))
 
 
@@ -130,9 +132,16 @@ def load_tests(test_file):
     """
     Loads and parses the test file
     """
-    test_file = [x.rstrip() for x in open(test_file)]
+    with open(test_file) as f:
+        test_file = [_.strip() for _ in f]
+
+    test_file = remove_comments(test_file)
+
+    test_file, intent_whitelist, domain_whitelist = find_whitelists(test_file)
+
     tests = []
     current_test = {}
+
     for line in test_file:
         key = line.split(":")[0]
         value = line.split(": ", maxsplit=1)[-1]
@@ -144,7 +153,47 @@ def load_tests(test_file):
             current_test[key] = value
     if len(current_test.keys()) > 0:
         tests.append(current_test)
-    return tests
+
+    return tests, intent_whitelist, domain_whitelist
+
+
+def remove_comments(test_file):
+    """
+    Return test file with blank lines and comments removed.
+    """
+    return [_ for _ in test_file if _ and not _.startswith('#')]
+
+
+def find_whitelists(test_file):
+    """
+    If testfile starts with any whitelists, separate them from the test file.
+    """
+    intent_whitelist = domain_whitelist = "any"
+
+    for i, line in enumerate(test_file):
+        if line.startswith("intent_whitelist"):
+            intent_whitelist = format_whitelist(line)
+            continue
+        if line.startswith("domain_whitelist"):
+            domain_whitelist = format_whitelist(line)
+            continue
+        # we only want to return whatever is leftover after the comments and
+        # whitelists are removed from the test_file
+        test_file = test_file[i:]
+        break
+
+    return test_file, intent_whitelist, domain_whitelist
+
+
+def format_whitelist(line):
+    """
+    Ensure whitelist is a list if it contains commas.
+    """
+    _, whitelist = line.split(":", maxsplit=1)
+
+    if ',' in whitelist:
+        whitelist = [_.strip() for _ in value.split(',')]
+    return whitelist
 
 
 def bson_format(s):
@@ -157,12 +206,12 @@ def bson_format(s):
   return s
 
 
-def submit_transcript(transcript):
+def submit_transcript(transcript, intent_whitelist, domain_whitelist):
     """
     Submits a transcript to Discovery
     """
-    data = {"transcript": bson_format(transcript)}
-    
+    data = {"transcript": bson_format(transcript), "intents": intent_whitelist, "domains": domain_whitelist}
+
     response = requests.post("http://{}:{}/process".format(DISCOVERY_HOST, DISCOVERY_PORT), json=data)
     if response.status_code == 200:
       return response.json()
@@ -224,7 +273,7 @@ def test_single_case(test_dict, response_intent_dict):
         first element: bool; 0 if tests pass, 1 if tests fails
 	total_errors: int; number of entities in test whose observed value (str) differs from expected
 	total_char_errors: int; sum of number of char that differ between observed and expected values for each entity
-        characters: int; 
+        characters: int;
     """
     # Get all values of entities
     entities = {ent["label"]: ent["matches"][0][0]["value"] for ent in response_intent_dict["entities"]}
@@ -269,17 +318,17 @@ def test_all(test_file):
 	    intent: name of intent (only one label for each intent tested)
 	    entity_name: text that Discovery identified as an instance of the entity
 			as many entities as defined for a given intent
-    :return 
+    :return
         prints to stdout
 	    (1) the number of tests that pass
 	    (2) the time it took to run the tests
 	    (3) total number of character errors in entities tested
 	    (4) the entity character error rate
-         saves 2 json files: 
+         saves 2 json files:
             (1) test_results.json: contains expected intent labels and corresponding model predicted labels
             (2) test_metrics.json: computes precision, recall, f1_score and accuracy is possibe; else returns accuracy and count confusion matrix
     """
-    tests = load_tests(test_file)
+    tests, intent_whitelist, domain_whitelist = load_tests(test_file)
 
     t1 = int(time.time())
 
@@ -295,7 +344,7 @@ def test_all(test_file):
     for test in tests:
         logger.info("======\nTesting: {}".format(test['test']))
 
-        resp = submit_transcript(test['transcript'])
+        resp = submit_transcript(test['transcript'], intent_whitelist, domain_whitelist)
 
         # Check if a valid response was received
         if not is_valid_response(resp):
@@ -327,7 +376,7 @@ def test_all(test_file):
     correct_tests = total_tests - failed_tests
     accuracy = correct_tests / total_tests
 
-    output_dir = dirname(test_file)
+    output_dir = os.path.dirname(test_file)
 
     # save output variables computed across tests
     output_dict = dict(
@@ -355,17 +404,18 @@ def test_all(test_file):
 
     # evaluate metrics; treat each possible intent as the reference label
     # (key=label; value=dict with performance metrics)
-    metrics_dict = defaultdict(dict)
-    metrics_dict['accuracy_score'] = accuracy * 100
-    intent_labels = set(y_true)
-    for label in intent_labels:
-        try:
-            metrics = precision_recall_f1_accuracy(y_true, y_pred, label=label)
-            # del metrics['accuracy']  # -> Dict
-        except ZeroDivisionError:
-            metrics = compute_counts(y_true, y_pred, label=label)
-        metrics_dict[label] = metrics
-    json_dump(metrics_dict, outfile='test_metrics.json', directory=output_dir)
+    # metrics_dict = defaultdict(dict)
+    # metrics_dict['accuracy_score'] = accuracy * 100
+    # metrics = compute_counts(y_true, y_pred, label=label)
+
+    # intent_labels = set(y_true)
+    # for label in intent_labels:
+    #     try:
+    #         metrics = precision_recall_f1_accuracy(y_true, y_pred, label=label)
+    #         # del metrics['accuracy']  # -> Dict
+    #     except ZeroDivisionError:
+    #         metrics_dict[label] = metrics
+    # json_dump(metrics_dict, outfile='test_metrics.json', directory=output_dir)
 
     # total_errors
     if total_entity_character_errors > 0:
@@ -398,44 +448,6 @@ class cleanText(object):
         return word_list
 
 
-def validate_entities(discovery_directory):
-    """
-    Validate entities
-    """
-    # mock up nlp.cleanText so that entities can be imported
-    sys.modules['nlp.cleanText'] = cleanText()
-
-    entities_file = os.path.join(discovery_directory, 'custom', 'entities')
-    entities = glob.glob(os.path.join(entities_file, '*.py'))
-    entities_directory = os.path.join(discovery_directory, 'custom', 'entities')
-    sys.path.append(entities_directory)
-
-    for entity in entities:
-        if '__init__' in entity:
-            continue
-        _validate_individual_entity(entity)
-        try:
-            os.remove(entity.replace(".py", ".pyc"))
-        except FileNotFoundError:
-            pass
-
-    # remove mocked up dummy module from modules
-    sys.modules.pop('nlp.cleanText')
-
-
-def _validate_individual_entity(entity):
-    entity_name = os.path.split(entity)[-1].replace(".py", "")
-    entity_module = import_module(entity_name)
-    definition_errors = []
-    if 'ENTITY_DEFINITION' in dir(entity_module):
-        print('Checking entity definition {0:.<35}'.format(entity_name), end='')
-        errors = find_errors_in_entity_definition(entity_module.ENTITY_DEFINITION)
-        _log_entity_definition_error_results(errors)
-        definition_errors.extend(errors)
-    if definition_errors:
-        raise Exception('Please fix all entity definition errors before running discovery!')
-
-
 def _log_entity_definition_error_results(errors):
     if errors:
         print('Error! \nThe following problems were found with your entity_definition:')
@@ -445,15 +457,17 @@ def _log_entity_definition_error_results(errors):
         print('No errors!')
 
 
-def validate_json(discovery_directory):
+def validate_yaml(discovery_directory):
     """
-    Validate intents.json
+    Validate definitions.yaml
     """
-    intents_config_file = os.path.join(discovery_directory, 'custom', 'intents.json')
+    intents_config_file = os.path.join(discovery_directory, 'custom', 'definitions.yaml')
     try:
-        json.loads(''.join([x.rstrip() for x in open(intents_config_file)]))
+        with open(intents_config_file) as f:
+            yaml_file_contents = f.read()
+            yaml.load(yaml_file_contents, Loader=yaml.FullLoader)
     except Exception as e:
-        print("Invalid intents.json")
+        print("Invalid definitions.yaml file")
         print("Error: {}".format(e))
         exit(1)
     return True
@@ -467,8 +481,7 @@ if __name__ == '__main__':
 
     TEST_FILE = os.path.join(DISCOVERY_DIRECTORY, "tests.txt")
 
-    validate_entities(DISCOVERY_DIRECTORY)
-    validate_json(DISCOVERY_DIRECTORY)
+    validate_yaml(DISCOVERY_DIRECTORY)
     custom_directory = os.path.join(DISCOVERY_DIRECTORY, 'custom')
     try:
         launch_discovery(custom_directory=custom_directory)

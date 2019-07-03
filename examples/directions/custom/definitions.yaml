@@ -1,0 +1,42 @@
+intents:
+  directions:
+    entities:
+      - transportation_type
+      - complete_address
+    schema:
+      destination_address: "@complete_address"
+      transportation_method: "@transportation_type"
+entities:
+  complete_address:
+    - "@address_number @direction? (@street_name|@num_ord) @street_type?"
+    - spacing_threshold: 2
+  direction:
+    - north
+    - south
+    - east
+    - west
+    - formatting: "entity.capitalize()"
+  street_name:
+    file: chicago_street_names.txt
+    formatting: "entity.capitalize()"
+  street_type:
+    file: street_types.txt
+    formatting: "entity.capitalize()"
+  zero:
+    - oh
+    - zero
+    - o
+    - formatting: "0"
+  address_number:
+    - "(@zero|@num){1,5}"
+    - spacer: ''
+  transportation_type:
+    - foot
+    - walk
+    - walking
+    - bicycle
+    - bike
+    - bus
+    - train
+    - car
+    - formatting: "entity"

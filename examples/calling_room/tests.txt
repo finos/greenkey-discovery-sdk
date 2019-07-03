@@ -1,5 +1,7 @@
+intent_whitelist: calling_room
+
 test: room number
-transcript: Leave a messagee for room three b
+transcript: Leave a message for room three b
 room_number: 3 B
 
 test: room number

@@ -1,22 +1,20 @@
+intent_whitelist: directions
+
 test: directions by car
 transcript: I need directions to fifty five west monroe avenue by car
 complete_address: 55 West Monroe Avenue
-transportation_type: car
 
 test: directions by bus
 transcript: I need to get to two thirty three south wacker drive by bus
 complete_address: 233 South Wacker Drive
-transportation_type: bus
 
 test: directions by train
 transcript: I'm travelling by train to two oh one east randolph street
 complete_address: 201 East Randolph Street
-transportation_type: train
 
 test: directions with ordinal number
 transcript: I'm travelling by train to two oh one east fifth street
 complete_address: 201 East 5th Street
-transportation_type: train
 
 test: directions with zero
 transcript: Take me to three zero two wacker drive
@@ -27,5 +25,5 @@ transcript: Take me to four o two wacker drive
 complete_address: 402 Wacker Drive
 
 test: directions with complex zero patterns
-transcript: Can you pick me up at nine oh two zero one west lake street?
+transcript: Can you pick me up at nine oh two zero one west lake street
 complete_address: 90201 West Lake Street

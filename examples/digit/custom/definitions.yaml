@@ -1,0 +1,10 @@
+entities:
+  room_number:
+    - "@num"
+intents:
+  digit:
+    examples:
+      - "please select @room_number to speak to the operator"
+      - "to change your order press @room_number"
+      - "if this is an emergency dial @room_number"
+      - "for animal control services press @room_number"
