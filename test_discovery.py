@@ -31,10 +31,10 @@ from discovery_config import CONTAINER_NAME
 from discovery_config import TIMEOUT, RETRIES
 from launch_discovery import launch_discovery
 
-
 # TODO move to ini file
 logger = logging.getLogger(__name__)
-formatter = logging.Formatter('%(asctime)s %(name)-12s %(levelname)-8s %(lineno)d %(message)s')
+formatter = logging.Formatter(
+    '%(asctime)s %(name)-12s %(levelname)-8s %(lineno)d %(message)s')
 
 console_handler = logging.StreamHandler()
 console_handler.setLevel(logging.ERROR)
@@ -47,7 +47,6 @@ file_handler.setFormatter(formatter)
 
 logger.addHandler(console_handler)
 logger.addHandler(file_handler)
-
 """
 Functions for handling the Discovery Docker container
 """
@@ -107,9 +106,8 @@ def shutdown_discovery():
     Shuts down the Discovery engine Docker container
     """
     try:
-        requests.get(
-            "http://{}:{}/shutdown?secret_key={}".format(DISCOVERY_HOST, DISCOVERY_PORT, DISCOVERY_SHUTDOWN_SECRET)
-        )
+        requests.get("http://{}:{}/shutdown?secret_key={}".format(
+            DISCOVERY_HOST, DISCOVERY_PORT, DISCOVERY_SHUTDOWN_SECRET))
     # Windows throws a ConnectionError for a request to shutdown a server which makes it looks like the test fail
     except requests.exceptions.ConnectionError:
         pass
@@ -197,27 +195,34 @@ def format_whitelist(line):
 
 
 def bson_format(s):
-  if "$" in s:
-    s = s.replace("$", "_$")
+    if "$" in s:
+        s = s.replace("$", "_$")
 
-  if "." in s:
-    s = s.replace(".", ";")
+    if "." in s:
+        s = s.replace(".", ";")
 
-  return s
+    return s
 
 
 def submit_transcript(transcript, intent_whitelist, domain_whitelist):
     """
     Submits a transcript to Discovery
     """
-    data = {"transcript": bson_format(transcript), "intents": intent_whitelist, "domains": domain_whitelist}
+    data = {
+        "transcript": bson_format(transcript),
+        "intents": intent_whitelist,
+        "domains": domain_whitelist
+    }
 
-    response = requests.post("http://{}:{}/process".format(DISCOVERY_HOST, DISCOVERY_PORT), json=data)
+    response = requests.post("http://{}:{}/process".format(DISCOVERY_HOST,
+                                                           DISCOVERY_PORT),
+                             json=data)
     if response.status_code == 200:
-      return response.json()
+        return response.json()
     else:
-      logger.error("Request was not successful. Response Status Code: {}".format(response.status_code))
-      return {}
+        logger.error("Request was not successful. Response Status Code: {}".format(
+            response.status_code))
+        return {}
 
 
 def is_valid_response(resp):
@@ -250,11 +255,10 @@ def test_single_entity(entities, test_name, test_value):
         return (1, len(test_value))
 
     if entities[test_name] != test_value:
-        fail_test(
-            {},
-            "Value incorrect: ({}) expected {} != {}".format(test_name, test_value, entities[test_name]),
-            continued=True
-        )
+        fail_test({},
+                  "Value incorrect: ({}) expected {} != {}".format(
+                      test_name, test_value, entities[test_name]),
+                  continued=True)
         return (1, editdistance.eval(test_value, entities[test_name]))
     return (0, 0)
 
@@ -276,7 +280,10 @@ def test_single_case(test_dict, response_intent_dict):
         characters: int;
     """
     # Get all values of entities
-    entities = {ent["label"]: ent["matches"][0][0]["value"] for ent in response_intent_dict["entities"]}
+    entities = {
+        ent["label"]: ent["matches"][0][0]["value"]
+        for ent in response_intent_dict["entities"]
+    }
 
     total_errors = 0
     total_char_errors = 0
@@ -354,10 +361,12 @@ def test_all(test_file):
         most_likely_intent = resp["intents"][0]
 
         if 'intent' in test:
-            expected_intent, observed_intent = test['intent'], most_likely_intent['label']
+            expected_intent, observed_intent = test['intent'], most_likely_intent[
+                'label']
             y_true.append(expected_intent)
             y_pred.append(observed_intent)
-            message = "\nExpected Intent: {} \nObserved Intent{}".format(expected_intent, observed_intent)
+            message = "\nExpected Intent: {} \nObserved Intent{}".format(
+                expected_intent, observed_intent)
             logger.info(message)
 
             if expected_intent != observed_intent:
@@ -365,7 +374,8 @@ def test_all(test_file):
                 failed_tests += 1
                 fail_test(resp, message=observed_not_expected_msg, continued=True)
 
-        (failure, errors, char_errors, characters) = test_single_case(test, most_likely_intent)
+        (failure, errors, char_errors,
+         characters) = test_single_case(test, most_likely_intent)
         failed_tests += failure
         total_errors += errors
         total_char_errors += char_errors
@@ -379,27 +389,25 @@ def test_all(test_file):
     output_dir = os.path.dirname(test_file)
 
     # save output variables computed across tests
-    output_dict = dict(
-        total_tests=total_tests,
-        test_time_sec=time_lapsed,
-        expected_intents=y_true,
-        observed_intents=y_pred,
-        total_entity_character_errors=total_errors,
-        total_character_errors=total_char_errors,
-        total_characters=total_characters
-    )
+    output_dict = dict(total_tests=total_tests,
+                       test_time_sec=time_lapsed,
+                       expected_intents=y_true,
+                       observed_intents=y_pred,
+                       total_entity_character_errors=total_errors,
+                       total_character_errors=total_char_errors,
+                       total_characters=total_characters)
     json_dump(data=output_dict, outfile='test_results.json', directory=output_dir)
 
     # record message regardless of number of entity errors
-    message = "\n---\n({} / {}) tests passed in {} seconds\n".format(correct_tests, total_tests, time_lapsed)
+    message = "\n---\n({} / {}) tests passed in {} seconds\n".format(
+        correct_tests, total_tests, time_lapsed)
     logger.info(message)
     print(message)
 
     if total_characters:
         entity_character_error_rate = 100 * (total_char_errors / total_characters)
         msg = "\nTotal number of entity character errors: {} \nEntity Character Error Rate: {}".format(
-            total_entity_character_errors, "{:.2f}".format(entity_character_error_rate)
-        )
+            total_entity_character_errors, "{:.2f}".format(entity_character_error_rate))
         logger.info(msg)
 
     # evaluate metrics; treat each possible intent as the reference label
@@ -420,8 +428,8 @@ def test_all(test_file):
     # total_errors
     if total_entity_character_errors > 0:
         logger.error(
-            "\nTotal entity characters found: {}\nShutting down Discovery\n".format(total_entity_character_errors)
-        )
+            "\nTotal entity characters found: {}\nShutting down Discovery\n".format(
+                total_entity_character_errors))
         shutdown_discovery()
         exit(1)
 

@@ -8,7 +8,8 @@ DISCOVERY_CONFIG = {
     "MAX_NUMBER_OF_ENTITIES": "3",
     "STRUCTURE_CONFIDENCE_THRESHOLD": "0.8",
     "SORT_ENTITIES_BY_LENGTH": "True",
-    "PORT": "1234",  # Port that Discovery will bind to on the Docker daemon, change if port is taken already
+    "PORT":
+    "1234",  # Port that Discovery will bind to on the Docker daemon, change if port is taken already
 }
 
 CONTAINER_NAME = "discovery-dev"

@@ -38,7 +38,12 @@ def precision_recall_f1_accuracy(y_true, y_pred, label=1):
     recall = TP / (TP + FN)
     f1_score = 2 * (precision * recall) / (precision + recall)
     accuracy = (TP + TN) / (TP + TN + FP + FN)
-    metrics = {"precision": precision, "recall": recall, "f1_score": f1_score, "accuracy": accuracy * 100}
+    metrics = {
+        "precision": precision,
+        "recall": recall,
+        "f1_score": f1_score,
+        "accuracy": accuracy * 100
+    }
     metrics.update(d)
     return metrics
 
@@ -71,7 +76,10 @@ if __name__ == "__main__":
         # metrics + cm counts
         observed_metrics = precision_recall_f1_accuracy(y_true, y_pred, label=1)
         # Confusion Matrix - counts and normalized
-        observed_normalized_cm = confusion_matrix(y_true, y_pred, label=1, normalize=True)
+        observed_normalized_cm = confusion_matrix(y_true,
+                                                  y_pred,
+                                                  label=1,
+                                                  normalize=True)
         observed_cm = confusion_matrix(y_true, y_pred, label=1, normalize=False)
 
         expected_metrics = {
