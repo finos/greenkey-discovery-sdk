@@ -17,7 +17,11 @@ from discovery_config import DISCOVERY_CONFIG, DISCOVERY_PORT, DISCOVERY_IMAGE_N
 from discovery_config import CONTAINER_NAME
 
 
-def launch_discovery(custom_directory=None, type=None, port=None, discovery_config=None, container_name=None):
+def launch_discovery(custom_directory=None,
+                     type=None,
+                     port=None,
+                     discovery_config=None,
+                     container_name=None):
     """Launches the Discovery engine either via docker container or via compiled binaries.
 
     Args:
@@ -37,7 +41,8 @@ def launch_discovery(custom_directory=None, type=None, port=None, discovery_conf
         type = _determine_discovery_launch_type()
 
     if type == 'docker':
-        return _launch_container(custom_directory, port, discovery_config, container_name)
+        return _launch_container(custom_directory, port, discovery_config,
+                                 container_name)
 
     return _launch_binaries(custom_directory, port, discovery_config)
 
@@ -74,7 +79,8 @@ def _launch_container(custom_directory, port, discovery_config, container_name):
     :return: launches Discovery container; default:
         mounts custom directory in examples/directions (modify under `__main__`
     """
-    dico_dir = ["-v", "{}/dico:/dico".format(custom_directory)] if os.path.isdir(custom_directory + '/dico') else []
+    dico_dir = ["-v", "{}/dico:/dico".format(custom_directory)
+                ] if os.path.isdir(custom_directory + '/dico') else []
 
     try:
         config_items = discovery_config.iteritems()
@@ -104,8 +110,7 @@ def _launch_binaries(custom_directory):
         sys.path.append(os.path.abspath(binaries_directory))
         from run import find_definition_files_and_copy_them_to_appropriate_location
         find_definition_files_and_copy_them_to_appropriate_location(
-            os.path.join(custom_directory), os.path.abspath(binaries_directory)
-        )
+            os.path.join(custom_directory), os.path.abspath(binaries_directory))
 
         sys.path.append(os.path.join(binaries_directory, 'discovery'))
 
@@ -121,7 +126,8 @@ def _launch_binaries(custom_directory):
 def _detect_binaries_file():
     """Returns the absolute path of the binaries directory."""
     for file in os.listdir('.'):
-        if fnmatch.fnmatch(file, 'discovery_binaries_*') and not file.endswith('.tar.gz') and not file.endswith('.zip'):
+        if fnmatch.fnmatch(file, 'discovery_binaries_*') and not file.endswith(
+                '.tar.gz') and not file.endswith('.zip'):
             return os.path.abspath(file)
     return None
 
@@ -132,5 +138,6 @@ if __name__ == '__main__':
     except IndexError:
         project_name = 'directions'  # defaults to examples/directions
 
-    project_custom_directory = os.path.join(os.getcwd(), 'examples', project_name, 'custom')
+    project_custom_directory = os.path.join(os.getcwd(), 'examples', project_name,
+                                            'custom')
     launch_discovery(custom_directory=project_custom_directory)
