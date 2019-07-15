@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-import json
 from collections import defaultdict
 
 
@@ -64,10 +63,9 @@ def confusion_matrix(y_true, y_pred, label, normalize=True):
     d = compute_counts(y_true, y_pred, label)
     TP, FN, FP, TN = d["TP"], d["FN"], d["FP"], d["TN"]
     cm = [[TP, FP], [FN, TN]]
-    if not normalize:
-        return cm  # denominator is predicted_pos_total and predicted_negative_total
-    normalized_cm = [[TP / (TP + FP), FP / (TP + FP)], [FN / (FN + TN), TN / (FN + TN)]]
-    return normalized_cm
+
+    return [[TP / (TP + FP), FP / (TP + FP)], \
+            [FN / (FN + TN), TN / (FN + TN)]] if normalize else cm
 
 
 def get_label_counts(y_true, y_pred, labels=None):
@@ -116,24 +114,12 @@ def compute_all(y_true, y_pred, labels=None):
         if label not in d:
             d[label] = {}
         try:
-            count_cm = compute_counts(y_true, y_pred, label)
-            d[label] = {"cm": count_cm}
-        except:
-            continue
-        try:
-            normalized_cm = confusion_matrix(y_true,
-                                             y_pred,
-                                             label,
-                                             normalize=True)
-            d[label]["normalized_cm"] = normalized_cm
-        except:
-            continue
-        try:
-            metrics = precision_recall_f1_accuracy(y_true, y_pred, label)
-            d[label]['metrics'] = metrics
-        except:
-            continue
-        try:
+            d[label] = {"cm": compute_counts(y_true, y_pred, label)}
+            d[label]["normalized_cm"] = confusion_matrix(y_true,
+                                                         y_pred,
+                                                         label,
+                                                         normalize=True)
+            d[label]['metrics'] = precision_recall_f1_accuracy(y_true, y_pred, label)
             d["label_count_dict"] = get_label_counts(y_true, y_pred, labels)
         except:
             continue
