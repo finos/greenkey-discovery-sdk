@@ -118,7 +118,18 @@ examples
     ```
     Ensure that your *transcripts are unformatted text with numbers spelled out*. Formatting will be taken care of by your entities, and the output from transcription engines will be unformatted.
 
-2) The intents file, `examples/digit/custom/definitions.yaml`, contains examples that match the tests
+    At the top of the `tests.txt` file, you can add "whitelists" to narrow Discovery to a particular set of intents or domains.
+    In the above example, setting `intent_whitelist: digit` forces discovery to only look for entities associated with the intent `digit`.
+    You can also do a `domain_whitelist`, to only allow the intents that belong to a certain domain. Comma separate values if you have multple.
+
+    If you are using Discovery primarily as an intent classifier, you may list the "intent" as a property to be tested in the `tests.txt`:
+    ```
+    test: {name of test}
+    transcript: {transcript you want to parse}
+    intent: {expected intent}
+    ```
+
+2) The definition file, `examples/digit/custom/definitions.yaml`, contains examples that match the tests
     ```
     entities:
       room_number:
