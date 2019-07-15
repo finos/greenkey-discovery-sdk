@@ -107,12 +107,8 @@ def compute_all(y_true, y_pred, labels=None):
         normalized cm
         precision, recall, f1_score, accuracy
     """
-    d = defaultdict(dict)
-    if not labels:
-        labels = sorted(list(set(y_true)))
-    for label in labels:
-        if label not in d:
-            d[label] = {}
+    d = defaultdict(dict, lambda: {})
+    for label in labels if labels is not None else sorted(list(set(y_true))):
         try:
             d[label] = {"cm": compute_counts(y_true, y_pred, label)}
             d[label]["normalized_cm"] = confusion_matrix(y_true,
@@ -121,7 +117,8 @@ def compute_all(y_true, y_pred, labels=None):
                                                          normalize=True)
             d[label]['metrics'] = precision_recall_f1_accuracy(y_true, y_pred, label)
             d["label_count_dict"] = get_label_counts(y_true, y_pred, labels)
-        except:
+        except Exception as exc:
+            print("Error: %s with metric computation", exc)
             continue
     return d
 
