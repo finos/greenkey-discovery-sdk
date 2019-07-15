@@ -8,43 +8,36 @@ Available functions:
 - launch_discovery: Starts discovery container or binaries
 """
 import fnmatch
-from multiprocessing import Process
 import os
 import subprocess
 import sys
+from multiprocessing import Process
+from os.path import abspath, exists, isdir as is_dir, join as join_path
 
 from discovery_config import DISCOVERY_CONFIG, DISCOVERY_PORT, DISCOVERY_IMAGE_NAME
 from discovery_config import CONTAINER_NAME
 
 
-def launch_discovery(custom_directory=None,
-                     type=None,
-                     port=None,
-                     discovery_config=None,
-                     container_name=None):
+def launch_discovery(custom_directory=None, type=None, port=None, discovery_config=None, container_name=None):
     """Launches the Discovery engine either via docker container or via compiled binaries.
 
-    Args:
-        custom_directory: File path to the custom directory would like uploaded to discovery.
-        type: String, can either be 'docker' or 'binaries'
+    :param custom_directory: str; path to the 'custom/` directory to mount at Discovery launch
+    :param type: str, options: 'docker' or 'binaries'
     """
-    if custom_directory is None:
+    if not custom_directory:
+        print("Directory `custom/` not set. We are using the current working directory by default.")
         custom_directory = os.getcwd()
-    if port is None:
+    if not port:
         port = DISCOVERY_PORT
-    if discovery_config is None:
+    if not discovery_config:
         discovery_config = DISCOVERY_CONFIG
-    if container_name is None:
+    if not container_name:
         container_name = CONTAINER_NAME
-
-    if type is None:
+    if not type:
         type = _determine_discovery_launch_type()
-
     if type == 'docker':
-        return _launch_container(custom_directory, port, discovery_config,
-                                 container_name)
-
-    return _launch_binaries(custom_directory, port, discovery_config)
+        return _launch_container(custom_directory, port, discovery_config, container_name)
+    return _launch_binaries(custom_directory)
 
 
 def _determine_discovery_launch_type():
@@ -58,14 +51,13 @@ def _launch_container(custom_directory, port, discovery_config, container_name):
     """
     launches the Discovery docker container.
 
-    :param custom_directory: `custom/` directory with config adn data files for custom interpreter:
-    intents.json, schema.json (optional), entities/ (optional) #TODO changes in development
-    any supporting `.txt` files requisite for training or testing intents and/or entities
+    :param custom_directory: `custom/` directory with yaml files defining interpreters
+    and supporting `.txt` files requisite for training or testing intents and/or entities (if any)
 
     All other variables are imported from `discovery_config.py`
      - required: valid GKT_USERNAME & GKT_SECRET_KEY
-     - required if values used by running container: DISCOVERY_PORT, PORT, CONTAINER_NAME,
-     - additional values modify Discovery behavior!
+     - required if Discovery is launched as Docker container: DISCOVERY_PORT, PORT, CONTAINER_NAME,
+     - all optional params set to default values
 
     :param port: DISCOVERY_PORT -> port outside container: location to send POST requests
     :param discovery_config: DISCOVERY_CONFIG: dict; see for specifics
@@ -73,31 +65,31 @@ def _launch_container(custom_directory, port, discovery_config, container_name):
         default: `discovery-dev`
         recommend: select unique name when launching container (modify config script)
 
-        IMPORTANT:
-        CONTAINER_NAME: sets name of output log file in `launch_discovery.py`
-        - also parameter required to launch container
-    :return: launches Discovery container; default:
-        mounts custom directory in examples/directions (modify under `__main__`
+    :return: launches Discovery container
+        mounts custom/ directory in DISCOVERY_DIRECTORY (parameters of launch_discovery.py)
     """
-    dico_dir = ["-v", "{}/dico:/dico".format(custom_directory)
-                ] if os.path.isdir(custom_directory + '/dico') else []
+    dico_dir = "{}/dico:/dico".format(custom_directory)
+    dico_dir = ["-v", dico_dir] if exists(dico_dir) and is_dir(dico_dir) else []
 
     try:
         config_items = discovery_config.iteritems()
     except AttributeError:
         config_items = iter(discovery_config.items())
 
-    # yapf: disable
+    # option to mount models/ directory if USED_SAVED_MODELS is True
+    # model_dir = "{}/models".format(custom_directory)
+    # model_dir = ["-v", model_dir] if exists(model_dir) and is_dir(model_dir) else []
+
     launch_command = ' '.join(
-        ["docker", "run", "--rm", "-d"] +
-        ["--name", container_name] +
-        ["-v", '"{}":/custom'.format(custom_directory)] +
-        ["-p", "{}:{}".format(port, discovery_config["PORT"])] +
-        dico_dir +
-        ["-e {}={}".format(k, v) for k, v in config_items] +
-        [DISCOVERY_IMAGE_NAME]
+        ["docker", "run", "--rm", "-d"]
+        + ["--name", container_name]
+        + ["-v", '"{}":/custom'.format(custom_directory)]
+        + ["-p", "{}:{}".format(port, discovery_config["PORT"])]
+        + dico_dir
+        # + model_dir
+        + ["-e {}={}".format(k, v) for k, v in discovery_config.items()]
+        + [DISCOVERY_IMAGE_NAME]
     )
-    # yapf: enable
     print("Launching Discovery from Container: {}\n".format(launch_command))
 
     subprocess.call(launch_command, shell=True)
@@ -107,13 +99,12 @@ def _launch_binaries(custom_directory):
     """launches Discovery from the compiled binaries."""
     binaries_directory = _detect_binaries_file()
     if binaries_directory:
-        sys.path.append(os.path.abspath(binaries_directory))
+        sys.path.append(abspath(binaries_directory))
         from run import find_definition_files_and_copy_them_to_appropriate_location
+
         find_definition_files_and_copy_them_to_appropriate_location(
-            os.path.join(custom_directory), os.path.abspath(binaries_directory))
-
-        sys.path.append(os.path.join(binaries_directory, 'discovery'))
-
+            join_path(custom_directory), abspath(binaries_directory))
+        sys.path.append(join_path(binaries_directory, 'discovery'))
         print("Launching Discovery from Binaries: {}\n".format(binaries_directory))
 
         os.environ["SERVICE_NAME"] = "discovery"
@@ -128,7 +119,7 @@ def _detect_binaries_file():
     for file in os.listdir('.'):
         if fnmatch.fnmatch(file, 'discovery_binaries_*') and not file.endswith(
                 '.tar.gz') and not file.endswith('.zip'):
-            return os.path.abspath(file)
+            return abspath(file)
     return None
 
 
