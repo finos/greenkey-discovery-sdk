@@ -5,16 +5,37 @@ dico/
 .pytest_cache/
 .eggs/
 
-*.log
-*.bin
+# Pycharm
+.idea/
 
+# VSCode
+.vscode/
 
+# IPython
+.ipynb_checkpoints/
+*.ipynb
+
+# Env
 Pipfile
 Pipfile.lock
 
-.idea/
+# Extensions
+*.json
+*.csv
+*.xml
+*.tsv
+*.pst
+*.zip
+*.tar
+*.log
+
+# Directories
 data/
-notes/
 models/
+results/
 logs/
+custom/*.txt
+
+# env var
 secrets.py
+test_results.json
