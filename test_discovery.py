@@ -83,7 +83,7 @@ def wait_for_discovery_status():
             check_discovery_status()
             return True
         except Exception:
-            logger.error("Could not reach discovery, attempt {0} of {1}".format(i, RETRIES))
+            logger.error("Could not reach discovery, attempt {0} of {1}".format(i+1, RETRIES))
             time.sleep(TIMEOUT)
     return False
 
