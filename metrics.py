@@ -107,7 +107,7 @@ def compute_all(y_true, y_pred, labels=None):
         normalized cm
         precision, recall, f1_score, accuracy
     """
-    d = defaultdict(dict, lambda: {})
+    d = defaultdict(dict)
     for label in labels if labels is not None else sorted(list(set(y_true))):
         try:
             d[label] = {"cm": compute_counts(y_true, y_pred, label)}
