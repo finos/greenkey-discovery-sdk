@@ -1,4 +1,4 @@
-# GreenKey Scribe Discovery SDK [![Build Status](https://travis-ci.org/finos-voice/greenkey-discovery-sdk.svg?branch=master)](https://travis-ci.org/finos-voice/greenkey-discovery-sdk)
+# GreenKey Scribe Discovery SDK [![Build Status](https://travis-ci.org/finos/greenkey-discovery-sdk.svg?branch=master)](https://travis-ci.org/finos/greenkey-discovery-sdk)
 > Speed up business workflows through creating custom 'voice skills' and text interpreters
 
 <img src="https://greenkeytech.com/wp-content/uploads/2019/02/gk_logo_colorlight.png" width="300" />
@@ -248,5 +248,5 @@ Copyright 2019 GreenKey Technologies
 [Code of Conduct]: https://www.finos.org/code-of-conduct
 [Voice Program]: https://finosfoundation.atlassian.net/wiki/spaces/VOICE/overview
 [SemVer]: http://semver.org
-[list of contributors]: https://github.com/finos-voice/greenkey-discovery-sdk/graphs/contributors
-[tags on this repository]: https://github.com/finos-voice/greenkey-discovery-sdk/tags
+[list of contributors]: https://github.com/finos/greenkey-discovery-sdk/graphs/contributors
+[tags on this repository]: https://github.com/finos/greenkey-discovery-sdk/tags
