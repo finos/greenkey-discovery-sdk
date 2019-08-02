@@ -1,19 +1,19 @@
 # GreenKey Scribe Discovery SDK [![Build Status](https://travis-ci.org/finos/greenkey-discovery-sdk.svg?branch=master)](https://travis-ci.org/finos/greenkey-discovery-sdk)
-> Speed up business workflows through creating custom 'voice skills' and text interpreters
+> Powerful NLP API for human conversations
 
 <img src="https://greenkeytech.com/wp-content/uploads/2019/02/gk_logo_colorlight.png" width="300" />
 
 ---
 
-The Discovery SDK allows you to write logic-based interpreters, and let Scribe's Discovery engine use probabilistic search to identify intents and entities.
+The Discovery SDK allows you to write logic-based interpreters, and let GreenKey's Discovery engine use probabilistic search to identify intents and entities.
 
-You can use your Discovery interpreter to power several voice-driven workflows such as:
+You can use your Discovery interpreter to power several voice- and chat-driven workflows
 
-- Building a skill in combination with [Scribe's Real-Time Dictation](https://transcription.greenkeytech.com/sqc-06437d7/)
+- Building a skill in combination with [Scribe's Real-Time Dictation](https://docs.greenkeytech.com/audio/#audioserver)
 
-- Searching transcribed files for key phrases with [Scribe's File Transcription](https://transcription.greenkeytech.com/svt-e0286da/)
+- Searching transcribed files for key phrases with [Scribe's File Transcription]https://docs.greenkeytech.com/audio/#fileserver)
 
-Read more about Discovery on our [blog](https://greenkeytech.com/greenkey-scribe-discovery-skills/) or [checkout the full documentation](https://transcription.greenkeytech.com/discovery-1890af/)
+Read more about Discovery on our [blog](https://greenkeytech.com/greenkey-scribe-discovery-skills/) or [checkout the full documentation](https://github.com/finos/greenkey-discovery-sdk/wiki)
 
 The GreenKey Discovery SDK
 is hosted by the [Voice Program] of the Fintech Open Source Foundation ([FINOS]).
@@ -25,11 +25,11 @@ please consider joining FINOS.
 1. [Quickstart](#1-quickstart)
     - Step through the 'digit' interpreter example.
 
-2. [Customization and Discovery CLI](#2-customization-and-discovery-cli)
-    - Customize your own interpreter and use the Discovery CLI to set up a project or entities.
+2. [Customization](#2-customization)
+    - Customize your own interpreter.
 
 3. [Advanced Examples and Documentation](#3-advanced-examples-and-documentation)
-    - Transcribing voice audio files with SVTServer and using the Discovery engine.
+    - Transcribing voice audio files with Scribe and using the Discovery engine.
 
 
 # 1. Quickstart
@@ -163,7 +163,7 @@ examples
     (2 / 2) tests passed in 0s with 0 errors, Character error rate: 0.00%
     ```
 
-# 2. Customization and Discovery CLI
+# 2. Customization
 
 Creating a custom project can be done by following the structure of an existing example found in the `examples` folder.
 
@@ -171,32 +171,15 @@ Creating a custom project can be done by following the structure of an existing 
 
 ## Testing with Real Audio
 
-Scribe Discovery can use output from our delayed file transcription engine (SVTServer) or our real-time dictation engine (SQCServer).
+Scribe Discovery can use output from our transcription engine (Scribe).
 
 For development purposes, it's easiest to first record a few audio files using your favorite software wherein you or someone else is speaking the voice commands or key phrases you want to interpret.
 
-Then, run these files through SVTServer [following our documentation](https://transcription.greenkeytech.com/svt-e0286da/) with the SVTServer parameter `WORD_CONFUSIONS="True"` enabled when you launch the container.
+Then, run these files through Scribe [following our documentation](https://docs.greenkeytech.com). When launching the decoder, make sure the parameter `WORD_CONFUSIONS="True"` is enabled.
 
-For example, you can launch a single job container with the following command for a file called `test.wav`. Be sure to set `$USERNAME` and `$SECRETKEY`
+Once complete, you should have JSON output for each audio file you generated (e.g. `test.json` for `test.wav`). Each JSON output contains a **word confusion lattice** that Discovery searches for your target phrases.
 
-```bash
-docker run \
-    -it \
-    --rm \
-    --name svtserver-test \
-    -e GKT_API="https://scribeapi.greenkeytech.com/" \
-    -e GKT_USERNAME="$USERNAME" \
-    -e GKT_SECRETKEY="$SECRETKEY" \
-    -e TARGET_FILE="/files/test.wav" \
-    -v "$PWD":/files \
-    -e ENABLE_CLOUD="False" \
-    -e PROCS=1 \
-    docker.greenkeytech.com/svtserver
-```
-
-Once complete, you should have a JSON file for each audio file you generated (e.g. `test.json` for `test.wav`). Each JSON file contains a **word confusion lattice** that Discovery searches for your target phrases.
-
-These JSON files can be used directly with the Discovery Engine using `curl` or another http client. The example directories provide guidance on how to send these files to Discovery in the `send_transcript_to_discovery.sh` script.
+These JSON outputs can be used directly with the Discovery Engine using `curl` or another http client. The example directories provide guidance on how to send these files to Discovery in the `send_transcript_to_discovery.sh` script.
 
 For the 'digit' example, `send_transcript_to_discovery.sh` contains:
 ```bash
