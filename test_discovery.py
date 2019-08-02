@@ -129,7 +129,7 @@ def json_dump(data, outfile, directory=None):
     if not directory:
         directory = os.getcwd()
     outfile = join_path(directory, outfile)
-    json.dump(data, open(outfile, 'w+'))
+    json.dump(data, open(outfile, 'w+'), indent=2)
 
 
 def load_tests(test_file):
