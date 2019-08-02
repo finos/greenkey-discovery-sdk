@@ -40,7 +40,7 @@ console_handler = logging.StreamHandler()
 console_handler.setLevel(logging.ERROR)
 
 file_handler = logging.FileHandler('test_discovery.log')
-file_handler.setLevel(logging.DEBUG)
+file_handler.setLevel(logging.INFO)
 
 console_handler.setFormatter(formatter)
 file_handler.setFormatter(formatter)
@@ -195,7 +195,7 @@ def format_whitelist(line):
     _, whitelist = line.split(":", maxsplit=1)
 
     if ',' in whitelist:
-        whitelist = [_.strip() for _ in value.split(',')]
+        whitelist = [_.strip() for _ in whitelist.split(',')]
     return whitelist
 
 
@@ -242,56 +242,56 @@ def test_single_entity(entities, test_name, test_value):
     :param test_name:
     :param test_value: str, expected substrings for
     """
-
     if test_name not in entities.keys():
-        fail_test({}, "Entity not found: {}".format(test_name), continued=True)
+        msg = "Entity not found: {}".format(test_name)
+        fail_test({}, msg, continued=True)
+        logger.info(msg)
         return 1, len(test_value)
 
     if entities[test_name] != test_value:
-        fail_test({}, "Value incorrect: ({}) expected {} != {}".format(test_name, test_value, entities[test_name]),
-                  continued=True)
+        msg = "\nObserved Entity Value Incorrect: ({}) Expected {} != {}".format(test_name, test_value, entities[test_name])
+        fail_test({}, msg, continued=True)
+        logger.info(msg)
         return 1, editdistance.eval(test_value, entities[test_name])
     return 0, 0
 
 
-def test_single_case(test_dict, response_intent_dict):
+def test_single_case(test_dict, observed_entity_dict):
     """
     Run a single test case and return the number of errors
 
     :param test_dict: dict;
-	key: str; name of entity
-	value: str; first occurrence of entity in transcript
+    key: str; name of entity
+    value: str; first occurrence of entity in transcript
 
-    :param response_intent_dict: dict, single intent from Discovery response
+    :param observed_entity_dict: dict, single intent from Discovery response
     :return: Tuple(bool, int, int, int)
         first element: bool; 0 if tests pass, 1 if tests fails
         total_errors: int; number of entities in test whose observed value (str) differs from expected
         total_char_errors: int; sum of number of characters that differ between observed and expected values for each entity
         characters: int; length of expected entity label (test_value)
     """
-    # Get all values of entities
-    entities = {
-        ent["label"]: ent["matches"][0][0]["value"]
-        for ent in response_intent_dict["entities"]
-    }
-
     total_errors = 0
     total_char_errors = 0
     characters = 0
 
     # Loop through all entity tests
-    for test_name, test_value in test_dict.items():
-        if test_name in ['test', 'transcript', 'intent']:
+    for label, value in test_dict.items():
+        if label in ['test', 'transcript', 'intent']:
             continue
-        (errors, char_errors) = test_single_entity(entities, test_name, test_value)
+        entity_label, expected_entity_value = label, value
+        (errors, char_errors) = test_single_entity(entities=observed_entity_dict, test_name=entity_label, test_value=expected_entity_value)
         total_errors += errors
         total_char_errors += char_errors
-        characters += len(test_value)
+        characters += len(expected_entity_value)
 
-    extra_entities = {x: entities[x] for x in entities.keys() if x not in test_dict}
+    # entities found by discovery but not specified in test file
+    extra_entities = {x: observed_entity_dict[x] for x in observed_entity_dict if x not in test_dict}
 
     if extra_entities:
-        print("Extra entities: {}\n".format(extra_entities))
+        extra_entities_msg = "Extra entities: {}\n".format(extra_entities)
+        logger.info(extra_entities_msg)
+        print(extra_entities_msg)
 
     if total_errors:
         return 1, total_errors, total_char_errors, characters
@@ -345,22 +345,26 @@ def test_all(test_file):
     y_pred = []
     output_dict = defaultdict(dict)
 
-    for test_no, test in enumerate(tests):
-        test_name, transcript = test['test'], test['transcript']
+    # for test_no, test in enumerate(tests):
+    for test_no, test_dict in enumerate(tests):
+        test_name, transcript = test_dict['test'], test_dict['transcript']
 
-        logger.info("======\nTest: {}".format(test_name))
+        test_start_msg = "======\nTest: {}".format(test_name)
+        logger.info(test_start_msg)
 
-        resp = submit_transcript(test['transcript'], intent_whitelist, domain_whitelist)
+        resp = submit_transcript(test_dict['transcript'], intent_whitelist, domain_whitelist)
 
         # Check if a valid response was received
         if not is_valid_response(resp):
             fail_test(resp)
 
-        # keep only the most likely hypothesis from Discovery
+        # keep only the most likely hypothesis from Discovery    -> first dict in list of dicts returned by Discovery
         most_likely_intent = resp["intents"][0]
 
-        if 'intent' in test:
-            expected_intent, observed_intent = test['intent'], most_likely_intent['label']
+        ################################################################################################################
+        # Test intent for test test_no
+        if 'intent' in test_dict:
+            expected_intent, observed_intent = test_dict['intent'], most_likely_intent['label']
             y_true.append(expected_intent)
             y_pred.append(observed_intent)
             correct = 1 if expected_intent == observed_intent else 0
@@ -376,12 +380,34 @@ def test_all(test_file):
                 failed_tests += 1
                 fail_test(resp, message=observed_not_expected_msg, continued=True)
 
-        (failure, errors, char_errors, characters) = test_single_case(test, most_likely_intent)
+        ################################################################################################################
+        # Get all values of all entities returned by discovery for a test transcript
+        entities_found = most_likely_intent["entities"]
+        observed_entity_dict = {
+            ent["label"]: ent["matches"][0][0]["value"]
+            for ent in entities_found
+        }
+        # Remove non-entity keys from test_dict, then pass to `test_single_case`
+        for label in ['test', 'transcript', 'intent']:
+            try:
+                del observed_entity_dict[label]
+                del test_dict[label]
+            except KeyError:
+                continue
+        output_dict[test_no]["expected_entities"] = test_dict
+        output_dict[test_no]["observed_entities"] = observed_entity_dict
+
+        ################################################################################################################
+        # Start Testing Entities for Test case : test_no
+        (failure, errors, char_errors, characters) = test_single_case(test_dict, observed_entity_dict)
         failed_tests += failure
         total_errors += errors
         total_char_errors += char_errors
         total_characters += characters
 
+    ####################################################################################################################
+    # All tests complete
+    ####################################################################################################################
     time_lapsed = int(time.time()) - t1
     total_entity_character_errors = total_errors
     correct_tests = total_tests - failed_tests
@@ -475,7 +501,8 @@ def main(discovery_directory, test_file, shutdown=True):
     :return: loads yaml definitions files, launches discovery, trains custom interpreters, posts each test in test_file
         and saves results + computed metrics
     """
-    custom_directory = join_path(discovery_directory, 'custom')
+    custom_directory =  join_path(discovery_directory, 'custom')
+    
     try:
         assert exists(discovery_directory) and exists(custom_directory)
     except AssertionError:
@@ -506,7 +533,8 @@ if __name__ == '__main__':
     parser.add_argument('--tests', '-t', default='tests.txt', type=str, help='Path to file containing tests')
     parser.add_argument('--shutdown', default=True, type=bool, help='Whether to stop Discovery container after testing')
     args = parser.parse_args()
-
+  
     DISCOVERY_DIRECTORY = abspath(args.directory)
     TEST_FILE = join_path(DISCOVERY_DIRECTORY, args.tests)
+    
     main(discovery_directory=DISCOVERY_DIRECTORY, test_file=TEST_FILE, shutdown=args.shutdown)
