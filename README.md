@@ -110,6 +110,7 @@ examples
 
     `tests.txt` follows the following format:
     ```
+    # Comments are ignored
     test: {name of test}
     transcript: {transcript you want to parse}
     {entity 1}: {value}
