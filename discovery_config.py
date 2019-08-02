@@ -21,11 +21,13 @@ DISCOVERY_CONFIG = {
     "MAX_WORDS_PER_TIMESLOT": "50",
     "USE_CUSTOM_JSON_SCHEMA": "False",
     "SUPPRESS_DEFAULT_OUTPUT": "True",
-    "FILE_LOG_LEVEL": "info",  # options for increasing log verbosity: payload, debug, verbose
+    "FILE_LOG_LEVEL": "verbose",  # options for increasing log verbosity: payload, debug, verbose
     "SCHEMA_ENTITY_REPLACEMENT_POLICY": "Best",
     "USE_SAVED_MODELS": "False",     # if True, pretrained model should be in /scribediscovery/models
     "STRIP_TEXT_FORMAT": "False",
-    "EXPLICIT_REGEX": "False",
+    "EXPLICIT_REGEX": "True",
+    "FORMAT_ENTITY": "True",
+    "VALIDATE_ENTITY": "True",
     "PORT": "1234",  # Port that Discovery will bind to on the Docker daemon, change if port is taken already}
 }
 
