@@ -533,7 +533,6 @@ if __name__ == '__main__':
     parser.add_argument('--tests', '-t', default='tests.txt', type=str, help='Path to file containing tests')
     parser.add_argument('--shutdown', default=True, type=bool, help='Whether to stop Discovery container after testing')
     args = parser.parse_args()
-  
     DISCOVERY_DIRECTORY = abspath(args.directory)
     TEST_FILE = join_path(DISCOVERY_DIRECTORY, args.tests)
     
