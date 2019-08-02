@@ -36,5 +36,5 @@ DISCOVERY_HOST = "localhost"
 TAG = "develop"
 DISCOVERY_IMAGE_NAME = "docker.greenkeytech.com/discovery:{}".format(TAG)
 
-TIMEOUT = 60
-RETRIES = 5
+TIMEOUT = 20
+RETRIES = 15
