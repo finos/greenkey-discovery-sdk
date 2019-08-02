@@ -199,15 +199,6 @@ def format_whitelist(line):
     return whitelist
 
 
-def bson_format(s):
-    if "$" in s:
-        s = s.replace("$", "_$")
-
-    if "." in s:
-        s = s.replace(".", ";")
-
-    return s
-
 def submit_transcript(transcript, intent_whitelist='any', domain_whitelist='any'):
     """
     Submits a transcript to Discovery
@@ -215,7 +206,7 @@ def submit_transcript(transcript, intent_whitelist='any', domain_whitelist='any'
     :param intent_whitelist: str; 'any' (default) or list of intent labels (if intent_whitelist in test_file)
     :param domain_whitelist: str: 'any' (default) or list of domain labels (if domain_whitelist in test_file)
     """
-    payload = {"transcript": bson_format(transcript), "intents": intent_whitelist, "domains": domain_whitelist}
+    payload = {"transcript": transcript, "intents": intent_whitelist, "domains": domain_whitelist}
     response = requests.post(DISCOVERY_URL, json=payload)
     if not response.status_code == 200:
         logger.error("Request was not successful. Response Status Code: {}".format(response.status_code))
