@@ -137,7 +137,7 @@ def load_tests(test_file):
     Loads and parses the test file
     """
     with open(test_file) as f:
-        test_file = [_.strip() for _ in f if _.strip()]
+        test_file = [_.strip() for _ in f if _.strip() and not _.startswith("#")]
 
     test_file = remove_comments(test_file)
     test_file, intent_whitelist, domain_whitelist = find_whitelists(test_file)
