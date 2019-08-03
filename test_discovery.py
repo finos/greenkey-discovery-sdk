@@ -105,6 +105,7 @@ def shutdown_discovery():
     """
     Shuts down the Discovery engine Docker container
     """
+    print("\nShutting down Discovery\n")
     try:
         requests.get("http://{}:{}/shutdown?secret_key={}".format(
             DISCOVERY_HOST, DISCOVERY_PORT, DISCOVERY_SHUTDOWN_SECRET))
@@ -465,7 +466,7 @@ def test_all(test_file):
 
     # # total_errors
     if total_entity_character_errors > 0:
-        logger.error("\nTotal entity characters found: {}\nShutting down Discovery\n".format(total_entity_character_errors))
+        logger.error("\nTotal entity characters found: {}".format(total_entity_character_errors))
 
 
 def fail_test(resp, message="", continued=False):
