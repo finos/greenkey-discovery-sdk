@@ -19,8 +19,8 @@ DISCOVERY_CONFIG = {
     "STRUCTURE_CONFIDENCE_THRESHOLD": "0.8",  # Default is 0.01
     "WORD_PROBABILITY_THRESHOLD": "5e-3",
     "MAX_WORDS_PER_TIMESLOT": "50",
-    "USE_CUSTOM_JSON_SCHEMA": "False",
-    "SUPPRESS_DEFAULT_OUTPUT": "True",
+    "USE_CUSTOM_JSON_SCHEMA": "True",
+    "SUPPRESS_DEFAULT_OUTPUT": "False",
     "FILE_LOG_LEVEL": "verbose",  # options for increasing log verbosity: payload, debug, verbose
     "SCHEMA_ENTITY_REPLACEMENT_POLICY": "Best",
     "USE_SAVED_MODELS": "False",     # if True, pretrained model should be in /scribediscovery/models
