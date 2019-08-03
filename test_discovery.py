@@ -467,6 +467,11 @@ def test_all(test_file):
     # # total_errors
     if total_entity_character_errors > 0:
         logger.error("\nTotal entity characters found: {}".format(total_entity_character_errors))
+        
+    if total_tests > correct_tests:
+      return False
+      
+    return True
 
 
 def fail_test(resp, message="", continued=False):
@@ -539,13 +544,15 @@ def main(discovery_directory, test_file, shutdown=True):
     wait_for_discovery_launch()
 
     try:
-        test_all(test_file)
+        success = test_all(test_file)
     except Exception:
         logger.exception("Error: Check test file for formatting errors", exc_info=True)
 
     if shutdown:
         shutdown_discovery()
-
+        
+    if not success:
+        exit(1)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Launch Discovery and Run Tests')
