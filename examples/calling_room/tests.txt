@@ -1,9 +1,17 @@
 intent_whitelist: calling_room
 
+# Comments should be ignored
 test: room number
 transcript: Leave a message for room three b
 room_number: 3 B
+schema: {"room_number": "3 B"}
 
 test: room number
 transcript: I'm staying in eleven f
 room_number: 11 F
+#
+# Multiple schema tests are possible
+# Schema tests can nest or be called on lists
+#
+schema: {"calling_room": {"room_number": "11 F"}}
+schema: {"room_number": "11 F"}

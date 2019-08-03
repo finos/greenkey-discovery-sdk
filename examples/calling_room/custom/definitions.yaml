@@ -5,6 +5,10 @@ intents:
       - "I will be staying in room @room_number"
       - "Forward my call to room @room_number"
       - "I need a change of linens in suite @room_number"
+    schema:
+      return_json:
+        calling_room: 
+          room_number: "@room_number"
 entities:
   room_number:
     - "@num{1,2} @letter"
