@@ -115,6 +115,12 @@ examples
     transcript: {transcript you want to parse}
     {entity 1}: {value}
     {entity 2}: {value}
+    #
+    # Tests for custom JSON schemas are also allowed
+    # Keys provided are recursively searched for in the response
+    #
+    schema: {"some_custom_schema_key_1": "some_value_1"}
+    schema: {"some_custom_schema_key_2": "some_value_2"}
     ...
     ```
     Ensure that your *transcripts are unformatted text with numbers spelled out*. Formatting will be taken care of by your entities, and the output from transcription engines will be unformatted.
