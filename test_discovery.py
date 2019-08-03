@@ -245,9 +245,32 @@ def test_single_entity(entities, test_name, test_value):
         logger.info(msg)
         return 1, editdistance.eval(test_value, entities[test_name])
     return 0, 0
+    
+    
+def test_schema(full_response, test_value):
+    """
+    For each key-value pair given in the schema test,
+    recursively search the JSON response for the key,
+    then make sure the value is correct
+    """
+    def _find(obj, key):
+        if key in obj: return obj[key]
+        for k, v in obj.items():
+          if isinstance(v,dict):
+            item = _find(v, key)
+            if item is not None:
+                return item
+            elif isinstance(v,list):
+                for list_item in v:
+                    item = _find(list_item, key)
+                    if item is not None:
+                        return item
+    
+    # Returning number of errors, so check for values that do not equal test case
+    return sum(map(lambda k: _find(full_response, k) != test_value[k], list(test_value.keys())))
 
 
-def test_single_case(test_dict, observed_entity_dict):
+def test_single_case(test_dict, observed_entity_dict, full_response):
     """
     Run a single test case and return the number of errors
 
@@ -271,10 +294,15 @@ def test_single_case(test_dict, observed_entity_dict):
         if label in ['test', 'transcript', 'intent']:
             continue
         entity_label, expected_entity_value = label, value
-        (errors, char_errors) = test_single_entity(entities=observed_entity_dict, test_name=entity_label, test_value=expected_entity_value)
+        if entity_label == "schema":
+          errors = test_schema(full_response=full_response, test_value=json.loads(expected_entity_value))
+          if errors:
+            print("\nSchema test failed for {} with response below:\n{}\n".format(expected_entity_value, full_response))
+        else:  
+          (errors, char_errors) = test_single_entity(entities=observed_entity_dict, test_name=entity_label, test_value=expected_entity_value)
+          total_char_errors += char_errors
+          characters += len(expected_entity_value)
         total_errors += errors
-        total_char_errors += char_errors
-        characters += len(expected_entity_value)
 
     # entities found by discovery but not specified in test file
     extra_entities = {x: observed_entity_dict[x] for x in observed_entity_dict if x not in test_dict}
@@ -390,7 +418,7 @@ def test_all(test_file):
 
         ################################################################################################################
         # Start Testing Entities for Test case : test_no
-        (failure, errors, char_errors, characters) = test_single_case(test_dict, observed_entity_dict)
+        (failure, errors, char_errors, characters) = test_single_case(test_dict, observed_entity_dict, resp)
         failed_tests += failure
         total_errors += errors
         total_char_errors += char_errors
