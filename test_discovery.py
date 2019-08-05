@@ -105,6 +105,7 @@ def shutdown_discovery():
     """
     Shuts down the Discovery engine Docker container
     """
+    print("\nShutting down Discovery\n")
     try:
         requests.get("http://{}:{}/shutdown?secret_key={}".format(
             DISCOVERY_HOST, DISCOVERY_PORT, DISCOVERY_SHUTDOWN_SECRET))
@@ -129,7 +130,7 @@ def json_dump(data, outfile, directory=None):
     if not directory:
         directory = os.getcwd()
     outfile = join_path(directory, outfile)
-    json.dump(data, open(outfile, 'w+'))
+    json.dump(data, open(outfile, 'w+'), indent=2)
 
 
 def load_tests(test_file):
@@ -137,7 +138,7 @@ def load_tests(test_file):
     Loads and parses the test file
     """
     with open(test_file) as f:
-        test_file = [_.strip() for _ in f if _.strip()]
+        test_file = [_.strip() for _ in f if _.strip() and not _.startswith("#")]
 
     test_file = remove_comments(test_file)
     test_file, intent_whitelist, domain_whitelist = find_whitelists(test_file)
@@ -199,15 +200,6 @@ def format_whitelist(line):
     return whitelist
 
 
-def bson_format(s):
-    if "$" in s:
-        s = s.replace("$", "_$")
-
-    if "." in s:
-        s = s.replace(".", ";")
-
-    return s
-
 def submit_transcript(transcript, intent_whitelist='any', domain_whitelist='any'):
     """
     Submits a transcript to Discovery
@@ -215,7 +207,7 @@ def submit_transcript(transcript, intent_whitelist='any', domain_whitelist='any'
     :param intent_whitelist: str; 'any' (default) or list of intent labels (if intent_whitelist in test_file)
     :param domain_whitelist: str: 'any' (default) or list of domain labels (if domain_whitelist in test_file)
     """
-    payload = {"transcript": bson_format(transcript), "intents": intent_whitelist, "domains": domain_whitelist}
+    payload = {"transcript": transcript, "intents": intent_whitelist, "domains": domain_whitelist}
     response = requests.post(DISCOVERY_URL, json=payload)
     if not response.status_code == 200:
         logger.error("Request was not successful. Response Status Code: {}".format(response.status_code))
@@ -254,9 +246,32 @@ def test_single_entity(entities, test_name, test_value):
         logger.info(msg)
         return 1, editdistance.eval(test_value, entities[test_name])
     return 0, 0
+    
+    
+def test_schema(full_response, test_value):
+    """
+    For each key-value pair given in the schema test,
+    recursively search the JSON response for the key,
+    then make sure the value is correct
+    """
+    def _find(obj, key):
+        if key in obj: return obj[key]
+        for k, v in obj.items():
+          if isinstance(v,dict):
+            item = _find(v, key)
+            if item is not None:
+                return item
+            elif isinstance(v,list):
+                for list_item in v:
+                    item = _find(list_item, key)
+                    if item is not None:
+                        return item
+    
+    # Returning number of errors, so check for values that do not equal test case
+    return sum(map(lambda k: _find(full_response, k) != test_value[k], list(test_value.keys())))
 
 
-def test_single_case(test_dict, observed_entity_dict):
+def test_single_case(test_dict, observed_entity_dict, full_response):
     """
     Run a single test case and return the number of errors
 
@@ -280,10 +295,15 @@ def test_single_case(test_dict, observed_entity_dict):
         if label in ['test', 'transcript', 'intent']:
             continue
         entity_label, expected_entity_value = label, value
-        (errors, char_errors) = test_single_entity(entities=observed_entity_dict, test_name=entity_label, test_value=expected_entity_value)
+        if entity_label == "schema":
+          errors = test_schema(full_response=full_response, test_value=json.loads(expected_entity_value))
+          if errors:
+            print("\nSchema test failed for {} with response below:\n{}\n".format(expected_entity_value, full_response))
+        else:  
+          (errors, char_errors) = test_single_entity(entities=observed_entity_dict, test_name=entity_label, test_value=expected_entity_value)
+          total_char_errors += char_errors
+          characters += len(expected_entity_value)
         total_errors += errors
-        total_char_errors += char_errors
-        characters += len(expected_entity_value)
 
     # entities found by discovery but not specified in test file
     extra_entities = {x: observed_entity_dict[x] for x in observed_entity_dict if x not in test_dict}
@@ -399,7 +419,7 @@ def test_all(test_file):
 
         ################################################################################################################
         # Start Testing Entities for Test case : test_no
-        (failure, errors, char_errors, characters) = test_single_case(test_dict, observed_entity_dict)
+        (failure, errors, char_errors, characters) = test_single_case(test_dict, observed_entity_dict, resp)
         failed_tests += failure
         total_errors += errors
         total_char_errors += char_errors
@@ -446,7 +466,12 @@ def test_all(test_file):
 
     # # total_errors
     if total_entity_character_errors > 0:
-        logger.error("\nTotal entity characters found: {}\nShutting down Discovery\n".format(total_entity_character_errors))
+        logger.error("\nTotal entity characters found: {}".format(total_entity_character_errors))
+        
+    if total_tests > correct_tests:
+      return False
+      
+    return True
 
 
 def fail_test(resp, message="", continued=False):
@@ -519,13 +544,15 @@ def main(discovery_directory, test_file, shutdown=True):
     wait_for_discovery_launch()
 
     try:
-        test_all(test_file)
+        success = test_all(test_file)
     except Exception:
         logger.exception("Error: Check test file for formatting errors", exc_info=True)
 
     if shutdown:
         shutdown_discovery()
-
+        
+    if not success:
+        exit(1)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Launch Discovery and Run Tests')
