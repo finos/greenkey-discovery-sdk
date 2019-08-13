@@ -540,7 +540,7 @@ def main(discovery_directory, test_file, shutdown=True):
     shutdown_discovery(shutdown)
         
     if not success:
-         sys.exit(1)
+        sys.exit(1)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Launch Discovery and Run Tests')
