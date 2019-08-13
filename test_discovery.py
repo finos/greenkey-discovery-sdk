@@ -351,10 +351,7 @@ def test_all(test_file):
     t1 = int(time.time())
 
     total_tests = len(tests)
-    failed_tests = 0
-    total_errors = 0
-    total_char_errors = 0
-    total_characters = 0
+    failed_tests = total_errors = total_char_errors = total_characters = 0
 
     y_true = []
     y_pred = []
@@ -464,7 +461,7 @@ def test_all(test_file):
         logger.error("\nTotal entity characters found: {}".format(total_entity_character_errors))
         
     if total_tests > correct_tests:
-      return False
+        return False
       
     return True
 
