@@ -26,9 +26,14 @@ from os.path import abspath, exists, join as join_path
 import editdistance
 from metrics import compute_all
 
-from discovery_config import DISCOVERY_PORT, DISCOVERY_HOST, DISCOVERY_SHUTDOWN_SECRET
-from discovery_config import CONTAINER_NAME
-from discovery_config import TIMEOUT, RETRIES
+from discovery_config import (
+  CONTAINER_NAME,
+  DISCOVERY_HOST,
+  DISCOVERY_PORT,
+  DISCOVERY_SHUTDOWN_SECRET, 
+  RETRIES,
+  TIMEOUT,
+)
 from launch_discovery import launch_discovery
 
 DISCOVERY_URL = "http://{}:{}/process".format(DISCOVERY_HOST, DISCOVERY_PORT)
