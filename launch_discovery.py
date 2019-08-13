@@ -18,7 +18,7 @@ from discovery_config import DISCOVERY_CONFIG, DISCOVERY_PORT, DISCOVERY_IMAGE_N
 from discovery_config import CONTAINER_NAME
 
 
-def launch_discovery(custom_directory=None, type=None, port=None, discovery_config=None, container_name=None):
+def launch_discovery(custom_directory=None, type=None, port=DISCOVERY_PORT, discovery_config=DISCOVERY_CONFIG, container_name=CONTAINER_NAME):
     """Launches the Discovery engine either via docker container or via compiled binaries.
 
     :param custom_directory: str; path to the 'custom/` directory to mount at Discovery launch
@@ -27,12 +27,6 @@ def launch_discovery(custom_directory=None, type=None, port=None, discovery_conf
     if not custom_directory:
         print("Directory `custom/` not set. We are using the current working directory by default.")
         custom_directory = os.getcwd()
-    if not port:
-        port = DISCOVERY_PORT
-    if not discovery_config:
-        discovery_config = DISCOVERY_CONFIG
-    if not container_name:
-        container_name = CONTAINER_NAME
     if not type:
         type = _determine_discovery_launch_type()
     if type == 'docker':

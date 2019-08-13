@@ -26,9 +26,14 @@ from os.path import abspath, exists, join as join_path
 import editdistance
 from metrics import compute_all
 
-from discovery_config import DISCOVERY_PORT, DISCOVERY_HOST, DISCOVERY_SHUTDOWN_SECRET
-from discovery_config import CONTAINER_NAME
-from discovery_config import TIMEOUT, RETRIES
+from discovery_config import (
+  CONTAINER_NAME,
+  DISCOVERY_HOST,
+  DISCOVERY_PORT,
+  DISCOVERY_SHUTDOWN_SECRET, 
+  RETRIES,
+  TIMEOUT,
+)
 from launch_discovery import launch_discovery
 
 DISCOVERY_URL = "http://{}:{}/process".format(DISCOVERY_HOST, DISCOVERY_PORT)
@@ -52,9 +57,6 @@ logger.addHandler(file_handler)
 """
 Functions for handling the Discovery Docker container
 """
-
-UNFORMATTED_CHARS = set("abcdefghijklmnopqrstuvwxyz-' ")
-
 
 def docker_log_and_stop():
     """
@@ -101,10 +103,13 @@ def wait_for_discovery_launch():
         print("Discovery Launched!")
 
 
-def shutdown_discovery():
+def shutdown_discovery(shutdown=True):
     """
     Shuts down the Discovery engine Docker container
     """
+    if not shutdown:
+      return
+    
     print("\nShutting down Discovery\n")
     try:
         requests.get("http://{}:{}/shutdown?secret_key={}".format(
@@ -133,39 +138,38 @@ def json_dump(data, outfile, directory=None):
     json.dump(data, open(outfile, 'w+'), indent=2)
 
 
+def store_previous_test(tests, current_test):
+    if current_test:
+        tests.append(current_test)
+    return tests
+  
+  
+def parse_test_line(line, tests, current_test):
+    key, value = line.split(": ", maxsplit=1)
+    if key == "test":
+        tests = store_previous_test(tests, current_test)
+        current_test = {key: value}
+    elif key:
+        current_test[key] = value
+    return tests, current_test
+
+
 def load_tests(test_file):
     """
     Loads and parses the test file
     """
-    with open(test_file) as f:
-        test_file = [_.strip() for _ in f if _.strip() and not _.startswith("#")]
-
-    test_file = remove_comments(test_file)
+    test_file = [_.strip() for _ in open(test_file) if _.strip() and not _.startswith("#")]
     test_file, intent_whitelist, domain_whitelist = find_whitelists(test_file)
-
     tests = []
     current_test = {}
     for line in test_file:
         try:
-            key, value = line.split(": ", maxsplit=1)
-            if key == "test":
-                if current_test:
-                    tests.append(current_test)
-                current_test = {key: value}
-            elif key:
-                current_test[key] = value
+            tests, current_test = parse_test_line(line, tests, current_test)
         except ValueError:
             continue
-    if current_test:
-        tests.append(current_test)
+    
+    tests = store_previous_test(tests, current_test)
     return tests, intent_whitelist, domain_whitelist
-
-
-def remove_comments(test_file):
-    """
-    Return test file with blank lines and comments removed.
-    """
-    return [_ for _ in test_file if _ and not _.startswith('#')]
 
 
 def find_whitelists(test_file):
@@ -255,17 +259,18 @@ def test_schema(full_response, test_value):
     then make sure the value is correct
     """
     def _find(obj, key):
-        if key in obj: return obj[key]
-        for k, v in obj.items():
-          if isinstance(v,dict):
-            item = _find(v, key)
-            if item is not None:
-                return item
-            elif isinstance(v,list):
-                for list_item in v:
-                    item = _find(list_item, key)
-                    if item is not None:
-                        return item
+        if isinstance(obj, list):
+            for list_item in obj:
+                item = _find(list_item, key)
+                if item is not None:
+                    return item
+        if isinstance(obj, dict):
+            if key in obj:
+                return obj[key]
+            for k, v in obj.items():
+                item = _find(v, key)
+                if item is not None:
+                    return item                
     
     # Returning number of errors, so check for values that do not equal test case
     return sum(map(lambda k: _find(full_response, k) != test_value[k], list(test_value.keys())))
@@ -356,10 +361,7 @@ def test_all(test_file):
     t1 = int(time.time())
 
     total_tests = len(tests)
-    failed_tests = 0
-    total_errors = 0
-    total_char_errors = 0
-    total_characters = 0
+    failed_tests = total_errors = total_char_errors = total_characters = 0
 
     y_true = []
     y_pred = []
@@ -469,7 +471,7 @@ def test_all(test_file):
         logger.error("\nTotal entity characters found: {}".format(total_entity_character_errors))
         
     if total_tests > correct_tests:
-      return False
+        return False
       
     return True
 
@@ -487,23 +489,6 @@ Interpreter validation
 """
 
 
-class cleanText(object):
-    """Mock up a module that is imported by entities so they can be imported and inspected."""
-
-    @staticmethod
-    def text2int(word_list):
-        return word_list
-
-
-def _log_entity_definition_error_results(errors):
-    if errors:
-        print('Error! \nThe following problems were found with your entity_definition:')
-        for error in errors:
-            print(error)
-    else:
-        print('No errors!')
-
-
 def validate_yaml(intents_config_file):
     """
     Validate definitions.yaml
@@ -517,6 +502,16 @@ def validate_yaml(intents_config_file):
         print("Error: {}".format(e))
         sys.exit(1)
     return True
+    
+    
+def make_sure_directories_exist(directories):
+    for d in directories:
+        try:
+            assert exists(d)
+        except AssertionError:
+            logger.exception("Error: Check path to directory: {}".format(d), exc_info=True)
+            print("Terminating program")
+            sys.exit(1)
 
 
 def main(discovery_directory, test_file, shutdown=True):
@@ -527,13 +522,7 @@ def main(discovery_directory, test_file, shutdown=True):
         and saves results + computed metrics
     """
     custom_directory =  join_path(discovery_directory, 'custom')
-    
-    try:
-        assert exists(discovery_directory) and exists(custom_directory)
-    except AssertionError:
-        logger.exception("Error: Check path to custom directory: {}".format(custom_directory), exc_info=True)
-        print("Terminating program")
-        sys.exit(1)
+    make_sure_directories_exist([discovery_directory, custom_directory])
 
     # get all definition yaml files
     for yml_file in fnmatch.filter(custom_directory, '.yaml'):
@@ -548,11 +537,10 @@ def main(discovery_directory, test_file, shutdown=True):
     except Exception:
         logger.exception("Error: Check test file for formatting errors", exc_info=True)
 
-    if shutdown:
-        shutdown_discovery()
+    shutdown_discovery(shutdown)
         
     if not success:
-        exit(1)
+        sys.exit(1)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Launch Discovery and Run Tests')

@@ -34,8 +34,7 @@ def precision_recall_f1_accuracy(y_true, y_pred, label=1):
     :param label: str, referemce label for confusion matrix 
     :return: dict with precision, recall, f1_score and accuracy as percent
     """
-    d = compute_counts(y_true, y_pred, label)
-    TP, FN, FP, TN = d["TP"], d["FN"], d["FP"], d["TN"]
+    TP, FN, FP, TN = compute_counts(y_true, y_pred, label)
     precision = TP / (TP + FP)
     recall = TP / (TP + FN)
     f1_score = 2 * (precision * recall) / (precision + recall)
@@ -60,8 +59,7 @@ def confusion_matrix(y_true, y_pred, label, normalize=True):
         Lists contain ints if count matrix, if normalized, floats
 
     """
-    d = compute_counts(y_true, y_pred, label)
-    TP, FN, FP, TN = d["TP"], d["FN"], d["FP"], d["TN"]
+    TP, FN, FP, TN = compute_counts(y_true, y_pred, label)
     cm = [[TP, FP], [FN, TN]]
 
     return [[TP / (TP + FP), FP / (TP + FP)], \
@@ -120,7 +118,7 @@ def compute_all(y_true, y_pred, labels=None):
         except Exception as exc:
             print("Error: %s with metric computation", exc)
             continue
-    return d
+    return d["TP"], d["FN"], d["FP"], d["TN"]
 
 
 if __name__ == "__main__":
