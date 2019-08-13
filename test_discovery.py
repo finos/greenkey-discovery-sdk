@@ -58,9 +58,6 @@ logger.addHandler(file_handler)
 Functions for handling the Discovery Docker container
 """
 
-UNFORMATTED_CHARS = set("abcdefghijklmnopqrstuvwxyz-' ")
-
-
 def docker_log_and_stop():
     """
     name assigned to Docker container; modify CONTAINER_NAME in
@@ -142,10 +139,7 @@ def load_tests(test_file):
     """
     Loads and parses the test file
     """
-    with open(test_file) as f:
-        test_file = [_.strip() for _ in f if _.strip() and not _.startswith("#")]
-
-    test_file = remove_comments(test_file)
+    test_file = [_.strip() for _ in open(test_file) if _.strip() and not _.startswith("#")]
     test_file, intent_whitelist, domain_whitelist = find_whitelists(test_file)
 
     tests = []
@@ -164,13 +158,6 @@ def load_tests(test_file):
     if current_test:
         tests.append(current_test)
     return tests, intent_whitelist, domain_whitelist
-
-
-def remove_comments(test_file):
-    """
-    Return test file with blank lines and comments removed.
-    """
-    return [_ for _ in test_file if _ and not _.startswith('#')]
 
 
 def find_whitelists(test_file):
@@ -490,23 +477,6 @@ def fail_test(resp, message="", continued=False):
 """
 Interpreter validation
 """
-
-
-class cleanText(object):
-    """Mock up a module that is imported by entities so they can be imported and inspected."""
-
-    @staticmethod
-    def text2int(word_list):
-        return word_list
-
-
-def _log_entity_definition_error_results(errors):
-    if errors:
-        print('Error! \nThe following problems were found with your entity_definition:')
-        for error in errors:
-            print(error)
-    else:
-        print('No errors!')
 
 
 def validate_yaml(intents_config_file):
