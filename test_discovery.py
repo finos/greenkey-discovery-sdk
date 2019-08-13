@@ -160,7 +160,6 @@ def load_tests(test_file):
     """
     test_file = [_.strip() for _ in open(test_file) if _.strip() and not _.startswith("#")]
     test_file, intent_whitelist, domain_whitelist = find_whitelists(test_file)
-    
     tests = []
     current_test = {}
     for line in test_file:
