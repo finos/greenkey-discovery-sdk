@@ -138,28 +138,38 @@ def json_dump(data, outfile, directory=None):
     json.dump(data, open(outfile, 'w+'), indent=2)
 
 
+def store_previous_test(tests, current_test):
+    if current_test:
+        tests.append(current_test)
+    return tests
+  
+  
+def parse_test_line(line, tests, current_test):
+    key, value = line.split(": ", maxsplit=1)
+    if key == "test":
+        tests = store_previous_test(tests, current_test)
+        current_test = {key: value}
+    elif key:
+        current_test[key] = value
+    return tests, current_test
+
+
 def load_tests(test_file):
     """
     Loads and parses the test file
     """
     test_file = [_.strip() for _ in open(test_file) if _.strip() and not _.startswith("#")]
     test_file, intent_whitelist, domain_whitelist = find_whitelists(test_file)
-
+    
     tests = []
     current_test = {}
     for line in test_file:
         try:
-            key, value = line.split(": ", maxsplit=1)
-            if key == "test":
-                if current_test:
-                    tests.append(current_test)
-                current_test = {key: value}
-            elif key:
-                current_test[key] = value
+            tests, current_test = parse_test_line(line, tests, current_test)
         except ValueError:
             continue
-    if current_test:
-        tests.append(current_test)
+    
+    tests = store_previous_test(tests, current_test)
     return tests, intent_whitelist, domain_whitelist
 
 
