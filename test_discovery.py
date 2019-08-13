@@ -103,10 +103,13 @@ def wait_for_discovery_launch():
         print("Discovery Launched!")
 
 
-def shutdown_discovery():
+def shutdown_discovery(shutdown=True):
     """
     Shuts down the Discovery engine Docker container
     """
+    if not shutdown:
+      return
+    
     print("\nShutting down Discovery\n")
     try:
         requests.get("http://{}:{}/shutdown?secret_key={}".format(
@@ -492,6 +495,16 @@ def validate_yaml(intents_config_file):
         print("Error: {}".format(e))
         sys.exit(1)
     return True
+    
+    
+def make_sure_directories_exist(directories):
+    for d in directories:
+        try:
+            assert exists(d)
+        except AssertionError:
+            logger.exception("Error: Check path to directory: {}".format(d), exc_info=True)
+            print("Terminating program")
+            sys.exit(1)
 
 
 def main(discovery_directory, test_file, shutdown=True):
@@ -502,13 +515,7 @@ def main(discovery_directory, test_file, shutdown=True):
         and saves results + computed metrics
     """
     custom_directory =  join_path(discovery_directory, 'custom')
-    
-    try:
-        assert exists(discovery_directory) and exists(custom_directory)
-    except AssertionError:
-        logger.exception("Error: Check path to custom directory: {}".format(custom_directory), exc_info=True)
-        print("Terminating program")
-        sys.exit(1)
+    make_sure_directories_exist([discovery_directory, custom_directory])
 
     # get all definition yaml files
     for yml_file in fnmatch.filter(custom_directory, '.yaml'):
@@ -523,8 +530,7 @@ def main(discovery_directory, test_file, shutdown=True):
     except Exception:
         logger.exception("Error: Check test file for formatting errors", exc_info=True)
 
-    if shutdown:
-        shutdown_discovery()
+    shutdown_discovery(shutdown)
         
     if not success:
         exit(1)
