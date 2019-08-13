@@ -260,17 +260,18 @@ def test_schema(full_response, test_value):
     then make sure the value is correct
     """
     def _find(obj, key):
-        if key in obj: return obj[key]
-        for k, v in obj.items():
-          if isinstance(v,dict):
-            item = _find(v, key)
-            if item is not None:
-                return item
-            elif isinstance(v,list):
-                for list_item in v:
-                    item = _find(list_item, key)
-                    if item is not None:
-                        return item
+        if isinstance(obj, list):
+            for list_item in obj:
+                item = _find(list_item, key)
+                if item is not None:
+                    return item
+        if isinstance(obj, dict):
+            if key in obj:
+                return obj[key]
+            for k, v in obj.items():
+                item = _find(v, key)
+                if item is not None:
+                    return item                
     
     # Returning number of errors, so check for values that do not equal test case
     return sum(map(lambda k: _find(full_response, k) != test_value[k], list(test_value.keys())))
