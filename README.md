@@ -11,7 +11,7 @@ You can use your Discovery interpreter to power several voice- and chat-driven w
 
 - Building a skill in combination with [Scribe's Real-Time Dictation](https://docs.greenkeytech.com/audio/#audioserver)
 
-- Searching transcribed files for key phrases with [Scribe's File Transcription]https://docs.greenkeytech.com/audio/#fileserver)
+- Searching transcribed files for key phrases with [Scribe's File Transcription](https://docs.greenkeytech.com/audio/#fileserver)
 
 Read more about Discovery on our [blog](https://greenkeytech.com/greenkey-scribe-discovery-skills/) or [checkout the full documentation](https://github.com/finos/greenkey-discovery-sdk/wiki)
 
