@@ -19,8 +19,6 @@ import subprocess
 import sys
 import time
 import yaml
-import operator
-from functools import reduce
 from collections import defaultdict
 from os.path import abspath, exists, join as join_path
 
@@ -56,8 +54,6 @@ file_handler.setFormatter(formatter)
 
 logger.addHandler(console_handler)
 logger.addHandler(file_handler)
-
-
 """
 Functions for handling the Discovery Docker container
 """
@@ -167,17 +163,20 @@ def submit_transcript(transcript, intent_whitelist="any", domain_whitelist="any"
     return response.json()
 
 
+def request_failed(resp):
+    return "result" in resp and resp["result"] == "failure"
+
+
+def missing_intent_or_entity(resp):
+    return not ("intents" in resp and resp["intents"] and resp["intents"][0])
+
+
 def is_valid_response(resp):
     """
     Validates a Discovery response
     Fail if a failure response was received
     """
-    request_failed = "result" in resp and resp["result"] == "failure"
-    missing_intent_or_entity = not ("intents" in resp and resp["intents"]
-                                    and resp["intents"][0])
-    if request_failed or missing_intent_or_entity:
-        return False
-    return True
+    return False if request_failed(resp) or missing_intent_or_entity(resp) else True
 
 
 def test_single_entity(entities, test_name, test_value):
@@ -202,34 +201,74 @@ def test_single_entity(entities, test_name, test_value):
     return 0, 0
 
 
-def test_schema(full_response, test_value):
+def print_schema_errors(expected_entity_value, errors, full_response, verbose=False):
+    print("\nSchema test failed for {} with response {}\n".format(
+        expected_entity_value, errors))
+    if verbose:
+        print("Full response is {}".format(full_response))
+    errors = len(errors)
+
+
+def _find_in_list(obj, key):
+    for list_item in obj:
+        item = _find(list_item, key)
+        if item is not None:
+            return item
+
+
+def _find_in_dict(obj, key):
+    if key in obj:
+        return obj[key]
+    for k, v in obj.items():
+        item = _find(v, key)
+        if item is not None:
+            return item
+
+
+def _find(obj, key):
+    if isinstance(obj, list):
+        return _find_in_list(obj, key)
+    if isinstance(obj, dict):
+        return _find_in_dict(obj, key)
+
+
+def test_schema(full_response, test_value, verbose=False):
     """
     For each key-value pair given in the schema test,
     recursively search the JSON response for the key,
     then make sure the value is correct
     """
 
-    def _find(obj, key):
-        if isinstance(obj, list):
-            for list_item in obj:
-                item = _find(list_item, key)
-                if item is not None:
-                    return item
-        if isinstance(obj, dict):
-            if key in obj:
-                return obj[key]
-            for k, v in obj.items():
-                item = _find(v, key)
-                if item is not None:
-                    return item
-
     # Returning number of errors, so check for values that do not equal test case
     errs = {}
     for res in map(
-            lambda k: {k: _find(full_response, k)} if _find(full_response, k) !=
-            test_value[k] else {}, list(test_value.keys())):
+            lambda k: {k: _find(full_response, k)}
+            if _find(full_response, k) != test_value[k] else {},
+            list(test_value.keys()),
+    ):
         errs.update(res)
-    return errs
+
+    if errs:
+        print_schema_errors(test_value, errs, full_response, verbose)
+
+    return len(errs)
+
+
+def remove_all_whitespace_from_string(input_string):
+    while "  " in input_string:
+        input_string = input_string.replace("  ", " ")
+    return input_string.strip()
+
+
+def clean_list(input_list):
+    return [strip_extra_whitespace(v) for v in input_list]
+
+
+def clean_dict(input_dict):
+    output_dict = {}
+    for k, v in input_dict.items():
+        output_dict[strip_extra_whitespace(k)] = strip_extra_whitespace(v)
+    return output_dict
 
 
 def strip_extra_whitespace(payload):
@@ -245,16 +284,41 @@ def strip_extra_whitespace(payload):
     """
 
     if isinstance(payload, str):
-        while "  " in payload:
-            payload = payload.replace("  ", " ")
-        payload = payload.strip()
+        payload = remove_all_whitespace_from_string(payload)
     elif isinstance(payload, list):
-        payload = [strip_extra_whitespace(v) for v in payload]
+        payload = clean_list(payload)
     elif isinstance(payload, dict):
-        for k, v in payload.items():
-            payload.pop(k)
-            payload[strip_extra_whitespace(k)] = strip_extra_whitespace(v)
+        payload = clean_dict(payload)
     return payload
+
+
+def print_extra_entities(observed_entity_dict, test_dict):
+    """ prints entities found by discovery but not specified in test file """
+    extra_entities = {
+        x: observed_entity_dict[x]
+        for x in observed_entity_dict if x not in test_dict
+    }
+
+    if extra_entities:
+        extra_entities_msg = "Extra entities: {}\n".format(extra_entities)
+        logger.info(extra_entities_msg)
+        print(extra_entities_msg)
+
+
+def run_test_dict(
+        full_response,
+        observed_entity_dict,
+        entity_label,
+        expected_entity_value,
+        verbose=False,
+):
+    char_errors = 0
+    if entity_label == "schema":
+        errors = test_schema(full_response, json.loads(expected_entity_value), verbose)
+    else:
+        (errors, char_errors) = test_single_entity(observed_entity_dict, entity_label,
+                                                   expected_entity_value)
+    return errors, char_errors, len(expected_entity_value)
 
 
 def test_single_case(test_dict, observed_entity_dict, full_response, verbose=False):
@@ -274,7 +338,7 @@ def test_single_case(test_dict, observed_entity_dict, full_response, verbose=Fal
     """
     total_errors = 0
     total_char_errors = 0
-    characters = 0
+    total_characters = 0
 
     # Loop through all entity tests
     for label, value in test_dict.items():
@@ -282,44 +346,79 @@ def test_single_case(test_dict, observed_entity_dict, full_response, verbose=Fal
             continue
         entity_label, expected_entity_value = map(strip_extra_whitespace, [label, value])
         full_response = strip_extra_whitespace(full_response)
+        errors, char_errors, characters = run_test_dict(
+            full_response,
+            observed_entity_dict,
+            entity_label,
+            expected_entity_value,
+            verbose,
+        )
 
-        if entity_label == "schema":
-            errors = test_schema(
-                full_response=full_response,
-                test_value=json.loads(expected_entity_value),
-            )
-            if errors:
-                print("\nSchema test failed for {} with response {}\n".format(
-                    expected_entity_value, errors))
-                if verbose:
-                    print("Full response is {}".format(full_response))
-            errors = len(errors)
-        else:
-            (errors, char_errors) = test_single_entity(
-                entities=observed_entity_dict,
-                test_name=entity_label,
-                test_value=expected_entity_value,
-            )
-            total_char_errors += char_errors
-            characters += len(expected_entity_value)
         total_errors += errors
+        total_char_errors += char_errors
+        total_characters += characters
 
-    # entities found by discovery but not specified in test file
-    extra_entities = {
-        x: observed_entity_dict[x]
-        for x in observed_entity_dict if x not in test_dict
+    if verbose:
+        print_extra_entities(observed_entity_dict, test_dict)
+
+    return (
+        (1 if total_errors else 0),
+        total_errors,
+        total_char_errors,
+        total_characters,
+        observed_entity_dict,
+    )
+
+
+def format_intent_test_result(test_name, transcript, expected_intent, observed_intent):
+    return dict(
+        test_name=test_name,
+        transcript=transcript,
+        expected_intent=expected_intent,
+        observed_intent=observed_intent,
+        correct=(1 if expected_intent == observed_intent else 0),
+    )
+
+
+def evaluate_intent(test_dict, resp, test_name, test_no):
+
+    failed_test = 0
+
+    expected_intent = test_dict["intent"]
+    # keep only the most likely hypothesis from Discovery -> first dict in list of dicts returned by Discovery
+    observed_intent = resp["intents"][0]["label"]
+
+    logger.info("\nExpected Intent: {} \nObserved Intent{}".format(
+        expected_intent, observed_intent))
+
+    if expected_intent != observed_intent:
+        failed_test = 1
+        fail_test(
+            resp,
+            message="Observed intent does not match expected intent!",
+            continued=True,
+        )
+    return failed_test, expected_intent, observed_intent
+
+
+def evaluate_entities(test_dict, resp, verbose):
+    most_likely_entities = resp["intents"][0]["entities"]
+    observed_entity_dict = {
+        # keep only the most likely hypothesis from Discovery -> first dict in list of dicts returned by Discovery
+        ent["label"]: ent["matches"][0][0]["value"]
+        for ent in most_likely_entities
     }
+    # Remove non-entity keys from test_dict, then pass to `test_single_case`
+    for label in ["test", "transcript", "intent"]:
+        try:
+            del observed_entity_dict[label]
+            del test_dict[label]
+        except KeyError:
+            continue
 
-    if extra_entities and verbose:
-        extra_entities_msg = "Extra entities: {}\n".format(extra_entities)
-        logger.info(extra_entities_msg)
-        print(extra_entities_msg)
-
-    if total_errors:
-        return 1, total_errors, total_char_errors, characters
-    else:
-        print("Entity Tests passed\n---\n")
-        return 0, 0, 0, characters
+    ################################################################################################################
+    # Start Testing Entities for Test case : test_no
+    return test_single_case(test_dict, observed_entity_dict, resp, verbose)
 
 
 def test_all(test_file, verbose=False):
@@ -364,7 +463,6 @@ def test_all(test_file, verbose=False):
     y_pred = []
     output_dict = defaultdict(dict)
 
-    # for test_no, test in enumerate(tests):
     for test_no, test_dict in enumerate(tests):
         test_name, transcript = test_dict["test"], test_dict["transcript"]
 
@@ -377,56 +475,28 @@ def test_all(test_file, verbose=False):
         if not is_valid_response(resp):
             fail_test(resp)
 
-        # keep only the most likely hypothesis from Discovery    -> first dict in list of dicts returned by Discovery
-        most_likely_intent = resp["intents"][0]
-
         if "intent" in test_dict:
-            expected_intent = test_dict["intent"]
-            observed_intent = most_likely_intent["label"]
-
+            failed_test, expected_intent, observed_intent = evaluate_intent(
+                test_dict, resp, test_name, test_no)
+            failed_tests += failed_test
+            output_dict[test_no] = format_intent_test_result(test_name, transcript,
+                                                             expected_intent,
+                                                             observed_intent)
             y_true.append(expected_intent)
             y_pred.append(observed_intent)
-            correct = 1 if expected_intent == observed_intent else 0
-
-            output_dict[test_no] = dict(
-                test_name=test_name,
-                transcript=transcript,
-                expected_intent=expected_intent,
-                observed_intent=observed_intent,
-                correct=(1 if expected_intent == observed_intent else 0),
-            )
-
-            logger.info("\nExpected Intent: {} \nObserved Intent{}".format(
-                expected_intent, observed_intent))
-
-            if expected_intent != observed_intent:
-                observed_not_expected_msg = "Observed intent does not match expected intent!"
-                failed_tests += 1
-                fail_test(resp,
-                          message="Observed intent does not match expected intent!",
-                          continued=True)
 
         ################################################################################################################
         # Get all values of all entities returned by discovery for a test transcript
-        entities_found = most_likely_intent["entities"]
-        observed_entity_dict = {
-            ent["label"]: ent["matches"][0][0]["value"]
-            for ent in entities_found
-        }
-        # Remove non-entity keys from test_dict, then pass to `test_single_case`
-        for label in ["test", "transcript", "intent"]:
-            try:
-                del observed_entity_dict[label]
-                del test_dict[label]
-            except KeyError:
-                continue
+        (
+            failure,
+            errors,
+            char_errors,
+            characters,
+            observed_entity_dict,
+        ) = evaluate_entities(test_dict, resp, verbose)
         output_dict[test_no]["expected_entities"] = test_dict
         output_dict[test_no]["observed_entities"] = observed_entity_dict
 
-        ################################################################################################################
-        # Start Testing Entities for Test case : test_no
-        (failure, errors, char_errors,
-         characters) = test_single_case(test_dict, observed_entity_dict, resp, verbose)
         failed_tests += failure
         total_errors += errors
         total_char_errors += char_errors
@@ -436,48 +506,64 @@ def test_all(test_file, verbose=False):
     # All tests complete
     ####################################################################################################################
     time_lapsed = int(time.time()) - t1
-    total_entity_character_errors = total_errors
     correct_tests = total_tests - failed_tests
     accuracy = (correct_tests / total_tests) * 100
 
-    output_dir = os.path.dirname(test_file)
-
     # save output variables computed across tests
-    summary_dict = dict(total_tests=total_tests,
-                        test_time_sec=time_lapsed,
-                        expected_intents=y_true,
-                        observed_intents=y_pred,
-                        total_entity_character_errors=total_errors,
-                        total_character_errors=total_char_errors,
-                        total_characters=total_characters,
-                        accuracy=accuracy)
+    summary_dict = dict(
+        total_tests=total_tests,
+        test_time_sec=time_lapsed,
+        expected_intents=y_true,
+        observed_intents=y_pred,
+        total_entity_character_errors=total_errors,
+        total_character_errors=total_char_errors,
+        total_characters=total_characters,
+        correct_tests=correct_tests,
+        test_file=test_file,
+        accuracy=accuracy,
+    )
     output_dict.update(summary_dict)
-    json_dump(data=output_dict, outfile='test_results.json', directory=output_dir)
+
+    return record_results(output_dict)
+
+
+def record_results(output_dict):
+    output_dir = os.path.dirname(output_dict["test_file"])
+    json_dump(data=output_dict, outfile="test_results.json", directory=output_dir)
 
     # record message regardless of number of entity errors
     message = "\n---\n({} / {}) tests passed in {} seconds from {}".format(
-        correct_tests, total_tests, time_lapsed, test_file)
+        output_dict["correct_tests"],
+        output_dict["total_tests"],
+        output_dict["test_time_sec"],
+        output_dict["test_file"],
+    )
     logger.info(message)
     print(message)
 
-    if total_characters:
-        entity_character_error_rate = 100 * (total_char_errors / total_characters)
+    if "total_characters" in output_dict and output_dict["total_characters"]:
+        entity_character_error_rate = 100 * (output_dict["total_character_errors"] /
+                                             output_dict["total_characters"])
         msg = "\nTotal number of entity character errors: {} \nEntity Character Error Rate: {}".format(
-            total_entity_character_errors, "{:.2f}".format(entity_character_error_rate))
+            output_dict["total_entity_character_errors"],
+            "{:.2f}".format(entity_character_error_rate),
+        )
         logger.info(msg)
         print(msg)
 
     # evaluate metrics; treat each possible intent as reference
-    metrics_dict = compute_all(y_true, y_pred)
+    metrics_dict = compute_all(output_dict["expected_intents"],
+                               output_dict["observed_intents"])
     json_dump(metrics_dict, outfile="test_metrics.json")
 
     # # total_errors
-    if total_entity_character_errors > 0:
-        logger.error("\nTotal entity characters found: {}".format(total_entity_character_errors))
-        
-    if total_tests > correct_tests:
+    if output_dict["total_entity_character_errors"] > 0:
+        logger.error("\nTotal entity characters found: {}".format(
+            output_dict["total_entity_character_errors"]))
+
+    if output_dict["total_tests"] > output_dict["correct_tests"]:
         return False
-      
+
     return True
 
 
@@ -533,32 +619,30 @@ def add_extension_if_missing(test_file):
     return test_file
 
 
-def limit_discovery_domains(directory, tests):
-    domains = (find_whitelists(
+def report_domain_whitelists(directory, tests):
+    return (find_whitelists(
         load_test_file(join_path(directory, add_extension_if_missing(f))))[2]
-               for f in (tests.split(",") if isinstance(tests, str) else tests))
-    flattened_domains = ','.join(
+            for f in (tests.split(",") if isinstance(tests, str) else tests))
+
+
+def limit_discovery_domains(directory, tests):
+    domains = report_domain_whitelists(directory, tests)
+
+    flattened_domains = ",".join(
         list(filter(lambda x: x is not "any", set((i for s in domains for i in s)))))
+
     if flattened_domains:
-        DISCOVERY_CONFIG['DISCOVERY_DOMAINS'] = flattened_domains
+        DISCOVERY_CONFIG["DISCOVERY_DOMAINS"] = flattened_domains
         print("Limiting domains to {}".format(flattened_domains))
 
 
-def main(directory=os.getcwd(), tests="tests.txt", shutdown=True, help=False, verbose=False):
-    """
-    :param directory: Path to directory containing custom/ directory
-    :param tests: Comma separated list of file(s) containing tests
-    :param shutdown: Whether to stop Discovery container after testing
-    :param help: prints this help message
-    :param verbose: print extra entities found
-    :return: loads yaml definitions files, launches discovery, trains custom interpreters, posts each test in tests
-        and saves results + computed metrics
-    """
-    if help:
-        print("Test discovery usage: ")
-        print(main.__doc__)
-        sys.exit(0)
+def print_help():
+    print("Test discovery usage: ")
+    print(main.__doc__)
+    sys.exit(0)
 
+
+def validate_directory_exists(directory):
     custom_directory = join_path(abspath(directory), "custom")
     make_sure_directories_exist([directory, custom_directory])
 
@@ -571,30 +655,64 @@ def main(directory=os.getcwd(), tests="tests.txt", shutdown=True, help=False, ve
         )
         print("Terminating program")
         sys.exit(1)
+    return custom_directory
+
+
+def setup_discovery(directory, custom_directory, tests):
+    limit_discovery_domains(directory, tests)
+    volume = launch_discovery(custom_directory=custom_directory)
+    wait_for_discovery_launch()
+    return volume
+
+
+def evaluate_all_tests(directory, tests, verbose=False):
+    return all(
+        test_all(join_path(directory, add_extension_if_missing(test_file)), verbose)
+        for test_file in (tests.split(",") if isinstance(tests, str) else tests))
+
+
+def run_all_tests_in_directory(directory, custom_directory, tests, shutdown, verbose):
+    success = False
+    volume = None
+    try:
+        volume = setup_discovery(directory, custom_directory, tests)
+        success = evaluate_all_tests(directory, tests, verbose)
+    except Exception:
+        logger.exception("Error: Check test files for formatting errors", exc_info=True)
+
+    docker_log_and_stop(volume) if (not success and os.environ.get(
+        "OUTPUT_FAILED_LOGS", False)) else shutdown_discovery(shutdown)
+    return success
+
+
+def test_discovery(directory=os.getcwd(),
+                   tests="tests.txt",
+                   shutdown=True,
+                   help=False,
+                   verbose=False):
+    """
+    :param directory: Path to directory containing custom/ directory
+    :param tests: Comma separated list of file(s) containing tests
+    :param shutdown: Whether to stop Discovery container after testing
+    :param help: prints this help message
+    :param verbose: print extra entities found
+    :return: loads yaml definitions files, launches discovery, trains custom interpreters, posts each test in tests
+        and saves results + computed metrics
+    """
+    if help:
+        print_help()
+
+    custom_directory = validate_directory_exists(directory)
 
     # get all definition yaml files
     for yml_file in fnmatch.filter(custom_directory, ".yaml"):
         validate_yaml(join_path(custom_directory, yml_file))
 
-    success = False
-    volume = None
-    try:
-        limit_discovery_domains(directory, tests)
-        volume = launch_discovery(custom_directory=custom_directory)
-        wait_for_discovery_launch()
-
-        success = all(
-            test_all(join_path(directory, add_extension_if_missing(test_file)), verbose)
-            for test_file in (tests.split(",") if isinstance(tests, str) else tests))
-    except Exception:
-        logger.exception("Error: Check test files for formatting errors", exc_info=True)
-
-    docker_log_and_stop(volume) if (not success and os.environ.get(
-        'OUTPUT_FAILED_LOGS', False)) else shutdown_discovery(shutdown)
-
+    success = run_all_tests_in_directory(directory, custom_directory, tests, shutdown,
+                                         verbose)
     if not success:
         sys.exit(1)
 
 
 if __name__ == "__main__":
-    Fire(main)
+    Fire(test_discovery)
