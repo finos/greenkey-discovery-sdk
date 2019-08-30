@@ -14,4 +14,6 @@ install:
   - pip install -r requirements.txt
 # command to run tests
 script:
-  - python -m pytest .tests/test_sdk.py -s
+  - python3 -m pytest .tests/test_all_yaml_files_load.py -s
+  - python3 metrics.py
+

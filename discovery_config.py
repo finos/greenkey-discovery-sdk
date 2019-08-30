@@ -35,7 +35,7 @@ CONTAINER_NAME = "discovery-dev"
 DISCOVERY_PORT = "1234"  # This is the port you will POST to, e.g. curl localhost:1234
 DISCOVERY_SHUTDOWN_SECRET = "greenkeytech"
 DISCOVERY_HOST = "localhost"
-TAG = "develop"
+TAG = os.environ.get("TAG", "master")
 DISCOVERY_IMAGE_NAME = "docker.greenkeytech.com/discovery:{}".format(TAG)
 
 TIMEOUT = 20
