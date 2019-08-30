@@ -154,7 +154,7 @@ examples
 
 3) Edit your `discovery_config.py` to specify your "GKT_USERNAME" and "GKT_SECRETKEY" credentials.
 
-4) Execute `python3 test_discovery.py examples/digit` to test the digit example. `test_discovery.py` launches a Discovery Docker container and performs testing on `tests.txt`, where tests pass if they have defined entities present in the most likely found intent.
+4) Execute `python3 test_discovery.py examples/digit tests.txt` to test the digit example. `test_discovery.py` launches a Discovery Docker container and performs testing on `tests.txt`, where tests pass if they have defined entities present in the most likely found intent. If you want to run multiple tests when using docker set `--shutdown=False` otherwise you will have to relaunch the docker container after each test.
     ```
     Discovery Ready
     ======

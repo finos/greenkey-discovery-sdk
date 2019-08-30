@@ -1,3 +1,5 @@
 pyyaml
 requests
 editdistance
+fire
+pytest
