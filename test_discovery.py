@@ -79,19 +79,24 @@ def check_discovery_status():
     return True if "listening" in r.json()["message"] else False
 
 
+def try_discovery(attempt_number, retries):
+    try:
+        check_discovery_status()
+        return True
+    except Exception:
+        if attempt_number >= 3:
+            logger.error("Could not reach discovery, attempt {0} of {1}".format(
+                attempt_number + 1, RETRIES))
+        time.sleep(TIMEOUT)
+
+
 def wait_for_discovery_status():
     """
     Wait for Discovery to be ready
     """
     for i in range(RETRIES):
-        try:
-            check_discovery_status()
+        if try_discovery(i, RETRIES):
             return True
-        except Exception:
-            if i >= 3:
-                logger.error("Could not reach discovery, attempt {0} of {1}".format(
-                    i + 1, RETRIES))
-            time.sleep(TIMEOUT)
     return False
 
 
@@ -638,7 +643,7 @@ def limit_discovery_domains(directory, tests):
 
 def print_help():
     print("Test discovery usage: ")
-    print(main.__doc__)
+    print(test_discovery.__doc__)
     sys.exit(0)
 
 
@@ -646,15 +651,6 @@ def validate_directory_exists(directory):
     custom_directory = join_path(abspath(directory), "custom")
     make_sure_directories_exist([directory, custom_directory])
 
-    try:
-        assert exists(directory) and exists(custom_directory)
-    except AssertionError:
-        logger.exception(
-            "Error: Check path to custom directory: {}".format(custom_directory),
-            exc_info=True,
-        )
-        print("Terminating program")
-        sys.exit(1)
     return custom_directory
 
 
