@@ -1,5 +1,5 @@
 def store_previous_test(tests, current_test):
-    if current_test:
+    if current_test and set(current_test.keys()) != set(['test','transcript']):
         tests.append(current_test)
     return tests
 
@@ -9,6 +9,13 @@ def parse_test_line(line, tests, current_test):
     if key == "test":
         tests = store_previous_test(tests, current_test)
         current_test = {key: value}
+    elif key == "schema":
+        # Since we can have more than one schema test,
+        # store the test so that the current_test is still available
+        # to add to the new tests
+        current_test[key] = value
+        tests = store_previous_test(tests, current_test)
+        current_test = {'test': current_test['test'], 'transcript': current_test['transcript']}
     elif key:
         current_test[key] = value
     return tests, current_test
