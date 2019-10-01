@@ -438,7 +438,8 @@ def test_all(test_file, verbose=False):
         test_name, transcript = test_dict["test"], test_dict["transcript"]
 
         test_start_msg = "\n  ======Test: {}======  \n".format(test_name)
-        print(test_start_msg)
+        if verbose:
+            print(test_start_msg)
 
         resp = submit_transcript(transcript, intent_whitelist, domain_whitelist)
 
