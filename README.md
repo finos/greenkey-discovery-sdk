@@ -145,9 +145,9 @@ examples
       digit:
         examples:
           - "please select @num to speak to the operator"
-          - "to change your order press @num"
-          - "if this is an emergency dial @num"
-          - "for animal control services press @num"
+          - "to change your order press @room_number"
+          - "if this is an emergency dial @room_number"
+          - "for animal control services press @room_number"
 
     ```
     where "digit" is the name of the intent and the entities value ("room_number") match entities in `tests.txt`.
