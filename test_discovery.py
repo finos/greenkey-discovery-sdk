@@ -427,7 +427,8 @@ def evaluate_entities(test_dict, resp, verbose):
 
 
 def print_table(timing_list, top_n=5, first_k_chars=25):
-    """ Prints a formatted table ordered by longest test timings. 
+    """
+    Prints a formatted table ordered by longest test timings. 
         
     :param timing_list: namedtuple, list of namedtuples representing testing results
     """
