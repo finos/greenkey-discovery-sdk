@@ -427,28 +427,25 @@ def evaluate_entities(test_dict, resp, verbose):
 
 
 def print_table(timing_list, top_n=5, first_k_chars=25):
-    """ Prints a formatted table ordered by longest test timings. 
+    """ 
+    Prints a formatted table ordered by longest test timings. 
         
-        :param timing_list: namedtuple, list of namedtuples representing testing results
+    :param timing_list: namedtuple, list of namedtuples representing testing results
     """
-    
+
     sorted_timing = sorted(timing_list, key=lambda tup: tup.time_dif_ms, reverse=True)
     print("\nTop", top_n, "longest timed tests:\n")
-    print('{:<30s}{:<12s}{:<30s}{:<35s}{:<25s}'.format('test_file_name', 
-                                                       'test_no', 
-                                                       'test_name', 
-                                                       'transcript', 
+    print('{:<30s}{:<12s}{:<30s}{:<35s}{:<25s}'.format('test_file_name', 'test_no',
+                                                       'test_name', 'transcript',
                                                        'time(ms)'))
-    print(120*'-')
+    print(120 * '-')
 
     for x in sorted_timing[:top_n]:
-        print('{:<30s}{:<12d}{:<30s}{:<35s}{:<25.2f}'.format(x.test_file[:first_k_chars], 
-                                                             x.test_no, 
-                                                             x.test_name[:first_k_chars], 
-                                                             x.transcript[:first_k_chars], 
-                                                             x.time_dif_ms))
+        print('{:<30s}{:<12d}{:<30s}{:<35s}{:<25.2f}'.format(
+            x.test_file[:first_k_chars], x.test_no, x.test_name[:first_k_chars],
+            x.transcript[:first_k_chars], x.time_dif_ms))
 
-    
+
 def test_all(test_file, verbose=False):
     """
     Runs all defined tests
@@ -492,12 +489,9 @@ def test_all(test_file, verbose=False):
     output_dict = defaultdict(dict)
 
     timing_list = []
-    TimingResult = namedtuple("TimingResult", ['test_file', 
-                                               'test_no', 
-                                               'test_name', 
-                                               'transcript', 
-                                               'time_dif_ms'])
-
+    TimingResult = namedtuple(
+        "TimingResult",
+        ['test_file', 'test_no', 'test_name', 'transcript', 'time_dif_ms'])
 
     for test_no, test_dict in enumerate(tests):
         test_name, transcript = test_dict["test"], test_dict["transcript"]
@@ -505,15 +499,16 @@ def test_all(test_file, verbose=False):
         test_start_msg = "======\nTest: {}".format(test_name)
         logger.info(test_start_msg)
 
-        # Timing submit_transcript function 
+        # Timing submit_transcript function
         test_start_time = time.time()
         resp = submit_transcript(transcript, intent_whitelist, domain_whitelist)
         test_end_time = time.time()
 
-        time_dif_ms = 1000*(test_end_time - test_start_time)
+        time_dif_ms = 1000 * (test_end_time - test_start_time)
 
         # include test filename, test number, test name, transcript, and time in ms
-        timing_list.append(TimingResult(test_file, test_no, test_name, transcript, time_dif_ms))
+        timing_list.append(
+            TimingResult(test_file, test_no, test_name, transcript, time_dif_ms))
 
         # Check if a valid response was received
         if not is_valid_response(resp):
@@ -549,7 +544,7 @@ def test_all(test_file, verbose=False):
     ####################################################################################################################
     # All tests complete
     ####################################################################################################################
-    time_lapsed = round(time.time() - t1, 2)          
+    time_lapsed = round(time.time() - t1, 2)
     correct_tests = total_tests - failed_tests
     accuracy = (correct_tests / total_tests) * 100
 
