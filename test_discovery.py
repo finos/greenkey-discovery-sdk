@@ -397,7 +397,7 @@ def evaluate_entities(test_dict, resp, verbose):
     most_likely_entities = resp["intents"][0]["entities"]
     observed_entity_dict = {
         # keep only the most likely hypothesis from Discovery -> first dict in list of dicts returned by Discovery
-        ent["label"]: ent["matches"][0][0]["value"]
+        ent["label"]: ent["matches"][0]["value"]
         for ent in most_likely_entities
     }
     # Remove non-entity keys from test_dict, then pass to `test_single_case`
