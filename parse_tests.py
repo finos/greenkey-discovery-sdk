@@ -1,5 +1,10 @@
+#!/usr/bin/env python3
+
+from discovery_config import DISABLE_INTENTS_WHITELIST
+
+
 def store_previous_test(tests, current_test):
-    if current_test and set(current_test.keys()) != set(['test','transcript']):
+    if current_test and set(current_test.keys()) != set(['test', 'transcript']):
         tests.append(current_test)
     return tests
 
@@ -15,7 +20,10 @@ def parse_test_line(line, tests, current_test):
         # to add to the new tests
         current_test[key] = value
         tests = store_previous_test(tests, current_test)
-        current_test = {'test': current_test['test'], 'transcript': current_test['transcript']}
+        current_test = {
+            'test': current_test['test'],
+            'transcript': current_test['transcript']
+        }
     elif key:
         current_test[key] = value
     return tests, current_test
@@ -52,7 +60,8 @@ def find_whitelists(test_file):
 
     for i, line in enumerate(test_file):
         if line.startswith("intent_whitelist"):
-            intent_whitelist = format_whitelist(line)
+            if not DISABLE_INTENTS_WHITELIST:
+                intent_whitelist = format_whitelist(line)
             continue
         if line.startswith("domain_whitelist"):
             domain_whitelist = format_whitelist(line)
