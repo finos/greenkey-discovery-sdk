@@ -15,8 +15,12 @@ import uuid
 from multiprocessing import Process
 from os.path import abspath, exists, isdir as is_dir, join as join_path
 
-from discovery_config import DISCOVERY_CONFIG, DISCOVERY_PORT, DISCOVERY_IMAGE_NAME
-from discovery_config import CONTAINER_NAME
+from testing.discovery_config import (
+  CONTAINER_NAME,
+  DISCOVERY_CONFIG,
+  DISCOVERY_PORT,
+  DISCOVERY_IMAGE_NAME
+)
 
 
 def launch_discovery(
@@ -90,11 +94,6 @@ def _launch_container(custom_directory, port, discovery_config, container_name):
     """
     dico_dir = "{}/dico:/dico".format(custom_directory)
     dico_dir = ["-v", dico_dir] if exists(dico_dir) and is_dir(dico_dir) else []
-
-    try:
-        config_items = discovery_config.iteritems()
-    except AttributeError:
-        config_items = iter(discovery_config.items())
 
     # option to mount models/ directory if USED_SAVED_MODELS is True
     # model_dir = "{}/models".format(custom_directory)

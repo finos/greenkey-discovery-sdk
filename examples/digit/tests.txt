@@ -6,4 +6,4 @@ room_number: 8
 
 test: dial number
 transcript: press one eight
-room_number: 1
+room_number: 1 8
