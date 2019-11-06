@@ -15,5 +15,5 @@ install:
 # command to run tests
 script:
   - python3 -m pytest .tests/test_all_yaml_files_load.py -s
-  - python3 metrics.py
+  - python3 testing/metrics.py
 
