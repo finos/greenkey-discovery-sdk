@@ -1,6 +1,7 @@
+---
 entities:
   room_number:
-    - "@num"
+    - "@num{1,4}"
 intents:
   digit:
     examples:

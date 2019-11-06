@@ -14,9 +14,8 @@ DISCOVERY_CONFIG = {
     "GKT_API": "https://scribeapi.greenkeytech.com/",
     "NUMBER_OF_INTENTS": "1",
     "MAX_NUMBER_OF_ENTITIES": "100",
-    "GROUP_ENTITIES": "False", # to be deprecated
+    "GROUP_ENTITIES": "False",
     "SORT_ENTITIES_BY_LENGTH": "True",
-    "SORT_ENTITIES_BY_LENGTH": "True",  # Default is False
     "HIDE_EMPTY_ENTITIES": "True",
     "ENTITY_PROBABILITY_THRESHOLD": "0.01",
 

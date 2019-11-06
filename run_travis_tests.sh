@@ -5,6 +5,13 @@ set -eu
 # set tag variable
 export TAG=${CIRCLE_SHA1:-master}
 
+teardown() {
+  rm -f setup_tests.sh
+  rm -f run_tests.sh
+}
+
+trap teardown INT TERM EXIT
+
 # run setup
 mapfile -t setup_steps < <(python3 -c 'import yaml ; print("\n".join(yaml.load(open(".travis.yml"),Loader=yaml.FullLoader)["jobs"]["include"][0]["install"]))')
 
@@ -24,4 +31,5 @@ echo "set -exu" >> run_tests.sh
 for test in "${tests[@]}"; do
   echo $test >> run_tests.sh
 done
+
 bash run_tests.sh && rm run_tests.sh

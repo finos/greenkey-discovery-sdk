@@ -69,3 +69,6 @@ intents:
       - "scratch that i can sell @quantity @fruit_type for @price"
       - "correction my price on @product is @price"
       - "i need to revise my offer i will give you @price for @product"
+    schema:
+      return_json:
+        correction: "@product"

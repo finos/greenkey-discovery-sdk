@@ -1,0 +1,27 @@
+domain_whitelist: fruits
+
+test: Inquiry
+transcript: what is your price on green tomatoes
+intent: inquiry
+fruit_description: green tomatoes
+fruit_type: tomatoes
+
+test: Quote
+transcript: i will buy seventy purple carrots for ten dollars each
+intent: quote
+product: 70 purple carrots
+price: 10 dollars
+currency: dollars
+
+test: Trade
+transcript: confirming i will sell you twenty potatoes for twenty dollars
+intent: trade
+fruit_type: potatoes
+price: 20 dollars
+
+test: Correction
+transcript: i have to revise my offer to fifty red apples for one hundred dollars
+intent: correction
+currency: dollars
+product: 50 red apples
+schema: {"correction": "50 red apples"}
