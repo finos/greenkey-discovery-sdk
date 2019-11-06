@@ -5,6 +5,7 @@ logger = logging.getLogger(__name__)
 
 import requests
 import time
+import subprocess
 
 from testing.discovery_config import (
     CONTAINER_NAME,
