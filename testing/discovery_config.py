@@ -15,7 +15,7 @@ DISCOVERY_SHUTDOWN_SECRET = "greenkeytech"
 DISCOVERY_IMAGE_NAME = "docker.greenkeytech.com/discovery:{}".format(TAG)
 
 DISCOVERY_CONFIG = {
-    "LICENSE_KEY": os.environ.get('LICENSE_KEY', '')
+    "LICENSE_KEY": os.environ.get('LICENSE_KEY', ''),
     "NUMBER_OF_INTENTS": "1",
     "MAX_NUMBER_OF_ENTITIES": "100",
     
