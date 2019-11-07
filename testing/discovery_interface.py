@@ -5,8 +5,10 @@ logger = logging.getLogger(__name__)
 
 import requests
 import time
-import subprocess
+import json
 import sys
+
+from os.path import abspath, exists, join as join_path
 
 from testing.discovery_config import (
     CONTAINER_NAME,
@@ -21,6 +23,7 @@ from testing.discovery_config import (
 from launch_discovery import launch_discovery
 
 DISCOVERY_URL = "http://{}:{}/process".format(DISCOVERY_HOST, DISCOVERY_PORT)
+DEVELOPER_URL = "http://{}:{}/developer".format(DISCOVERY_HOST, DISCOVERY_PORT)
 
 
 def docker_log_and_stop(volume=None):
@@ -82,6 +85,25 @@ def wait_for_discovery_launch():
         print("Discovery Launched!")
 
 
+def make_sure_directories_exist(directories):
+    for d in directories:
+        try:
+            assert exists(d)
+        except AssertionError:
+            logger.exception(
+                "Error: Check path to directory: {}".format(d), exc_info=True
+            )
+            print("Terminating program")
+            sys.exit(1)
+
+
+def validate_custom_directory(directory):
+    custom_directory = join_path(abspath(directory), "custom")
+    make_sure_directories_exist([directory, custom_directory])
+
+    return custom_directory
+
+
 def limit_discovery_domains(directory, domains):
 
     flattened_domains = ",".join(
@@ -103,7 +125,7 @@ def setup_discovery(directory, custom_directory, domains):
 
 
 def submit_transcript(
-    transcript, intent_whitelist="any", domain_whitelist="any"
+    transcript, intent_whitelist=["any"], domain_whitelist=["any"]
 ):
     """
     Submits a transcript to Discovery
@@ -125,6 +147,20 @@ def submit_transcript(
         )
         return {}
     return response.json()
+
+
+def get_discovery_config():
+    "query developer route and get intents if available"
+    r = requests.get(DEVELOPER_URL)
+    payload = json.loads(r.text)
+    return payload
+
+
+def reload_discovery_config():
+    "POST to developer route to reload config"
+    r = requests.post(DEVELOPER_URL)
+    payload = json.loads(r.text)
+    return ('result' in payload and payload['result'] == "success")
 
 
 def shutdown_discovery(shutdown=True):

@@ -100,8 +100,11 @@ def _launch_container(custom_directory, port, discovery_config, container_name):
     # model_dir = ["-v", model_dir] if exists(model_dir) and is_dir(model_dir) else []
 
     # load data into docker volume (supports remote docker executor)
-    volume = load_data_into_docker_volume(custom_directory)
-    print("Stored configuration in docker volume {}".format(volume))
+    if os.environ.get("IN_A_CONTAINER", "True") != "False":
+      volume = load_data_into_docker_volume(custom_directory)
+      print("Stored configuration in docker volume {}".format(volume))
+    else:
+      volume = custom_directory
 
     launch_command = " ".join(
         ["docker", "run", "--rm", "-d"] + ["--name", container_name] +

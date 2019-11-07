@@ -47,7 +47,7 @@ from testing.output_tests import (
 
 from testing.discovery_interface import (
     docker_log_and_stop, setup_discovery, submit_transcript,
-    shutdown_discovery
+    shutdown_discovery, validate_custom_directory
 )
 
 VERBOSE_LOGGING = False
@@ -230,25 +230,6 @@ def validate_yaml(intents_config_file):
         print("Error: {}".format(e))
         sys.exit(1)
     return True
-
-
-def make_sure_directories_exist(directories):
-    for d in directories:
-        try:
-            assert exists(d)
-        except AssertionError:
-            logger.exception(
-                "Error: Check path to directory: {}".format(d), exc_info=True
-            )
-            print("Terminating program")
-            sys.exit(1)
-
-
-def validate_custom_directory(directory):
-    custom_directory = join_path(abspath(directory), "custom")
-    make_sure_directories_exist([directory, custom_directory])
-
-    return custom_directory
 
 
 def print_help():
