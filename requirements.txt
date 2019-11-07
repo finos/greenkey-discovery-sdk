@@ -3,3 +3,5 @@ requests
 editdistance
 fire
 pytest
+exrex
+streamlit
