@@ -142,7 +142,7 @@ def main():
     reload_button = st.sidebar.button('Reload Discovery Config')
     if reload_button:
         with st.spinner("Reloading config"):
-            if reload_discovery_config() == 'success':
+            if reload_discovery_config():
                 st.success('Successfully reloaded config')
             else:
                 st.error('Failed to reload config')
