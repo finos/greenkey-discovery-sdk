@@ -93,10 +93,11 @@ def main():
     title = st.markdown("## Discovery Interactive SDK")
 
     option = st.sidebar.selectbox("Mode", ["Test an interpreter", "Entity library"])
-
+    
+    # Domain / Intent Config
+    config = get_discovery_config()
+    
     if option == "Test an interpreter":
-        # Domain / Intent Config
-        config = get_discovery_config()
 
         domain = st.selectbox( \
           "Domain", \
