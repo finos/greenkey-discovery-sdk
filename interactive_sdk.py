@@ -23,8 +23,8 @@ Entity = namedtuple("Entity", ["entity", "value", "tokens", "indices"])
 
 def get_examples(patterns):
     return [
-        _.replace(';', '.').replace('=', '+').replace('__', ' ')
-        for _ in [i for s in patterns for i in s] if not _.startswith("@")
+        p.replace(';', '.').replace('=', '+').replace('__', ' ')
+        for p in [i for s in patterns for i in s] if not p.startswith("@")
     ]
 
 
