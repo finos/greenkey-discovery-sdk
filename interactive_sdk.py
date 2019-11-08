@@ -9,16 +9,24 @@ import pandas as pd
 import time
 
 from testing.discovery_interface import (
-  check_discovery_status,
-  get_discovery_config,
-  reload_discovery_config,
-  submit_transcript,
+    check_discovery_status,
+    get_discovery_config,
+    reload_discovery_config,
+    submit_transcript,
 )
 
 ENCODING = "utf-8"
 
 # TODO: add component_list
 Entity = namedtuple("Entity", ["entity", "value", "tokens", "indices"])
+
+
+def get_examples(patterns):
+    return [
+        p.replace(';', '.').replace('=', '+').replace('__', ' ')
+        for p in [i for s in patterns for i in s] if not p.startswith("@")
+    ]
+
 
 def get_entities_from_discovery(payload):
     entities = []
@@ -71,7 +79,7 @@ def format_entities(entities, config):
         label = entity["label"]
         if label not in config['entities']:
             continue
-        
+
         for matches in entity['matches']:
             # Remove if removing GROUP_ENTITIES=True
             entity_list += [
@@ -79,7 +87,9 @@ def format_entities(entities, config):
               (matches if isinstance(matches, (list, tuple)) else [matches]) \
             ]
 
-    entity_list = sorted(entity_list, key=lambda e: e.indices[0] - len(e.indices) / 100)
+    entity_list = sorted(
+        entity_list, key=lambda e: e.indices[0] - len(e.indices) / 100
+    )
     return pd.DataFrame.from_records(entity_list, columns=Entity._fields)
 
 
@@ -92,31 +102,35 @@ def main():
     logo = st.image(Image.open('logo.jpg'), width=150)
     title = st.markdown("## Discovery Interactive SDK")
 
-    option = st.sidebar.selectbox("Mode", ["Test an interpreter", "Entity library"])
-    
+    option = st.sidebar.selectbox(
+        "Mode", ["Test an interpreter", "Entity library"]
+    )
+
     # Domain / Intent Config
     config = get_discovery_config()
-    
+
     if option == "Test an interpreter":
 
         domain = st.selectbox( \
           "Domain", \
           ['any'] + sorted(domain for domain in list(config['domains'].keys()) if domain != 'any') \
         )
-    
+
         intent = st.selectbox( \
           "Intent", \
           ['any'] + sorted(intent for intent in config['domains'][domain] if intent != 'any') \
         )
-    
+
         transcript = st.text_input("Input transcript", "eur$ 5y 3x6 5mio")
 
         payload = submit_transcript( \
             transcript, domain_whitelist=[domain], intent_whitelist=[intent] \
         )
-    
+
         # Sidebar
-        show_everything = st.sidebar.checkbox("Verbose discovery output", False)
+        show_everything = st.sidebar.checkbox(
+            "Verbose discovery output", False
+        )
 
         if show_everything:
             st.write(payload)
@@ -132,13 +146,17 @@ def main():
                 st.write(entity_df)
 
         schema_key = st.sidebar.text_input("Schema key:", 'interpreted_quote')
-        
+
         if schema_key and schema_key in payload.keys():
             st.write(payload[schema_key])
-        
+
     elif option == "Entity library":
         st.write("Available entities")
-        st.write({k: v if not k.startswith("_") else "[built_in]" for k,v in config['entities'].items()})
+        st.write({ \
+          k: v if not k.startswith("_") else \
+          {"[built-in]": {"examples": get_examples(v['patterns'])}} \
+          for k,v in config['entities'].items()
+        })
 
     reload_button = st.sidebar.button('Reload Discovery Config')
     if reload_button:
