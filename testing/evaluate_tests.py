@@ -281,11 +281,11 @@ def evaluate_entities_and_schema(
     if verbose:
         logger.setLevel(logging.INFO)
 
-    entities = most_likely_entities = resp["intents"][num_intents]["entities"]
+    entities = resp["intents"][num_intents]["entities"] if resp["intents"] else []
     observed_entity_dict = {
         # keep only the most likely hypothesis from Discovery -> first dict in list of dicts returned by Discovery
         ent["label"]: ent["matches"][0]["value"]
-        for ent in entities  #most_likely_entities
+        for ent in entities
     }
     
     test_name = test_dict.get('test', '')
