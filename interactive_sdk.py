@@ -121,7 +121,7 @@ def main():
           ['any'] + sorted(intent for intent in config['domains'][domain] if intent != 'any') \
         )
 
-        transcript = st.text_input("Input transcript", "eur$ 5y 3x6 5mio")
+        transcript = st.text_area("Input transcript", "eur$ 5y 3x6 5mio")
 
         payload = submit_transcript( \
             transcript, domain_whitelist=[domain], intent_whitelist=[intent] \
