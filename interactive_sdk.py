@@ -21,13 +21,6 @@ ENCODING = "utf-8"
 Entity = namedtuple("Entity", ["entity", "value", "tokens", "indices"])
 
 
-def get_examples(patterns):
-    return [
-        p.replace(';', '.').replace('=', '+').replace('__', ' ')
-        for p in [i for s in patterns for i in s] if not p.startswith("@")
-    ]
-
-
 def get_entities_from_discovery(payload):
     entities = []
     for intent in payload['intents']:
@@ -154,7 +147,7 @@ def main():
         st.write("Available entities")
         st.write({ \
           k: v if not k.startswith("_") else \
-          {"[built-in]": {"examples": get_examples(v['patterns'])}} \
+          {"[built-in]": {"samples": v.get('samples', [])}} \
           for k,v in config['entities'].items()
         })
 
