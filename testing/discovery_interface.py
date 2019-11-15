@@ -175,4 +175,4 @@ def shutdown_discovery(shutdown=True):
         subprocess.call("docker rm -f {}".format(CONTAINER_NAME), shell=True)
     except Exception as exc:
         LOGGER.exception(exc)
-    time.sleep(3)
+
