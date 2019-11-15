@@ -1,21 +1,21 @@
 #!/usr/bin/env python3
 
 import logging
-logger = logging.getLogger(__name__)
+LOGGER = logging.getLogger(__name__)
 
-import requests
-import time
 import json
+import requests
+import subprocess
 import sys
+import time
 
 from os.path import abspath, exists, join as join_path
 
 from testing.discovery_config import (
     CONTAINER_NAME,
+    DISCOVERY_CONFIG,
     DISCOVERY_HOST,
     DISCOVERY_PORT,
-    DISCOVERY_SHUTDOWN_SECRET,
-    DISCOVERY_CONFIG,
     RETRIES,
     TIMEOUT,
 )
@@ -54,7 +54,7 @@ def try_discovery(attempt_number):
         return True
     except Exception:
         if attempt_number >= 3:
-            logger.error(
+            LOGGER.error(
                 "Could not reach discovery, attempt {0} of {1}".format(
                     attempt_number + 1, RETRIES
                 )
@@ -78,7 +78,7 @@ def wait_for_discovery_launch():
     """
     # Timeout of 25 seconds for launch
     if not wait_for_discovery_status():
-        logger.error("Couldn't launch Discovery, printing Docker logs:\n---\n")
+        LOGGER.error("Couldn't launch Discovery, printing Docker logs:\n---\n")
         docker_log_and_stop()
         sys.exit(1)
     else:
@@ -90,7 +90,7 @@ def make_sure_directories_exist(directories):
         try:
             assert exists(d)
         except AssertionError:
-            logger.exception(
+            LOGGER.exception(
                 "Error: Check path to directory: {}".format(d), exc_info=True
             )
             print("Terminating program")
@@ -140,7 +140,7 @@ def submit_transcript(
     }
     response = requests.post(DISCOVERY_URL, json=payload)
     if not response.status_code == 200:
-        logger.error(
+        LOGGER.error(
             "Request was not successful. Response Status Code: {}".format(
                 response.status_code
             )
@@ -170,14 +170,9 @@ def shutdown_discovery(shutdown=True):
     if not shutdown:
         return
 
-    logger.info("Shutting down Discovery")
+    LOGGER.info("Shutting down Discovery")
     try:
-        requests.get(
-            "http://{}:{}/shutdown?secret_key={}".format(
-                DISCOVERY_HOST, DISCOVERY_PORT, DISCOVERY_SHUTDOWN_SECRET
-            )
-        )
-    # Windows throws a ConnectionError for a request to shutdown a server which makes it looks like the test fail
-    except requests.exceptions.ConnectionError:
-        pass
-    time.sleep(3)
+        subprocess.call("docker rm -f {}".format(CONTAINER_NAME), shell=True)
+    except Exception as exc:
+        LOGGER.exception(exc)
+
