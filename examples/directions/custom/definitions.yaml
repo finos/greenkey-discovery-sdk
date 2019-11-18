@@ -1,12 +1,14 @@
 ---
 intents:
   directions:
+    domain: directions
     entities:
       - transportation_type
       - complete_address
     schema:
-      destination_address: "@complete_address"
-      transportation_method: "@transportation_type"
+      return_json:
+        destination_address: "@complete_address"
+        transportation_method: "@transportation_type"
 entities:
   complete_address:
     - "@address_number @direction? (@street_name|@num_ord) @street_type?"

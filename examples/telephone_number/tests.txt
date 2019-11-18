@@ -1,3 +1,4 @@
+domain_whitelist: telephone_number
 intent_whitelist: telephone_number
 
 test: telephone number

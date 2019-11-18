@@ -1,12 +1,15 @@
 intents:
   telephone_number:
-    - "please call me at @phone_number"
-    - "save the number @phone_number"
-    - "his telephone number is @phone_number"
-    - "please call me at @phone_number"
-    - "I'm going to give you the best number to reach me at @phone_number"
-  schema:
-    phone_numbers: ["@phone_number"]
+    domain: telephone_number
+    examples:
+      - "please call me at @phone_number"
+      - "save the number @phone_number"
+      - "his telephone number is @phone_number"
+      - "please call me at @phone_number"
+      - "I'm going to give you the best number to reach me at @phone_number"
+    schema:
+      return_json:
+        phone_numbers: ["@phone_number"]
 entities:
   phone_number:
     patterns:
