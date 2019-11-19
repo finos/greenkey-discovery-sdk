@@ -134,7 +134,7 @@ schema: {"empty_value_expected": ""}
 ...
 ```
 
-Ensure that your *transcripts are unformatted text with numbers spelled out*. Formatting will be taken care of by your entities, and the output from transcription engines will be unformatted.
+For voice transcripts, ensure that your *transcripts are unformatted text with numbers spelled out*. Formatting will be taken care of by your entities, and the output from transcription engines will be unformatted.
 
 At the top of the `tests.txt` file, you can add "whitelists" to narrow Discovery to a particular set of intents or domains.
 
