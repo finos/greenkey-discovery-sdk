@@ -70,11 +70,12 @@ def extract_schema_results_as_entities(
         intent_results["observed_entities"]["schema_" + k] = v
 
     schema_failures = [
-        f[4] for f in entity_results['test_failures'] if f[2] == "schema"
+        f[3] for f in entity_results['test_failures'] if f[1] == "schema"
     ]
 
-    for k, v in json.loads(test_dict['schema']).items():
-        intent_results["observed_entities"]["schema_" + k] = v
+    for failure in schema_failures:
+        for k, v in json.loads(failure).items():
+            intent_results["observed_entities"]["schema_" + k] = v
 
     return intent_results
 
@@ -234,10 +235,10 @@ def test_all(test_file):
         observed_intents=y_pred,
         total_entity_errors=total_errors,
         total_entities=total_entities,
-        entity_accuracy=(total_entities - total_errors) / total_entities * 100,
+        entity_accuracy=((total_entities - total_errors) / total_entities) * 100,
         correct_tests=(total_tests - failed_tests),
         total_tests=total_tests,
-        test_accuracy=(correct_tests / total_tests) * 100,
+        test_accuracy=((total_tests - failed_tests) / total_tests) * 100,
         test_file=test_file,
         test_time_sec=round(time.time() - t1, 2),
     )
