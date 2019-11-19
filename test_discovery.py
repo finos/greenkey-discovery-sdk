@@ -19,6 +19,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 import fnmatch
+import glob
 import json
 import os
 import subprocess
@@ -62,13 +63,11 @@ Testing functions
 """
 
 
-def test_one(
-    test_dict, intent_whitelist, domain_whitelist
-):
+def test_one(test_dict, intent_whitelist, domain_whitelist):
     global VERBOSE_LOGGING
     y_true = y_pred = []
     intent_results = {'failure': 0}
-    
+
     test_name, transcript = test_dict["test"], test_dict["transcript"]
 
     # Timing submit_transcript function
@@ -99,7 +98,8 @@ def test_one(
     )
 
     intent_results["expected_entities"] = test_dict
-    intent_results["observed_entities"] = entity_results['observed_entity_dict']
+    intent_results["observed_entities"] = entity_results['observed_entity_dict'
+                                                         ]
 
     return y_true, y_pred, time_dif_ms, intent_results, entity_results
 
@@ -159,22 +159,27 @@ def test_all(test_file):
 
         y_true += y_true_new
         y_pred += y_pred_new
-        
+
         # include test filename, test number, test name, transcript, and time in ms
-        timing_list.append(TimingResult(test_file, test_no, test_dict["test"], test_dict["transcript"], time_elapsed))
+        timing_list.append(
+            TimingResult(
+                test_file, test_no, test_dict["test"], test_dict["transcript"],
+                time_elapsed
+            )
+        )
 
         failed_tests += entity_results['failure']
         failed_tests += intent_results['failure']
-        
+
         total_errors += entity_results['total_errors']
         total_char_errors += entity_results['total_char_errors']
         total_characters += entity_results['total_characters']
 
         test_failures.append(entity_results['test_failures'])
         test_failures.append([intent_results.get('test_failures', None)])
-            
+
         output_dict[test_no] = intent_results
-    
+
     test_failures = [i for s in test_failures for i in s]
     test_failures = [_ for _ in test_failures if _]
 
@@ -263,6 +268,32 @@ def run_all_tests_in_directory(directory, custom_directory, tests, shutdown):
     return success
 
 
+def expand_wildcard_tests(directory, tests):
+    """
+    Expands any wildcard filenames in the list of tests
+    
+    >>> expand_wildcard_tests('examples/fruits', ['test*'])
+    ['tests.txt', 'tests_negative.txt']
+    
+    >>> expand_wildcard_tests('skip_this_directory', ['no_wildcards'])
+    ['no_wildcards']
+    """
+    if any('*' in t for t in tests):
+        wildcard_tests = [t for t in tests if '*' in t]
+        expanded_filenames = [ \
+            glob.glob(join_path(directory, add_extension_if_missing(t))) \
+            for t in wildcard_tests \
+        ]
+        flattened_filenames = [i for s in expanded_filenames for i in s]
+        cleaned_filenames = [
+            p.replace(directory, '').strip("/") for p in flattened_filenames
+        ]
+        tests = [
+            t for t in tests if not t in wildcard_tests
+        ] + cleaned_filenames
+    return tests
+
+
 def test_discovery(
     directory, *tests, shutdown=True, help=False, verbose=False, output=False
 ):
@@ -289,6 +320,8 @@ def test_discovery(
         SAVE_RESULTS = True
 
     custom_directory = validate_custom_directory(directory)
+
+    tests = expand_wildcard_tests(directory, tests)
 
     # get all definition yaml files
     for yml_file in fnmatch.filter(custom_directory, ".yaml"):
