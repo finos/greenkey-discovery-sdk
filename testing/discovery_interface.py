@@ -163,12 +163,12 @@ def shutdown_discovery(volume=None):
     if str(os.environ.get('SHUTDOWN_DISCOVERY', True)) == "False":
         return
     
-    if volume is not None:
-        subprocess.call("docker volume rm {}".format(volume), shell=True)
-
     LOGGER.info("Shutting down Discovery")
     try:
         subprocess.call("docker rm -f {}".format(CONTAINER_NAME), shell=True)
     except Exception as exc:
         LOGGER.exception(exc)
+    
+    if volume is not None:
+        subprocess.call("docker volume rm {}".format(volume), shell=True)
 
