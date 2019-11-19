@@ -3,7 +3,6 @@
 import logging
 logger = logging.getLogger(__name__)
 
-import editdistance
 import json
 
 from testing.format_tests import strip_extra_whitespace
@@ -108,7 +107,7 @@ def test_single_entity(entities, entity_label, test_value, test_name=''):
         logger.info(
             "Test {0} - Entity not found: {1}".format(test_name, entity_label)
         )
-        return 1, len(test_value), '[value missing]'
+        return 1, '[value missing]'
 
     if entities[entity_label] != test_value:
         logger.info(
@@ -117,9 +116,9 @@ def test_single_entity(entities, entity_label, test_value, test_name=''):
                 test_name, entity_label, test_value, entities[entity_label]
             )
         )
-        return 1, editdistance.eval(test_value, entities[entity_label]
-                                    ), entities[entity_label]
-    return 0, 0, ''
+        return 1, entities[entity_label]
+    
+    return 0, ''
 
 
 def print_extra_entities(observed_entity_dict, test_dict, test_name=''):
@@ -200,13 +199,10 @@ def test_single_case(
     :return: Tuple(bool, int, int, int)
         first element: bool; 0 if tests pass, 1 if tests fails
         total_errors: int; number of entities in test whose observed value (str) differs from expected
-        total_char_errors: int; sum of number of characters that differ between observed and expected values for each entity
-        characters: int; length of expected entity label (test_value)
+        total_entities: int; sum of number of entities (including schema tests)
     """
     total_errors = 0
-    total_char_errors = 0
-    total_characters = 0
-
+    total_entities = 0
     results = []
 
     # Loop through all entity tests
@@ -219,14 +215,14 @@ def test_single_case(
             errors, error_value = test_schema(
                 full_response, json.loads(expected_entity_value), test_name
             )
+            total_entities += len(json.loads(expected_entity_value).keys())
         else:
-            errors, char_errors, error_value = test_single_entity(
+            errors, error_value = test_single_entity(
                 observed_entity_dict, entity_label, expected_entity_value,
                 test_name
             )
-            total_char_errors += char_errors
-            total_characters += len(expected_entity_value)
-
+            total_entities += 1
+        
         results.append(
             [
                 errors, test_name, entity_label, expected_entity_value,
@@ -243,8 +239,7 @@ def test_single_case(
 
     return dict(
         total_errors=total_errors,
-        total_char_errors=total_char_errors,
-        total_characters=total_characters,
+        total_entities=total_entities,
         observed_entity_dict=observed_entity_dict,
         test_failures=test_failures
     )

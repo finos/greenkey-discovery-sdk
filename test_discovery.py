@@ -116,7 +116,7 @@ def test_one(test_dict, intent_whitelist, domain_whitelist):
     intent_results["expected_entities"] = {
         k: v
         for k, v in test_dict.items()
-        if k not in ['test', 'transcript', 'schema']
+        if k not in ['test', 'transcript', 'schema', 'intent']
     }
     intent_results["observed_entities"] = \
         entity_results['observed_entity_dict']
@@ -127,6 +127,17 @@ def test_one(test_dict, intent_whitelist, domain_whitelist):
         )
 
     return y_true, y_pred, time_dif_ms, intent_results, entity_results
+
+
+def did_test_fail(entity_results, intent_results):
+    return (
+        1 if (
+          'expected_intent' in intent_results and \
+          intent_results['expected_intent'] != intent_results['observed_intent'] \
+        ) or ( \
+          entity_results['total_errors'] \
+        ) else 0 \
+    )
 
 
 def test_all(test_file):
@@ -153,14 +164,14 @@ def test_all(test_file):
         prints to stdout
         (1) the number of tests that pass
         (2) the time it took to run the tests
-        (3) total number of character errors in entities tested
-        (4) the entity character error rate
+        (3) total number of entity errors
+        (4) the entity error rate
 
     saves 2 json files:
         (1) test_results.json: contains expected intent labels and corresponding model predicted labels
         (2) test_metrics.json: computes precision, recall, f1_score and accuracy is possible; else returns accuracy and count confusion matrix
     """
-    global VERBOSE_LOGGING, SAVE_RESULTS
+    global SAVE_RESULTS
     print(TABLE_BAR_LENGTH * '-')
     print("Loading test file: {}".format(test_file))
     tests, intent_whitelist, domain_whitelist = load_tests(test_file)
@@ -169,7 +180,7 @@ def test_all(test_file):
 
     total_tests = len(tests)
 
-    failed_tests = total_errors = total_char_errors = total_characters = 0
+    failed_tests = total_errors = total_entities = 0
     y_true = []
     y_pred = []
     output_dict = defaultdict(dict)
@@ -193,18 +204,10 @@ def test_all(test_file):
             )
         )
 
-        failed_tests += (1 if entity_results['total_errors'] else 0)
-        failed_tests += (
-            1 if (
-                'expected_intent' in intent_results
-                and intent_results['expected_intent'] !=
-                intent_results['observed_intent']
-            ) else 0
-        )
-
         total_errors += entity_results['total_errors']
-        total_char_errors += entity_results['total_char_errors']
-        total_characters += entity_results['total_characters']
+        total_entities += entity_results['total_entities']
+
+        failed_tests += did_test_fail(entity_results, intent_results)
 
         test_failures.append(entity_results['test_failures'])
         test_failures.append([intent_results.pop('test_failures', None)])
@@ -219,13 +222,6 @@ def test_all(test_file):
     if test_failures:
         print_failures(test_failures)
 
-    ####################################################################################################################
-    # All tests complete
-    ####################################################################################################################
-    time_lapsed = round(time.time() - t1, 2)
-    correct_tests = total_tests - failed_tests
-    accuracy = (correct_tests / total_tests) * 100
-
     if y_true and y_pred:
         print_normalized_confusion_matrix(y_true, y_pred)
 
@@ -234,20 +230,20 @@ def test_all(test_file):
 
     # save output variables computed across tests
     summary_dict = dict(
-        total_tests=total_tests,
-        test_time_sec=time_lapsed,
         expected_intents=y_true,
         observed_intents=y_pred,
-        total_entity_character_errors=total_errors,
-        total_character_errors=total_char_errors,
-        total_characters=total_characters,
-        correct_tests=correct_tests,
+        total_entity_errors=total_errors,
+        total_entities=total_entities,
+        entity_accuracy=(total_entities - total_errors) / total_entities * 100,
+        correct_tests=(total_tests - failed_tests),
+        total_tests=total_tests,
+        test_accuracy=(correct_tests / total_tests) * 100,
         test_file=test_file,
-        accuracy=accuracy,
+        test_time_sec=round(time.time() - t1, 2),
     )
     output_dict.update(summary_dict)
 
-    return record_results(output_dict, VERBOSE_LOGGING, SAVE_RESULTS)
+    return record_results(output_dict, SAVE_RESULTS)
 
 
 """
