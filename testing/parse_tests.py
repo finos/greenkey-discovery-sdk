@@ -110,7 +110,7 @@ def find_whitelists(test_file):
     intent_whitelist = format_whitelist(intents[0]) if intents else ["any"]
     domain_whitelist = format_whitelist(domains[0]) if domains else ["any"]
 
-    test_file = [l for l in test_file if l not in intents + domains]
+    test_file = [line for line in test_file if not line in intents + domains]
 
     if DISABLE_INTENTS_WHITELIST:
         intent_whitelist = ["any"]
