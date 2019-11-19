@@ -1,7 +1,35 @@
 #!/usr/bin/env python3
 
+import glob
+
 from os.path import abspath, exists, join as join_path
 from testing.discovery_config import DISABLE_INTENTS_WHITELIST
+
+
+def expand_wildcard_tests(directory, tests):
+    """
+    Expands any wildcard filenames in the list of tests
+    
+    >>> expand_wildcard_tests('examples/fruits', ['test*'])
+    ['tests.txt', 'tests_negative.txt']
+    
+    >>> expand_wildcard_tests('skip_this_directory', ['no_wildcards'])
+    ['no_wildcards']
+    """
+    if any('*' in t for t in tests):
+        wildcard_tests = [t for t in tests if '*' in t]
+        expanded_filenames = [ \
+            glob.glob(join_path(directory, add_extension_if_missing(t))) \
+            for t in wildcard_tests \
+        ]
+        flattened_filenames = [i for s in expanded_filenames for i in s]
+        cleaned_filenames = [
+            p.replace(directory, '').strip("/") for p in flattened_filenames
+        ]
+        tests = [
+            t for t in tests if not t in wildcard_tests
+        ] + cleaned_filenames
+    return tests
 
 
 def load_tests_into_list(tests):
@@ -75,22 +103,17 @@ def find_whitelists(test_file):
     """
     If testfile starts with any whitelists, separate them from the test file.
     """
-    intent_whitelist = domain_whitelist = ["any"]
 
-    for i, line in enumerate(test_file):
-        if line.startswith("intent_whitelist"):
-            intent_whitelist = format_whitelist(line)
-            continue
-        if line.startswith("domain_whitelist"):
-            domain_whitelist = format_whitelist(line)
-            continue
-        # we only want to return whatever is leftover after the comments and
-        # whitelists are removed from the test_file
-        test_file = test_file[i:]
-        break
-        
+    intents = [intent for intent in test_file if intent.startswith("intent_whitelist")]
+    domains = [domain for domain in test_file if domain.startswith("domain_whitelist")]
+
+    intent_whitelist = format_whitelist(intents[0]) if intents else ["any"]
+    domain_whitelist = format_whitelist(domains[0]) if domains else ["any"]
+
+    test_file = [line for line in test_file if not line in intents + domains]
+
     if DISABLE_INTENTS_WHITELIST:
-      intent_whitelist = ["any"]
+        intent_whitelist = ["any"]
 
     return test_file, intent_whitelist, domain_whitelist
 

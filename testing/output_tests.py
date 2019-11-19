@@ -115,20 +115,17 @@ def record_results(output_dict, verbose=False, save_results=False):
 
     if save_results:
         os.makedirs('results', exist_ok=True)
+        filename = output_dict["test_file"].split("/")[-1]
         json_dump(
             data=output_dict,
             outfile="results/{}".format(
-                output_dict["test_file"].split("/")[-1].replace(
-                    ".txt", "_results.json"
-                )
+                filename.replace(".txt", "_results.json")
             )
         )
         json_dump(
             data=metrics_dict,
             outfile="results/{}".format(
-                output_dict["test_file"].split("/")[-1].replace(
-                    ".txt", "_metrics.json"
-                )
+                filename.replace(".txt", "_metrics.json")
             )
         )
 

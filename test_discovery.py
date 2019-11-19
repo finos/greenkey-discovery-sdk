@@ -19,7 +19,6 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 import fnmatch
-import glob
 import json
 import os
 import subprocess
@@ -34,7 +33,7 @@ from testing.metrics import print_normalized_confusion_matrix
 
 from testing.parse_tests import (
     load_tests, load_tests_into_list, report_domain_whitelists,
-    add_extension_if_missing
+    add_extension_if_missing, expand_wildcard_tests
 )
 
 from testing.evaluate_tests import (
@@ -47,7 +46,7 @@ from testing.output_tests import (
 )
 
 from testing.discovery_interface import (
-    docker_log_and_stop, setup_discovery, submit_transcript,
+    log_discovery, setup_discovery, submit_transcript,
     shutdown_discovery, validate_custom_directory
 )
 
@@ -98,8 +97,7 @@ def test_one(test_dict, intent_whitelist, domain_whitelist):
     )
 
     intent_results["expected_entities"] = test_dict
-    intent_results["observed_entities"] = entity_results['observed_entity_dict'
-                                                         ]
+    intent_results["observed_entities"] = entity_results['observed_entity_dict']
 
     return y_true, y_pred, time_dif_ms, intent_results, entity_results
 
@@ -237,12 +235,6 @@ def validate_yaml(intents_config_file):
     return True
 
 
-def print_help():
-    print("Test discovery usage: ")
-    print(test_discovery.__doc__)
-    sys.exit(0)
-
-
 def evaluate_all_tests(directory, tests):
     return all(
         test_all(join_path(directory, add_extension_if_missing(test_file))) for
@@ -250,7 +242,7 @@ def evaluate_all_tests(directory, tests):
     )
 
 
-def run_all_tests_in_directory(directory, custom_directory, tests, shutdown):
+def run_all_tests_in_directory(directory, custom_directory, tests):
     success = False
     volume = None
     try:
@@ -262,45 +254,18 @@ def run_all_tests_in_directory(directory, custom_directory, tests, shutdown):
             "Error: Check test files for formatting errors", exc_info=True
         )
 
-    docker_log_and_stop(volume) if (
-        not success and os.environ.get("OUTPUT_FAILED_LOGS", False)
-    ) else shutdown_discovery(shutdown)
+    if not success and os.environ.get("OUTPUT_FAILED_LOGS", False):
+      log_discovery()
+    
+    shutdown_discovery(volume)
     return success
 
 
-def expand_wildcard_tests(directory, tests):
-    """
-    Expands any wildcard filenames in the list of tests
-    
-    >>> expand_wildcard_tests('examples/fruits', ['test*'])
-    ['tests.txt', 'tests_negative.txt']
-    
-    >>> expand_wildcard_tests('skip_this_directory', ['no_wildcards'])
-    ['no_wildcards']
-    """
-    if any('*' in t for t in tests):
-        wildcard_tests = [t for t in tests if '*' in t]
-        expanded_filenames = [ \
-            glob.glob(join_path(directory, add_extension_if_missing(t))) \
-            for t in wildcard_tests \
-        ]
-        flattened_filenames = [i for s in expanded_filenames for i in s]
-        cleaned_filenames = [
-            p.replace(directory, '').strip("/") for p in flattened_filenames
-        ]
-        tests = [
-            t for t in tests if not t in wildcard_tests
-        ] + cleaned_filenames
-    return tests
-
-
 def test_discovery(
-    directory, *tests, shutdown=True, help=False, verbose=False, output=False
+    directory, *tests, verbose=False, output=False
 ):
     """
     :param directory: Path to directory containing custom/ directory
-    :param shutdown: Whether to stop Discovery container after testing
-    :param help: prints this help message
     :param verbose: enables verbose logging during testing
     :param tests: Comma or space separated list of file(s) containing tests
     :param output: creates JSON files with test result output
@@ -308,10 +273,7 @@ def test_discovery(
         and saves results + computed metrics
     """
     global VERBOSE_LOGGING, SAVE_RESULTS
-
-    if help:
-        print_help()
-
+    
     if verbose:
         logger.setLevel(logging.INFO)
         VERBOSE_LOGGING = True
@@ -329,7 +291,7 @@ def test_discovery(
 
     target_tests = load_tests_into_list(tests)
     success = run_all_tests_in_directory(
-        directory, custom_directory, target_tests, shutdown
+        directory, custom_directory, target_tests
     )
     if not success:
         sys.exit(1)

@@ -168,7 +168,7 @@ where "digit" is the name of the intent and the entities value ("room_number") m
 
 3) Edit your `discovery_config.py` to specify your `LICENSE_KEY`, or add it to your environment (`export LICENSE_KEY=XYZ`)
 
-4) Execute `python3 test_discovery.py examples/digit tests` to test the digit example. `test_discovery.py` launches a Discovery Docker container and performs testing on `tests.txt`, where tests pass if they have defined entities present in the most likely found intent. If you want to run multiple tests when using docker set `--shutdown=False` otherwise you will have to relaunch the docker container after each test.
+4) Execute `python3 test_discovery.py examples/digit tests` to test the digit example. `test_discovery.py` launches a Discovery Docker container and performs testing on `tests.txt`, where tests pass if they have defined entities present in the most likely found intent.
 
 ```
 Discovery Launched!
@@ -189,6 +189,21 @@ examples/digit/tests.txt      1           dial number                   press on
 
 (2 / 2) tests passed in 0.02 seconds from examples/digit/tests.txt
 ```
+
+You can also launch Discovery separately from testing:
+
+```
+$ python3 launch_discovery.py examples/digit/custom
+
+# Prevent shutdown after testing, if desired
+$ export SHUTDOWN_DISCOVERY="False"
+
+# Set DISCOVERY_DOMAINS to limit scope of tests
+$ export DISCOVERY_DOMAINS="digit"
+
+$ python3 test_discovery.py examples/digit tests
+```
+
 
 # 2. Customization
 
