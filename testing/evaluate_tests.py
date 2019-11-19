@@ -215,7 +215,7 @@ def test_single_case(
             errors, error_value = test_schema(
                 full_response, json.loads(expected_entity_value), test_name
             )
-            total_entities += len(json.loads(expected_entity_value).keys())
+            total_entities += len(json.loads(expected_entity_value))
         else:
             errors, error_value = test_single_entity(
                 observed_entity_dict, entity_label, expected_entity_value,
