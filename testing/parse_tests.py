@@ -1,7 +1,35 @@
 #!/usr/bin/env python3
 
+import glob
+
 from os.path import abspath, exists, join as join_path
 from testing.discovery_config import DISABLE_INTENTS_WHITELIST
+
+
+def expand_wildcard_tests(directory, tests):
+    """
+    Expands any wildcard filenames in the list of tests
+    
+    >>> expand_wildcard_tests('examples/fruits', ['test*'])
+    ['tests.txt', 'tests_negative.txt']
+    
+    >>> expand_wildcard_tests('skip_this_directory', ['no_wildcards'])
+    ['no_wildcards']
+    """
+    if any('*' in t for t in tests):
+        wildcard_tests = [t for t in tests if '*' in t]
+        expanded_filenames = [ \
+            glob.glob(join_path(directory, add_extension_if_missing(t))) \
+            for t in wildcard_tests \
+        ]
+        flattened_filenames = [i for s in expanded_filenames for i in s]
+        cleaned_filenames = [
+            p.replace(directory, '').strip("/") for p in flattened_filenames
+        ]
+        tests = [
+            t for t in tests if not t in wildcard_tests
+        ] + cleaned_filenames
+    return tests
 
 
 def load_tests_into_list(tests):

@@ -19,7 +19,6 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 import fnmatch
-import glob
 import json
 import os
 import subprocess
@@ -34,7 +33,7 @@ from testing.metrics import print_normalized_confusion_matrix
 
 from testing.parse_tests import (
     load_tests, load_tests_into_list, report_domain_whitelists,
-    add_extension_if_missing
+    add_extension_if_missing, expand_wildcard_tests
 )
 
 from testing.evaluate_tests import (
@@ -98,8 +97,7 @@ def test_one(test_dict, intent_whitelist, domain_whitelist):
     )
 
     intent_results["expected_entities"] = test_dict
-    intent_results["observed_entities"] = entity_results['observed_entity_dict'
-                                                         ]
+    intent_results["observed_entities"] = entity_results['observed_entity_dict']
 
     return y_true, y_pred, time_dif_ms, intent_results, entity_results
 
@@ -266,32 +264,6 @@ def run_all_tests_in_directory(directory, custom_directory, tests, shutdown):
         not success and os.environ.get("OUTPUT_FAILED_LOGS", False)
     ) else shutdown_discovery(shutdown)
     return success
-
-
-def expand_wildcard_tests(directory, tests):
-    """
-    Expands any wildcard filenames in the list of tests
-    
-    >>> expand_wildcard_tests('examples/fruits', ['test*'])
-    ['tests.txt', 'tests_negative.txt']
-    
-    >>> expand_wildcard_tests('skip_this_directory', ['no_wildcards'])
-    ['no_wildcards']
-    """
-    if any('*' in t for t in tests):
-        wildcard_tests = [t for t in tests if '*' in t]
-        expanded_filenames = [ \
-            glob.glob(join_path(directory, add_extension_if_missing(t))) \
-            for t in wildcard_tests \
-        ]
-        flattened_filenames = [i for s in expanded_filenames for i in s]
-        cleaned_filenames = [
-            p.replace(directory, '').strip("/") for p in flattened_filenames
-        ]
-        tests = [
-            t for t in tests if not t in wildcard_tests
-        ] + cleaned_filenames
-    return tests
 
 
 def test_discovery(
