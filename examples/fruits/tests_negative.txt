@@ -1,0 +1,5 @@
+domain_whitelist: fruits
+
+test: Negative test
+transcript: what is your price on green tomatoes
+schema: {"nonexistent_key": null}
