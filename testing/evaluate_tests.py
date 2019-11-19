@@ -191,27 +191,9 @@ Evaluate entity and schema tests
 """
 
 
-def run_test_dict(
-    full_response,
-    observed_entity_dict,
-    entity_label,
-    expected_entity_value,
-    test_name=''
+def test_single_case(
+    test_dict, observed_entity_dict, full_response, test_name=''
 ):
-    char_errors = 0
-    if entity_label == "schema":
-        errors, error_value = test_schema(
-            full_response, json.loads(expected_entity_value), test_name
-        )
-    else:
-        errors, char_errors, error_value = test_single_entity(
-            observed_entity_dict, entity_label, expected_entity_value,
-            test_name
-        )
-    return errors, char_errors, len(expected_entity_value), error_value
-
-
-def test_single_case(test_dict, observed_entity_dict, full_response, test_name=''):
     """
     Run a single test case and return the number of errors
 
@@ -230,31 +212,37 @@ def test_single_case(test_dict, observed_entity_dict, full_response, test_name='
     total_char_errors = 0
     total_characters = 0
 
-    test_failures = []
+    results = []
 
     # Loop through all entity tests
     for label, value in test_dict.items():
-        entity_label, expected_entity_value = map(
-            strip_extra_whitespace, [label, value]
-        )
-        full_response = strip_extra_whitespace(full_response)
-
-        errors, char_errors, characters, error_value = run_test_dict(
-            full_response, observed_entity_dict, entity_label,
-            expected_entity_value, test_name
+        entity_label, expected_entity_value, full_response = map(
+            strip_extra_whitespace, [label, value, full_response]
         )
 
-        if errors:
-            test_failures.append(
-                [
-                    test_name, entity_label, expected_entity_value,
-                    error_value
-                ]
+        if entity_label == "schema":
+            errors, error_value = test_schema(
+                full_response, json.loads(expected_entity_value), test_name
             )
+        else:
+            errors, char_errors, error_value = test_single_entity(
+                observed_entity_dict, entity_label, expected_entity_value,
+                test_name
+            )
+            total_char_errors += char_errors
+            total_characters += len(expected_entity_value)
+
+        results.append(
+            [
+                errors, test_name, entity_label, expected_entity_value,
+                error_value
+            ]
+        )
 
         total_errors += errors
-        total_char_errors += char_errors
-        total_characters += len(expected_entity_value)
+
+    # Only keep test failures
+    test_failures = [r[1:] for r in results if r[0]]
 
     print_extra_entities(observed_entity_dict, test_dict, test_name)
 
@@ -268,12 +256,11 @@ def test_single_case(test_dict, observed_entity_dict, full_response, test_name='
     )
 
 
-def evaluate_entities_and_schema(
-    test_dict, resp, verbose=False, num_intents=0
-):
+def evaluate_entities_and_schema(test_dict, resp, verbose=False, intent=0):
     """
     :param test_dict: Dict, single test case (line in test file)
     :param resp: Dict, jsonified requests.Response object returned from Discovery
+    :param intent: Int, index of intent to test
     :return: 4-Tuple, see test_single_test_case
         for a given test, tests whether each entity in test is present in
             response entities dict and, if so, whether observed value matches expected value
@@ -281,19 +268,20 @@ def evaluate_entities_and_schema(
     if verbose:
         logger.setLevel(logging.INFO)
 
-    entities = resp["intents"][num_intents]["entities"] if resp["intents"] else []
+    entities = resp["intents"][intent]["entities"] if resp["intents"] else []
     observed_entity_dict = {
         # keep only the most likely hypothesis from Discovery -> first dict in list of dicts returned by Discovery
         ent["label"]: ent["matches"][0]["value"]
         for ent in entities
     }
-    
+
     test_name = test_dict.get('test', '')
-    
+
     # Remove non-entity keys from test_dict, then pass to `test_single_case`
     test_dict = {
         k: v
-        for k, v in test_dict.items() if not k in ['transcript', 'intent', 'test']
+        for k, v in test_dict.items()
+        if not k in ['transcript', 'intent', 'test']
     }
     # evaluate whether all expected entities (label/value) are found in observed entity dict returned fby Discovery
     return test_single_case(test_dict, observed_entity_dict, resp, test_name)
