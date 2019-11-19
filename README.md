@@ -5,13 +5,15 @@
 
 ---
 
-The Discovery SDK allows you to write logic-based interpreters, and let GreenKey's Discovery engine use probabilistic search to identify intents and entities.
+The Discovery SDK allows you to write logic-based interpreters, and let GreenKey's Discovery engine use machine learning to identify intents and extract entities.
 
 You can use your Discovery interpreter to power several voice- and chat-driven workflows
 
 - Building a skill in combination with [Scribe's Real-Time Dictation](https://docs.greenkeytech.com/audio/#audioserver)
 
 - Searching transcribed files for key phrases with [Scribe's File Transcription](https://docs.greenkeytech.com/audio/#fileserver)
+
+- Powering chat-bot workflows using [Discovery as a service](https://docs.greenkeytech.com/nlp/#discovery)
 
 Read more about Discovery on our [blog](https://greenkeytech.com/greenkey-scribe-discovery-skills/) or [checkout the full documentation](https://github.com/finos/greenkey-discovery-sdk/wiki)
 
@@ -91,43 +93,54 @@ examples
     └── tests.txt
 ```
 
-
 ## The 'digit' Interpreter Example
-
 1) Test cases for the room dialing example are in `examples/digit/tests.txt`
-    ```
-    intent_whitelist: digit
 
-    test: dial number
-    transcript: please dial eight
-    room_number: 8
+```
+intent_whitelist: digit
 
-    test: dial number
-    transcript: press one eight
-    room_number: 1
-    ...
-    ```
+test: dial number
+transcript: please dial eight
+room_number: 8
 
-    `tests.txt` follows the following format:
-    ```
-    # Comments are ignored
-    test: {name of test}
-    transcript: {transcript you want to parse}
-    {entity 1}: {value}
-    {entity 2}: {value}
-    #
-    # Tests for custom JSON schemas are also allowed
-    # Keys provided are recursively searched for in the response
-    #
-    schema: {"some_custom_schema_key_1": "some_value_1"}
-    schema: {"some_custom_schema_key_2": "some_value_2"}
-    ...
-    ```
-    Ensure that your *transcripts are unformatted text with numbers spelled out*. Formatting will be taken care of by your entities, and the output from transcription engines will be unformatted.
+test: dial number
+transcript: press one eight
+room_number: 1
+...
+```
 
-    At the top of the `tests.txt` file, you can add "whitelists" to narrow Discovery to a particular set of intents or domains.
-    In the above example, setting `intent_whitelist: digit` forces discovery to only look for entities associated with the intent `digit`.
-    You can also do a `domain_whitelist`, to only allow the intents that belong to a certain domain. Comma separate values if you have multple.
+`tests.txt` follows the following format:
+ 
+```
+# Comments are ignored
+test: {name of test}
+transcript: {transcript you want to parse}
+{entity 1}: {value}
+{entity 2}: {value}
+#
+# Tests for custom JSON schemas are also allowed
+# Keys provided are recursively searched for in the response
+#
+schema: {"some_custom_schema_key_1": "some_value_1"}
+schema: {"some_custom_schema_key_2": "some_value_2"}
+#
+# Negative examples can be used as well
+# If you expect your entire schema to be missing,
+# look for null values.
+schema: {"non_existent_key": null}
+# If parts of your schema will be present,
+# look for empty strings.
+schema: {"empty_value_expected": ""}
+...
+```
+
+For voice transcripts, ensure that your *transcripts are unformatted text with numbers spelled out*. Formatting will be taken care of by your entities, and the output from transcription engines will be unformatted.
+
+At the top of the `tests.txt` file, you can add "whitelists" to narrow Discovery to a particular set of intents or domains.
+
+In the above example, setting `intent_whitelist: digit` forces discovery to only look for entities associated with the intent `digit`.
+
+You can also do a `domain_whitelist`, to only allow the intents that belong to a certain domain. Comma separate values if you have multple.
 
     If you are using Discovery primarily as an intent classifier, you may list the "intent" as a property to be tested in the `tests.txt`:
     ```
@@ -137,37 +150,45 @@ examples
     ```
 
 2) The definition file, `examples/digit/custom/definitions.yaml`, contains examples that match the tests
-    ```
-    entities:
-      room_number:
-        - "@num"
-    intents:
-      digit:
-        examples:
-          - "please select @num to speak to the operator"
-          - "to change your order press @room_number"
-          - "if this is an emergency dial @room_number"
-          - "for animal control services press @room_number"
 
-    ```
-    where "digit" is the name of the intent and the entities value ("room_number") match entities in `tests.txt`.
+```
+entities:
+  room_number:
+    - "@num"
+intents:
+  digit:
+    examples:
+      - "please select @num to speak to the operator"
+      - "to change your order press @room_number"
+      - "if this is an emergency dial @room_number"
+      - "for animal control services press @room_number"
+```
 
-3) Edit your `discovery_config.py` to specify your "GKT_USERNAME" and "GKT_SECRETKEY" credentials.
+where "digit" is the name of the intent and the entities value ("room_number") match entities in `tests.txt`.
 
-4) Execute `python3 test_discovery.py examples/digit tests.txt` to test the digit example. `test_discovery.py` launches a Discovery Docker container and performs testing on `tests.txt`, where tests pass if they have defined entities present in the most likely found intent. If you want to run multiple tests when using docker set `--shutdown=False` otherwise you will have to relaunch the docker container after each test.
-    ```
-    Discovery Ready
-    ======
-    Testing: dial number
-    Test passed
+3) Edit your `discovery_config.py` to specify your `LICENSE_KEY`, or add it to your environment (`export LICENSE_KEY=XYZ`)
 
-    ======
-    Testing: dial number
-    Test passed
+4) Execute `python3 test_discovery.py examples/digit tests` to test the digit example. `test_discovery.py` launches a Discovery Docker container and performs testing on `tests.txt`, where tests pass if they have defined entities present in the most likely found intent. If you want to run multiple tests when using docker set `--shutdown=False` otherwise you will have to relaunch the docker container after each test.
+
+```
+Discovery Launched!
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+Loading test file: examples/digit/tests.txt
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Top 5 longest timed tests:
+
+test_file_name                test_no     test_name                     transcript                         time(ms)
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+examples/digit/tests.txt      0           dial number                   please dial eight                  14.77
+examples/digit/tests.txt      1           dial number                   press one eight                    9.69
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+---
 
 
-    (2 / 2) tests passed in 0s with 0 errors, Character error rate: 0.00%
-    ```
+(2 / 2) tests passed in 0.02 seconds from examples/digit/tests.txt
+```
 
 # 2. Customization
 
