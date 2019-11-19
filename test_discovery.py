@@ -235,12 +235,6 @@ def validate_yaml(intents_config_file):
     return True
 
 
-def print_help():
-    print("Test discovery usage: ")
-    print(test_discovery.__doc__)
-    sys.exit(0)
-
-
 def evaluate_all_tests(directory, tests):
     return all(
         test_all(join_path(directory, add_extension_if_missing(test_file))) for
@@ -267,7 +261,7 @@ def run_all_tests_in_directory(directory, custom_directory, tests, shutdown):
 
 
 def test_discovery(
-    directory, *tests, shutdown=True, help=False, verbose=False, output=False
+    directory, *tests, shutdown=True, verbose=False, output=False
 ):
     """
     :param directory: Path to directory containing custom/ directory
@@ -280,10 +274,7 @@ def test_discovery(
         and saves results + computed metrics
     """
     global VERBOSE_LOGGING, SAVE_RESULTS
-
-    if help:
-        print_help()
-
+    
     if verbose:
         logger.setLevel(logging.INFO)
         VERBOSE_LOGGING = True
