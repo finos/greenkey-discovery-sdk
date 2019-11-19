@@ -4,6 +4,7 @@ import logging
 LOGGER = logging.getLogger(__name__)
 
 import json
+import os
 import requests
 import subprocess
 import sys
@@ -26,16 +27,8 @@ DISCOVERY_URL = "http://{}:{}/process".format(DISCOVERY_HOST, DISCOVERY_PORT)
 DEVELOPER_URL = "http://{}:{}/developer".format(DISCOVERY_HOST, DISCOVERY_PORT)
 
 
-def docker_log_and_stop(volume=None):
-    """
-    name assigned to Docker container; modify CONTAINER_NAME in
-    discovery_config.py
-        default='discovery-dev'
-    """
-    subprocess.call("docker logs {}".format(CONTAINER_NAME), shell=True)
-    subprocess.call("docker stop {}".format(CONTAINER_NAME), shell=True)
-    if volume is not None:
-        subprocess.call("docker volume rm {}".format(volume), shell=True)
+def log_discovery():
+    subprocess.call("docker logs {}".format(CONTAINER_NAME), shell=True)    
 
 
 def check_discovery_status():
@@ -163,12 +156,15 @@ def reload_discovery_config():
     return ('result' in payload and payload['result'] == "success")
 
 
-def shutdown_discovery(shutdown=True):
+def shutdown_discovery(volume=None):
     """
     Shuts down the Discovery engine Docker container
     """
-    if not shutdown:
+    if str(os.environ.get('SHUTDOWN_DISCOVERY', True)) == "False":
         return
+    
+    if volume is not None:
+        subprocess.call("docker volume rm {}".format(volume), shell=True)
 
     LOGGER.info("Shutting down Discovery")
     try:

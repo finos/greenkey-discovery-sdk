@@ -46,7 +46,7 @@ from testing.output_tests import (
 )
 
 from testing.discovery_interface import (
-    docker_log_and_stop, setup_discovery, submit_transcript,
+    log_discovery, setup_discovery, submit_transcript,
     shutdown_discovery, validate_custom_directory
 )
 
@@ -242,7 +242,7 @@ def evaluate_all_tests(directory, tests):
     )
 
 
-def run_all_tests_in_directory(directory, custom_directory, tests, shutdown):
+def run_all_tests_in_directory(directory, custom_directory, tests):
     success = False
     volume = None
     try:
@@ -254,19 +254,18 @@ def run_all_tests_in_directory(directory, custom_directory, tests, shutdown):
             "Error: Check test files for formatting errors", exc_info=True
         )
 
-    docker_log_and_stop(volume) if (
-        not success and os.environ.get("OUTPUT_FAILED_LOGS", False)
-    ) else shutdown_discovery(shutdown)
+    if not success and os.environ.get("OUTPUT_FAILED_LOGS", False):
+      log_discovery()
+    
+    shutdown_discovery(volume)
     return success
 
 
 def test_discovery(
-    directory, *tests, shutdown=True, verbose=False, output=False
+    directory, *tests, verbose=False, output=False
 ):
     """
     :param directory: Path to directory containing custom/ directory
-    :param shutdown: Whether to stop Discovery container after testing
-    :param help: prints this help message
     :param verbose: enables verbose logging during testing
     :param tests: Comma or space separated list of file(s) containing tests
     :param output: creates JSON files with test result output
@@ -292,7 +291,7 @@ def test_discovery(
 
     target_tests = load_tests_into_list(tests)
     success = run_all_tests_in_directory(
-        directory, custom_directory, target_tests, shutdown
+        directory, custom_directory, target_tests
     )
     if not success:
         sys.exit(1)
