@@ -1,3 +1,4 @@
+domain_whitelist: digit
 intent_whitelist: digit
 
 test: dial number

@@ -1,3 +1,4 @@
+domain_whitelist: calling_room
 intent_whitelist: calling_room
 
 # Comments should be ignored
