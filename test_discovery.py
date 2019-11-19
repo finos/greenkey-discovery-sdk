@@ -229,16 +229,19 @@ def test_all(test_file):
     # Prints a table of the timing results to console
     print_table(timing_list)
 
+    entity_accuracy = 100 * (total_entities - total_errors) / max(total_entities, 1)
+    test_accuracy = 100 * (total_tests - failed_tests) / max(total_tests, 1)
+
     # save output variables computed across tests
     summary_dict = dict(
         expected_intents=y_true,
         observed_intents=y_pred,
         total_entity_errors=total_errors,
         total_entities=total_entities,
-        entity_accuracy=((total_entities - total_errors) / total_entities) * 100,
+        entity_accuracy=entity_accuracy,
         correct_tests=(total_tests - failed_tests),
         total_tests=total_tests,
-        test_accuracy=((total_tests - failed_tests) / total_tests) * 100,
+        test_accuracy=test_accuracy,
         test_file=test_file,
         test_time_sec=round(time.time() - t1, 2),
     )
