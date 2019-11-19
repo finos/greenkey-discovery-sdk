@@ -46,8 +46,8 @@ from testing.output_tests import (
 )
 
 from testing.discovery_interface import (
-    log_discovery, setup_discovery, submit_transcript,
-    shutdown_discovery, validate_custom_directory
+    log_discovery, setup_discovery, submit_transcript, shutdown_discovery,
+    validate_custom_directory
 )
 
 VERBOSE_LOGGING = False
@@ -60,6 +60,21 @@ TimingResult = namedtuple(
 """
 Testing functions
 """
+
+
+def extract_schema_results_as_entities(test_dict, intent_results, entity_results):
+  for k, v in json.loads(test_dict['schema']).items():
+      intent_results["expected_entities"]["schema_" + k] = v
+      intent_results["observed_entities"]["schema_" + k] = v
+
+  schema_failures = [
+      f[4] for f in entity_results['test_failures'] if f[2] == "schema"
+  ]
+
+  for k, v in json.loads(test_dict['schema']).items():
+      intent_results["observed_entities"]["schema_" + k] = v
+  
+  return intent_results
 
 
 def test_one(test_dict, intent_whitelist, domain_whitelist):
@@ -96,8 +111,15 @@ def test_one(test_dict, intent_whitelist, domain_whitelist):
         test_dict, resp, VERBOSE_LOGGING
     )
 
-    intent_results["expected_entities"] = test_dict
+    intent_results["expected_entities"] = {
+        k: v
+        for k, v in test_dict.items()
+        if k not in ['test', 'transcript', 'schema']
+    }
     intent_results["observed_entities"] = entity_results['observed_entity_dict']
+
+    if 'schema' in test_dict:
+        intent_results = extract_schema_results_as_entities(test_dict, intent_results, entity_results)
 
     return y_true, y_pred, time_dif_ms, intent_results, entity_results
 
@@ -255,15 +277,13 @@ def run_all_tests_in_directory(directory, custom_directory, tests):
         )
 
     if not success and os.environ.get("OUTPUT_FAILED_LOGS", False):
-      log_discovery()
-    
+        log_discovery()
+
     shutdown_discovery(volume)
     return success
 
 
-def test_discovery(
-    directory, *tests, verbose=False, output=False
-):
+def test_discovery(directory, *tests, verbose=False, output=False):
     """
     :param directory: Path to directory containing custom/ directory
     :param verbose: enables verbose logging during testing
@@ -273,7 +293,7 @@ def test_discovery(
         and saves results + computed metrics
     """
     global VERBOSE_LOGGING, SAVE_RESULTS
-    
+
     if verbose:
         logger.setLevel(logging.INFO)
         VERBOSE_LOGGING = True
