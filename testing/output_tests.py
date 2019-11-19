@@ -1,10 +1,7 @@
-import logging
 import os
 import json
 from os.path import abspath, exists, join as join_path
 from testing.metrics import compute_all
-
-logger = logging.getLogger(__name__)
 
 TABLE_BAR_LENGTH = 160
 
@@ -77,27 +74,13 @@ def print_failures(test_failures):
     print(TABLE_BAR_LENGTH * '-')
 
 
-def record_results(output_dict, verbose=False, save_results=False):
-    if verbose:
-        logger.setLevel(logging.INFO)
-
+def record_results(output_dict, save_results=False):
     print("\n---\n")
     output_dir = os.path.dirname(output_dict["test_file"])
-
-    if "total_characters" in output_dict and output_dict["total_characters"]:
-        entity_character_error_rate = 100 * (
-            output_dict["total_character_errors"] /
-            output_dict["total_characters"]
-        )
-        logger.info(
-            "Total number of entity character errors: {}".format(
-                output_dict["total_entity_character_errors"]
-            )
-        )
-        logger.info(
-            "Entity Character Error Rate: {:.2f}".
-            format(entity_character_error_rate)
-        )
+    print(
+        "Entity Accuracy: {:.2f}".
+        format(output_dict["entity_accuracy"])
+    )
 
     # evaluate metrics; treat each possible intent as reference
     metrics_dict = compute_all(
