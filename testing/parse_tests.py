@@ -104,7 +104,7 @@ def find_whitelists(test_file):
     If testfile starts with any whitelists, separate them from the test file.
     """
 
-    intents = [i for i in test_file if i.startswith("intent_whitelist")]
+    intents = [intent for intent in test_file if intent.startswith("intent_whitelist")]
     domains = [d for d in test_file if d.startswith("domain_whitelist")]
 
     intent_whitelist = format_whitelist(intents[0]) if intents else ["any"]
