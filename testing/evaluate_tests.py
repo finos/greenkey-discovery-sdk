@@ -170,15 +170,10 @@ def evaluate_intent(test_dict, resp, test_name=''):
     return expected_intent, observed_intent
 
 
-def format_intent_test_result(
-    test_name, transcript, expected_intent, observed_intent
-):
+def format_intent_test_result(test_name, expected_intent, observed_intent):
     return dict(
-        test_name=test_name,
-        transcript=transcript,
         expected_intent=expected_intent,
         observed_intent=observed_intent,
-        failure=(1 if expected_intent != observed_intent else 0),
         test_failures=(
             [test_name, 'intent', expected_intent, observed_intent]
             if expected_intent != observed_intent else []
@@ -247,7 +242,6 @@ def test_single_case(
     print_extra_entities(observed_entity_dict, test_dict, test_name)
 
     return dict(
-        failure=(1 if total_errors else 0),
         total_errors=total_errors,
         total_char_errors=total_char_errors,
         total_characters=total_characters,

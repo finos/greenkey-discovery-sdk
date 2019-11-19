@@ -62,25 +62,27 @@ Testing functions
 """
 
 
-def extract_schema_results_as_entities(test_dict, intent_results, entity_results):
-  for k, v in json.loads(test_dict['schema']).items():
-      intent_results["expected_entities"]["schema_" + k] = v
-      intent_results["observed_entities"]["schema_" + k] = v
+def extract_schema_results_as_entities(
+    test_dict, intent_results, entity_results
+):
+    for k, v in json.loads(test_dict['schema']).items():
+        intent_results["expected_entities"]["schema_" + k] = v
+        intent_results["observed_entities"]["schema_" + k] = v
 
-  schema_failures = [
-      f[4] for f in entity_results['test_failures'] if f[2] == "schema"
-  ]
+    schema_failures = [
+        f[4] for f in entity_results['test_failures'] if f[2] == "schema"
+    ]
 
-  for k, v in json.loads(test_dict['schema']).items():
-      intent_results["observed_entities"]["schema_" + k] = v
-  
-  return intent_results
+    for k, v in json.loads(test_dict['schema']).items():
+        intent_results["observed_entities"]["schema_" + k] = v
+
+    return intent_results
 
 
 def test_one(test_dict, intent_whitelist, domain_whitelist):
     global VERBOSE_LOGGING
     y_true = y_pred = []
-    intent_results = {'failure': 0}
+    intent_results = {}
 
     test_name, transcript = test_dict["test"], test_dict["transcript"]
 
@@ -101,7 +103,7 @@ def test_one(test_dict, intent_whitelist, domain_whitelist):
             test_dict, resp, test_name
         )
         intent_results = format_intent_test_result(
-            test_name, transcript, expected_intent, observed_intent
+            test_name, expected_intent, observed_intent
         )
         y_true = [expected_intent]
         y_pred = [observed_intent]
@@ -116,10 +118,13 @@ def test_one(test_dict, intent_whitelist, domain_whitelist):
         for k, v in test_dict.items()
         if k not in ['test', 'transcript', 'schema']
     }
-    intent_results["observed_entities"] = entity_results['observed_entity_dict']
+    intent_results["observed_entities"] = \
+        entity_results['observed_entity_dict']
 
     if 'schema' in test_dict:
-        intent_results = extract_schema_results_as_entities(test_dict, intent_results, entity_results)
+        intent_results = extract_schema_results_as_entities(
+            test_dict, intent_results, entity_results
+        )
 
     return y_true, y_pred, time_dif_ms, intent_results, entity_results
 
@@ -188,17 +193,25 @@ def test_all(test_file):
             )
         )
 
-        failed_tests += entity_results['failure']
-        failed_tests += intent_results['failure']
+        failed_tests += (1 if entity_results['total_errors'] else 0)
+        failed_tests += (
+            1 if (
+                'expected_intent' in intent_results
+                and intent_results['expected_intent'] !=
+                intent_results['observed_intent']
+            ) else 0
+        )
 
         total_errors += entity_results['total_errors']
         total_char_errors += entity_results['total_char_errors']
         total_characters += entity_results['total_characters']
 
         test_failures.append(entity_results['test_failures'])
-        test_failures.append([intent_results.get('test_failures', None)])
+        test_failures.append([intent_results.pop('test_failures', None)])
 
         output_dict[test_no] = intent_results
+        output_dict[test_no]['test_name'] = test_dict["test"]
+        output_dict[test_no]['transcript'] = test_dict["transcript"]
 
     test_failures = [i for s in test_failures for i in s]
     test_failures = [_ for _ in test_failures if _]
