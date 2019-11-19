@@ -75,22 +75,17 @@ def find_whitelists(test_file):
     """
     If testfile starts with any whitelists, separate them from the test file.
     """
-    intent_whitelist = domain_whitelist = ["any"]
 
-    for i, line in enumerate(test_file):
-        if line.startswith("intent_whitelist"):
-            intent_whitelist = format_whitelist(line)
-            continue
-        if line.startswith("domain_whitelist"):
-            domain_whitelist = format_whitelist(line)
-            continue
-        # we only want to return whatever is leftover after the comments and
-        # whitelists are removed from the test_file
-        test_file = test_file[i:]
-        break
-        
+    intents = [i for i in test_file if i.startswith("intent_whitelist")]
+    domains = [d for d in test_file if d.startswith("domain_whitelist")]
+
+    intent_whitelist = format_whitelist(intents[0]) if intents else ["any"]
+    domain_whitelist = format_whitelist(domains[0]) if domains else ["any"]
+
+    test_file = [l for l in test_file if l not in intents + domains]
+
     if DISABLE_INTENTS_WHITELIST:
-      intent_whitelist = ["any"]
+        intent_whitelist = ["any"]
 
     return test_file, intent_whitelist, domain_whitelist
 
