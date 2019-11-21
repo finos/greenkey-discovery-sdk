@@ -61,6 +61,54 @@ def _find(obj, key):
         return _find_in_dict(obj, key)
 
 
+def is_invalid_schema(schema, test_value):
+    """
+    Checks schema against tests with dictionary nesting
+    
+    >>> is_invalid_schema({"valid_key": "some_value"}, {"valid_key": "some_value"})
+    False
+    
+    >>> is_invalid_schema({"invalid_key": "some_value"}, {"valid_key": "some_value"})
+    True
+    
+    >>> is_invalid_schema(
+    ... {"nested": {"valid_key": "some_value", "another_key": "some_value"}},
+    ... {"nested": {"valid_key": "some_value"}}
+    ... )
+    False
+    
+    >>> is_invalid_schema(
+    ... {"nested": {"invalid_key": "some_value", "another_key": "some_value"}},
+    ... {"nested": {"valid_key": "some_value"}}
+    ... )
+    True
+    
+    >>> is_invalid_schema(
+    ... {"nested": {"valid_key": "some_invalid_value", "another_key": "some_value"}},
+    ... {"nested": {"valid_key": "some_value"}}
+    ... )
+    True
+    
+    >>> is_invalid_schema(
+    ... {"nested": {"double": {"valid_key": "some_value", "another_key": "some_value"}}},
+    ... {"nested": {"double": {"valid_key": "some_value"}}}
+    ... )
+    False
+    
+    >>> is_invalid_schema(
+    ... {"nested": {"double": {"valid_key": "some_value", "another_key": "some_value"}}},
+    ... {"nested": {"double": {"valid_key": "some_value"}, "some_key": "no_value"}}
+    ... )
+    True
+    """
+    if isinstance(test_value, dict):
+        return any(
+            is_invalid_schema(schema[k], test_value[k]) if k in
+            schema else True for k in test_value.keys()
+        )
+    return schema != test_value
+
+
 def test_schema(full_response, test_value, test_name=''):
     """
     For each key-value pair given in the schema test,
@@ -72,7 +120,7 @@ def test_schema(full_response, test_value, test_name=''):
     errs = {}
     for res in map(
         lambda k: {k: _find(full_response, k)}
-        if _find(full_response, k) != test_value[k] else {},
+        if is_invalid_schema(_find(full_response, k), test_value[k]) else {},
         list(test_value.keys()),
     ):
         errs.update(res)
@@ -117,7 +165,7 @@ def test_single_entity(entities, entity_label, test_value, test_name=''):
             )
         )
         return 1, entities[entity_label]
-    
+
     return 0, ''
 
 
@@ -222,7 +270,7 @@ def test_single_case(
                 test_name
             )
             total_entities += 1
-        
+
         results.append(
             [
                 errors, test_name, entity_label, expected_entity_value,
