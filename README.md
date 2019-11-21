@@ -117,20 +117,32 @@ test: {name of test}
 transcript: {transcript you want to parse}
 {entity 1}: {value}
 {entity 2}: {value}
+
 #
 # Tests for custom JSON schemas are also allowed
 # Keys provided are recursively searched for in the response
 #
 schema: {"some_custom_schema_key_1": "some_value_1"}
 schema: {"some_custom_schema_key_2": "some_value_2"}
+
 #
 # Negative examples can be used as well
+#
 # If you expect your entire schema to be missing,
 # look for null values.
 schema: {"non_existent_key": null}
 # If parts of your schema will be present,
 # look for empty strings.
 schema: {"empty_value_expected": ""}
+
+# If you are looking for a repeated key in your schema
+# you can specify nesting to clarify which you want to test
+# A payload like this
+# {"price": {"value": "1.0", "type": "bid"}, "quantity": {"value": "10", "type": "bid"}}
+# Can have tests like this:
+schema: {"price": {"value": "1.0"}}
+schema: {"quantity": {"value": "10"}}
+
 ...
 ```
 
@@ -142,12 +154,13 @@ In the above example, setting `intent_whitelist: digit` forces discovery to only
 
 You can also do a `domain_whitelist`, to only allow the intents that belong to a certain domain. Comma separate values if you have multple.
 
-    If you are using Discovery primarily as an intent classifier, you may list the "intent" as a property to be tested in the `tests.txt`:
-    ```
-    test: {name of test}
-    transcript: {transcript you want to parse}
-    intent: {expected intent}
-    ```
+If you are using Discovery primarily as an intent classifier, you may list the "intent" as a property to be tested in the `tests.txt`:
+
+```
+test: {name of test}
+transcript: {transcript you want to parse}
+intent: {expected intent}
+```
 
 2) The definition file, `examples/digit/custom/definitions.yaml`, contains examples that match the tests
 
