@@ -87,7 +87,16 @@ def main():
     # UI FOR DEV TOOL
     st.image(Image.open("logo.jpg"), width=150)
     st.markdown("## Discovery Interactive SDK")
-
+    
+    reload_button = st.sidebar.button("Reload Discovery Config")
+    
+    if reload_button:
+        with st.spinner("Reloading config"):
+            if reload_discovery_config():
+                st.success("Successfully reloaded config")
+            else:
+                st.error("Failed to reload config")
+    
     option = st.sidebar.selectbox("Mode", ["Test an interpreter", "Entity library"])
 
     # Domain / Intent Config
@@ -139,14 +148,6 @@ def main():
           {"[built-in]": {"samples": v.get("samples", [])}} \
           for k,v in config["entities"].items()
         })
-
-    reload_button = st.sidebar.button("Reload Discovery Config")
-    if reload_button:
-        with st.spinner("Reloading config"):
-            if reload_discovery_config():
-                st.success("Successfully reloaded config")
-            else:
-                st.error("Failed to reload config")
 
 
 if __name__ == "__main__":
