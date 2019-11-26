@@ -60,6 +60,17 @@ def format_entity_match(label, match):
     )
 
 
+def get_entity_matches(label, entity):
+    entity_list = []
+    for matches in entity["matches"]:
+        # Remove if removing GROUP_ENTITIES=True
+        entity_list += [
+          format_entity_match(label, match) for match in \
+          (matches if isinstance(matches, (list, tuple)) else [matches]) \
+        ]
+    return entity_list
+
+
 def format_entities(entities, config):
     # TODO: add sidebar glossary
     entity_list = []
@@ -68,15 +79,76 @@ def format_entities(entities, config):
         if label not in config["entities"]:
             continue
 
-        for matches in entity["matches"]:
-            # Remove if removing GROUP_ENTITIES=True
-            entity_list += [
-              format_entity_match(label, match) for match in \
-              (matches if isinstance(matches, (list, tuple)) else [matches]) \
-            ]
+        entity_list += get_entity_matches(label, entity)
 
     entity_list = sorted(entity_list, key=lambda e: e.indices[0] - len(e.indices) / 100)
     return pd.DataFrame.from_records(entity_list, columns=Entity._fields)
+
+
+def show_matched_entities(payload, config):
+    show_ents = st.sidebar.checkbox("Show matched entities", True)
+    if show_ents:
+        entities = get_entities_from_discovery(payload)
+        entity_df = format_entities(entities, config)
+        st.write(entity_df)
+
+
+def reload_discovery():
+    with st.spinner("Reloading config"):
+        if reload_discovery_config():
+            st.success("Successfully reloaded config")
+        else:
+            st.error("Failed to reload config")
+
+
+def set_domain_and_intent(config):
+    domain = st.selectbox( \
+      "Domain", \
+      ["any"] + sorted(domain for domain in list(config["domains"].keys()) if domain != "any") \
+    )
+
+    intent = st.selectbox( \
+      "Intent", \
+      ["any"] + sorted(intent for intent in config["domains"][domain] if intent != "any") \
+    )
+    
+    return domain, intent
+
+
+def test_an_interpreter(config):
+    domain, intent = set_domain_and_intent(config)
+
+    transcript = st.text_area("Input transcript", "eur$ 5y 3x6 5mio")
+
+    payload = submit_transcript( \
+        transcript, domain_whitelist=[domain], intent_whitelist=[intent] \
+    )
+
+    # Sidebar
+    show_everything = st.sidebar.checkbox("Verbose discovery output", False)
+
+    if show_everything:
+        st.write(payload)
+
+    if "intents" in payload \
+        and payload["intents"] \
+        and "entities" in payload["intents"][0]:
+
+        show_matched_entities(payload, config)
+
+    schema_key = st.sidebar.text_input("Schema key:", "interpreted_quote")
+
+    if schema_key and schema_key in payload.keys():
+        st.write(payload[schema_key])
+
+
+def entity_library(config):
+    st.write("Available entities")
+    st.write({ \
+      k: v if not k.startswith("_") else \
+      {"[built-in]": {"samples": v.get("samples", [])}} \
+      for k,v in config["entities"].items()
+    })
 
 
 def main():
@@ -91,11 +163,7 @@ def main():
     reload_button = st.sidebar.button("Reload Discovery Config")
     
     if reload_button:
-        with st.spinner("Reloading config"):
-            if reload_discovery_config():
-                st.success("Successfully reloaded config")
-            else:
-                st.error("Failed to reload config")
+        reload_discovery()
     
     option = st.sidebar.selectbox("Mode", ["Test an interpreter", "Entity library"])
 
@@ -103,51 +171,10 @@ def main():
     config = get_discovery_config()
 
     if option == "Test an interpreter":
-
-        domain = st.selectbox( \
-          "Domain", \
-          ["any"] + sorted(domain for domain in list(config["domains"].keys()) if domain != "any") \
-        )
-
-        intent = st.selectbox( \
-          "Intent", \
-          ["any"] + sorted(intent for intent in config["domains"][domain] if intent != "any") \
-        )
-
-        transcript = st.text_area("Input transcript", "eur$ 5y 3x6 5mio")
-
-        payload = submit_transcript( \
-            transcript, domain_whitelist=[domain], intent_whitelist=[intent] \
-        )
-
-        # Sidebar
-        show_everything = st.sidebar.checkbox("Verbose discovery output", False)
-
-        if show_everything:
-            st.write(payload)
-
-        if "intents" in payload \
-            and payload["intents"] \
-            and "entities" in payload["intents"][0]:
-
-            show_ents = st.sidebar.checkbox("Show matched entities", True)
-            if show_ents:
-                entities = get_entities_from_discovery(payload)
-                entity_df = format_entities(entities, config)
-                st.write(entity_df)
-
-        schema_key = st.sidebar.text_input("Schema key:", "interpreted_quote")
-
-        if schema_key and schema_key in payload.keys():
-            st.write(payload[schema_key])
+        test_an_interpreter(config)
 
     elif option == "Entity library":
-        st.write("Available entities")
-        st.write({ \
-          k: v if not k.startswith("_") else \
-          {"[built-in]": {"samples": v.get("samples", [])}} \
-          for k,v in config["entities"].items()
-        })
+        entity_library(config)
 
 
 if __name__ == "__main__":
