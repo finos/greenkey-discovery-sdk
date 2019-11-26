@@ -3,6 +3,8 @@
 import streamlit as st
 from collections import namedtuple
 from PIL import Image
+
+import os
 import pandas as pd
 import time
 
@@ -14,6 +16,11 @@ from testing.discovery_interface import (
 )
 
 ENCODING = "utf-8"
+DISCOVERY_DOMAINS = os.environ.get('DISCOVERY_DOMAINS', '').split(',')
+DISCOVERY_INTENTS = os.environ.get('DISCOVERY_INTENTS', '').split(',')
+
+DOMAIN_WHITELIST = DISCOVERY_DOMAINS + ["any"]
+INTENT_WHITELIST = DISCOVERY_INTENTS + ["any"]
 
 # TODO: add component_list
 Entity = namedtuple("Entity", ["entity", "value", "tokens", "indices"])
@@ -81,12 +88,13 @@ def format_entities(entities, config):
 
         entity_list += get_entity_matches(label, entity)
 
-    entity_list = sorted(entity_list, key=lambda e: e.indices[0] - len(e.indices) / 100)
+    entity_list = sorted(
+        entity_list, key=lambda e: e.indices[0] - len(e.indices) / 100
+    )
     return pd.DataFrame.from_records(entity_list, columns=Entity._fields)
 
 
-def show_matched_entities(payload, config):
-    show_ents = st.sidebar.checkbox("Show matched entities", True)
+def show_matched_entities(payload, config, show_ents):
     if show_ents:
         entities = get_entities_from_discovery(payload)
         entity_df = format_entities(entities, config)
@@ -102,16 +110,20 @@ def reload_discovery():
 
 
 def set_domain_and_intent(config):
-    domain = st.selectbox( \
-      "Domain", \
-      ["any"] + sorted(domain for domain in list(config["domains"].keys()) if domain != "any") \
-    )
+    domains = [ \
+      domain for domain in DOMAIN_WHITELIST + \
+      sorted(domain for domain in list(config["domains"].keys()) if domain not in DOMAIN_WHITELIST) \
+      if domain
+    ]
+    domain = st.selectbox("Domain", domains)
 
-    intent = st.selectbox( \
-      "Intent", \
-      ["any"] + sorted(intent for intent in config["domains"][domain] if intent != "any") \
-    )
-    
+    intents = [ \
+      intent for intent in INTENT_WHITELIST + \
+      sorted(intent for intent in config["domains"].get(domain, []) if intent not in INTENT_WHITELIST) \
+      if intent
+    ]
+    intent = st.selectbox("Intent", intents)
+
     return domain, intent
 
 
@@ -126,6 +138,7 @@ def test_an_interpreter(config):
 
     # Sidebar
     show_everything = st.sidebar.checkbox("Verbose discovery output", False)
+    show_ents = st.sidebar.checkbox("Show matched entities", True)
 
     if show_everything:
         st.write(payload)
@@ -134,7 +147,7 @@ def test_an_interpreter(config):
         and payload["intents"] \
         and "entities" in payload["intents"][0]:
 
-        show_matched_entities(payload, config)
+        show_matched_entities(payload, config, show_ents)
 
     schema_key = st.sidebar.text_input("Schema key:", "interpreted_quote")
 
@@ -159,13 +172,15 @@ def main():
     # UI FOR DEV TOOL
     st.image(Image.open("logo.jpg"), width=150)
     st.markdown("## Discovery Interactive SDK")
-    
+
     reload_button = st.sidebar.button("Reload Discovery Config")
-    
+
     if reload_button:
         reload_discovery()
-    
-    option = st.sidebar.selectbox("Mode", ["Test an interpreter", "Entity library"])
+
+    option = st.sidebar.selectbox(
+        "Mode", ["Test an interpreter", "Entity library"]
+    )
 
     # Domain / Intent Config
     config = get_discovery_config()
