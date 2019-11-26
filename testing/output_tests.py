@@ -52,24 +52,26 @@ def print_table(timing_list, top_n=5, first_k_chars=25):
 
 def print_failures(test_failures):
     """ 
-    Prints a formatted table ordered by longest test timings. 
-        
-    :param timing_list: namedtuple, list of namedtuples representing testing results
+    Prints a formatted table of failed tests.
+    The input is a list of failed tests.
     """
 
-    table_string = '{:<40s}{:<20s}{:<50s}{:<50s}'
+    table_string = '{:<40s}{:<20s}{:<100s}'
+    lower_table_string = '{:<60s}{:<100s}'
 
     print(TABLE_BAR_LENGTH * '-')
     print("\nTest failures:\n")
     print(
         table_string.format(
-            'test_name', 'test_type', 'expected_value', 'observed_value'
+            'test_name', 'test_type', 'expected_value/observed_value'
         )
     )
     print(TABLE_BAR_LENGTH * '-')
 
     for t in test_failures:
-        print(table_string.format(t[0][:40], t[1][:20], t[2][:50], t[3][:50]))
+        print(table_string.format(t[0][:40], t[1][:20], t[2][:100]))
+        print(lower_table_string.format(' ', t[3][:100]))
+        print()
 
     print(TABLE_BAR_LENGTH * '-')
 
