@@ -109,59 +109,6 @@ room_number: 1
 ...
 ```
 
-`tests.txt` follows the following format:
- 
-```
-# Comments are ignored
-test: {name of test}
-transcript: {transcript you want to parse}
-{entity 1}: {value}
-{entity 2}: {value}
-
-#
-# Tests for custom JSON schemas are also allowed
-# Keys provided are recursively searched for in the response
-#
-schema: {"some_custom_schema_key_1": "some_value_1"}
-schema: {"some_custom_schema_key_2": "some_value_2"}
-
-#
-# Negative examples can be used as well
-#
-# If you expect your entire schema to be missing,
-# look for null values.
-schema: {"non_existent_key": null}
-# If parts of your schema will be present,
-# look for empty strings.
-schema: {"empty_value_expected": ""}
-
-# If you are looking for a repeated key in your schema
-# you can specify nesting to clarify which you want to test
-# A payload like this
-# {"price": {"value": "1.0", "type": "bid"}, "quantity": {"value": "10", "type": "bid"}}
-# Can have tests like this:
-schema: {"price": {"value": "1.0"}}
-schema: {"quantity": {"value": "10"}}
-
-...
-```
-
-For voice transcripts, ensure that your *transcripts are unformatted text with numbers spelled out*. Formatting will be taken care of by your entities, and the output from transcription engines will be unformatted.
-
-At the top of the `tests.txt` file, you can add "whitelists" to narrow Discovery to a particular set of intents or domains.
-
-In the above example, setting `intent_whitelist: digit` forces discovery to only look for entities associated with the intent `digit`.
-
-You can also do a `domain_whitelist`, to only allow the intents that belong to a certain domain. Comma separate values if you have multple.
-
-If you are using Discovery primarily as an intent classifier, you may list the "intent" as a property to be tested in the `tests.txt`:
-
-```
-test: {name of test}
-transcript: {transcript you want to parse}
-intent: {expected intent}
-```
-
 2) The definition file, `examples/digit/custom/definitions.yaml`, contains examples that match the tests
 
 ```
@@ -179,73 +126,15 @@ intents:
 
 where "digit" is the name of the intent and the entities value ("room_number") match entities in `tests.txt`.
 
-3) Edit your `discovery_config.py` to specify your `LICENSE_KEY`, or add it to your environment (`export LICENSE_KEY=XYZ`)
-
-4) Execute `python3 test_discovery.py examples/digit tests` to test the digit example. `test_discovery.py` launches a Discovery Docker container and performs testing on `tests.txt`, where tests pass if they have defined entities present in the most likely found intent.
-
-```
-Discovery Launched!
-----------------------------------------------------------------------------------------------------------------------------------------------------------------
-Loading test file: examples/digit/tests.txt
-----------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-Top 5 longest timed tests:
-
-test_file_name                test_no     test_name                     transcript                         time(ms)
-----------------------------------------------------------------------------------------------------------------------------------------------------------------
-examples/digit/tests.txt      0           dial number                   please dial eight                  14.77
-examples/digit/tests.txt      1           dial number                   press one eight                    9.69
-----------------------------------------------------------------------------------------------------------------------------------------------------------------
-
----
-
-
-(2 / 2) tests passed in 0.02 seconds from examples/digit/tests.txt
-```
-
-You can also launch Discovery separately from testing:
-
-```
-$ python3 launch_discovery.py examples/digit/custom
-
-# Prevent shutdown after testing, if desired
-$ export SHUTDOWN_DISCOVERY="False"
-
-# Set DISCOVERY_DOMAINS to limit scope of tests
-$ export DISCOVERY_DOMAINS="digit"
-
-$ python3 test_discovery.py examples/digit tests
-```
-
 
 # 2. Customization
 
-Creating a custom project can be done by following the structure of an existing example found in the `examples` folder.
-
-# 3. Advanced Examples and Documentation
-
-## Testing with Real Audio
-
-Scribe Discovery can use output from our transcription engine (Scribe).
-
-For development purposes, it's easiest to first record a few audio files using your favorite software wherein you or someone else is speaking the voice commands or key phrases you want to interpret.
-
-Then, run these files through Scribe [following our documentation](https://docs.greenkeytech.com). When launching the decoder, make sure the parameter `WORD_CONFUSIONS="True"` is enabled.
-
-Once complete, you should have JSON output for each audio file you generated (e.g. `test.json` for `test.wav`). Each JSON output contains a **word confusion lattice** that Discovery searches for your target phrases.
-
-These JSON outputs can be used directly with the Discovery Engine using `curl` or another http client. The example directories provide guidance on how to send these files to Discovery in the `send_transcript_to_discovery.sh` script.
-
-For the 'digit' example, `send_transcript_to_discovery.sh` contains:
-```bash
-curl -X POST http://localhost:1234/discover \
-     -H "Content-Type: application/json" \
-     -d '{"transcript": "dial one eight"}'
-```
+Creating a custom project can be done by following the structure of an existing example found in the `examples` folder. Refer to the [wiki](https://github.com/finos/greenkey-discovery-sdk/wiki) for further information on customization
 
 
-## Full Documentation
-Our full [documentation](https://transcription.greenkeytech.com/discovery-1890af/) provides many more in-depth descriptions, explanations and examples.
+# 3. Deploying
+
+Check out our deployment [documentation](https://docs.greenkeytech.com/nlp/#discovery) for full details on deploying Discovery.
 
 
 # Contributing
