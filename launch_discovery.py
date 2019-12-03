@@ -16,7 +16,11 @@ from multiprocessing import Process
 from os.path import abspath, exists, isdir as is_dir, join as join_path
 
 from testing.discovery_config import (
-    CONTAINER_NAME, DISCOVERY_CONFIG, DISCOVERY_PORT, DISCOVERY_IMAGE_NAME, USE_DOCKER_VOLUME
+    CONTAINER_NAME,
+    DISCOVERY_CONFIG,
+    DISCOVERY_IMAGE_NAME,
+    DISCOVERY_PORT,
+    USE_DOCKER_VOLUME,
 )
 
 
