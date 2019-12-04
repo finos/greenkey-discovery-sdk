@@ -13,6 +13,8 @@ DISABLE_INTENTS_WHITELIST = False
 CONTAINER_NAME = "discovery-dev"
 DISCOVERY_IMAGE_NAME = "docker.greenkeytech.com/discovery:{}".format(TAG)
 
+USE_DOCKER_VOLUME = os.environ.get("USE_DOCKER_VOLUME", "True").capitalize() == "True"
+
 DISCOVERY_CONFIG = {
     "LICENSE_KEY": os.environ.get('LICENSE_KEY', ''),
     "NUMBER_OF_INTENTS": "1",
@@ -21,8 +23,8 @@ DISCOVERY_CONFIG = {
     # options for increasing log verbosity: debug, info, warning, error, critical
     "LOG_LEVEL": "debug",
 
-    # if True, pretrained model should be in /scribe/discovery/models
-    "USE_SAVED_MODELS": "False",
+    # if False, Discovery will not do any custom model training on startup
+    "TRAIN_MODELS": os.environ.get("TRAIN_MODELS", "True"),
 
     # Port that Discovery will bind to on the Docker daemon, change if port is taken already
     "PORT": DISCOVERY_PORT,

@@ -16,7 +16,11 @@ from multiprocessing import Process
 from os.path import abspath, exists, isdir as is_dir, join as join_path
 
 from testing.discovery_config import (
-    CONTAINER_NAME, DISCOVERY_CONFIG, DISCOVERY_PORT, DISCOVERY_IMAGE_NAME
+    CONTAINER_NAME,
+    DISCOVERY_CONFIG,
+    DISCOVERY_IMAGE_NAME,
+    DISCOVERY_PORT,
+    USE_DOCKER_VOLUME,
 )
 
 
@@ -98,7 +102,7 @@ def _launch_container(
     # model_dir = ["-v", model_dir] if exists(model_dir) and is_dir(model_dir) else []
 
     # load data into docker volume (supports remote docker executor)
-    if os.environ.get("IN_A_CONTAINER", "True") != "False":
+    if USE_DOCKER_VOLUME:
         volume = load_data_into_docker_volume(custom_directory)
         print("Stored configuration in docker volume {}".format(volume))
     else:
