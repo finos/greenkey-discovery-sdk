@@ -18,8 +18,8 @@ DISCOVERY_CONFIG = {
     "NUMBER_OF_INTENTS": "1",
     "MAX_NUMBER_OF_ENTITIES": "100",
 
-    # options for increasing log verbosity: payload, debug, verbose
-    "CONSOLE_LOG_LEVEL": "verbose",
+    # options for increasing log verbosity: debug, info, warning, error, critical
+    "LOG_LEVEL": "debug",
 
     # if True, pretrained model should be in /scribe/discovery/models
     "USE_SAVED_MODELS": "False",
