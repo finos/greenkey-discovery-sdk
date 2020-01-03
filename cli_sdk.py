@@ -56,21 +56,21 @@ def log():
 def get_schema(intent, schema_key, transcript):
     payload = submit_transcript(transcript, intent_whitelist=[intent])
     if schema_key in payload:
-        print(json.dumps(payload[schema_key], sort_keys=True, indent=2))
+        return json.dumps(payload[schema_key], sort_keys=True, indent=2)
     else:
-        print("Schema key {} not found".format(schema_key))
+        return "Schema key {} not found".format(schema_key)
 
 
 def get_response(intent, transcript):
     payload = submit_transcript(transcript, intent_whitelist=[intent])
-    print(json.dumps(payload, sort_keys=True, indent=2))
+    return json.dumps(payload, sort_keys=True, indent=2)
 
 
 def get_entities(intent, transcript):
     payload = submit_transcript(transcript, intent_whitelist=[intent])
     entities = get_entities_from_discovery(payload)
     config = {"entities": [entity["label"] for entity in entities]}
-    print(format_entities(entities, config))
+    return format_entities(entities, config)
 
 
 def get_tokens(intent, transcript):
@@ -87,4 +87,4 @@ def get_tokens(intent, transcript):
             output.append(line)
         if separators == 2:
             break
-    print("\n".join(reversed(output)))
+    return "\n".join(reversed(output))
