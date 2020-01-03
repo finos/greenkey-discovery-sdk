@@ -15,7 +15,7 @@ from testing.discovery_interface import (
     wait_for_discovery_status,
 )
 
-from testing.discovery_config import (CONTAINER_NAME)
+from testing.discovery_config import CONTAINER_NAME
 
 from interactive_sdk import (
     format_entities,
