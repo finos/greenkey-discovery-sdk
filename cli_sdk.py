@@ -81,8 +81,7 @@ def get_tokens(intent, transcript):
     output = []
     separators = 0
     for line in reversed(logs):
-        if line.startswith("==="):
-            separators += 1
+        separators += line.startswith("===")
         if separators > 0:
             output.append(line)
         if separators == 2:
