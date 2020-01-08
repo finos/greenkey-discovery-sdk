@@ -173,7 +173,7 @@ For all others who have aided this project, please see the [list of contributors
 
 The code in this repository is distributed under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0).
 
-Copyright 2019 GreenKey Technologies
+Copyright 2020 GreenKey Technologies
 
 <!-- Markdown link & img defs -->
 [FINOS]: https://www.finos.org
