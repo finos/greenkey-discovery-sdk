@@ -143,9 +143,9 @@ def add_extension_if_missing(test_file):
     """
     Add .txt extension if not present
     >>> add_extension_if_missing('this')
-    "this.txt"
+    'this.txt'
     >>> add_extension_if_missing('that.txt')
-    "that.txt"
+    'that.txt'
     """
     if not test_file.endswith(".txt"):
         test_file += ".txt"
