@@ -146,6 +146,30 @@ def tickers_to_rockets(entity_pairs):
 
 
 def generate_ticker_file(filename,
+  r"""
+  * Create a companies.csv file with two columns for company name and ticker: company name, ticker
+  corp one, ABC
+  corp two, DEV
+  three, GHI
+  
+  * Generate a company -> ticker mapping:
+  python util/generate_ticker_list.py companies.csv
+  and you get a file like this called companies.txt:
+
+  corp two -> DEV
+  corp one -> ABC
+  three -> GHI
+  
+  * Generate a ticker -> ticker mapping:
+  python util/generate_ticker_file.py companies.csv --tickers_only and you'll get a file like this called companies_tickers.txt:
+
+  d e v -> DEV
+  a b c -> ABC
+  g h i -> GHI
+  
+  If you wish to use both files for entity definitions, simply combine them.
+  cat companies_tickers.txt >> companies.txt
+  """
                          case_insensitive=False,
                          pickled=False,
                          tickers_only=False):
