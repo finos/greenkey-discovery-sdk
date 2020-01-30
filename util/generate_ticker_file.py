@@ -112,7 +112,7 @@ def create_unique_minimum_entities(entities):
     return unique_entity_working_list
 
 
-def entities_to_rockets(entity_pairs, case_insensitive=False):
+def entities_to_rockets(entity_pairs, case_insensitive=False, strict_mapping=False):
     """
     Convert entity pairs to rocket replacements
   
@@ -123,7 +123,8 @@ def entities_to_rockets(entity_pairs, case_insensitive=False):
     ['Test -> TST']
     """
     entities = [clean_entity(e[0]) if case_insensitive else e[0] for e in entity_pairs]
-    entities = create_unique_minimum_entities(entities)
+    if not strict_mapping:
+        entities = create_unique_minimum_entities(entities)
 
     tickers = [e[1].strip() for e in entity_pairs]
 
@@ -148,7 +149,8 @@ def tickers_to_rockets(entity_pairs):
 def generate_ticker_file(filename,
                          case_insensitive=False,
                          pickled=False,
-                         tickers_only=False):
+                         tickers_only=False,
+                         strict_mapping=False):
     """
     * Create a companies.csv file with two columns for company name and ticker: company name, ticker
     corp one, ABC
@@ -162,6 +164,9 @@ def generate_ticker_file(filename,
     corp two -> DEV
     corp one -> ABC
     three -> GHI
+                         
+    By default, the minimum length company name will be used for mapping. 
+    Add the flag --strict_mapping to disable this behavior.
   
     * Generate a ticker -> ticker mapping:
     python util/generate_ticker_file.py companies.csv --tickers_only and you'll get a file like this called companies_tickers.txt:
@@ -183,7 +188,7 @@ def generate_ticker_file(filename,
         entities = tickers_to_rockets(entity_pairs)
         output_file = filename.replace('.csv', '_tickers.csv')
     else:
-        entities = entities_to_rockets(entity_pairs, case_insensitive)
+        entities = entities_to_rockets(entity_pairs, case_insensitive, strict_mapping)
 
     if pickled:
         with open(output_file.replace('.csv', '.p'), 'wb') as f:
