@@ -110,10 +110,8 @@ def get_token_coverage(intent, transcript):
     transcript = [w[-1] for w in tokens]
     coverage = [("*" if w[0] != "None" else " ") * len(w[-1]) for w in tokens]
     print("""
-    
     Recognized parts of the transcript are denoted with '*'
     
     {0}
     {1}
-    
     """.format(' '.join(transcript), ' '.join(coverage)))
