@@ -60,7 +60,7 @@ def log():
 
 def return_json_data(data, raw=False):
     if raw:
-      return data
+        return data
     print(json.dumps(data, sort_keys=True, indent=2))
 
 
@@ -108,10 +108,12 @@ def get_token_coverage(intent, transcript):
     token_lines = list(get_token_logs(intent, transcript))[3:-1]
     tokens = [[w for w in t.split(" ") if w][-2:] for t in token_lines]
     transcript = [w[-1] for w in tokens]
-    coverage = [("*" if w[0] != "None" else " ")*len(w[-1]) for w in tokens]
-    print()
-    print("Recognized parts of the transcript are denoted with '*'")
-    print()
-    print(' '.join(transcript))
-    print(' '.join(coverage))
-    print()
+    coverage = [("*" if w[0] != "None" else " ") * len(w[-1]) for w in tokens]
+    print("""
+    
+    Recognized parts of the transcript are denoted with '*'
+    
+    {0}
+    {1}
+    
+    """.format(' '.join(transcript), ' '.join(coverage)))
