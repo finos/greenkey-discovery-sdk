@@ -49,6 +49,11 @@ def reload():
     reload_discovery_config()
 
 
+def restart():
+    stop()
+    start()
+
+
 def log():
     log_discovery()
 
