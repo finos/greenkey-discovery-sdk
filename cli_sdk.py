@@ -49,13 +49,18 @@ def reload():
     reload_discovery_config()
 
 
+def restart():
+    stop()
+    start()
+
+
 def log():
     log_discovery()
 
 
 def return_json_data(data, raw=False):
     if raw:
-      return data
+        return data
     print(json.dumps(data, sort_keys=True, indent=2))
 
 
@@ -79,7 +84,7 @@ def get_entities(intent, transcript):
     print(format_entities(entities, config))
 
 
-def get_tokens(intent, transcript):
+def get_token_logs(intent, transcript):
     payload = submit_transcript(transcript, intent_whitelist=[intent])
     logs = subprocess.check_output(
         "docker logs {}".format(CONTAINER_NAME), stderr=subprocess.STDOUT,
@@ -92,4 +97,21 @@ def get_tokens(intent, transcript):
             output.append(line)
         if separators == 2:
             break
-    print("\n".join(reversed(output)))
+    return reversed(output)
+
+
+def get_tokens(intent, transcript):
+    print("\n".join(get_token_logs(intent, transcript)))
+
+
+def get_token_coverage(intent, transcript):
+    token_lines = list(get_token_logs(intent, transcript))[3:-1]
+    tokens = [[w for w in t.split(" ") if w][-2:] for t in token_lines]
+    transcript = [w[-1] for w in tokens]
+    coverage = [("*" if w[0] != "None" else " ") * len(w[-1]) for w in tokens]
+    print("""
+    Recognized parts of the transcript are denoted with '*'
+    
+    {0}
+    {1}
+    """.format(' '.join(transcript), ' '.join(coverage)))
