@@ -9,10 +9,11 @@ from testing.discovery_config import DISABLE_INTENTS_WHITELIST
 def expand_wildcard_tests(directory, tests):
     """
     Expands any wildcard filenames in the list of tests
-    
-    >>> expand_wildcard_tests('examples/fruits', ['test*'])
+
+    >>> res = expand_wildcard_tests('examples/fruits', ['test*'])
+    >>> sorted(res)
     ['tests.txt', 'tests_negative.txt']
-    
+
     >>> expand_wildcard_tests('skip_this_directory', ['no_wildcards'])
     ['no_wildcards']
     """
