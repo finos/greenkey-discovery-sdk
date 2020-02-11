@@ -23,12 +23,11 @@ from interactive_sdk import (
 
 INTERPRETER_DIRECTORY = os.environ.get('INTERPRETER_DIRECTORY', 'examples/calling_room')
 DISCOVERY_DOMAINS = [
-    subprocess.check_output(
-        """
+    subprocess.check_output("""
     find {} -follow -name "*.yaml" | while read line; do grep "domain:" $line; done \
     | awk '{{print $NF}}' | sed -e 's/^\"//' -e 's/\"$//' | uniq | tr '\n' ','
     """.format(INTERPRETER_DIRECTORY),
-        shell=True).decode('utf-8').strip(",").split(",")
+                            shell=True).decode('utf-8').strip(",").split(",")
 ]
 
 
@@ -85,9 +84,9 @@ def get_entities(intent, transcript):
 
 def get_token_logs(intent, transcript):
     submit_transcript(transcript, intent_whitelist=[intent])
-    logs = subprocess.check_output(
-        "docker logs {}".format(CONTAINER_NAME), stderr=subprocess.STDOUT,
-        shell=True).decode('utf-8').split("\n")
+    logs = subprocess.check_output("docker logs {}".format(CONTAINER_NAME),
+                                   stderr=subprocess.STDOUT,
+                                   shell=True).decode('utf-8').split("\n")
     output = []
     separators = 0
     for line in reversed(logs):

@@ -11,10 +11,8 @@ with entities.
 """
 import logging
 
-logging.basicConfig(
-    level=logging.ERROR,
-    format="%(levelname)-8s - %(asctime)s - %(name)s :: %(message)s"
-)
+logging.basicConfig(level=logging.ERROR,
+                    format="%(levelname)-8s - %(asctime)s - %(name)s :: %(message)s")
 
 logger = logging.getLogger(__name__)
 
@@ -30,47 +28,37 @@ from os.path import join as join_path
 from fire import Fire
 from testing.metrics import print_normalized_confusion_matrix
 
-from testing.parse_tests import (
-    load_tests, load_tests_into_list, report_domain_whitelists,
-    add_extension_if_missing, expand_wildcard_tests
-)
+from testing.parse_tests import (load_tests, load_tests_into_list,
+                                 report_domain_whitelists, add_extension_if_missing,
+                                 expand_wildcard_tests)
 
-from testing.evaluate_tests import (
-    is_valid_response, fail_test, evaluate_entities_and_schema,
-    evaluate_intent, format_intent_test_result
-)
+from testing.evaluate_tests import (is_valid_response, fail_test,
+                                    evaluate_entities_and_schema, evaluate_intent,
+                                    format_intent_test_result)
 
-from testing.output_tests import (
-    print_table, print_failures, record_results, TABLE_BAR_LENGTH
-)
+from testing.output_tests import (print_table, print_failures, record_results,
+                                  TABLE_BAR_LENGTH)
 
-from testing.discovery_interface import (
-    log_discovery, setup_discovery, submit_transcript, shutdown_discovery,
-    validate_custom_directory
-)
+from testing.discovery_interface import (log_discovery, setup_discovery,
+                                         submit_transcript, shutdown_discovery,
+                                         validate_custom_directory)
 
 VERBOSE_LOGGING = False
 SAVE_RESULTS = False
 
 TimingResult = namedtuple(
-    "TimingResult",
-    ['test_file', 'test_no', 'test_name', 'transcript', 'time_dif_ms']
-)
+    "TimingResult", ['test_file', 'test_no', 'test_name', 'transcript', 'time_dif_ms'])
 """
 Testing functions
 """
 
 
-def extract_schema_results_as_entities(
-    test_dict, intent_results, entity_results
-):
+def extract_schema_results_as_entities(test_dict, intent_results, entity_results):
     for k, v in json.loads(test_dict['schema']).items():
         intent_results["expected_entities"]["schema_" + k] = v
         intent_results["observed_entities"]["schema_" + k] = v
 
-    schema_failures = [
-        f[3] for f in entity_results['test_failures'] if f[1] == "schema"
-    ]
+    schema_failures = [f[3] for f in entity_results['test_failures'] if f[1] == "schema"]
 
     for failure in schema_failures:
         for k, v in json.loads(failure).items():
@@ -99,19 +87,14 @@ def test_one(test_dict, intent_whitelist, domain_whitelist):
 
     # Check intent tests
     if "intent" in test_dict:
-        expected_intent, observed_intent = evaluate_intent(
-            test_dict, resp, test_name
-        )
-        intent_results = format_intent_test_result(
-            test_name, expected_intent, observed_intent
-        )
+        expected_intent, observed_intent = evaluate_intent(test_dict, resp, test_name)
+        intent_results = format_intent_test_result(test_name, expected_intent,
+                                                   observed_intent)
         y_true = [expected_intent]
         y_pred = [observed_intent]
 
     # Check entity tests
-    entity_results = evaluate_entities_and_schema(
-        test_dict, resp, VERBOSE_LOGGING
-    )
+    entity_results = evaluate_entities_and_schema(test_dict, resp, VERBOSE_LOGGING)
 
     intent_results["expected_entities"] = {
         k: v
@@ -122,9 +105,8 @@ def test_one(test_dict, intent_whitelist, domain_whitelist):
         entity_results['observed_entity_dict']
 
     if 'schema' in test_dict:
-        intent_results = extract_schema_results_as_entities(
-            test_dict, intent_results, entity_results
-        )
+        intent_results = extract_schema_results_as_entities(test_dict, intent_results,
+                                                            entity_results)
 
     return y_true, y_pred, time_dif_ms, intent_results, entity_results
 
@@ -190,19 +172,15 @@ def test_all(test_file):
 
     for test_no, test_dict in enumerate(tests):
         y_true_new, y_pred_new, time_elapsed, intent_results, entity_results = test_one(
-            test_dict, intent_whitelist, domain_whitelist
-        )
+            test_dict, intent_whitelist, domain_whitelist)
 
         y_true += y_true_new
         y_pred += y_pred_new
 
         # include test filename, test number, test name, transcript, and time in ms
         timing_list.append(
-            TimingResult(
-                test_file, test_no, test_dict["test"], test_dict["transcript"],
-                time_elapsed
-            )
-        )
+            TimingResult(test_file, test_no, test_dict["test"], test_dict["transcript"],
+                         time_elapsed))
 
         total_errors += entity_results['total_errors']
         total_entities += entity_results['total_entities']
@@ -271,9 +249,8 @@ def validate_yaml(intents_config_file):
 
 def evaluate_all_tests(directory, tests):
     return all(
-        test_all(join_path(directory, add_extension_if_missing(test_file))) for
-        test_file in (tests.split(",") if isinstance(tests, str) else tests)
-    )
+        test_all(join_path(directory, add_extension_if_missing(test_file)))
+        for test_file in (tests.split(",") if isinstance(tests, str) else tests))
 
 
 def run_all_tests_in_directory(directory, custom_directory, tests):
@@ -284,9 +261,7 @@ def run_all_tests_in_directory(directory, custom_directory, tests):
         volume = setup_discovery(directory, custom_directory, domains)
         success = evaluate_all_tests(directory, tests)
     except Exception:
-        logger.exception(
-            "Error: Check test files for formatting errors", exc_info=True
-        )
+        logger.exception("Error: Check test files for formatting errors", exc_info=True)
 
     if not success and os.environ.get("OUTPUT_FAILED_LOGS", False):
         log_discovery()
@@ -322,9 +297,7 @@ def test_discovery(directory, *tests, verbose=False, output=False):
         validate_yaml(join_path(custom_directory, yml_file))
 
     target_tests = load_tests_into_list(tests)
-    success = run_all_tests_in_directory(
-        directory, custom_directory, target_tests
-    )
+    success = run_all_tests_in_directory(directory, custom_directory, target_tests)
     if not success:
         sys.exit(1)
 

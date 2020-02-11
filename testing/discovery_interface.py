@@ -28,16 +28,14 @@ DEVELOPER_URL = "http://{}:{}/developer".format(DISCOVERY_HOST, DISCOVERY_PORT)
 
 
 def log_discovery():
-    subprocess.call("docker logs {}".format(CONTAINER_NAME), shell=True)    
+    subprocess.call("docker logs {}".format(CONTAINER_NAME), shell=True)
 
 
 def check_discovery_status():
     """
     Checks whether Discovery is ready to receive new jobs
     """
-    r = requests.get(
-        "http://{}:{}/status".format(DISCOVERY_HOST, DISCOVERY_PORT)
-    )
+    r = requests.get("http://{}:{}/status".format(DISCOVERY_HOST, DISCOVERY_PORT))
     return True if "listening" in r.json()["message"] else False
 
 
@@ -47,11 +45,8 @@ def try_discovery(attempt_number):
         return True
     except Exception:
         if attempt_number >= 3:
-            LOGGER.error(
-                "Could not reach discovery, attempt {0} of {1}".format(
-                    attempt_number + 1, RETRIES
-                )
-            )
+            LOGGER.error("Could not reach discovery, attempt {0} of {1}".format(
+                attempt_number + 1, RETRIES))
         time.sleep(TIMEOUT)
 
 
@@ -83,9 +78,8 @@ def make_sure_directories_exist(directories):
         try:
             assert exists(d)
         except AssertionError:
-            LOGGER.exception(
-                "Error: Check path to directory: {}".format(d), exc_info=True
-            )
+            LOGGER.exception("Error: Check path to directory: {}".format(d),
+                             exc_info=True)
             print("Terminating program")
             sys.exit(1)
 
@@ -100,15 +94,12 @@ def validate_custom_directory(directory):
 def limit_discovery_domains(directory, domains):
 
     flattened_domains = ",".join(
-        list(
-            filter(lambda x: x != "any", set((i for s in domains for i in s)))
-        )
-    )
+        list(filter(lambda x: x != "any", set((i for s in domains for i in s)))))
 
     if flattened_domains:
         DISCOVERY_CONFIG["DISCOVERY_DOMAINS"] = flattened_domains
         print("Limiting domains to {}".format(flattened_domains))
-        
+
 
 def setup_discovery(directory, custom_directory, domains):
     limit_discovery_domains(directory, domains)
@@ -117,9 +108,7 @@ def setup_discovery(directory, custom_directory, domains):
     return volume
 
 
-def submit_transcript(
-    transcript, intent_whitelist=["any"], domain_whitelist=["any"]
-):
+def submit_transcript(transcript, intent_whitelist=["any"], domain_whitelist=["any"]):
     """
     Submits a transcript to Discovery
     :param transcript: str,
@@ -133,11 +122,8 @@ def submit_transcript(
     }
     response = requests.post(DISCOVERY_URL, json=payload)
     if not response.status_code == 200:
-        LOGGER.error(
-            "Request was not successful. Response Status Code: {}".format(
-                response.status_code
-            )
-        )
+        LOGGER.error("Request was not successful. Response Status Code: {}".format(
+            response.status_code))
         return {}
     return response.json()
 
@@ -162,13 +148,12 @@ def shutdown_discovery(volume=None):
     """
     if str(os.environ.get('SHUTDOWN_DISCOVERY', True)) == "False":
         return
-    
+
     LOGGER.info("Shutting down Discovery")
     try:
         subprocess.call("docker rm -f {}".format(CONTAINER_NAME), shell=True)
     except Exception as exc:
         LOGGER.exception(exc)
-    
+
     if volume is not None:
         subprocess.call("docker volume rm {}".format(volume), shell=True)
-
