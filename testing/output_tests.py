@@ -1,6 +1,6 @@
 import os
 import json
-from os.path import abspath, exists, join as join_path
+from os.path import join as join_path
 from testing.metrics import compute_all
 
 TABLE_BAR_LENGTH = 160
@@ -78,7 +78,6 @@ def print_failures(test_failures):
 
 def record_results(output_dict, save_results=False):
     print("\n---\n")
-    output_dir = os.path.dirname(output_dict["test_file"])
     print(
         "Entity Accuracy: {:.2f}".
         format(output_dict["entity_accuracy"])

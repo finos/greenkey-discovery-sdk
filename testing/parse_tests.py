@@ -2,7 +2,7 @@
 
 import glob
 
-from os.path import abspath, exists, join as join_path
+from os.path import join as join_path
 from testing.discovery_config import DISABLE_INTENTS_WHITELIST
 
 

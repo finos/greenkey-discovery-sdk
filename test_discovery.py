@@ -21,12 +21,11 @@ logger = logging.getLogger(__name__)
 import fnmatch
 import json
 import os
-import subprocess
 import sys
 import time
 import yaml
 from collections import defaultdict, namedtuple
-from os.path import abspath, exists, join as join_path
+from os.path import join as join_path
 
 from fire import Fire
 from testing.metrics import print_normalized_confusion_matrix

@@ -12,7 +12,6 @@ from testing.discovery_interface import (
     submit_transcript,
     shutdown_discovery,
     validate_custom_directory,
-    wait_for_discovery_status,
 )
 
 from testing.discovery_config import CONTAINER_NAME
@@ -85,7 +84,7 @@ def get_entities(intent, transcript):
 
 
 def get_token_logs(intent, transcript):
-    payload = submit_transcript(transcript, intent_whitelist=[intent])
+    submit_transcript(transcript, intent_whitelist=[intent])
     logs = subprocess.check_output(
         "docker logs {}".format(CONTAINER_NAME), stderr=subprocess.STDOUT,
         shell=True).decode('utf-8').split("\n")
