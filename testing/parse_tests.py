@@ -2,7 +2,7 @@
 
 import glob
 
-from os.path import abspath, exists, join as join_path
+from os.path import join as join_path
 from testing.discovery_config import DISABLE_INTENTS_WHITELIST
 
 
@@ -27,9 +27,7 @@ def expand_wildcard_tests(directory, tests):
         cleaned_filenames = [
             p.replace(directory, '').strip("/") for p in flattened_filenames
         ]
-        tests = [
-            t for t in tests if not t in wildcard_tests
-        ] + cleaned_filenames
+        tests = [t for t in tests if not t in wildcard_tests] + cleaned_filenames
     return tests
 
 
@@ -40,16 +38,15 @@ def load_tests_into_list(tests):
     target_tests = []
     for test in tests:
         target_tests += [
-            subtest.strip() for subtest in
-            (test.split(",") if isinstance(test, str) else test)
+            subtest.strip()
+            for subtest in (test.split(",") if isinstance(test, str) else test)
             if subtest.strip()
         ]
     return target_tests
 
 
 def store_previous_test(tests, current_test):
-    if current_test and set(current_test.keys()
-                            ) != set(['test', 'transcript']):
+    if current_test and set(current_test.keys()) != set(['test', 'transcript']):
         tests.append(current_test)
     return tests
 
@@ -75,10 +72,7 @@ def parse_test_line(line, tests, current_test):
 
 
 def load_test_file(test_file):
-    return [
-        _.strip() for _ in open(test_file)
-        if _.strip() and not _.startswith("#")
-    ]
+    return [_.strip() for _ in open(test_file) if _.strip() and not _.startswith("#")]
 
 
 def load_tests(test_file):
@@ -133,11 +127,9 @@ def format_whitelist(line):
 
 
 def report_domain_whitelists(directory, tests):
-    return (
-        find_whitelists(
-            load_test_file(join_path(directory, add_extension_if_missing(f)))
-        )[2] for f in (tests.split(",") if isinstance(tests, str) else tests)
-    )
+    return (find_whitelists(
+        load_test_file(join_path(directory, add_extension_if_missing(f))))[2]
+            for f in (tests.split(",") if isinstance(tests, str) else tests))
 
 
 def add_extension_if_missing(test_file):

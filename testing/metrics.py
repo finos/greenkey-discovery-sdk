@@ -16,13 +16,7 @@ def normalize_confusion_matrix(matrix, imap, unique):
     normalized_rows = []
     for n, row in enumerate(matrix):
         normalized_rows.append(
-            list(
-                map(
-                    lambda j: float(std_float(divide_or_zero(j, sigma[n]))),
-                    row
-                )
-            )
-        )
+            list(map(lambda j: float(std_float(divide_or_zero(j, sigma[n]))), row)))
     matrix = normalized_rows
 
     return matrix
@@ -48,9 +42,7 @@ def compute_confusion_matrix(actual, predicted):
 
 def confusion_matrix(actual, predicted, label=None, normalize=False):
     if label:
-        return calculate_matrix_with_labels(
-            actual, predicted, label, normalize
-        )
+        return calculate_matrix_with_labels(actual, predicted, label, normalize)
 
     matrix, imap, unique = compute_confusion_matrix(actual, predicted)
 
@@ -141,12 +133,11 @@ def compute_all(y_true, y_pred, labels=None):
 
     for label in labels:
         d[label]["cm"] = confusion_matrix(y_true, y_pred, label)
-        d[label]["normalized_cm"] = confusion_matrix(
-            y_true, y_pred, label, normalize=True
-        )
-        d[label]['metrics'] = precision_recall_f1_accuracy(
-            y_true, y_pred, label
-        )
+        d[label]["normalized_cm"] = confusion_matrix(y_true,
+                                                     y_pred,
+                                                     label,
+                                                     normalize=True)
+        d[label]['metrics'] = precision_recall_f1_accuracy(y_true, y_pred, label)
         d["label_count_dict"] = get_label_counts(y_true, y_pred, labels)
     return d
 
@@ -156,15 +147,10 @@ def print_normalized_confusion_matrix(actual, predicted):
     print("\nConfusion Matrix:")
     print("\t\tActual")
     print('Predicted\t' + '\t'.join([_[:7] for _ in labels]))
-    print(
-        '\n'.join(
-            [
-                '\t' + label[:7] + '\t' +
-                '\t'.join([str(cell) for cell in row])
-                for label, row in zip(labels, matrix)
-            ]
-        )
-    )
+    print('\n'.join([
+        '\t' + label[:7] + '\t' + '\t'.join([str(cell) for cell in row])
+        for label, row in zip(labels, matrix)
+    ]))
 
 
 if __name__ == "__main__":
@@ -174,9 +160,7 @@ if __name__ == "__main__":
     # metrics + cm counts
     observed_metrics = precision_recall_f1_accuracy(y_true, y_pred, label=1)
     # Confusion Matrix - counts and normalized
-    observed_normalized_cm = confusion_matrix(
-        y_true, y_pred, label=1, normalize=True
-    )
+    observed_normalized_cm = confusion_matrix(y_true, y_pred, label=1, normalize=True)
     observed_cm = confusion_matrix(y_true, y_pred, label=1, normalize=False)
 
     expected_metrics = {
@@ -200,10 +184,8 @@ if __name__ == "__main__":
     predicted = ["A", "B", "B", "A", "C", "B", "C", "C", "A", "C", "D"]
     print_normalized_confusion_matrix(actual, predicted)
     matrix, labels = confusion_matrix(actual, predicted, normalize=True)
-    assert matrix == [
-        [0.67, 0.33, 0.0, 0.0], [0.0, 0.67, 0.33, 0.0], [0.25, 0.5, 0.25, 0.0],
-        [0.0, 0.0, 0.0, 1.0]
-    ]
+    assert matrix == [[0.67, 0.33, 0.0, 0.0], [0.0, 0.67, 0.33, 0.0],
+                      [0.25, 0.5, 0.25, 0.0], [0.0, 0.0, 0.0, 1.0]]
     assert sorted(labels) == ['A', 'B', 'C', 'D']
 
     compute_all(actual, predicted)

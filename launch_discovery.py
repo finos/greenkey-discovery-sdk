@@ -41,9 +41,8 @@ def launch_discovery(
         )
         custom_directory = os.getcwd()
     if _determine_discovery_launch_type() == "docker":
-        return _launch_container(
-            custom_directory, port, discovery_config, container_name
-        )
+        return _launch_container(custom_directory, port, discovery_config,
+                                 container_name)
     return _launch_binaries(custom_directory)
 
 
@@ -70,9 +69,7 @@ def load_data_into_docker_volume(custom_directory):
     return volume
 
 
-def _launch_container(
-    custom_directory, port, discovery_config, container_name
-):
+def _launch_container(custom_directory, port, discovery_config, container_name):
     """
     launches the Discovery docker container.
 
@@ -94,8 +91,7 @@ def _launch_container(
         mounts custom/ directory in DISCOVERY_DIRECTORY (parameters of launch_discovery.py)
     """
     dico_dir = "{}/dico:/dico".format(custom_directory)
-    dico_dir = ["-v", dico_dir
-                ] if exists(dico_dir) and is_dir(dico_dir) else []
+    dico_dir = ["-v", dico_dir] if exists(dico_dir) and is_dir(dico_dir) else []
 
     # option to mount models/ directory if USED_SAVED_MODELS is True
     # model_dir = "{}/models".format(custom_directory)
@@ -114,8 +110,7 @@ def _launch_container(
         ["-p", "{}:{}".format(port, discovery_config["PORT"])] + dico_dir
         # + model_dir
         + ["-e {}={}".format(k, v)
-           for k, v in discovery_config.items()] + [DISCOVERY_IMAGE_NAME]
-    )
+           for k, v in discovery_config.items()] + [DISCOVERY_IMAGE_NAME])
     print("Launching Discovery from Container: {}\n".format(launch_command))
 
     subprocess.call(launch_command, shell=True)
@@ -131,13 +126,9 @@ def _launch_binaries(custom_directory):
         from run import find_definition_files_and_copy_them_to_appropriate_location
 
         find_definition_files_and_copy_them_to_appropriate_location(
-            join_path(custom_directory), abspath(binaries_directory)
-        )
+            join_path(custom_directory), abspath(binaries_directory))
         sys.path.append(join_path(binaries_directory, "discovery"))
-        print(
-            "Launching Discovery from Binaries: {}\n".
-            format(binaries_directory)
-        )
+        print("Launching Discovery from Binaries: {}\n".format(binaries_directory))
 
         os.environ["SERVICE_NAME"] = "discovery"
         from discovery.server import main
@@ -149,10 +140,8 @@ def _launch_binaries(custom_directory):
 def _detect_binaries_file():
     """Returns the absolute path of the binaries directory."""
     for file in os.listdir("."):
-        if (
-            fnmatch.fnmatch(file, "discovery_binaries_*")
-            and not file.endswith(".tar.gz") and not file.endswith(".zip")
-        ):
+        if (fnmatch.fnmatch(file, "discovery_binaries_*")
+                and not file.endswith(".tar.gz") and not file.endswith(".zip")):
             return abspath(file)
     return None
 
@@ -165,10 +154,7 @@ if __name__ == "__main__":
 
     if os.path.isdir(os.path.join(os.getcwd(), project_name)):
         project_custom_directory = os.path.join(os.getcwd(), project_name)
-    elif os.path.isdir(
-        os.path.join(os.getcwd(), "examples", project_name, "custom")
-    ):
-        project_custom_directory = os.path.join(
-            os.getcwd(), "examples", project_name, "custom"
-        )
+    elif os.path.isdir(os.path.join(os.getcwd(), "examples", project_name, "custom")):
+        project_custom_directory = os.path.join(os.getcwd(), "examples", project_name,
+                                                "custom")
     launch_discovery(custom_directory=project_custom_directory)

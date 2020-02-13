@@ -28,9 +28,7 @@ def is_valid_response(resp):
     Validates a Discovery response
     Fail if a failure response was received
     """
-    return False if request_failed(resp) or missing_intent_or_entity(
-        resp
-    ) else True
+    return False if request_failed(resp) or missing_intent_or_entity(resp) else True
 
 
 """
@@ -103,9 +101,8 @@ def is_invalid_schema(schema, test_value):
     """
     if isinstance(test_value, dict):
         return any(
-            is_invalid_schema(schema[k], test_value[k]) if k in
-            schema else True for k in test_value.keys()
-        )
+            is_invalid_schema(schema[k], test_value[k]) if k in schema else True
+            for k in test_value.keys())
     return schema != test_value
 
 
@@ -119,21 +116,16 @@ def test_schema(full_response, test_value, test_name=''):
     # Returning number of errors, so check for values that do not equal test case
     errs = {}
     for res in map(
-        lambda k: {k: _find(full_response, k)}
-        if is_invalid_schema(_find(full_response, k), test_value[k]) else {},
-        list(test_value.keys()),
+            lambda k: {k: _find(full_response, k)}
+            if is_invalid_schema(_find(full_response, k), test_value[k]) else {},
+            list(test_value.keys()),
     ):
         errs.update(res)
 
     if errs:
-        logger.info(
-            "Test {0} - Schema test failed for {1} with response {2}".format(
-                test_name, test_value, errs
-            )
-        )
-        logger.info(
-            "Test {0} - Full response is {1}".format(test_name, full_response)
-        )
+        logger.info("Test {0} - Schema test failed for {1} with response {2}".format(
+            test_name, test_value, errs))
+        logger.info("Test {0} - Full response is {1}".format(test_name, full_response))
 
     return len(errs), json.dumps(errs)
 
@@ -152,18 +144,13 @@ def test_single_entity(entities, entity_label, test_value, test_name=''):
     :param test_name: str
     """
     if entity_label not in entities.keys():
-        logger.info(
-            "Test {0} - Entity not found: {1}".format(test_name, entity_label)
-        )
+        logger.info("Test {0} - Entity not found: {1}".format(test_name, entity_label))
         return 1, '[value missing]'
 
     if entities[entity_label] != test_value:
         logger.info(
-            "Test {0} - Observed Entity Value Incorrect: ({1}) Expected {2} != {3}"
-            .format(
-                test_name, entity_label, test_value, entities[entity_label]
-            )
-        )
+            "Test {0} - Observed Entity Value Incorrect: ({1}) Expected {2} != {3}".
+            format(test_name, entity_label, test_value, entities[entity_label]))
         return 1, entities[entity_label]
 
     return 0, ''
@@ -183,9 +170,7 @@ def print_extra_entities(observed_entity_dict, test_dict, test_name=''):
     }
 
     if extra_entities:
-        logger.info(
-            "Test {0} - Extra entities: {1}".format(test_name, extra_entities)
-        )
+        logger.info("Test {0} - Extra entities: {1}".format(test_name, extra_entities))
 
 
 """
@@ -210,22 +195,17 @@ def evaluate_intent(test_dict, resp, test_name=''):
 
     if failed_test:
         logger.info(
-            "Test {0} - Observed intent {1} does not match expected intent {2}"
-            .format(test_name, observed_intent, expected_intent)
-        )
+            "Test {0} - Observed intent {1} does not match expected intent {2}".format(
+                test_name, observed_intent, expected_intent))
 
     return expected_intent, observed_intent
 
 
 def format_intent_test_result(test_name, expected_intent, observed_intent):
-    return dict(
-        expected_intent=expected_intent,
-        observed_intent=observed_intent,
-        test_failures=(
-            [test_name, 'intent', expected_intent, observed_intent]
-            if expected_intent != observed_intent else []
-        )
-    )
+    return dict(expected_intent=expected_intent,
+                observed_intent=observed_intent,
+                test_failures=([test_name, 'intent', expected_intent, observed_intent]
+                               if expected_intent != observed_intent else []))
 
 
 """
@@ -233,9 +213,7 @@ Evaluate entity and schema tests
 """
 
 
-def test_single_case(
-    test_dict, observed_entity_dict, full_response, test_name=''
-):
+def test_single_case(test_dict, observed_entity_dict, full_response, test_name=''):
     """
     Run a single test case and return the number of errors
 
@@ -256,27 +234,20 @@ def test_single_case(
     # Loop through all entity tests
     for label, value in test_dict.items():
         entity_label, expected_entity_value, full_response = map(
-            strip_extra_whitespace, [label, value, full_response]
-        )
+            strip_extra_whitespace, [label, value, full_response])
 
         if entity_label == "schema":
-            errors, error_value = test_schema(
-                full_response, json.loads(expected_entity_value), test_name
-            )
+            errors, error_value = test_schema(full_response,
+                                              json.loads(expected_entity_value),
+                                              test_name)
             total_entities += len(json.loads(expected_entity_value))
         else:
-            errors, error_value = test_single_entity(
-                observed_entity_dict, entity_label, expected_entity_value,
-                test_name
-            )
+            errors, error_value = test_single_entity(observed_entity_dict, entity_label,
+                                                     expected_entity_value, test_name)
             total_entities += 1
 
         results.append(
-            [
-                errors, test_name, entity_label, expected_entity_value,
-                error_value
-            ]
-        )
+            [errors, test_name, entity_label, expected_entity_value, error_value])
 
         total_errors += errors
 
@@ -285,12 +256,10 @@ def test_single_case(
 
     print_extra_entities(observed_entity_dict, test_dict, test_name)
 
-    return dict(
-        total_errors=total_errors,
-        total_entities=total_entities,
-        observed_entity_dict=observed_entity_dict,
-        test_failures=test_failures
-    )
+    return dict(total_errors=total_errors,
+                total_entities=total_entities,
+                observed_entity_dict=observed_entity_dict,
+                test_failures=test_failures)
 
 
 def evaluate_entities_and_schema(test_dict, resp, verbose=False, intent=0):
@@ -317,8 +286,7 @@ def evaluate_entities_and_schema(test_dict, resp, verbose=False, intent=0):
     # Remove non-entity keys from test_dict, then pass to `test_single_case`
     test_dict = {
         k: v
-        for k, v in test_dict.items()
-        if not k in ['transcript', 'intent', 'test']
+        for k, v in test_dict.items() if not k in ['transcript', 'intent', 'test']
     }
     # evaluate whether all expected entities (label/value) are found in observed entity dict returned fby Discovery
     return test_single_case(test_dict, observed_entity_dict, resp, test_name)

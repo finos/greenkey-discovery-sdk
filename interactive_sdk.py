@@ -88,9 +88,7 @@ def format_entities(entities, config):
 
         entity_list += get_entity_matches(label, entity)
 
-    entity_list = sorted(
-        entity_list, key=lambda e: e.indices[0] - len(e.indices) / 100
-    )
+    entity_list = sorted(entity_list, key=lambda e: e.indices[0] - len(e.indices) / 100)
     return pd.DataFrame.from_records(entity_list, columns=Entity._fields)
 
 
@@ -178,9 +176,7 @@ def main():
     if reload_button:
         reload_discovery()
 
-    option = st.sidebar.selectbox(
-        "Mode", ["Test an interpreter", "Entity library"]
-    )
+    option = st.sidebar.selectbox("Mode", ["Test an interpreter", "Entity library"])
 
     # Domain / Intent Config
     config = get_discovery_config()
