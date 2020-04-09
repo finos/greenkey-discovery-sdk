@@ -25,13 +25,8 @@ entities:
   street_type:
     file: street_types.txt
     formatting: "entity.capitalize()"
-  zero:
-    - oh
-    - zero
-    - o
-    - formatting: "0"
   address_number:
-    - "(@zero|@num){1,5}"
+    - "@num{1,5}"
     - spacer: ''
   transportation_type:
     - foot
