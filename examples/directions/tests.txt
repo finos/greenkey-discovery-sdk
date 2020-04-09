@@ -22,7 +22,7 @@ transcript: Take me to three zero two wacker drive
 complete_address: 302 Wacker Drive
 
 test: directions with zero-indicated word
-transcript: Take me to four o two wacker drive
+transcript: Take me to four oh two wacker drive
 complete_address: 402 Wacker Drive
 
 test: directions with complex zero patterns
