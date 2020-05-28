@@ -35,8 +35,8 @@ def check_discovery_status():
     """
     Checks whether Discovery is ready to receive new jobs
     """
-    r = requests.get("http://{}:{}/status".format(DISCOVERY_HOST, DISCOVERY_PORT))
-    return True if "listening" in r.json()["message"] else False
+    r = requests.get("http://{}:{}/ping".format(DISCOVERY_HOST, DISCOVERY_PORT))
+    return True if r and r.status_code = 200 else False
 
 
 def try_discovery(attempt_number):
