@@ -30,7 +30,7 @@ please consider joining FINOS.
 2. [Customization](#2-customization)
     - Customize your own interpreter.
 
-3. [Advanced Examples and Documentation](#3-advanced-examples-and-documentation)
+3. [Deploying](#3-deploying)
     - Transcribing voice audio files with Scribe and using the Discovery engine.
 
 
