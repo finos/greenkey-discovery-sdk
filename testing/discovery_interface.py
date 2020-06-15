@@ -67,7 +67,8 @@ def wait_for_discovery_launch():
     # Timeout of 25 seconds for launch
     if not wait_for_discovery_status():
         LOGGER.error("Couldn't launch Discovery, printing Docker logs:\n---\n")
-        docker_log_and_stop()
+        log_discovery()
+        shutdown_discovery()
         sys.exit(1)
     else:
         print("Discovery Launched!")
@@ -108,7 +109,7 @@ def setup_discovery(directory, custom_directory, domains):
     return volume
 
 
-def submit_transcript(transcript, intent_whitelist=["any"], domain_whitelist=["any"]):
+def submit_transcript(transcript, intent_whitelist=["any"], domain_whitelist=["any"], external_entities=None):
     """
     Submits a transcript to Discovery
     :param transcript: str,
@@ -120,6 +121,8 @@ def submit_transcript(transcript, intent_whitelist=["any"], domain_whitelist=["a
         "intents": intent_whitelist,
         "domains": domain_whitelist,
     }
+    if external_entities is not None:
+        payload['entities'] = external_entities
     response = requests.post(DISCOVERY_URL, json=payload)
     if not response.status_code == 200:
         LOGGER.error("Request was not successful. Response Status Code: {}".format(
