@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 
 import glob
+import json
 
 from os.path import join as join_path
+from os.path import dirname
 from testing.discovery_config import DISABLE_INTENTS_WHITELIST
 
 
@@ -46,26 +48,26 @@ def load_tests_into_list(tests):
 
 
 def store_previous_test(tests, current_test):
-    if current_test and set(current_test.keys()) != set(['test', 'transcript']):
+    if current_test and set(current_test.keys()) != set(['test', 'transcript', 'external_entities']):
         tests.append(current_test)
     return tests
 
 
-def parse_test_line(line, tests, current_test):
+def parse_test_line(line, tests, current_test, test_folder):
     key, value = line.split(": ", maxsplit=1)
     if key == "test":
         tests = store_previous_test(tests, current_test)
         current_test = {key: value}
+    elif key == "external_entities":
+        ent_file = join_path(test_folder, 'external_entities', value)
+        current_test[key] = json.load(open(ent_file, 'r'))['entities']
     elif key == "schema":
         # Since we can have more than one schema test,
         # store the test so that the current_test is still available
         # to add to the new tests
         current_test[key] = value
         tests = store_previous_test(tests, current_test)
-        current_test = {
-            'test': current_test['test'],
-            'transcript': current_test['transcript']
-        }
+        current_test = {k: v for k, v in current_test.items() if k != "schema"}
     elif key:
         current_test[key] = value
     return tests, current_test
@@ -79,14 +81,15 @@ def load_tests(test_file):
     """
     Loads and parses the test file
     """
-    test_file = load_test_file(test_file)
-    test_file, intent_whitelist, domain_whitelist = find_whitelists(test_file)
+    test_list = load_test_file(test_file)
+    test_list, intent_whitelist, domain_whitelist = find_whitelists(test_list)
+    test_directory = dirname(test_file)
 
     tests = []
     current_test = {}
-    for line in test_file:
+    for line in test_list:
         try:
-            tests, current_test = parse_test_line(line, tests, current_test)
+            tests, current_test = parse_test_line(line, tests, current_test, test_directory)
         except ValueError:
             continue
 

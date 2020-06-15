@@ -281,12 +281,12 @@ def evaluate_entities_and_schema(test_dict, resp, verbose=False, intent=0):
         for ent in entities
     }
 
-    test_name = test_dict.get('test', '')
+    test_name = test_dict.get('test', 'Unnamed Test')
 
     # Remove non-entity keys from test_dict, then pass to `test_single_case`
     test_dict = {
         k: v
-        for k, v in test_dict.items() if not k in ['transcript', 'intent', 'test']
+        for k, v in test_dict.items() if k not in ['transcript', 'intent', 'test', 'external_entities']
     }
     # evaluate whether all expected entities (label/value) are found in observed entity dict returned fby Discovery
     return test_single_case(test_dict, observed_entity_dict, resp, test_name)

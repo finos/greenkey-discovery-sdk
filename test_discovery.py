@@ -73,10 +73,11 @@ def test_one(test_dict, intent_whitelist, domain_whitelist):
     intent_results = {}
 
     test_name, transcript = test_dict["test"], test_dict["transcript"]
+    external_entities = test_dict.get("external_entities")
 
     # Timing submit_transcript function
     test_start_time = time.time()
-    resp = submit_transcript(transcript, intent_whitelist, domain_whitelist)
+    resp = submit_transcript(transcript, intent_whitelist, domain_whitelist, external_entities)
     test_end_time = time.time()
 
     time_dif_ms = 1000 * (test_end_time - test_start_time)
@@ -99,7 +100,7 @@ def test_one(test_dict, intent_whitelist, domain_whitelist):
     intent_results["expected_entities"] = {
         k: v
         for k, v in test_dict.items()
-        if k not in ['test', 'transcript', 'schema', 'intent']
+        if k not in ['test', 'transcript', 'schema', 'intent', 'external_entities']
     }
     intent_results["observed_entities"] = \
         entity_results['observed_entity_dict']
