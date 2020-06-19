@@ -51,32 +51,36 @@ def load_test_file(test_file):
     return [_.strip() for _ in open(test_file) if _.strip() and not _.startswith("#")]
 
 
-def test_set_generator(test_list, test_folder):
+def make_test_list(test_list, test_folder):
    """
    Creates a dictionary definition the inputs and expected outputs of a tests into a list
    under the key expected_outputs
    """
-   ret_dict = {}
-   for line in test_list:
-       key, value = line.split(": ", maxsplit=1)
-       if key == "test":
-           # If needed for first iteration
-           if ret_dict:
-               yield ret_dict
-           # Re initialize the return dictionary
-           ret_dict = {key: value, 'expected_outputs': []}
-       elif key not in ['external_entities', 'transcript']:
-           # keys that define expected output of discovery
-           ret_dict['expected_outputs'] += [(key, value)]
-       elif key == 'external_entities':
-           ent_file = join_path(test_folder, 'external_entities', value)
-           ret_dict[key] = json.load(open(ent_file, 'r'))['entities']
-       else:
-           # Unique keys (per test set) that are test definition parameters
-           ret_dict[key] = value
+   split_inds = [i for i, val in enumerate(test_list) if val.split(': ')[0] == 'test']
+   split_list = [test_list[start:stop] for start, stop in zip(split_inds, split_inds[1:] + [len(test_list)])]
+   test_def_dicts = []
+   for test in split_list:
+       t_dict = {}
+       for line in test:
+           key, value = line.split(": ", maxsplit=1)
+           parse_test_line(t_dict, key, value, test_folder)
+       test_def_dicts += [t_dict]
 
-   yield ret_dict
+   return test_def_dicts
 
+def parse_test_line(ret_dict, key, value, test_folder):
+   """
+   Modify the dictionary in place because code climate thinks this is less complex
+   """
+   if key not in ['test', 'external_entities', 'transcript']:
+       # keys that define expected output of discovery
+       ret_dict['expected_outputs'] = ret_dict.get('expected_outputs', []) + [(key, value)] 
+   elif key == 'external_entities':
+       ent_file = join_path(test_folder, 'external_entities', value)
+       ret_dict[key] = json.load(open(ent_file, 'r'))['entities']
+   else:
+       # Unique keys (per test set) that are test definition parameters usually
+       ret_dict[key] = value
 
 def create_individual_tests(test_set):
    """
@@ -93,6 +97,7 @@ def create_individual_tests(test_set):
    return test_dicts
 
 
+import itertools
 def load_tests(test_file):
     """
     Loads and parses the test file
@@ -100,10 +105,10 @@ def load_tests(test_file):
     test_list = load_test_file(test_file)
     test_list, intent_whitelist, domain_whitelist = find_whitelists(test_list)
     test_directory = dirname(test_file)
+    test_def_list = make_test_list(test_list, test_directory)
 
-    tests = []
-    for test_set in test_set_generator(test_list, test_directory):
-        tests += create_individual_tests(test_set)
+    tests = [create_individual_tests(test_set) for test_set in test_def_list]
+    tests = list(itertools.chain.from_iterable(tests))
 
     return tests, intent_whitelist, domain_whitelist
 
