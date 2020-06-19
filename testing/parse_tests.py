@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import glob
+import itertools
 import json
 
 from os.path import join as join_path
@@ -47,34 +48,70 @@ def load_tests_into_list(tests):
     return target_tests
 
 
-def store_previous_test(tests, current_test):
-    if current_test and set(current_test.keys()) != set(['test', 'transcript', 'external_entities']):
-        tests.append(current_test)
-    return tests
-
-
-def parse_test_line(line, tests, current_test, test_folder):
-    key, value = line.split(": ", maxsplit=1)
-    if key == "test":
-        tests = store_previous_test(tests, current_test)
-        current_test = {key: value}
-    elif key == "external_entities":
-        ent_file = join_path(test_folder, 'external_entities', value)
-        current_test[key] = json.load(open(ent_file, 'r'))['entities']
-    elif key == "schema":
-        # Since we can have more than one schema test,
-        # store the test so that the current_test is still available
-        # to add to the new tests
-        current_test[key] = value
-        tests = store_previous_test(tests, current_test)
-        current_test = {k: v for k, v in current_test.items() if k != "schema"}
-    elif key:
-        current_test[key] = value
-    return tests, current_test
-
-
 def load_test_file(test_file):
     return [_.strip() for _ in open(test_file) if _.strip() and not _.startswith("#")]
+
+
+def make_test_list(test_list, test_folder):
+    """
+    Creates a dictionary definition the inputs and expected outputs of a tests into a list
+    under the key expected_outputs
+    """
+    split_inds = [i for i, val in enumerate(test_list) if val.split(': ')[0] == 'test']
+    split_list = [test_list[start:stop] for start, stop in zip(split_inds, split_inds[1:] + [len(test_list)])]
+    test_def_dicts = []
+    for test in split_list:
+        t_dict = {}
+        for line in test:
+            # Update t_dict with information from each line
+            t_dict = process_line(t_dict, line, test_folder)
+        test_def_dicts += [t_dict]
+
+    return test_def_dicts
+
+
+def process_line(t_dict, line, test_folder):
+    """
+    Modify the dictionary, t_dict, in place because code climate thinks this is less complex
+    """
+    split_line = line.split(": ", maxsplit=1)
+    if len(split_line) == 2:
+        key, value = split_line
+        t_dict = parse_test_line(t_dict, key, value, test_folder)
+    else:
+        print('Got a bad line, skipping:\n{}'.format(line))
+    return t_dict
+
+
+def parse_test_line(ret_dict, key, value, test_folder):
+   """
+   Modify the dictionary in place because code climate thinks this is less complex
+   """
+   if key not in ['test', 'external_entities', 'transcript']:
+       # keys that define expected output of discovery
+       ret_dict['expected_outputs'] = ret_dict.get('expected_outputs', []) + [(key, value)] 
+   elif key == 'external_entities':
+       ent_file = join_path(test_folder, 'external_entities', value)
+       ret_dict[key] = json.load(open(ent_file, 'r'))['entities']
+   else:
+       # Unique keys (per test set) that are test definition parameters usually
+       ret_dict[key] = value
+   return ret_dict
+
+
+def create_individual_tests(test_set):
+   """
+   Creates test definitions from a test set as dictionaries.
+   Assumes 'expected_outputs' is a list of tuples defining expected outputs key value pairs
+     [('schema', [SCHEMA-DICT]), ...]
+   """
+
+   test_inputs = {k: v for k, v in test_set.items() if k != 'expected_outputs'}
+   test_dicts = [
+       {k: v, **test_inputs}
+       for k, v in test_set.get('expected_outputs', [(None, None)]) if v
+   ]
+   return test_dicts
 
 
 def load_tests(test_file):
@@ -84,16 +121,11 @@ def load_tests(test_file):
     test_list = load_test_file(test_file)
     test_list, intent_whitelist, domain_whitelist = find_whitelists(test_list)
     test_directory = dirname(test_file)
+    test_def_list = make_test_list(test_list, test_directory)
 
-    tests = []
-    current_test = {}
-    for line in test_list:
-        try:
-            tests, current_test = parse_test_line(line, tests, current_test, test_directory)
-        except ValueError:
-            continue
+    tests = [create_individual_tests(test_set) for test_set in test_def_list]
+    tests = list(itertools.chain.from_iterable(tests))
 
-    tests = store_previous_test(tests, current_test)
     return tests, intent_whitelist, domain_whitelist
 
 
