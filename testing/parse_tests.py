@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import glob
+import itertools
 import json
 
 from os.path import join as join_path
@@ -97,7 +98,6 @@ def create_individual_tests(test_set):
    return test_dicts
 
 
-import itertools
 def load_tests(test_file):
     """
     Loads and parses the test file
