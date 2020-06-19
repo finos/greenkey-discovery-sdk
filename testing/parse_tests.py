@@ -63,7 +63,12 @@ def make_test_list(test_list, test_folder):
    for test in split_list:
        t_dict = {}
        for line in test:
-           key, value = line.split(": ", maxsplit=1)
+           split_line = line.split(": ", maxsplit=1)
+           if len(split_line) == 2:
+               key, value = split_line
+           else:
+               print('Got a bad line, skipping:\n{}'.format(line))
+               continue
            parse_test_line(t_dict, key, value, test_folder)
        test_def_dicts += [t_dict]
 
