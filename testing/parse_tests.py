@@ -53,26 +53,35 @@ def load_test_file(test_file):
 
 
 def make_test_list(test_list, test_folder):
-   """
-   Creates a dictionary definition the inputs and expected outputs of a tests into a list
-   under the key expected_outputs
-   """
-   split_inds = [i for i, val in enumerate(test_list) if val.split(': ')[0] == 'test']
-   split_list = [test_list[start:stop] for start, stop in zip(split_inds, split_inds[1:] + [len(test_list)])]
-   test_def_dicts = []
-   for test in split_list:
-       t_dict = {}
-       for line in test:
-           split_line = line.split(": ", maxsplit=1)
-           if len(split_line) == 2:
-               key, value = split_line
-           else:
-               print('Got a bad line, skipping:\n{}'.format(line))
-               continue
-           parse_test_line(t_dict, key, value, test_folder)
-       test_def_dicts += [t_dict]
+    """
+    Creates a dictionary definition the inputs and expected outputs of a tests into a list
+    under the key expected_outputs
+    """
+    split_inds = [i for i, val in enumerate(test_list) if val.split(': ')[0] == 'test']
+    split_list = [test_list[start:stop] for start, stop in zip(split_inds, split_inds[1:] + [len(test_list)])]
+    test_def_dicts = []
+    for test in split_list:
+        t_dict = {}
+        for line in test:
+            # Update t_dict with information from each line
+            t_dict = process_line(t_dict, line, test_folder)
+        test_def_dicts += [t_dict]
 
-   return test_def_dicts
+    return test_def_dicts
+
+
+def process_line(t_dict, line, test_folder):
+    """
+    Modify the dictionary, t_dict, in place because code climate thinks this is less complex
+    """
+    split_line = line.split(": ", maxsplit=1)
+    if len(split_line) == 2:
+        key, value = split_line
+        t_dict = parse_test_line(t_dict, key, value, test_folder)
+    else:
+        print('Got a bad line, skipping:\n{}'.format(line))
+    return t_dict
+
 
 def parse_test_line(ret_dict, key, value, test_folder):
    """
@@ -87,6 +96,8 @@ def parse_test_line(ret_dict, key, value, test_folder):
    else:
        # Unique keys (per test set) that are test definition parameters usually
        ret_dict[key] = value
+   return ret_dict
+
 
 def create_individual_tests(test_set):
    """
