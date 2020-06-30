@@ -5,3 +5,4 @@ fire
 pytest
 exrex
 streamlit
+yamllint
