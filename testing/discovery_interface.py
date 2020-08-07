@@ -109,7 +109,7 @@ def setup_discovery(directory, custom_directory, domains):
     return volume
 
 
-def submit_transcript(transcript, intent_whitelist=["any"], domain_whitelist=["any"], external_entities=None):
+def submit_transcript(transcript, intent_whitelist=["any"], domain_whitelist=["any"], external_json=None):
     """
     Submits a transcript to Discovery
     :param transcript: str,
@@ -121,8 +121,11 @@ def submit_transcript(transcript, intent_whitelist=["any"], domain_whitelist=["a
         "intents": intent_whitelist,
         "domains": domain_whitelist,
     }
-    if external_entities is not None:
-        payload['entities'] = external_entities
+
+    # merge with file json when given
+    if external_json is not None:
+        payload = {**external_json, **payload}
+
     response = requests.post(DISCOVERY_URL, json=payload)
     if not response.status_code == 200:
         LOGGER.error("Request was not successful. Response Status Code: {}".format(
