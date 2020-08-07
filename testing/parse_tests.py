@@ -87,12 +87,12 @@ def parse_test_line(ret_dict, key, value, test_folder):
    """
    Modify the dictionary in place because code climate thinks this is less complex
    """
-   if key not in ['test', 'external_entities', 'transcript']:
+   if key not in ['test', 'external_json', 'transcript']:
        # keys that define expected output of discovery
        ret_dict['expected_outputs'] = ret_dict.get('expected_outputs', []) + [(key, value)] 
-   elif key == 'external_entities':
-       ent_file = join_path(test_folder, 'external_entities', value)
-       ret_dict[key] = json.load(open(ent_file, 'r'))['entities']
+   elif key == 'external_json':
+       ent_file = join_path(test_folder, 'external_json', value)
+       ret_dict[key] = json.load(open(ent_file, 'r'))
    else:
        # Unique keys (per test set) that are test definition parameters usually
        ret_dict[key] = value
