@@ -5,8 +5,8 @@ DISCOVERY_PORT = "1234"
 DISCOVERY_HOST = "localhost"
 TAG = os.environ.get("TAG", "latest")
 
-TIMEOUT = int(os.environ.get('DISCOVERY_TIMEOUT', '20'))
-RETRIES = int(os.environ.get('DISCOVERY_RETRIES', '15'))
+TIMEOUT = int(os.environ.get('DISCOVERY_TIMEOUT', '5'))
+RETRIES = int(os.environ.get('DISCOVERY_RETRIES', '60'))
 
 DISABLE_INTENTS_WHITELIST = False
 
