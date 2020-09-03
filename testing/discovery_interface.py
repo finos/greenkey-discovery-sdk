@@ -63,10 +63,18 @@ def try_discovery(attempt_number):
         check_discovery_status()
         return True
     except Exception:
-        if attempt_number >= 15:
+        if attempt_number >= RETRIES / 4:
             LOGGER.error("Could not reach discovery, attempt {0} of {1}".format(
                 attempt_number + 1, RETRIES))
         time.sleep(TIMEOUT)
+
+
+def print_logs(full_logs):
+    incremental_logs = log_discovery(full_logs)
+    full_logs += incremental_logs
+    if incremental_logs:
+        print(incremental_logs)
+    return full_logs
 
 
 def wait_for_discovery_status():
@@ -78,10 +86,7 @@ def wait_for_discovery_status():
         if try_discovery(attempt_number):
             return True
         else:
-            incremental_logs = log_discovery(full_logs)
-            full_logs += incremental_logs
-            if incremental_logs:
-                print(incremental_logs)
+            full_logs = print_logs(full_logs)
         if not discovery_container_is_running():
             return False
     return False
