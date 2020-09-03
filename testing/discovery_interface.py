@@ -85,8 +85,7 @@ def wait_for_discovery_status():
     for attempt_number in range(RETRIES):
         if try_discovery(attempt_number):
             return True
-        else:
-            full_logs = print_logs(full_logs)
+        full_logs = print_logs(full_logs)
         if not discovery_container_is_running():
             return False
     return False
