@@ -105,7 +105,7 @@ def _launch_container(custom_directory, port, discovery_config, container_name):
         volume = custom_directory
 
     launch_command = " ".join(
-        ["docker", "run", "--rm", "-d"] + ["--name", container_name] +
+        ["docker", "run", "-d"] + ["--name", container_name] +
         ["-v", "{}:/custom".format(volume)] +
         ["-p", "{}:{}".format(port, discovery_config["PORT"])] + dico_dir
         # + model_dir
