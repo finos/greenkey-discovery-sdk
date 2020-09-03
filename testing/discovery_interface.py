@@ -27,8 +27,18 @@ DISCOVERY_URL = "http://{}:{}/process".format(DISCOVERY_HOST, DISCOVERY_PORT)
 DEVELOPER_URL = "http://{}:{}/developer".format(DISCOVERY_HOST, DISCOVERY_PORT)
 
 
-def log_discovery():
-    subprocess.call("docker logs {}".format(CONTAINER_NAME), shell=True)
+def log_discovery(previous_logs=''):
+    output = subprocess.run(
+      ["docker","logs","{}".format(CONTAINER_NAME)],
+      stdout=subprocess.PIPE,
+      stderr=subprocess.PIPE,
+      text=True,
+      universal_newlines=True
+    )
+    logs = output.stderr.strip()
+    if previous_logs:
+      logs = logs.replace(previous_logs,'').strip()
+    return logs
 
 
 def check_discovery_status():
@@ -39,12 +49,21 @@ def check_discovery_status():
     return True if r and r.status_code == 200 else False
 
 
+def discovery_container_is_running():
+    """
+    Checks whether the discovery container is still running
+    """
+    if subprocess.check_output("docker ps -aq -f status=exited -f name={}".format(CONTAINER_NAME), shell=True):
+        return False
+    return True
+
+
 def try_discovery(attempt_number):
     try:
         check_discovery_status()
         return True
     except Exception:
-        if attempt_number >= 3:
+        if attempt_number >= 15:
             LOGGER.error("Could not reach discovery, attempt {0} of {1}".format(
                 attempt_number + 1, RETRIES))
         time.sleep(TIMEOUT)
@@ -54,9 +73,17 @@ def wait_for_discovery_status():
     """
     Wait for Discovery to be ready
     """
+    full_logs = ''
     for attempt_number in range(RETRIES):
         if try_discovery(attempt_number):
             return True
+        else:
+            incremental_logs = log_discovery(full_logs)
+            full_logs += incremental_logs
+            if incremental_logs:
+                print(incremental_logs)
+        if not discovery_container_is_running():
+            return False
     return False
 
 
@@ -66,8 +93,7 @@ def wait_for_discovery_launch():
     """
     # Timeout of 25 seconds for launch
     if not wait_for_discovery_status():
-        LOGGER.error("Couldn't launch Discovery, printing Docker logs:\n---\n")
-        log_discovery()
+        LOGGER.error("Couldn't launch Discovery")
         shutdown_discovery()
         sys.exit(1)
     else:
