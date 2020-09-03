@@ -52,8 +52,9 @@ def restart():
     start()
 
 
-def log():
-    log_discovery()
+def log(previous_logs=''):
+    logs = log_discovery(previous_logs)
+    return logs
 
 
 def return_json_data(data, raw=False):
