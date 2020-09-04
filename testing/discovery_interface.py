@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
 
-import logging
-LOGGER = logging.getLogger(__name__)
-
 import json
+import logging
 import os
-import requests
 import subprocess
 import sys
 import time
+from os.path import abspath, exists
+from os.path import join as join_path
 
-from os.path import abspath, exists, join as join_path
+import requests
 
+from launch_discovery import launch_discovery
 from testing.discovery_config import (
     CONTAINER_NAME,
     DISCOVERY_CONFIG,
@@ -21,23 +21,20 @@ from testing.discovery_config import (
     TIMEOUT,
 )
 
-from launch_discovery import launch_discovery
+LOGGER = logging.getLogger(__name__)
 
 DISCOVERY_URL = "http://{}:{}/process".format(DISCOVERY_HOST, DISCOVERY_PORT)
 DEVELOPER_URL = "http://{}:{}/developer".format(DISCOVERY_HOST, DISCOVERY_PORT)
 
 
 def log_discovery(previous_logs=''):
-    output = subprocess.run(
-      ["docker","logs","{}".format(CONTAINER_NAME)],
-      stdout=subprocess.PIPE,
-      stderr=subprocess.PIPE,
-      text=True,
-      universal_newlines=True
-    )
-    logs = output.stderr.strip()
+    output = subprocess.run(["docker", "logs", "{}".format(CONTAINER_NAME)],
+                            stdout=subprocess.PIPE,
+                            stderr=subprocess.PIPE,
+                            universal_newlines=True)
+    logs = (output.stderr.decode() if isinstance(output.stderr, bytes) else output.stderr).strip()
     if previous_logs:
-      logs = logs.replace(previous_logs,'').strip()
+        logs = logs.replace(previous_logs, '').strip()
     return logs
 
 
@@ -53,7 +50,9 @@ def discovery_container_is_running():
     """
     Checks whether the discovery container is still running
     """
-    if subprocess.check_output("docker ps -aq -f status=exited -f name={}".format(CONTAINER_NAME), shell=True):
+    if subprocess.check_output(
+            "docker ps -aq -f status=exited -f name={}".format(CONTAINER_NAME),
+            shell=True):
         return False
     return True
 
@@ -139,7 +138,10 @@ def setup_discovery(directory, custom_directory, domains):
     return volume
 
 
-def submit_transcript(transcript, intent_whitelist=["any"], domain_whitelist=["any"], external_json=None):
+def submit_transcript(transcript,
+                      intent_whitelist=["any"],
+                      domain_whitelist=["any"],
+                      external_json=None):
     """
     Submits a transcript to Discovery
     :param transcript: str,
