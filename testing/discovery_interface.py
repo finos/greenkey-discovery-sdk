@@ -27,6 +27,12 @@ DISCOVERY_URL = "http://{}:{}/process".format(DISCOVERY_HOST, DISCOVERY_PORT)
 DEVELOPER_URL = "http://{}:{}/developer".format(DISCOVERY_HOST, DISCOVERY_PORT)
 
 
+def check_yaml(yaml_dir):
+    yamllint_output = subprocess.check_output('python3 -m yamllint {}; exit 0;'.format(yaml_dir), shell=True).decode('utf-8')
+    if 'error' in yamllint_output.lower():
+        raise Exception('\n\nInvalid yaml in {}, please fix the following errors:\n{}'.format(yaml_dir, yamllint_output))
+
+
 def log_discovery(previous_logs=''):
     output = subprocess.run(["docker", "logs", "{}".format(CONTAINER_NAME)],
                             stdout=subprocess.PIPE,
@@ -116,6 +122,7 @@ def make_sure_directories_exist(directories):
 
 def validate_custom_directory(directory):
     custom_directory = join_path(abspath(directory), "custom")
+    check_yaml(custom_directory)
     make_sure_directories_exist([directory, custom_directory])
 
     return custom_directory
