@@ -20,7 +20,8 @@ DISCOVERY_DOMAINS = os.environ.get('DISCOVERY_DOMAINS', '').split(',')
 DISCOVERY_INTENTS = os.environ.get('DISCOVERY_INTENTS', '').split(',')
 
 # None here prints all datafram rows
-pd.set_option('display.max_rows', int(os.environ.get('DISCOVERY_DISPLAY_ROWS',0)))
+display_rows = int(os.environ.get('DISCOVERY_DISPLAY_ROWS',0))
+pd.set_option('display.max_rows', display_rows if display_rows > 0 else None)
 
 DOMAIN_WHITELIST = DISCOVERY_DOMAINS + ["any"]
 INTENT_WHITELIST = DISCOVERY_INTENTS + ["any"]
