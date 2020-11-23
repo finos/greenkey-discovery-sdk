@@ -36,6 +36,9 @@ DISCOVERY_CONFIG = {
 
     # Port that Discovery will bind to on the Docker daemon, change if port is taken already
     "PORT": DISCOVERY_PORT,
+
+    # Prune output lattice (remove word_confusions and alternates)
+    "PRUNE_LATTICE": True,
 }
 
 # only set if present since defaults would otherwise be long and should not be maintained here

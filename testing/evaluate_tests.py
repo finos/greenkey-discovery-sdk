@@ -113,11 +113,6 @@ def test_schema(full_response, test_value, test_name=''):
     then make sure the value is correct
     """
 
-    # Exclude word_confusions from the search below. There was an error when the word was the same as a return_json key
-    # assume there is only one segment since that's how the tests are written
-    if full_response.get("segments", [{}])[0].get("word_confusions"):
-        del full_response["segments"][0]["word_confusions"]
-
     # Returning number of errors, so check for values that do not equal test case
     errs = {}
     for res in map(
