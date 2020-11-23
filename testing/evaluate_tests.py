@@ -62,37 +62,37 @@ def _find(obj, key):
 def is_invalid_schema(schema, test_value):
     """
     Checks schema against tests with dictionary nesting
-    
+
     >>> is_invalid_schema({"valid_key": "some_value"}, {"valid_key": "some_value"})
     False
-    
+
     >>> is_invalid_schema({"invalid_key": "some_value"}, {"valid_key": "some_value"})
     True
-    
+
     >>> is_invalid_schema(
     ... {"nested": {"valid_key": "some_value", "another_key": "some_value"}},
     ... {"nested": {"valid_key": "some_value"}}
     ... )
     False
-    
+
     >>> is_invalid_schema(
     ... {"nested": {"invalid_key": "some_value", "another_key": "some_value"}},
     ... {"nested": {"valid_key": "some_value"}}
     ... )
     True
-    
+
     >>> is_invalid_schema(
     ... {"nested": {"valid_key": "some_invalid_value", "another_key": "some_value"}},
     ... {"nested": {"valid_key": "some_value"}}
     ... )
     True
-    
+
     >>> is_invalid_schema(
     ... {"nested": {"double": {"valid_key": "some_value", "another_key": "some_value"}}},
     ... {"nested": {"double": {"valid_key": "some_value"}}}
     ... )
     False
-    
+
     >>> is_invalid_schema(
     ... {"nested": {"double": {"valid_key": "some_value", "another_key": "some_value"}}},
     ... {"nested": {"double": {"valid_key": "some_value"}, "some_key": "no_value"}}
@@ -112,6 +112,24 @@ def test_schema(full_response, test_value, test_name=''):
     recursively search the JSON response for the key,
     then make sure the value is correct
     """
+
+    # Exclude word_confusions from the search below. There was an error when the word was the same as a return_json key
+    # segment['word_confusions'] =
+    #   [{'AMD': 1},
+    #   {'had': 1},
+    #    ...
+    #   {'revenue': 1},
+    # and
+    # interpreted_fields:
+    #       company_name: '@nlprocessor_company_name'
+    #       key_metrics:
+    #         revenue:
+    #
+    # the revenue key metric was never found since the word confusion {'revenue':1} was found first
+
+    # assume there is only one segment since that's how the tests are written
+    if full_response.get('segments') and full_response.get('segments')[0].get('word_confusions'):
+        del full_response['segments'][0]['word_confusions']
 
     # Returning number of errors, so check for values that do not equal test case
     errs = {}
@@ -174,7 +192,7 @@ def print_extra_entities(observed_entity_dict, test_dict, test_name=''):
 
 
 """
-Intent tests      
+Intent tests
 """
 
 
@@ -209,7 +227,7 @@ def format_intent_test_result(test_name, expected_intent, observed_intent):
 
 
 """
-Evaluate entity and schema tests    
+Evaluate entity and schema tests
 """
 
 

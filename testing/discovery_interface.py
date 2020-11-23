@@ -163,6 +163,12 @@ def submit_transcript(transcript,
 
     # merge with file json when given
     if external_json is not None:
+        # having "transcript" at the top level of payload caused issues for input gk json that contain "segments"
+        # nlprocessor_earnings_call_test_1.json contains a transcript in segments[0]['transcript'] and discovery output
+        # was missing interpreted_fields.
+        # remove the conflicting transcript key below. The other external_json tests contain "transcript" at the top, so
+        # it is present and tests work
+        del payload["transcript"]
         payload = {**external_json, **payload}
 
     response = requests.post(DISCOVERY_URL, json=payload)
