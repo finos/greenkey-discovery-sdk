@@ -114,21 +114,8 @@ def test_schema(full_response, test_value, test_name=''):
     """
 
     # Exclude word_confusions from the search below. There was an error when the word was the same as a return_json key
-    # segment['word_confusions'] =
-    #   [{'AMD': 1},
-    #   {'had': 1},
-    #    ...
-    #   {'revenue': 1},
-    # and
-    # interpreted_fields:
-    #       company_name: '@nlprocessor_company_name'
-    #       key_metrics:
-    #         revenue:
-    #
-    # the revenue key metric was never found since the word confusion {'revenue':1} was found first
-
     # assume there is only one segment since that's how the tests are written
-    if full_response.get('segments') and full_response.get('segments')[0].get('word_confusions'):
+    if full_response.get('segments', [{}])[0].get('word_confusions'):
         del full_response['segments'][0]['word_confusions']
 
     # Returning number of errors, so check for values that do not equal test case
@@ -146,7 +133,6 @@ def test_schema(full_response, test_value, test_name=''):
         logger.info("Test {0} - Full response is {1}".format(test_name, full_response))
 
     return len(errs), json.dumps(errs)
-
 
 """
 Entity tests
