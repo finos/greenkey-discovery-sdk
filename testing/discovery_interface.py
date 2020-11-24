@@ -163,6 +163,8 @@ def submit_transcript(transcript,
 
     # merge with file json when given
     if external_json is not None:
+        # remove the conflicting transcript key below. The external_json tests already contain "transcript"
+        del payload["transcript"]
         payload = {**external_json, **payload}
 
     response = requests.post(DISCOVERY_URL, json=payload)
