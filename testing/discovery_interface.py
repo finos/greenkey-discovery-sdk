@@ -128,18 +128,8 @@ def validate_custom_directory(directory):
     return custom_directory
 
 
-def limit_discovery_domains(directory, domains):
 
-    flattened_domains = ",".join(
-        list(filter(lambda x: x != "any", set((i for s in domains for i in s)))))
-
-    if flattened_domains:
-        DISCOVERY_CONFIG["DISCOVERY_DOMAINS"] = flattened_domains
-        print("Limiting domains to {}".format(flattened_domains))
-
-
-def setup_discovery(directory, custom_directory, domains):
-    limit_discovery_domains(directory, domains)
+def setup_discovery(directory, custom_directory):
     volume = launch_discovery(custom_directory=custom_directory)
     wait_for_discovery_launch()
     return volume
@@ -147,18 +137,15 @@ def setup_discovery(directory, custom_directory, domains):
 
 def submit_transcript(transcript,
                       intent_whitelist=["any"],
-                      domain_whitelist=["any"],
                       external_json=None):
     """
     Submits a transcript to Discovery
     :param transcript: str,
     :param intent_whitelist: str; 'any' (default) or list of intent labels (if intent_whitelist in test_file)
-    :param domain_whitelist: str: 'any' (default) or list of domain labels (if domain_whitelist in test_file)
     """
     payload = {
         "transcript": transcript,
         "intents": intent_whitelist,
-        "domains": domain_whitelist,
     }
 
     # merge with file json when given

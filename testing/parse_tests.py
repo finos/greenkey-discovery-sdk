@@ -13,9 +13,9 @@ def expand_wildcard_tests(directory, tests):
     """
     Expands any wildcard filenames in the list of tests
 
-    >>> res = expand_wildcard_tests('examples/fruits', ['test*'])
+    >>> res = expand_wildcard_tests('examples/calling_room', ['test*'])
     >>> sorted(res)
-    ['tests.txt', 'tests_negative.txt']
+    ['tests.txt']
 
     >>> expand_wildcard_tests('skip_this_directory', ['no_wildcards'])
     ['no_wildcards']
@@ -119,14 +119,14 @@ def load_tests(test_file):
     Loads and parses the test file
     """
     test_list = load_test_file(test_file)
-    test_list, intent_whitelist, domain_whitelist = find_whitelists(test_list)
+    test_list, intent_whitelist = find_whitelists(test_list)
     test_directory = dirname(test_file)
     test_def_list = make_test_list(test_list, test_directory)
 
     tests = [create_individual_tests(test_set) for test_set in test_def_list]
     tests = list(itertools.chain.from_iterable(tests))
 
-    return tests, intent_whitelist, domain_whitelist
+    return tests, intent_whitelist
 
 
 def find_whitelists(test_file):
@@ -135,17 +135,15 @@ def find_whitelists(test_file):
     """
 
     intents = [intent for intent in test_file if intent.startswith("intent_whitelist")]
-    domains = [domain for domain in test_file if domain.startswith("domain_whitelist")]
 
     intent_whitelist = format_whitelist(intents[0]) if intents else ["any"]
-    domain_whitelist = format_whitelist(domains[0]) if domains else ["any"]
 
-    test_file = [line for line in test_file if not line in intents + domains]
+    test_file = [line for line in test_file if not line in intents]
 
     if DISABLE_INTENTS_WHITELIST:
         intent_whitelist = ["any"]
 
-    return test_file, intent_whitelist, domain_whitelist
+    return test_file, intent_whitelist
 
 
 def format_whitelist(line):
@@ -159,13 +157,6 @@ def format_whitelist(line):
     else:
         whitelist = [whitelist.strip()]
     return whitelist
-
-
-def report_domain_whitelists(directory, tests):
-    return (find_whitelists(
-        load_test_file(join_path(directory, add_extension_if_missing(f))))[2]
-            for f in (tests.split(",") if isinstance(tests, str) else tests))
-
 
 def add_extension_if_missing(test_file):
     """

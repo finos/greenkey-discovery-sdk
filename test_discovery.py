@@ -28,8 +28,7 @@ from os.path import join as join_path
 from fire import Fire
 from testing.metrics import print_normalized_confusion_matrix
 
-from testing.parse_tests import (load_tests, load_tests_into_list,
-                                 report_domain_whitelists, add_extension_if_missing,
+from testing.parse_tests import (load_tests, load_tests_into_list, add_extension_if_missing,
                                  expand_wildcard_tests)
 
 from testing.evaluate_tests import (is_valid_response, fail_test,
@@ -67,7 +66,7 @@ def extract_schema_results_as_entities(test_dict, intent_results, entity_results
     return intent_results
 
 
-def test_one(test_dict, intent_whitelist, domain_whitelist):
+def test_one(test_dict, intent_whitelist):
     global VERBOSE_LOGGING
     y_true = y_pred = []
     intent_results = {}
@@ -77,7 +76,7 @@ def test_one(test_dict, intent_whitelist, domain_whitelist):
 
     # Timing submit_transcript function
     test_start_time = time.time()
-    resp = submit_transcript(transcript, intent_whitelist, domain_whitelist, external_json)
+    resp = submit_transcript(transcript, intent_whitelist, external_json)
     test_end_time = time.time()
 
     time_dif_ms = 1000 * (test_end_time - test_start_time)
@@ -130,10 +129,9 @@ def test_all(test_file):
 
     :param test_file: str, test file
 
-    Optional: Prior to tests, can list permitted intents and/or domains as comma separated strings.
+    Optional: Prior to tests, can list permitted intents as comma separated strings.
     - If included, value(s) will be passed with each request; else default 'any'
         intent_whitelist: intent1, intent2
-        domain_whitelist: domain1,
 
     Each test:
         test: name of test
@@ -157,7 +155,7 @@ def test_all(test_file):
     global SAVE_RESULTS
     print(TABLE_BAR_LENGTH * '-')
     print("Loading test file: {}".format(test_file))
-    tests, intent_whitelist, domain_whitelist = load_tests(test_file)
+    tests, intent_whitelist = load_tests(test_file)
 
     t1 = time.time()
 
@@ -173,7 +171,7 @@ def test_all(test_file):
 
     for test_no, test_dict in enumerate(tests):
         y_true_new, y_pred_new, time_elapsed, intent_results, entity_results = test_one(
-            test_dict, intent_whitelist, domain_whitelist)
+            test_dict, intent_whitelist)
 
         y_true += y_true_new
         y_pred += y_pred_new
@@ -258,8 +256,7 @@ def run_all_tests_in_directory(directory, custom_directory, tests):
     success = False
     volume = None
     try:
-        domains = report_domain_whitelists(directory, tests)
-        volume = setup_discovery(directory, custom_directory, domains)
+        volume = setup_discovery(directory, custom_directory)
         success = evaluate_all_tests(directory, tests)
     except Exception:
         logger.exception("Error: Check test files for formatting errors", exc_info=True)
