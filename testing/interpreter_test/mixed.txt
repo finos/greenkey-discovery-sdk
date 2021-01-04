@@ -1,4 +1,3 @@
-domain_whitelist: fruits
 
 test: Inquiry
 transcript: what is your price on green tomatoes

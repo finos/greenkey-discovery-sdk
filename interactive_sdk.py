@@ -16,14 +16,12 @@ from testing.discovery_interface import (
 )
 
 ENCODING = "utf-8"
-DISCOVERY_DOMAINS = os.environ.get('DISCOVERY_DOMAINS', '').split(',')
 DISCOVERY_INTENTS = os.environ.get('DISCOVERY_INTENTS', '').split(',')
 
-# None here prints all datafram rows
+# None here prints all dataframe rows
 display_rows = int(os.environ.get('DISCOVERY_DISPLAY_ROWS',0))
 pd.set_option('display.max_rows', display_rows if display_rows > 0 else None)
 
-DOMAIN_WHITELIST = DISCOVERY_DOMAINS + ["any"]
 INTENT_WHITELIST = DISCOVERY_INTENTS + ["any"]
 
 # TODO: add component_list
@@ -111,14 +109,7 @@ def reload_discovery():
             st.error("Failed to reload config")
 
 
-def set_domain_and_intent(config):
-    domains = [ \
-      domain for domain in DOMAIN_WHITELIST + \
-      sorted(domain for domain in list(config["domains"].keys()) if domain not in DOMAIN_WHITELIST) \
-      if domain
-    ]
-    domain = st.selectbox("Domain", domains)
-
+def set_intent(config):
     intents = [ \
       intent for intent in INTENT_WHITELIST + \
       sorted(intent for intent in config["domains"].get(domain, []) if intent not in INTENT_WHITELIST) \
@@ -126,16 +117,16 @@ def set_domain_and_intent(config):
     ]
     intent = st.selectbox("Intent", intents)
 
-    return domain, intent
+    return intent
 
 
 def test_an_interpreter(config):
-    domain, intent = set_domain_and_intent(config)
+    intent = set_intent(config)
 
     transcript = st.text_area("Input transcript", "eur$ 5y 3x6 5mio")
 
     payload = submit_transcript( \
-        transcript, domain_whitelist=[domain], intent_whitelist=[intent] \
+        transcript, intent_whitelist=[intent] \
     )
 
     # Sidebar

@@ -1,3 +1,4 @@
+---
 intents:
   telephone_number:
     domain: telephone_number

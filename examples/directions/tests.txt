@@ -1,4 +1,3 @@
-domain_whitelist: directions
 intent_whitelist: directions
 
 test: directions by car

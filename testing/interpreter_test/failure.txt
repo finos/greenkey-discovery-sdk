@@ -1,4 +1,3 @@
-domain_whitelist: fruits
 
 test: Correction - Entity Failure
 transcript: i have to revise my offer to fifty red apples for one hundred dollars

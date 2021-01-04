@@ -1,7 +1,6 @@
 ---
 intents:
   directions:
-    domain: directions
     entities:
       - transportation_type
       - complete_address
