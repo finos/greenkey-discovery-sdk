@@ -1,7 +1,6 @@
 ---
 intents:
   telephone_number:
-    domain: telephone_number
     examples:
       - "please call me at @phone_number"
       - "save the number @phone_number"

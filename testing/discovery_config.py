@@ -42,7 +42,5 @@ DISCOVERY_CONFIG = {
 }
 
 # only set if present since defaults would otherwise be long and should not be maintained here
-if "DISCOVERY_DOMAINS" in os.environ:
-    DISCOVERY_CONFIG["DISCOVERY_DOMAINS"] = os.environ.get("DISCOVERY_DOMAINS")
 if "DISCOVERY_INTENTS" in os.environ:
     DISCOVERY_CONFIG["DISCOVERY_INTENTS"] = os.environ.get("DISCOVERY_INTENTS")

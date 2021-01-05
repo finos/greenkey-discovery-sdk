@@ -4,7 +4,6 @@ entities:
     - "@num{1,4}"
 intents:
   digit:
-    domain: digit
     examples:
       - "please select @room_number to speak to the operator"
       - "to change your order press @room_number"

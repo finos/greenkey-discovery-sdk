@@ -1,7 +1,6 @@
 ---
 intents:
   calling_room:
-    domain: calling_room
     examples:
       - "@room_number"
       - "I will be staying in room @room_number"
