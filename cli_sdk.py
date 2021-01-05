@@ -22,20 +22,11 @@ from interactive_sdk import (
 )
 
 INTERPRETER_DIRECTORY = os.environ.get('INTERPRETER_DIRECTORY', 'examples/calling_room')
-DISCOVERY_DOMAINS = [
-    subprocess.check_output("""
-    find {} -follow -name "*.yaml" | while read line; do grep "domain:" $line; done \
-    | awk '{{print $NF}}' | sed -e 's/^\"//' -e 's/\"$//' | uniq | tr '\n' ','
-    """.format(INTERPRETER_DIRECTORY),
-                            shell=True).decode('utf-8').strip(",").split(",")
-]
-
 
 def start():
     setup_discovery(
         INTERPRETER_DIRECTORY,
         validate_custom_directory(INTERPRETER_DIRECTORY),
-        DISCOVERY_DOMAINS,
     )
 
 

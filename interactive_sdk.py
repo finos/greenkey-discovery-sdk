@@ -110,11 +110,7 @@ def reload_discovery():
 
 
 def set_intent(config):
-    intents = [ \
-      intent for intent in INTENT_WHITELIST + \
-      sorted(intent for intent in config["domains"].get(domain, []) if intent not in INTENT_WHITELIST) \
-      if intent
-    ]
+    intents = [ intent for intent in INTENT_WHITELIST ]
     intent = st.selectbox("Intent", intents)
 
     return intent
@@ -173,7 +169,7 @@ def main():
 
     option = st.sidebar.selectbox("Mode", ["Test an interpreter", "Entity library"])
 
-    # Domain / Intent Config
+    # Intent Config
     config = get_discovery_config()
 
     if option == "Test an interpreter":
