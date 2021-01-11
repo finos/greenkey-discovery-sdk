@@ -6,160 +6,84 @@ import os
 import subprocess
 import sys
 import time
-from os.path import abspath, exists
+from os.path import abspath, isdir
 from os.path import join as join_path
 
+import docker
+import dotenv
 import requests
-
-from launch_discovery import launch_discovery
-from testing.discovery_config import (
-    CONTAINER_NAME,
-    DISCOVERY_CONFIG,
-    DISCOVERY_HOST,
-    DISCOVERY_PORT,
-    RETRIES,
-    TIMEOUT,
-)
+from mock import patch
+from yamllint.cli import run as yamllint
 
 LOGGER = logging.getLogger(__name__)
 
-DISCOVERY_URL = "http://{}:{}/process".format(DISCOVERY_HOST, DISCOVERY_PORT)
-DEVELOPER_URL = "http://{}:{}/developer".format(DISCOVERY_HOST, DISCOVERY_PORT)
+env = dotenv.dotenv_values("client.env")
+
+DEVELOPER_URL = "{}:{}/developer".format(env["DISCOVERY_HOST"], env["DISCOVERY_PORT"])
 
 
 def check_yaml(yaml_dir):
-    yamllint_output = subprocess.check_output('python3 -m yamllint {}; exit 0;'.format(yaml_dir), shell=True).decode('utf-8')
-    if 'error' in yamllint_output.lower():
-        raise Exception('\n\nInvalid yaml in {}, please fix the following errors:\n{}'.format(yaml_dir, yamllint_output))
-
-
-def log_discovery(previous_logs=''):
-    output = subprocess.run(["docker", "logs", "{}".format(CONTAINER_NAME)],
-                            stdout=subprocess.PIPE,
-                            stderr=subprocess.PIPE,
-                            universal_newlines=True)
-    logs = (output.stderr.decode() if isinstance(output.stderr, bytes) else output.stderr).strip()
-    if previous_logs:
-        logs = logs.replace(previous_logs, '').strip()
-    return logs
-
-
-def check_discovery_status():
     """
-    Checks whether Discovery is ready to receive new jobs
+    Run yamllint against directory container yaml
     """
-    r = requests.get("http://{}:{}/ping".format(DISCOVERY_HOST, DISCOVERY_PORT))
-    return True if r and r.status_code == 200 else False
-
-
-def discovery_container_is_running():
-    """
-    Checks whether the discovery container is still running
-    """
-    if subprocess.check_output(
-            "docker ps -aq -f status=exited -f name={}".format(CONTAINER_NAME),
-            shell=True):
-        return False
-    return True
-
-
-def try_discovery(attempt_number):
-    try:
-        check_discovery_status()
-        return True
-    except Exception:
-        if attempt_number >= RETRIES / 4:
-            LOGGER.error("Could not reach discovery, attempt {0} of {1}".format(
-                attempt_number + 1, RETRIES))
-        time.sleep(TIMEOUT)
-
-
-def print_logs(full_logs):
-    incremental_logs = log_discovery(full_logs)
-    full_logs += incremental_logs
-    if incremental_logs:
-        print(incremental_logs)
-    return full_logs
-
-
-def wait_for_discovery_status():
-    """
-    Wait for Discovery to be ready
-    """
-    full_logs = ''
-    for attempt_number in range(RETRIES):
-        if try_discovery(attempt_number):
-            return True
-        full_logs = print_logs(full_logs)
-        if not discovery_container_is_running():
-            return False
-    return False
-
-
-def wait_for_discovery_launch():
-    """
-    Wait for launch to complete
-    """
-    # Timeout of 25 seconds for launch
-    if not wait_for_discovery_status():
-        LOGGER.error("Couldn't launch Discovery")
-        shutdown_discovery()
-        sys.exit(1)
-    else:
-        print("Discovery Launched!")
+    args = ["/home/matt/.local/bin/yamllint", yaml_dir]
+    with patch.object(sys, "argv", args), patch("sys.exit") as exit_mock:
+        yamllint()
+        exit_mock.assert_called_once_with(0)
 
 
 def make_sure_directories_exist(directories):
+    """
+    Ensure all directories in input list exist
+    """
     for d in directories:
-        try:
-            assert exists(d)
-        except AssertionError:
-            LOGGER.exception("Error: Check path to directory: {}".format(d),
-                             exc_info=True)
-            print("Terminating program")
-            sys.exit(1)
+        assert isdir(d), f"{d} does not exist!"
 
 
-def validate_custom_directory(directory):
-    custom_directory = join_path(abspath(directory), "custom")
-    check_yaml(custom_directory)
-    make_sure_directories_exist([directory, custom_directory])
-
-    return custom_directory
-
-
-
-def setup_discovery(directory, custom_directory):
-    volume = launch_discovery(custom_directory=custom_directory)
-    wait_for_discovery_launch()
-    return volume
+def log_discovery():
+    """
+    Get logs of all containers whose name contains discovery
+    """
+    client = docker.client.from_env()
+    return "\n".join([
+        container.logs().decode() for container in client.containers.list(all=True)
+        if "discovery" in container.name
+    ])
 
 
-def submit_transcript(transcript,
-                      intent_whitelist=["any"],
-                      external_json=None):
+def submit_discovery_transcript(transcript, intents, external_json=None):
     """
     Submits a transcript to Discovery
     :param transcript: str,
-    :param intent_whitelist: str; 'any' (default) or list of intent labels (if intent_whitelist in test_file)
+    :param intents: list of intent labels
     """
     payload = {
         "transcript": transcript,
-        "intents": intent_whitelist,
+        "intents": intents,
     }
 
     # merge with file json when given
     if external_json is not None:
         # remove the conflicting transcript key below. The external_json tests already contain "transcript"
-        del payload["transcript"]
+        if external_json.get("transcript"):
+            del payload["transcript"]
         payload = {**external_json, **payload}
 
-    response = requests.post(DISCOVERY_URL, json=payload)
+    address = ":".join([env["DISCOVERY_HOST"], env["DISCOVERY_PORT"]]) + "/process"
+    response = requests.post(address, json=payload)
     if not response.status_code == 200:
         LOGGER.error("Request was not successful. Response Status Code: {}".format(
             response.status_code))
         return {}
     return response.json()
+
+
+def validate_interpreter_directory(interpreter_directory):
+    """
+    Ensure directory exists and YAML is valid
+    """
+    make_sure_directories_exist([interpreter_directory])
+    check_yaml(interpreter_directory)
 
 
 def get_discovery_config():
@@ -171,23 +95,6 @@ def get_discovery_config():
 
 def reload_discovery_config():
     "POST to developer route to reload config"
-    r = requests.post(DEVELOPER_URL)
+    r = requests.post(DEVELOPER_URL, json={})
     payload = json.loads(r.text)
-    return ('result' in payload and payload['result'] == "success")
-
-
-def shutdown_discovery(volume=None):
-    """
-    Shuts down the Discovery engine Docker container
-    """
-    if str(os.environ.get('SHUTDOWN_DISCOVERY', True)) == "False":
-        return
-
-    LOGGER.info("Shutting down Discovery")
-    try:
-        subprocess.call("docker rm -f {}".format(CONTAINER_NAME), shell=True)
-    except Exception as exc:
-        LOGGER.exception(exc)
-
-    if volume is not None:
-        subprocess.call("docker volume rm {}".format(volume), shell=True)
+    return "result" in payload and payload["result"] == "success"

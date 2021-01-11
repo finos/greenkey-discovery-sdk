@@ -1,0 +1,19 @@
+---
+version: '3.6'
+
+services:
+    nlprocessor:
+        image: docker.greenkeytech.com/nlprocessor:${NLPROCESSOR_TAG}
+        ports:
+            - ${NLPROCESSOR_PORT}:${NLPROCESSOR_PORT}
+        environment:
+            - LICENSE_KEY=${LICENSE_KEY}
+            - PORT=${NLPROCESSOR_PORT}
+            # options for log levels, in decreasing log verbosity: debug, info, warning, error, critical
+            - LOG_LEVEL=info
+        volumes:
+          - builtin-nlprocessor-models:/models
+
+volumes:
+  builtin-nlprocessor-models:
+    external: true

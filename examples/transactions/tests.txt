@@ -1,0 +1,9 @@
+ic_models: transaction
+ner_models: ner_eqd
+
+test: buy
+transcript: i'm interested in 1M of AAPL Dec 21 futs for 5.7
+predicted_intent: inquiry
+eqd_quantity: 1M
+eqd_price: 5.7
+

@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 
 import os
-import pytest
 import sys
 from pathlib import Path
 
-from test_discovery import validate_yaml
+import pytest
+
+from conftest import validate_yaml
 
 
 def test_validate_yaml():
