@@ -1,19 +1,31 @@
 ---
 language: python
 dist: xenial
-python:
-  - "3.6"
-  - "3.6-dev"  # 3.6 development branch
-  - "3.7"
-  - "3.7-dev"  # 3.7 development branch
-# command to install dependencies
-install:
-  - pip install -r requirements.txt
-# command to run tests
-script:
-  - python3 -m pytest .tests/test_all_yaml_files_load.py -s
-  - python3 -m pytest --doctest-modules util testing
-  - python3 testing/metrics.py
-  # validate no duplicate keys in yaml using yamllint
-  - python3 -m yamllint .
-
+jobs:
+  include:
+    - stage: test discovery
+      python:
+        - '3.6'
+      services:
+        - docker
+      install:
+        - docker login -u ${DOCKER_USER} -p ${DOCKER_PASS} docker.greenkeytech.com
+        - python3 -m pip install -r requirements.txt
+        - python3 -m pip install pytest
+      script:
+        - set -e
+        # run doctests for sdk utils and testing utils
+        - python3 -m pytest --doctest-modules util testing
+        # validate no duplicate keys in yaml using yamllint
+        - python3 -m yamllint .
+        # validate all yaml can be loaded
+        - python3 -m pytest testing/test_all_yaml_files_load.py -s
+        # validate regex
+        - find . -name "*\.yaml" -exec python3 validate_regex.py {} +
+        - python3 testing/metrics.py
+        - |-
+          # test discovery sdk examples
+          for file in examples/*/test*.txt; do
+            interpreter_directory="$(dirname $file)/custom"
+            USE_BUILT_IN_INTERPRETERS=False python3 test_nlp.py -v --durations=50 $( [ -d $interpreter_directory ] && echo "--interpreter-directory $interpreter_directory" ) --tests $file
+          done

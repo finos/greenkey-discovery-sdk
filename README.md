@@ -56,25 +56,6 @@ This will provide you with the packages needed to run the `test_discovery.py` sc
 python3 -m pip install -r requirements.txt
 ```
 
-## Using Compiled Binary Files
-
-If you are unable to use Docker, contact us to obtain compiled binary files for Discovery.
-Simply place the binaries directory into the SDK directory before running `test_discovery.py`.
-The test script will automatically detect the binaries directory and use that instead of a Docker image.
-
-Make sure not to change the name of the binaries file when you move it.
-You should end up with a structure like the following for the `test_discovery.py` script to work.
-
-```
-└───greenkey-discovery-sdk
-    └───discovery_binaries_windows_10_64bit__python37_64bit
-    └───examples
-    └───gk_cli
-    │   discovery_config.py
-    │   README.md
-    │   test_discovery.py
-```
-
 ## Obtaining Credentials
 [Contact us](mailto:transcription@greenkeytech.com) to obtain credentials to obtain the Discovery Docker container from our repository and launch the Discovery engine.
 
@@ -154,10 +135,6 @@ Please make sure you read and observe our [Code of Conduct].
 _NOTE:_ Commits and pull requests to FINOS repositories will only be accepted from those contributors with an active, executed Individual Contributor License Agreement (ICLA) with FINOS OR who are covered under an existing and active Corporate Contribution License Agreement (CCLA) executed with FINOS. Commits from individuals not covered under an ICLA or CCLA will be flagged and blocked by the FINOS Clabot tool. Please note that some CCLAs require individuals/employees to be explicitly named on the CCLA.
 
 *Need an ICLA? Unsure if you are covered under an existing CCLA? Email [help@finos.org](mailto:help@finos.org)*
-
-# Versioning
-
-We use [SemVer] for versioning.  For the versions available, see the [tags on this repository].
 
 # Authors
 

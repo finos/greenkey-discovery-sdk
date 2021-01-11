@@ -13,4 +13,4 @@ intents:
 entities:
   room_number:
     - "@num{1,2} @letter"
-    - case_sensitive: True
+    - case_sensitive: true

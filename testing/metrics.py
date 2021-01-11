@@ -26,8 +26,12 @@ def calculate_matrix_with_labels(actual, predicted, label, normalize=False):
     TP, FN, FP, TN = compute_counts(actual, predicted, label)
     cm = [[TP, FP], [FN, TN]]
 
-    return [[divide_or_zero(TP, (TP + FP)), divide_or_zero(FP, (TP + FP))], \
-            [divide_or_zero(FN, (FN + TN)), divide_or_zero(TN, (FN + TN))]] if normalize else cm
+    return ([
+        [divide_or_zero(TP, (TP + FP)),
+         divide_or_zero(FP, (TP + FP))],
+        [divide_or_zero(FN, (FN + TN)),
+         divide_or_zero(TN, (FN + TN))],
+    ] if normalize else cm)
 
 
 def compute_confusion_matrix(actual, predicted):
@@ -90,7 +94,7 @@ def get_label_counts(y_true, y_pred, labels=None):
         try:
             n_true = len(list(filter(lambda x: x == label, y_true)))
             n_pred = len(list(filter(lambda x: x == label, y_pred)))
-            d[label] = {'n_true': n_true, 'n_pred': n_pred}
+            d[label] = {"n_true": n_true, "n_pred": n_pred}
         except:
             print("Could not get counts for label: {}".format(label))
     return d
@@ -137,7 +141,7 @@ def compute_all(y_true, y_pred, labels=None):
                                                      y_pred,
                                                      label,
                                                      normalize=True)
-        d[label]['metrics'] = precision_recall_f1_accuracy(y_true, y_pred, label)
+        d[label]["metrics"] = precision_recall_f1_accuracy(y_true, y_pred, label)
         d["label_count_dict"] = get_label_counts(y_true, y_pred, labels)
     return d
 
@@ -146,9 +150,9 @@ def print_normalized_confusion_matrix(actual, predicted):
     matrix, labels = confusion_matrix(actual, predicted, normalize=True)
     print("\nConfusion Matrix:")
     print("\t\tActual")
-    print('Predicted\t' + '\t'.join([_[:7] for _ in labels]))
-    print('\n'.join([
-        '\t' + label[:7] + '\t' + '\t'.join([str(cell) for cell in row])
+    print("Predicted\t" + "\t".join([_[:7] for _ in labels]))
+    print("\n".join([
+        "\t" + label[:7] + "\t" + "\t".join([str(cell) for cell in row])
         for label, row in zip(labels, matrix)
     ]))
 
@@ -184,8 +188,12 @@ if __name__ == "__main__":
     predicted = ["A", "B", "B", "A", "C", "B", "C", "C", "A", "C", "D"]
     print_normalized_confusion_matrix(actual, predicted)
     matrix, labels = confusion_matrix(actual, predicted, normalize=True)
-    assert matrix == [[0.67, 0.33, 0.0, 0.0], [0.0, 0.67, 0.33, 0.0],
-                      [0.25, 0.5, 0.25, 0.0], [0.0, 0.0, 0.0, 1.0]]
-    assert sorted(labels) == ['A', 'B', 'C', 'D']
+    assert matrix == [
+        [0.67, 0.33, 0.0, 0.0],
+        [0.0, 0.67, 0.33, 0.0],
+        [0.25, 0.5, 0.25, 0.0],
+        [0.0, 0.0, 0.0, 1.0],
+    ]
+    assert sorted(labels) == ["A", "B", "C", "D"]
 
     compute_all(actual, predicted)

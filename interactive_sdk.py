@@ -1,28 +1,44 @@
 #!/usr/bin/env python3
 
-import streamlit as st
-from collections import namedtuple
-from PIL import Image
-
 import os
-import pandas as pd
-import time
+from collections import namedtuple
 
+import dotenv
+import pandas as pd
+import requests
+import streamlit as st
+from PIL import Image
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
+
+from launch import wait_on_service
 from testing.discovery_interface import (
-    check_discovery_status,
-    get_discovery_config,
     reload_discovery_config,
-    submit_transcript,
+    submit_discovery_transcript,
 )
 
+env = dotenv.dotenv_values("client.env")
+
+
+class RetryRequest(Retry):
+    """
+    Custom retry class with max backoff set to TIMEOUT from client.env
+    """
+
+    BACKOFF_MAX = float(env["TIMEOUT"])
+
+
+retries = RetryRequest(total=int(env["RETRIES"]),
+                       backoff_factor=1.0,
+                       status_forcelist=[500, 502, 503, 504])
+request_session = requests.Session()
+request_session.mount("http://", HTTPAdapter(max_retries=retries))
+
 ENCODING = "utf-8"
-DISCOVERY_INTENTS = os.environ.get('DISCOVERY_INTENTS', '').split(',')
 
 # None here prints all dataframe rows
-display_rows = int(os.environ.get('DISCOVERY_DISPLAY_ROWS',0))
-pd.set_option('display.max_rows', display_rows if display_rows > 0 else None)
-
-INTENT_WHITELIST = DISCOVERY_INTENTS + ["any"]
+display_rows = int(os.environ.get("DISCOVERY_DISPLAY_ROWS", 0))
+pd.set_option("display.max_rows", display_rows if display_rows > 0 else None)
 
 # TODO: add component_list
 Entity = namedtuple("Entity", ["entity", "value", "tokens", "indices"])
@@ -74,8 +90,8 @@ def get_entity_matches(label, entity):
     for matches in entity["matches"]:
         # Remove if removing GROUP_ENTITIES=True
         entity_list += [
-          format_entity_match(label, match) for match in \
-          (matches if isinstance(matches, (list, tuple)) else [matches]) \
+            format_entity_match(label, match)
+            for match in (matches if isinstance(matches, (list, tuple)) else [matches])
         ]
     return entity_list
 
@@ -110,9 +126,7 @@ def reload_discovery():
 
 
 def set_intent(config):
-    intents = [ intent for intent in INTENT_WHITELIST ]
-    intent = st.selectbox("Intent", intents)
-
+    intent = st.selectbox("Intent", config["intents"])
     return intent
 
 
@@ -121,9 +135,7 @@ def test_an_interpreter(config):
 
     transcript = st.text_area("Input transcript", "eur$ 5y 3x6 5mio")
 
-    payload = submit_transcript( \
-        transcript, intent_whitelist=[intent] \
-    )
+    payload = submit_discovery_transcript(transcript, intent_whitelist=[intent])
 
     # Sidebar
     show_everything = st.sidebar.checkbox("Verbose discovery output", False)
@@ -132,9 +144,8 @@ def test_an_interpreter(config):
     if show_everything:
         st.write(payload)
 
-    if "intents" in payload \
-        and payload["intents"] \
-        and "entities" in payload["intents"][0]:
+    if ("intents" in payload and payload["intents"]
+            and "entities" in payload["intents"][0]):
 
         show_matched_entities(payload, config, show_ents)
 
@@ -146,17 +157,19 @@ def test_an_interpreter(config):
 
 def entity_library(config):
     st.write("Available entities")
-    st.write({ \
-      k: v if not k.startswith("_") else \
-      {"[built-in]": {"samples": v.get("samples", [])}} \
-      for k,v in config["entities"].items()
+    st.write({
+        k: v if not k.startswith("_") else {
+            "[built-in]": {
+                "samples": v.get("samples", [])
+            }
+        }
+        for k, v in config["entities"].items()
     })
 
 
 def main():
     with st.spinner("Waiting for discovery"):
-        while not check_discovery_status():
-            time.sleep(0.25)
+        wait_on_service(":".join([env["DISCOVERY_HOST"], env["DISCOVERY_PORT"]]))
 
     # UI FOR DEV TOOL
     st.image(Image.open("logo.jpg"), width=150)
@@ -169,8 +182,9 @@ def main():
 
     option = st.sidebar.selectbox("Mode", ["Test an interpreter", "Entity library"])
 
-    # Intent Config
-    config = get_discovery_config()
+    # Domain / Intent Config
+    config = request_session.get(
+        f"{env['DISCOVERY_HOST']}:{env['DISCOVERY_PORT']}/developer").json()
 
     if option == "Test an interpreter":
         test_an_interpreter(config)

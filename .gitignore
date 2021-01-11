@@ -20,7 +20,6 @@ Pipfile
 Pipfile.lock
 
 # Extensions
-*.json
 *.csv
 *.xml
 *.tsv
