@@ -15,6 +15,8 @@ import requests
 from mock import patch
 from yamllint.cli import run as yamllint
 
+from testing.service_interface import prepare_payload
+
 LOGGER = logging.getLogger(__name__)
 
 env = dotenv.dotenv_values("client.env")
@@ -48,12 +50,7 @@ def submit_nlprocessor_transcript(transcript, nlp_models, external_json=None):
         },
     }
 
-    # merge with file json when given
-    if external_json is not None:
-        # remove the conflicting transcript key below. The external_json tests already contain "transcript"
-        if external_json.get("transcript"):
-            del payload["transcript"]
-        payload = {**external_json, **payload}
+    payload = prepare_payload(payload, external_json)
 
     address = ":".join([env["NLPROCESSOR_HOST"], env["NLPROCESSOR_PORT"]]) + "/process"
     response = requests.post(address, json=payload)
