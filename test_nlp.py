@@ -13,7 +13,6 @@ import logging
 import sys
 
 import dotenv
-import requests
 
 from freeze import freezeargs
 from testing.discovery_interface import submit_discovery_transcript
@@ -60,7 +59,8 @@ def format_bad_entities(test_dict, test_results):
     }
     msg = f"\nExpected: {expected_output}\nReceived: {test_results['observed_entity_dict']}"
     if "predicted_intent" in test_dict:
-        msg += f"\nExpected intent: {test_dict['predicted_intent']}\nObserved intents:{test_results['observed_intents']}"
+        msg += (f"\nExpected intent: {test_dict['predicted_intent']}\n" +
+                f"Observed intents:{test_results['observed_intents']}")
 
     return msg
 
