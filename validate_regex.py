@@ -29,7 +29,7 @@ def recursive_search_dict(input_dict, target_key):
     return found
 
 
-def validate_found_regex(intent):
+def validate_found_regex(intent, yaml_file):
     """
     Validate regex entities
     """
@@ -41,7 +41,7 @@ def validate_found_regex(intent):
         sys.exit(1)
 
 
-def validate_entity_patterns(intent):
+def validate_entity_patterns(intent, yaml_file):
     """
     Validate entity patterns for an intent
     """
@@ -88,12 +88,15 @@ def validate_regex_in_yaml_file(yaml_file):
     with open(yaml_file, "r") as config:
         intent = yaml.load(config, Loader=yaml.FullLoader)
 
-    validate_found_regex(intent)
-    validate_entity_patterns(intent)
+    validate_found_regex(intent, yaml_file)
+    validate_entity_patterns(intent, yaml_file)
     validate_compound_entities(intent)
 
 
 def validate_all_files(*yaml_files):
+    """
+    Validate each YAML file
+    """
     for yaml_file in yaml_files:
         validate_regex_in_yaml_file(yaml_file)
 

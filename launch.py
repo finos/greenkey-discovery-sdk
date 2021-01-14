@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+"""
+Utilities to initialize volumes and stand up services using docker compose
+"""
 
 import glob
 import io
@@ -30,6 +33,14 @@ CUSTOM_DISCOVERY_INTERPRETER = "custom-discovery-interpreter"
 BUILTIN_NLPROCESSOR_MODELS = "builtin-nlprocessor-models"
 
 
+def get_docker_client():
+    """
+    Returns docker client.
+    Invoke this repeatedly instead of persisting an object in python
+    """
+    return docker.client.from_env()
+
+
 class RetryRequest(Retry):
     """
     Custom retry class with max backoff set to TIMEOUT from client.env
@@ -52,13 +63,15 @@ class LaunchTarget(Enum):
 
 
 def pull_image(image):
-    client = docker.client.from_env()
+    """
+    Try to pull the most up to date version of this image.
+    If internet connectivity is down, don't error.
+    """
     try:
-        client.images.pull(image)
-    except:
+        get_docker_client().images.pull(image)
+    except requests.exceptions.HTTPError:
         LOGGER.warning(
             "Unable to pull latest %s. Using image as found in local registry", image)
-        pass
 
 
 def load_builtin_discovery_models():
@@ -68,15 +81,13 @@ def load_builtin_discovery_models():
     and load the GK interpreter models into that container
     """
 
-    client = docker.client.from_env()
-
     # copy default models in
-    builtin_models = client.volumes.create(name=BUILTIN_DISCOVERY_MODELS)
+    builtin_models = get_docker_client().volumes.create(name=BUILTIN_DISCOVERY_MODELS)
     initdiscovery_tag = env["INIT_DISCOVERY_TAG"]
     initdiscovery_project = "docker.greenkeytech.com/greenkey-discovery-sdk-private"
     initdiscovery_image = f"{initdiscovery_project}:{initdiscovery_tag}"
     pull_image(initdiscovery_image)
-    _ = client.containers.run(
+    get_docker_client().containers.run(
         initdiscovery_image,
         auto_remove=True,
         volumes={builtin_models.name: {
@@ -93,15 +104,13 @@ def load_builtin_nlprocessor_models():
     and load the GK nlprocessor models into that container
     """
 
-    client = docker.client.from_env()
-
     # copy default models in
-    builtin_models = client.volumes.create(name=BUILTIN_NLPROCESSOR_MODELS)
+    builtin_models = get_docker_client().volumes.create(name=BUILTIN_NLPROCESSOR_MODELS)
     initnlprocessor_tag = env["INIT_NLPROCESSOR_TAG"]
     initnlprocessor_project = "docker.greenkeytech.com/nlpmodelcontroller"
     initnlprocessor_image = f"{initnlprocessor_project}:{initnlprocessor_tag}"
     pull_image(initnlprocessor_image)
-    _ = client.containers.run(
+    get_docker_client().containers.run(
         initnlprocessor_image,
         auto_remove=True,
         volumes={builtin_models.name: {
@@ -119,13 +128,12 @@ def load_custom_model(interpreter_directory):
         raise Exception(f"Interpreter directory {interpreter_directory} not found")
 
     # copy custom model in
-    client = docker.client.from_env()
-    vol = client.volumes.create(name=CUSTOM_DISCOVERY_INTERPRETER)
+    vol = get_docker_client().volumes.create(name=CUSTOM_DISCOVERY_INTERPRETER)
     source = interpreter_directory
     destination = "/data"
     busybox_image = f"busybox:{env['BUSYBOX_TAG']}"
     pull_image(busybox_image)
-    busybox = client.containers.run(
+    busybox = get_docker_client().containers.run(
         busybox_image,
         "sleep infinity",
         auto_remove=True,
@@ -150,8 +158,7 @@ def create_dummy_custom_model():
     Create a docker volume that contains nothing so docker-compose still works
     """
     # copy custom model in
-    client = docker.client.from_env()
-    client.volumes.create(name=CUSTOM_DISCOVERY_INTERPRETER)
+    get_docker_client().volumes.create(name=CUSTOM_DISCOVERY_INTERPRETER)
 
 
 def wait_on_service(address):
@@ -231,9 +238,11 @@ def launch_docker_compose(target="everything", interpreter_directory=None):
 
 
 def remove_volume(volume_name):
-    client = docker.client.from_env()
+    """
+    Try to remove a docker volume
+    """
     try:
-        vol = client.volumes.get(volume_name)
+        vol = get_docker_client().volumes.get(volume_name)
         vol.remove()
     except docker.errors.NotFound:
         pass

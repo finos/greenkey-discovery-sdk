@@ -14,18 +14,17 @@ jobs:
         - python3 -m pip install pytest
       script:
         - set -e
-        # run doctests for sdk utils and testing utils
-        - python3 -m pytest --doctest-modules util testing
         # validate no duplicate keys in yaml using yamllint
         - python3 -m yamllint .
-        # validate all yaml can be loaded
-        - python3 -m pytest testing/test_all_yaml_files_load.py -s
-        # validate regex
-        - find . -name "*\.yaml" -exec python3 validate_regex.py {} +
-        - python3 testing/metrics.py
+        # test all doctests and unittests
+        - |-
+          export PYTHONPATH=$(pwd)/interpreters:${PYTHONPATH:-}  && \
+          USE_BUILT_IN_INTERPRETERS=False && \
+          python3 -m pytest --doctest-modules --cov=. . --durations=50
         - |-
           # test discovery sdk examples
           for file in examples/*/test*.txt; do
             interpreter_directory="$(dirname $file)/custom"
-            USE_BUILT_IN_INTERPRETERS=False python3 test_nlp.py -v --durations=50 $( [ -d $interpreter_directory ] && echo "--interpreter-directory $interpreter_directory" ) --tests $file
+            USE_BUILT_IN_INTERPRETERS=False && \
+            python3 test_nlp.py --cov=. --cov-append -v --durations=50 $( [ -d $interpreter_directory ] && echo "--interpreter-directory $interpreter_directory" ) --tests $file
           done

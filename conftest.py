@@ -4,8 +4,6 @@ Set arguments for pytest invocations and load fixtures into test_discovery.py
 """
 import glob
 import logging
-import sys
-from collections import defaultdict
 from os.path import dirname
 from os.path import join as join_path
 
@@ -116,8 +114,8 @@ def setup(request):
         LOGGER.info("shutting down docker services")
         teardown_docker_compose()
     elif interpreter_directory:
-        LOGGER.warning("Not testing %s because no tests were provided",
-                       interpreter_directory)
+        LOGGER.info("Validating interpreter_directory %s", interpreter_directory)
+        yield
 
 
 def clean_test_arguments(tests):
@@ -173,4 +171,13 @@ def pytest_generate_tests(metafunc):
         metafunc.parametrize(
             "test_dict,intents,nlp_models,test_name",
             zip(test_dicts, intents, nlp_models, test_names),
+        )
+
+    interpreter_directory = metafunc.config.getoption("interpreter_directory")
+
+    # parametrize test_nlp which usess both nlprocessor and discovery
+    if "interpreter_directory" in metafunc.fixturenames:
+        metafunc.parametrize(
+            "interpreter_directory",
+            [interpreter_directory],
         )

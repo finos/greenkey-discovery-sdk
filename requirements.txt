@@ -6,7 +6,7 @@ fire
 immutables
 mock
 orjson
-pytest
+pytest-cov
 python-dotenv
 pyyaml
 requests
