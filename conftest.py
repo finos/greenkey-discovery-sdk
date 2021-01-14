@@ -67,8 +67,8 @@ def check_discovery_setup(interpreter_directory, tests):
         validate_interpreter_directory(interpreter_directory)
 
         # check all files
-        yaml_files = glob.glob(join_path(interpreter_directory, "*.yaml")) + \
-            glob.glob(join_path(interpreter_directory, "*.yml"))
+        yaml_files = glob.glob(join_path(interpreter_directory, "*.yaml")) + glob.glob(
+            join_path(interpreter_directory, "*.yml"))
         for yaml_file in yaml_files:
             validate_yaml(yaml_file)
 

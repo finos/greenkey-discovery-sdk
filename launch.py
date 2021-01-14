@@ -29,6 +29,7 @@ BUILTIN_DISCOVERY_MODELS = "builtin-discovery-models"
 CUSTOM_DISCOVERY_INTERPRETER = "custom-discovery-interpreter"
 BUILTIN_NLPROCESSOR_MODELS = "builtin-nlprocessor-models"
 
+
 class RetryRequest(Retry):
     """
     Custom retry class with max backoff set to TIMEOUT from client.env

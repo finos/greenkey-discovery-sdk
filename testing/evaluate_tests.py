@@ -212,7 +212,7 @@ def get_observed_values(resp):
     # get ents from first (and only) intent
     entities = resp["intents"][0].get("entities", []) if resp.get("intents") else []
 
-    observed_entity_dict ={}
+    observed_entity_dict = {}
     # add nlprocessor entities from formatted_entities
     for entity in resp.get("formatted_entities", []):
         if entity.get("label", "") not in {"O", ""}:
@@ -220,11 +220,14 @@ def get_observed_values(resp):
             observed_entity_dict[label] = strip_extra_whitespace(
                 observed_entity_dict.get(label, "") + " " + entity.get("word"))
 
-    observed_entity_dict = {**observed_entity_dict, **{
-        # keep only the most likely hypothesis from Discovery -> first dict in list of dicts returned by Discovery
-        ent["label"]: ent["matches"][0]["value"]
-        for ent in entities
-    }}
+    observed_entity_dict = {
+        **observed_entity_dict,
+        **{
+            # keep only the most likely hypothesis from Discovery -> first dict in list of dicts returned by Discovery
+            ent["label"]: ent["matches"][0]["value"]
+            for ent in entities
+        },
+    }
 
     # store predicted intent
     observed_intents = [intent["label"] for intent in resp.get("intents", [])]
