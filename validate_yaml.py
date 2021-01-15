@@ -14,11 +14,11 @@ from fire import Fire
 from validate_regex import validate_regex_in_yaml_file
 
 
-def print_or_throw_error(condition, success_message, failure_message, code=1):
+def print_or_throw_error(condition, success_message, failure_message):
     "Print a message on success/failure of condition"
-    if condition:
+    if condition and success_message:
         print(success_message)
-    else:
+    elif not condition:
         assert False, failure_message
 
 
@@ -54,21 +54,14 @@ def validate_elements(new_elements, known_elements):
 
 def validate_file_exists(file_name):
     "This wrapper checks if a file exists."
-    if not os.path.isfile(file_name):
-        throw_error("{} does not exist".format(file_name))
-    return True
-
-
-def key_is_present(data, key):
-    "Check if key is present within the data object."
-    return key in data
+    print_or_throw_error(os.path.isfile(file_name), "",
+                         "File {} does not exist".format(file_name))
 
 
 def validate_files(structured_dict):
     "For an intent or entity, validate existence of all files."
     files_to_check = [
-        obj.get("files", []) +
-        ([validate_file_exists(obj["file"])] if obj.get("file") else [])
+        obj.get("files", []) + ([obj["file"]] if obj.get("file") else [])
         for obj in structured_dict.values()
     ]
     for target_file in files_to_check:
@@ -132,9 +125,11 @@ def validate_yaml_file(yaml_file, known_entities, known_intents):
         data = yaml.load(config, Loader=yaml.FullLoader)
 
         # make sure either entities or intents exists as a top level key
-        if len(set(["entities", "intents"]).intersection(data.keys())) == 0:
-            throw_error("No top level keys for intents or entities found in {}".format(
-                yaml_file))
+        print_or_throw_error(
+            len(set(["entities", "intents"]).intersection(data.keys())),
+            "",
+            "No top level keys for intents or entities found in {}".format(yaml_file),
+        )
 
         new_entities = check_key(yaml_file, data, "entities", known_entities)
 
