@@ -69,7 +69,7 @@ def get_schema(intent, schema_key, transcript, raw_data=False):
     """
     Get a specific key from output
     """
-    payload = submit_discovery_transcript(transcript, intent_whitelist=[intent])
+    payload = submit_discovery_transcript(transcript, [intent])
     if schema_key in payload:
         return return_json_data(payload[schema_key], raw_data)
     else:
@@ -80,7 +80,7 @@ def get_response(intent, transcript, raw_data=False):
     """
     Get json response from discovery
     """
-    payload = submit_discovery_transcript(transcript, intent_whitelist=[intent])
+    payload = submit_discovery_transcript(transcript, [intent])
     return return_json_data(payload, raw_data)
 
 
@@ -88,7 +88,7 @@ def get_entities(intent, transcript):
     """
     Load entities discovered
     """
-    payload = submit_discovery_transcript(transcript, intent_whitelist=[intent])
+    payload = submit_discovery_transcript(transcript, [intent])
     entities = get_entities_from_discovery(payload)
     config = {"entities": [entity["label"] for entity in entities]}
     print(format_entities(entities, config))
@@ -98,7 +98,7 @@ def get_token_logs(intent, transcript):
     """
     Get tokenization report from discovery logs
     """
-    submit_discovery_transcript(transcript, intent_whitelist=[intent])
+    submit_discovery_transcript(transcript, [intent])
     logs = log_discovery().splitlines()
     output = []
     separators = 0
