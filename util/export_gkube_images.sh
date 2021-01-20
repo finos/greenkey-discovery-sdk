@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # export discovery image
-discovery_image=$(gkube kubectl describe pod "$discovery_pod"  | grep docker.greenkeytech.com/discovery | awk '{print $NF}' | head -n 1)
+discovery_image=$(gkube kubectl get deploy gk-discovery -o go-template='{{range .spec.template.spec.containers}}{{if eq "discovery" .name}}{{.image}}{{end}}{{end}}')
 docker exec default-gkube-server ctr images export - "$discovery_image" | docker load
 
 # export init_discovery image
