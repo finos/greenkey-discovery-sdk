@@ -84,14 +84,17 @@ def get_response(intent, transcript, raw_data=False):
     return return_json_data(payload, raw_data)
 
 
-def get_entities(intent, transcript):
+def get_entities(intent, transcript, raw_data=False):
     """
     Load entities discovered
     """
     payload = submit_discovery_transcript(transcript, [intent])
     entities = get_entities_from_discovery(payload)
     config = {"entities": [entity["label"] for entity in entities]}
-    print(format_entities(entities, config))
+    if raw_data:
+        return format_entities(entities, config)
+    else:
+        print(format_entities(entities, config))
 
 
 def get_token_logs(intent, transcript):
