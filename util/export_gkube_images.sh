@@ -6,7 +6,7 @@ discovery_image=$(gkube kubectl describe pod "$discovery_pod"  | grep docker.gre
 docker exec default-gkube-server ctr images export - "$discovery_image" | docker load
 
 # export init_discovery image
-init_discovery_image=$(gkube kubectl describe pod "$discovery_pod"  | grep docker.greenkeytech.com/greenkey-discovery-sdk-private | awk '{print $NF}' | head -n 1)
+init_discovery_image=$(gkube kubectl get deploy gk-discovery -o go-template='{{range .spec.template.spec.initContainers}}{{if eq "initdiscovery" .name}}{{.image}}{{end}}{{end}}')
 docker exec default-gkube-server ctr images export - "$init_discovery_image" | docker load
 
 # export busybox
