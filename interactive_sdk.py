@@ -135,7 +135,7 @@ def test_an_interpreter(config):
 
     transcript = st.text_area("Input transcript", "eur$ 5y 3x6 5mio")
 
-    payload = submit_discovery_transcript(transcript, intent_whitelist=[intent])
+    payload = submit_discovery_transcript(transcript, [intent])
 
     # Sidebar
     show_everything = st.sidebar.checkbox("Verbose discovery output", False)
