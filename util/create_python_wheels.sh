@@ -5,4 +5,4 @@ vers=$(python3 --version| awk '{print $NF}')
 wheel_dir="${vers}_wheels"
 python3 -m pip wheel pip -w "$wheel_dir"
 python3 -m pip wheel -r requirements.txt -w "$wheel_dir"
-tar -cvzf "${wheel_dir}.tar.gz" "$wheel_dir"
+tar -cvzf "${wheel_dir}.tar.gz" "$wheel_dir" --owner=0 --group=0
