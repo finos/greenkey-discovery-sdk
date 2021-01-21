@@ -62,7 +62,8 @@ class TestCLISDK:
 
     def test_log(self):
         "Tests log fetching"
-        assert cli_sdk.log() != ""
+        log = cli_sdk.log()
+        assert isinstance(log, str) and len(log) > 0
 
     def test_get_schema(self):
         "Test we can fetch keys in json responses"
