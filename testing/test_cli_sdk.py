@@ -1,48 +1,45 @@
 #!/usr/bin/env python3
-
 """
 Exercise selected functions from cli_sdk to improve coverage
 """
 
-import cli_sdk
-
 import pytest
+
+import cli_sdk
 
 intent = "digit"
 transcript = "please dial eight"
 expected_response = {
-    "transcript": transcript,
-    "intents": [
-        {
-            "label": intent,
-            "probability": 1.0,
-            "entities": [
-                {
-                    "label": "room_number",
-                    "matches": [
-                        {
-                            "value": "8",
-                            "probability": 1.0,
-                            "lattice_path": [[2, 0, None]],
-                            "startTimeSec": 2.0,
-                            "endTimeSec": 3.0,
-                            "interpreted_transcript": "eight",
-                        }
-                    ],
-                }
-            ],
-        }
-    ],
+    "transcript":
+    transcript,
+    "intents": [{
+        "label":
+        intent,
+        "probability":
+        1.0,
+        "entities": [{
+            "label":
+            "room_number",
+            "matches": [{
+                "value": "8",
+                "probability": 1.0,
+                "lattice_path": [[2, 0, None]],
+                "startTimeSec": 2.0,
+                "endTimeSec": 3.0,
+                "interpreted_transcript": "eight",
+            }],
+        }],
+    }],
 }
+
 
 class TestCLISDK:
     def test_get_response(self):
         "Ensures responses behave as expected"
 
         assert cli_sdk.get_response(intent, transcript, raw_data=False) is None
-        assert (
-            cli_sdk.get_response(intent, transcript, raw_data=True) == expected_response
-        )
+        assert (cli_sdk.get_response(intent, transcript,
+                                     raw_data=True) == expected_response)
 
     def test_get_entities(self):
         "Ensures we can fetch entities"
@@ -58,7 +55,6 @@ class TestCLISDK:
         cli_sdk.reload()
         resp = cli_sdk.get_response(intent, transcript, raw_data=True)
         assert resp == expected_response
-
 
     def test_log(self):
         "Tests log fetching"
@@ -81,15 +77,16 @@ class TestCLISDK:
         # this returns None as it prints
         assert cli_sdk.get_tokens(intent, transcript) is None
 
+
 def setup_module(module):
-    """ setup any state specific to the execution of the given class (which
+    """setup any state specific to the execution of the given class (which
     usually contains tests).
     """
     cli_sdk.start("examples/digit/custom")
 
 
 def teardown_module(module):
-    """ teardown any state that was previously setup with a call to
+    """teardown any state that was previously setup with a call to
     setup_class.
     """
     cli_sdk.stop()
