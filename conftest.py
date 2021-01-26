@@ -89,35 +89,6 @@ def identify_what_to_launch(tests):
     return target
 
 
-@pytest.fixture(scope="session", autouse=True)
-def setup(request):
-    """Test package setup"""
-
-    # start up discovery
-    LOGGER.info("starting discovery-sdk tests execution")
-    interpreter_directory = request.config.getoption("--interpreter-directory")
-    tests = request.config.getoption("--tests")
-
-    if not interpreter_directory and not tests:
-        LOGGER.info("Neither an interpreter directory nor tests provided.\n"
-                    "Pytest will test any python code it can find based on your options")
-        yield
-
-    elif tests:
-        check_discovery_setup(interpreter_directory, tests)
-        target = identify_what_to_launch(tests)
-        launch_docker_compose(target, interpreter_directory)
-        LOGGER.info("running requested tests %s", tests)
-        yield
-
-        # teardown
-        LOGGER.info("shutting down docker services")
-        teardown_docker_compose()
-    elif interpreter_directory:
-        LOGGER.info("Validating interpreter_directory %s", interpreter_directory)
-        yield
-
-
 def clean_test_arguments(tests):
     """
     Convert test from input into dictionaries
@@ -180,4 +151,11 @@ def pytest_generate_tests(metafunc):
         metafunc.parametrize(
             "interpreter_directory",
             [interpreter_directory],
+        )
+
+    # parametrize test_nlp which usess both nlprocessor and discovery
+    if "tests" in metafunc.fixturenames:
+        metafunc.parametrize(
+            "tests",
+            [tests],
         )

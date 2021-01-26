@@ -13,8 +13,11 @@ import logging
 import sys
 
 import dotenv
+import pytest
 
+from conftest import check_discovery_setup, identify_what_to_launch
 from freeze import freezeargs
+from launch import launch_docker_compose, teardown_docker_compose
 from testing.discovery_interface import submit_discovery_transcript
 from testing.evaluate_tests import evaluate_entities_and_schema, is_valid_response
 from testing.nlprocessor_interface import submit_nlprocessor_transcript
@@ -95,7 +98,35 @@ def test_nlp_stack(test_dict, intents, nlp_models, test_name):
         test_dict, test_results)
 
 
-if __name__ == "__main__":
-    import pytest
 
+@pytest.fixture(scope="module", autouse=True)
+def setup(request):
+    """Test package setup"""
+
+    # start up discovery
+    LOGGER.info("starting discovery-sdk tests execution")
+    interpreter_directory = request.config.getoption("--interpreter-directory")
+    tests = request.config.getoption("--tests")
+
+    if not interpreter_directory and not tests:
+        LOGGER.info("Neither an interpreter directory nor tests provided.\n"
+                    "Pytest will test any python code it can find based on your options")
+        yield
+
+    elif tests:
+        check_discovery_setup(interpreter_directory, tests)
+        target = identify_what_to_launch(tests)
+        launch_docker_compose(target, interpreter_directory)
+        LOGGER.info("running requested tests %s", tests)
+        yield
+
+        # teardown
+        LOGGER.info("shutting down docker services")
+        teardown_docker_compose()
+    elif interpreter_directory:
+        LOGGER.info("Validating interpreter_directory %s", interpreter_directory)
+        yield
+
+
+if __name__ == "__main__":
     sys.exit(pytest.main(sys.argv))
