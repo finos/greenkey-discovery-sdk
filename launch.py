@@ -82,6 +82,7 @@ def load_builtin_discovery_models():
     """
 
     # copy default models in
+    remove_volume(BUILTIN_DISCOVERY_MODELS)
     builtin_models = get_docker_client().volumes.create(name=BUILTIN_DISCOVERY_MODELS)
     initdiscovery_tag = env["INIT_DISCOVERY_TAG"]
     initdiscovery_project = "docker.greenkeytech.com/greenkey-discovery-sdk-private"
@@ -105,6 +106,7 @@ def load_builtin_nlprocessor_models():
     """
 
     # copy default models in
+    remove_volume(BUILTIN_NLPROCESSOR_MODELS)
     builtin_models = get_docker_client().volumes.create(name=BUILTIN_NLPROCESSOR_MODELS)
     initnlprocessor_tag = env["INIT_NLPROCESSOR_TAG"]
     initnlprocessor_project = "docker.greenkeytech.com/nlpmodelcontroller"
@@ -128,6 +130,7 @@ def load_custom_model(interpreter_directory):
         raise Exception(f"Interpreter directory {interpreter_directory} not found")
 
     # copy custom model in
+    remove_volume(CUSTOM_DISCOVERY_INTERPRETER)
     vol = get_docker_client().volumes.create(name=CUSTOM_DISCOVERY_INTERPRETER)
     source = interpreter_directory
     destination = "/data"
@@ -158,6 +161,7 @@ def create_dummy_custom_model():
     Create a docker volume that contains nothing so docker-compose still works
     """
     # copy custom model in
+    remove_volume(CUSTOM_DISCOVERY_INTERPRETER)
     get_docker_client().volumes.create(name=CUSTOM_DISCOVERY_INTERPRETER)
 
 
@@ -243,6 +247,9 @@ def remove_volume(volume_name):
     """
     try:
         vol = get_docker_client().volumes.get(volume_name)
+        for container in get_docker_client().containers.list():
+            if any(vol.name == mount["Name"] for mount in container.attrs["Mounts"]):
+                container.remove(force=True)
         vol.remove()
     except docker.errors.NotFound:
         pass
@@ -266,7 +273,7 @@ def teardown_docker_compose():
         docker_compose()
 
     for volume_name in [
-            "custom-discovery-interpreter",
+            CUSTOM_DISCOVERY_INTERPRETER,
             BUILTIN_DISCOVERY_MODELS,
             BUILTIN_NLPROCESSOR_MODELS,
     ]:
