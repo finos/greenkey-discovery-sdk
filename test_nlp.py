@@ -98,7 +98,6 @@ def test_nlp_stack(test_dict, intents, nlp_models, test_name):
         test_dict, test_results)
 
 
-
 @pytest.fixture(scope="module", autouse=True)
 def setup(request):
     """Test package setup"""
