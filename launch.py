@@ -68,7 +68,8 @@ def pull_image(image):
     If internet connectivity is down, don't error.
     """
     try:
-        get_docker_client().images.pull(image)
+        if env.get("AUTOMATICALLY_PULL_IMAGES").title() == "True":
+            get_docker_client().images.pull(image)
     except requests.exceptions.HTTPError:
         LOGGER.warning(
             "Unable to pull latest %s. Using image as found in local registry", image)
