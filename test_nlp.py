@@ -101,7 +101,7 @@ def test_nlp_stack(test_dict, intents, nlp_models, test_name):
     # Check entity tests
     test_results = evaluate_entities_and_schema(test_dict, resp)
 
-    assert test_results.get("total_errors") in {0, None}, format_bad_entities(
+    assert test_results.get("total_errors") in {0, None}, format_bad_entities(test_name,
         test_dict, test_results)
 
 
