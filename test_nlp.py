@@ -28,6 +28,13 @@ logging.basicConfig(
 )
 
 LOGGER = logging.getLogger(__name__)
+
+# create filehandler just for test errors for ease of human review
+error_log=logging.FileHandler("test_output.log","w+")
+error_log.setLevel(logging.ERROR)
+
+LOGGER.addHandler(error_log)
+
 env = dotenv.dotenv_values("client.env")
 
 # enable LRU caching if a test transcript and arguments are duplicated
@@ -45,7 +52,7 @@ def format_bad_response(test_name, message, resp):
     return f"Test {test_name} - Failed: {message}. Response: {resp}"
 
 
-def format_bad_entities(test_dict, test_results):
+def format_bad_entities(test_name, test_dict, test_results):
     """
     Format error for pytest output
     """
@@ -60,11 +67,11 @@ def format_bad_entities(test_dict, test_results):
             "predicted_intent",
         ]
     }
-    msg = f"\nExpected: {expected_output}\nReceived: {test_results['observed_entity_dict']}"
+    msg = f"\n{test_name}\nExpected: {expected_output}\nReceived: {test_results['observed_entity_dict']}"
     if "predicted_intent" in test_dict:
         msg += (f"\nExpected intent: {test_dict['predicted_intent']}\n" +
                 f"Observed intents:{test_results['observed_intents']}")
-
+    LOGGER.error(msg)
     return msg
 
 
