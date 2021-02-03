@@ -249,7 +249,7 @@ def remove_volume(volume_name):
     try:
         vol = get_docker_client().volumes.get(volume_name)
         for container in get_docker_client().containers.list():
-            if any(vol.name == mount["Name"] for mount in container.attrs["Mounts"]):
+            if any(vol.name == mount.get("Name") for mount in container.attrs["Mounts"]):
                 container.remove(force=True)
         vol.remove()
     except docker.errors.NotFound:
