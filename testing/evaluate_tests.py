@@ -8,6 +8,14 @@ import json
 from datetime import date
 
 from testing.format_tests import strip_extra_whitespace
+
+# create filehandler just for test errors for ease of human review
+error_log = logging.FileHandler("test_output.log", "w+")
+error_log.setLevel(logging.ERROR)
+
+logger.addHandler(error_log)
+
+
 """
 Helper functions
 """
@@ -113,9 +121,11 @@ def test_schema(resp, test_value, test_name=""):
         errs.update(res)
 
     if errs:
-        logger.info("Test {0} - Schema test failed for {1} with response {2}".format(
-            test_name, test_value, errs))
-        logger.info("Test {0} - Full response is {1}".format(test_name, resp))
+        logger.info(f"Test {test_name} - Schema test failed for {test_value} with response {errs}")
+        logger.error(test_name)
+        for key in errs.keys():
+            logger.error(f"Expected {key}: {test_value[key]}")
+            logger.error(f"Observed {key}: {errs[key]}\n")
 
     return len(errs), json.dumps(errs)
 
@@ -298,8 +308,6 @@ def test_single_case(test_dict, resp, test_name=""):
     test_failures, new_errors = check_entities(test_dict, resp, test_name,
                                                observed_entity_dict)
     total_errors += new_errors
-
-    print_extra_entities(observed_entity_dict, test_dict, test_name)
 
     return dict(
         total_errors=total_errors,
