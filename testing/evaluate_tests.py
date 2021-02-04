@@ -1,18 +1,14 @@
 #!/usr/bin/env python3
 
 import logging
-
-logger = logging.getLogger(__name__)
-
 import json
 from datetime import date
-
 from testing.format_tests import strip_extra_whitespace
 
+logger = logging.getLogger(__name__)
 # create filehandler just for test errors for ease of human review
 error_log = logging.FileHandler("test_output.log", "w+")
 error_log.setLevel(logging.ERROR)
-
 logger.addHandler(error_log)
 
 
@@ -104,6 +100,15 @@ def is_invalid_schema(schema, test_value):
     return schema != test_value
 
 
+def print_errors(test_name, test_value, errs):
+    if errs:
+        logger.info(f"Test {test_name} - Schema test failed for {test_value} with response {errs}")
+        logger.error(test_name)
+        for key in errs.keys():
+            logger.error(f"Expected {key}: {test_value[key]}")
+            logger.error(f"Observed {key}: {errs[key]}\n")
+
+
 def test_schema(resp, test_value, test_name=""):
     """
     For each key-value pair given in the schema test,
@@ -120,12 +125,7 @@ def test_schema(resp, test_value, test_name=""):
     ):
         errs.update(res)
 
-    if errs:
-        logger.info(f"Test {test_name} - Schema test failed for {test_value} with response {errs}")
-        logger.error(test_name)
-        for key in errs.keys():
-            logger.error(f"Expected {key}: {test_value[key]}")
-            logger.error(f"Observed {key}: {errs[key]}\n")
+    print_errors(test_name, test_value, errs)
 
     return len(errs), json.dumps(errs)
 
