@@ -6,11 +6,11 @@ from datetime import date
 from testing.format_tests import strip_extra_whitespace
 from testing.output_tests import print_errors
 
-logger = logging.getLogger(__name__)
+LOGGER = logging.getLogger(__name__)
 # create filehandler just for test errors for ease of human review
 error_log = logging.FileHandler("test_output.log", "w+")
 error_log.setLevel(logging.ERROR)
-logger.addHandler(error_log)
+LOGGER.addHandler(error_log)
 
 """
 Helper functions
@@ -114,7 +114,7 @@ def test_schema(resp, test_value, test_name=""):
     ):
         errs.update(res)
 
-    print_errors(test_name, test_value, errs, logger)
+    print_errors(test_name, test_value, errs, LOGGER)
 
     return len(errs), json.dumps(errs)
 
@@ -133,11 +133,11 @@ def test_single_entity(entities, entity_label, test_value, test_name=""):
     :param test_name: str
     """
     if entity_label not in entities.keys():
-        logger.info("Test {0} - Entity not found: {1}".format(test_name, entity_label))
+        LOGGER.info("Test {0} - Entity not found: {1}".format(test_name, entity_label))
         return 1, "[value missing]"
 
     if entities[entity_label] != test_value:
-        logger.info(
+        LOGGER.info(
             "Test {0} - Observed Entity Value Incorrect: ({1}) Expected {2} != {3}".
             format(test_name, entity_label, test_value, entities[entity_label]))
         return 1, entities[entity_label]
@@ -159,7 +159,7 @@ def print_extra_entities(observed_entity_dict, test_dict, test_name=""):
     }
 
     if extra_entities:
-        logger.info("Test {0} - Extra entities: {1}".format(test_name, extra_entities))
+        LOGGER.info("Test {0} - Extra entities: {1}".format(test_name, extra_entities))
 
 
 """
@@ -183,7 +183,7 @@ def evaluate_intent(test_dict, resp, test_name=""):
     failed_test = 0 if expected_intent == observed_intent else 1
 
     if failed_test:
-        logger.info(
+        LOGGER.info(
             "Test {0} - Observed intent {1} does not match expected intent {2}".format(
                 test_name, observed_intent, expected_intent))
 
