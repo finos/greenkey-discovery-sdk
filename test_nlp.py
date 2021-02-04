@@ -28,13 +28,6 @@ logging.basicConfig(
 )
 
 LOGGER = logging.getLogger(__name__)
-
-# create filehandler just for test errors for ease of human review
-error_log = logging.FileHandler("test_output.log", "w+")
-error_log.setLevel(logging.ERROR)
-
-LOGGER.addHandler(error_log)
-
 env = dotenv.dotenv_values("client.env")
 
 # enable LRU caching if a test transcript and arguments are duplicated
@@ -56,13 +49,11 @@ def format_bad_entities(test_name, test_results):
     """
     Format error for pytest output
     """
-    entity_failures = ", ".join(failure[1] for failure in test_results["test_failures"])
-    msg = f"{test_name} failed for entities: {entity_failures}\n"
+    msg = f"{test_name}\n"
     for failure in test_results["test_failures"]:
-        msg += "\n"
         msg += f"Expected {failure[1]}: {failure[2]}\n"
-        msg += f"Observed {failure[1]}: {failure[3]}"
-    LOGGER.error(msg)
+        msg += f"Observed {failure[1]}: {failure[3]}\n"
+
     return msg
 
 
