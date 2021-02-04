@@ -4,6 +4,7 @@ import logging
 import json
 from datetime import date
 from testing.format_tests import strip_extra_whitespace
+from testing.output_tests import print_errors
 
 logger = logging.getLogger(__name__)
 # create filehandler just for test errors for ease of human review
@@ -97,15 +98,6 @@ def is_invalid_schema(schema, test_value):
     return schema != test_value
 
 
-def print_errors(test_name, test_value, errs):
-    if errs:
-        logger.info(f"Test {test_name} - Schema test failed for {test_value} with response {errs}")
-        logger.error(test_name)
-        for key in errs.keys():
-            logger.error(f"Expected {key}: {test_value[key]}")
-            logger.error(f"Observed {key}: {errs[key]}\n")
-
-
 def test_schema(resp, test_value, test_name=""):
     """
     For each key-value pair given in the schema test,
@@ -122,7 +114,7 @@ def test_schema(resp, test_value, test_name=""):
     ):
         errs.update(res)
 
-    print_errors(test_name, test_value, errs)
+    print_errors(test_name, test_value, errs, logger)
 
     return len(errs), json.dumps(errs)
 
