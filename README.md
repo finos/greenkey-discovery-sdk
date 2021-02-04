@@ -43,10 +43,10 @@ please consider joining FINOS.
 
 ## Dependencies
 
-To ensure your dependencies install correctly, we recommend that you upgrade your `setuptools` before proceeding further.
+To ensure your dependencies install correctly, we recommend that you upgrade your `setuptools` and `pip` packages before proceeding further.
 
 ```sh
-python3 -m pip install --upgrade setuptools
+python3 -m pip install --upgrade setuptools pip
 ```
 
 Now you are ready to install the required dependencies with `pip`.
