@@ -11,11 +11,9 @@ error_log = logging.FileHandler("test_output.log", "w+")
 error_log.setLevel(logging.ERROR)
 logger.addHandler(error_log)
 
-
 """
 Helper functions
 """
-
 
 def is_valid_response(resp):
     """
@@ -28,7 +26,6 @@ def is_valid_response(resp):
 """
 Schema tests
 """
-
 
 def _find_in_list(obj, key):
     for list_item in obj:
