@@ -49,9 +49,9 @@ class RetryRequest(Retry):
     BACKOFF_MAX = float(env["TIMEOUT"])
 
 
-retries = RetryRequest(
-    total=int(env["RETRIES"]), backoff_factor=1.0, status_forcelist=[500, 502, 503, 504]
-)
+retries = RetryRequest(total=int(env["RETRIES"]),
+                       backoff_factor=1.0,
+                       status_forcelist=[500, 502, 503, 504])
 request_session = requests.Session()
 request_session.mount("http://", HTTPAdapter(max_retries=retries))
 
@@ -72,8 +72,7 @@ def pull_image(image):
             get_docker_client().images.pull(image)
     except requests.exceptions.HTTPError:
         LOGGER.warning(
-            "Unable to pull latest %s. Using image as found in local registry", image
-        )
+            "Unable to pull latest %s. Using image as found in local registry", image)
 
 
 def load_builtin_discovery_models():
@@ -94,7 +93,10 @@ def load_builtin_discovery_models():
         initdiscovery_image,
         auto_remove=False,
         detach=True,
-        volumes={builtin_models.name: {"bind": "/models", "mode": "rw"}},
+        volumes={builtin_models.name: {
+            "bind": "/models",
+            "mode": "rw"
+        }},
     )
     initcontainer.start()
     initcontainer.wait()
@@ -119,7 +121,10 @@ def load_builtin_nlprocessor_models():
         initnlprocessor_image,
         auto_remove=False,
         detach=True,
-        volumes={builtin_models.name: {"bind": "/models/transformers", "mode": "rw"}},
+        volumes={builtin_models.name: {
+            "bind": "/models/transformers",
+            "mode": "rw"
+        }},
     )
     initcontainer.start()
     initcontainer.wait()
@@ -145,7 +150,10 @@ def load_custom_model(interpreter_directory):
         "sleep infinity",
         auto_remove=False,
         detach=True,
-        volumes={vol.name: {"bind": destination, "mode": "rw"}},
+        volumes={vol.name: {
+            "bind": destination,
+            "mode": "rw"
+        }},
     )
     file_like_object = io.BytesIO()
     with tarfile.open(fileobj=file_like_object, mode="w") as tar:
@@ -167,9 +175,8 @@ def create_dummy_custom_model():
 
 
 def wait_on_service(address):
-    return request_session.get(
-        "/".join([address, "ping"]), timeout=float(env["TIMEOUT"])
-    )
+    return request_session.get("/".join([address, "ping"]),
+                               timeout=float(env["TIMEOUT"]))
 
 
 def wait_for_everything(target):
@@ -186,9 +193,8 @@ def check_for_license():
     """
     Codify license check
     """
-    assert (
-        env["LICENSE_KEY"] != ""
-    ), "LICENSE_KEY needed. Please set in your environment or client.env"
+    assert (env["LICENSE_KEY"] !=
+            ""), "LICENSE_KEY needed. Please set in your environment or client.env"
 
 
 def create_volumes(target, interpreter_directory):
@@ -219,8 +225,7 @@ def stand_up_compose(target):
         args += ["-f", "discovery.yaml"]
     if target in [LaunchTarget.nlprocessor, LaunchTarget.everything]:
         nlprocessor_image = (
-            f"docker.greenkeytech.com/nlprocessor:{env['NLPROCESSOR_TAG']}"
-        )
+            f"docker.greenkeytech.com/nlprocessor:{env['NLPROCESSOR_TAG']}")
         pull_image(nlprocessor_image)
         args += ["-f", "nlprocessor.yaml"]
 
@@ -268,9 +273,7 @@ def remove_volume(volume_name):
     try:
         vol = get_docker_client().volumes.get(volume_name)
         for container in get_docker_client().containers.list():
-            if any(
-                vol.name == mount.get("Name") for mount in container.attrs["Mounts"]
-            ):
+            if any(vol.name == mount.get("Name") for mount in container.attrs["Mounts"]):
                 container.remove(force=True)
         vol.remove()
     except docker.errors.NotFound:
@@ -295,9 +298,9 @@ def teardown_docker_compose():
         docker_compose()
 
     for volume_name in [
-        CUSTOM_DISCOVERY_INTERPRETER,
-        BUILTIN_DISCOVERY_MODELS,
-        BUILTIN_NLPROCESSOR_MODELS,
+            CUSTOM_DISCOVERY_INTERPRETER,
+            BUILTIN_DISCOVERY_MODELS,
+            BUILTIN_NLPROCESSOR_MODELS,
     ]:
         remove_volume(volume_name)
 
