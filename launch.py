@@ -89,14 +89,18 @@ def load_builtin_discovery_models():
     initdiscovery_project = "docker.greenkeytech.com/greenkey-discovery-sdk-private"
     initdiscovery_image = f"{initdiscovery_project}:{initdiscovery_tag}"
     pull_image(initdiscovery_image)
-    get_docker_client().containers.run(
+    initcontainer = get_docker_client().containers.run(
         initdiscovery_image,
-        auto_remove=True,
+        auto_remove=False,
+        detach=True,
         volumes={builtin_models.name: {
             "bind": "/models",
             "mode": "rw"
         }},
     )
+    initcontainer.start()
+    initcontainer.wait()
+    initcontainer.remove(force=True)
 
 
 def load_builtin_nlprocessor_models():
@@ -113,14 +117,18 @@ def load_builtin_nlprocessor_models():
     initnlprocessor_project = "docker.greenkeytech.com/nlpmodelcontroller"
     initnlprocessor_image = f"{initnlprocessor_project}:{initnlprocessor_tag}"
     pull_image(initnlprocessor_image)
-    get_docker_client().containers.run(
+    initcontainer = get_docker_client().containers.run(
         initnlprocessor_image,
-        auto_remove=True,
+        auto_remove=False,
+        detach=True,
         volumes={builtin_models.name: {
             "bind": "/models/transformers",
             "mode": "rw"
         }},
     )
+    initcontainer.start()
+    initcontainer.wait()
+    initcontainer.remove(force=True)
 
 
 def load_custom_model(interpreter_directory):
@@ -140,7 +148,7 @@ def load_custom_model(interpreter_directory):
     busybox = get_docker_client().containers.run(
         busybox_image,
         "sleep infinity",
-        auto_remove=True,
+        auto_remove=False,
         detach=True,
         volumes={vol.name: {
             "bind": destination,
@@ -226,6 +234,20 @@ def stand_up_compose(target):
         docker_compose()
 
 
+def prune_volumes():
+    """
+    Prune any volumes not in use
+    """
+    get_docker_client().volumes.prune()
+
+
+def prune_containers():
+    """
+    Prune any containers which have exited
+    """
+    get_docker_client().containers.prune()
+
+
 def launch_docker_compose(target="everything", interpreter_directory=None):
     """
     Launch docker compose with either both discovery and nlprocessor or just one
@@ -234,6 +256,8 @@ def launch_docker_compose(target="everything", interpreter_directory=None):
 
     target = LaunchTarget(target)
 
+    prune_containers()
+    prune_volumes()
     create_volumes(target, interpreter_directory)
 
     stand_up_compose(target)
