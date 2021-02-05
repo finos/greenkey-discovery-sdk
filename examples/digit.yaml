@@ -1,0 +1,11 @@
+---
+entities:
+  digits:
+    - "@num{1,4}"
+intents:
+  digit:
+    examples:
+      - "please select @digits to speak to the operator"
+      - "to change your order press @digits"
+      - "if this is an emergency dial @digits"
+      - "for animal control services press @digits"

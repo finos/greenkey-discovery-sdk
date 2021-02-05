@@ -11,9 +11,9 @@ def expand_wildcard_tests(tests):
     """
     Expands any wildcard filenames in the list of tests
 
-    >>> res = expand_wildcard_tests(['examples/calling_room/test*'])
+    >>> res = expand_wildcard_tests(['examples/calling_room_*.txt'])
     >>> sorted(res)
-    ['examples/calling_room/tests.txt']
+    ['examples/calling_room_tests.txt']
 
     >>> expand_wildcard_tests(['skip_this_directory/no_wildcards'])
     ['skip_this_directory/no_wildcards']

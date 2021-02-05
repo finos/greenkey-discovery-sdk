@@ -17,14 +17,11 @@ jobs:
         # validate no duplicate keys in yaml using yamllint
         - python3 -m yamllint .
         # test all doctests and unittests
+        # and discovery sdk examples
         - |-
           export PYTHONPATH=$(pwd)/interpreters:${PYTHONPATH:-}  && \
           USE_BUILT_IN_INTERPRETERS=False && \
-          python3 -m pytest --doctest-modules --cov=. . --durations=50
-        - |-
-          # test discovery sdk examples
-          for file in examples/*/test*.txt; do
-            interpreter_directory="$(dirname $file)/custom"
-            USE_BUILT_IN_INTERPRETERS=False && \
-            python3 test_nlp.py --cov=. --cov-append -v --durations=50 $( [ -d $interpreter_directory ] && echo "--interpreter-directory $interpreter_directory" ) --tests $file
-          done
+          python3 -m pytest --doctest-modules \
+            --cov=. --cov-append -v --durations=50 \
+            --interpreter-directory=examples \
+            --tests $(find examples/*_tests.txt | paste -sd,)

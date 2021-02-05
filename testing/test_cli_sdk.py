@@ -19,7 +19,7 @@ expected_response = {
         1.0,
         "entities": [{
             "label":
-            "room_number",
+            "digits",
             "matches": [{
                 "value": "8",
                 "probability": 1.0,
@@ -47,11 +47,11 @@ class TestCLISDK:
         cli_sdk.get_entities(intent, transcript)
         resp = cli_sdk.get_entities(intent, transcript, raw_data=True)
         assert resp.columns.tolist() == ["entity", "value", "tokens", "indices"]
-        assert resp.values.tolist() == [["room_number", "8", "eight", [2]]]
+        assert resp.values.tolist() == [["digits", "8", "eight", [2]]]
 
     def test_restart(self):
         "Ensures restarts and reloads work"
-        cli_sdk.restart("examples/digit/custom")
+        cli_sdk.restart("examples")
         cli_sdk.reload()
         resp = cli_sdk.get_response(intent, transcript, raw_data=True)
         assert resp == expected_response
@@ -82,7 +82,7 @@ def setup_module(module):
     """setup any state specific to the execution of the given class (which
     usually contains tests).
     """
-    cli_sdk.start("examples/digit/custom")
+    cli_sdk.start("examples")
 
 
 def teardown_module(module):
