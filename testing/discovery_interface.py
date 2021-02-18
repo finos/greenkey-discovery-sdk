@@ -47,10 +47,13 @@ def log_discovery():
     Get logs of all containers whose name contains discovery
     """
     client = docker.client.from_env()
-    return "\n".join([
-        container.logs().decode() for container in client.containers.list(all=True)
-        if "discovery" in container.name
-    ])
+    return "\n".join(
+        [
+            container.logs().decode()
+            for container in client.containers.list(all=True)
+            if "discovery" in container.name
+        ]
+    )
 
 
 def submit_discovery_transcript(transcript, intents, external_json=None):
@@ -68,8 +71,11 @@ def submit_discovery_transcript(transcript, intents, external_json=None):
     address = ":".join([env["DISCOVERY_HOST"], env["DISCOVERY_PORT"]]) + "/process"
     response = requests.post(address, json=payload)
     if not response.status_code == 200:
-        LOGGER.error("Request was not successful. Response Status Code: {}".format(
-            response.status_code))
+        LOGGER.error(
+            "Request was not successful. Response Status Code: {}".format(
+                response.status_code
+            )
+        )
         return {}
     return response.json()
 

@@ -49,7 +49,8 @@ def patch_entity_list_duplicates(unique_list, original_list, i):
     """
     current_entity = unique_list[i]
     indices_to_change = [
-        index for index in range(len(unique_list))
+        index
+        for index in range(len(unique_list))
         if unique_list[index] == current_entity
     ]
 
@@ -58,26 +59,35 @@ def patch_entity_list_duplicates(unique_list, original_list, i):
         original_entity = original_list[index].split(" ")
 
         if len(original_entity) < len(current_entity.split(" ")) + 1:
-            print("WARNING: Could not remove duplicate {0} with entity {1}".format(
-                unique_list[i], original_entity))
+            print(
+                "WARNING: Could not remove duplicate {0} with entity {1}".format(
+                    unique_list[i], original_entity
+                )
+            )
             possible_conflicts.append(index)
         else:
             unique_list[index] = " ".join(
-                original_entity[:len(current_entity.split(" ")) + 1])
+                original_entity[: len(current_entity.split(" ")) + 1]
+            )
 
     if len(possible_conflicts) > 1:
         print(
-            "ERROR: More than one duplicate could not be resolved at entity {0} of {1}".
-            format(i + 1, len(original_list)))
+            "ERROR: More than one duplicate could not be resolved at entity {0} of {1}".format(
+                i + 1, len(original_list)
+            )
+        )
 
     return unique_list
 
 
-def update_entity_working_list(original_entities, seen_entities, entity_working_list, i):
+def update_entity_working_list(
+    original_entities, seen_entities, entity_working_list, i
+):
     if entity_working_list[i] in seen_entities:
         first_duplicate = seen_entities.index(entity_working_list[i])
-        entity_working_list = patch_entity_list_duplicates(entity_working_list,
-                                                           original_entities, i)
+        entity_working_list = patch_entity_list_duplicates(
+            entity_working_list, original_entities, i
+        )
         seen_entities[first_duplicate] = entity_working_list[first_duplicate]
 
     return seen_entities, entity_working_list

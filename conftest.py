@@ -66,12 +66,14 @@ def check_discovery_setup(interpreter_directory, tests):
 
         # check all files
         yaml_files = glob.glob(join_path(interpreter_directory, "*.yaml")) + glob.glob(
-            join_path(interpreter_directory, "*.yml"))
+            join_path(interpreter_directory, "*.yml")
+        )
         for yaml_file in yaml_files:
             validate_yaml(yaml_file)
 
-        assert (tests
-                is not None), "You must specify a list of text files containing tests"
+        assert (
+            tests is not None
+        ), "You must specify a list of text files containing tests"
 
 
 def identify_what_to_launch(tests):
@@ -137,8 +139,9 @@ def pytest_generate_tests(metafunc):
     test_dicts, intents, nlp_models, test_names = load_test_files(tests)
 
     # parametrize test_nlp which usess both nlprocessor and discovery
-    if {"test_dict", "intents", "nlp_models",
-            "test_name"}.issubset(metafunc.fixturenames):
+    if {"test_dict", "intents", "nlp_models", "test_name"}.issubset(
+        metafunc.fixturenames
+    ):
         metafunc.parametrize(
             "test_dict,intents,nlp_models,test_name",
             zip(test_dicts, intents, nlp_models, test_names),

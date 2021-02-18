@@ -32,10 +32,12 @@ env = dotenv.dotenv_values("client.env")
 
 # enable LRU caching if a test transcript and arguments are duplicated
 submit_nlprocessor_transcript = freezeargs(
-    functools.lru_cache(maxsize=None)(submit_nlprocessor_transcript))
+    functools.lru_cache(maxsize=None)(submit_nlprocessor_transcript)
+)
 
 submit_discovery_transcript = freezeargs(
-    functools.lru_cache(maxsize=None)(submit_discovery_transcript))
+    functools.lru_cache(maxsize=None)(submit_discovery_transcript)
+)
 
 
 def format_bad_response(test_name, message, resp):
@@ -51,7 +53,9 @@ def format_bad_entities(test_dict, test_results):
     """
     expected_output = {
         k: v
-        for k, v in test_dict.items() if k not in [
+        for k, v in test_dict.items()
+        if k
+        not in [
             "test",
             "transcript",
             "schema",
@@ -62,8 +66,10 @@ def format_bad_entities(test_dict, test_results):
     }
     msg = f"\nExpected: {expected_output}\nReceived: {test_results['observed_entity_dict']}"
     if "predicted_intent" in test_dict:
-        msg += (f"\nExpected intent: {test_dict['predicted_intent']}\n" +
-                f"Observed intents:{test_results['observed_intents']}")
+        msg += (
+            f"\nExpected intent: {test_dict['predicted_intent']}\n"
+            + f"Observed intents:{test_results['observed_intents']}"
+        )
 
     return msg
 
@@ -88,14 +94,16 @@ def test_nlp_stack(test_dict, intents, nlp_models, test_name):
         resp = submit_discovery_transcript(transcript, intents, external_json)
 
     # Check if a valid response was received
-    assert is_valid_response(resp), format_bad_response("Invalid response", test_name,
-                                                        resp)
+    assert is_valid_response(resp), format_bad_response(
+        "Invalid response", test_name, resp
+    )
 
     # Check entity tests
     test_results = evaluate_entities_and_schema(test_dict, resp)
 
     assert test_results.get("total_errors") in {0, None}, format_bad_entities(
-        test_dict, test_results)
+        test_dict, test_results
+    )
 
 
 @pytest.fixture(scope="module", autouse=True)
@@ -108,8 +116,10 @@ def setup(request):
     tests = request.config.getoption("--tests")
 
     if not interpreter_directory and not tests:
-        LOGGER.info("Neither an interpreter directory nor tests provided.\n"
-                    "Pytest will test any python code it can find based on your options")
+        LOGGER.info(
+            "Neither an interpreter directory nor tests provided.\n"
+            "Pytest will test any python code it can find based on your options"
+        )
         yield
 
     elif tests:

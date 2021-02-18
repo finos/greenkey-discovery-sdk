@@ -10,26 +10,28 @@ import cli_sdk
 intent = "digit"
 transcript = "please dial eight"
 expected_response = {
-    "transcript":
-    transcript,
-    "intents": [{
-        "label":
-        intent,
-        "probability":
-        1.0,
-        "entities": [{
-            "label":
-            "digits",
-            "matches": [{
-                "value": "8",
-                "probability": 1.0,
-                "lattice_path": [[2, 0, None]],
-                "startTimeSec": 2.0,
-                "endTimeSec": 3.0,
-                "interpreted_transcript": "eight",
-            }],
-        }],
-    }],
+    "transcript": transcript,
+    "intents": [
+        {
+            "label": intent,
+            "probability": 1.0,
+            "entities": [
+                {
+                    "label": "digits",
+                    "matches": [
+                        {
+                            "value": "8",
+                            "probability": 1.0,
+                            "lattice_path": [[2, 0, None]],
+                            "startTimeSec": 2.0,
+                            "endTimeSec": 3.0,
+                            "interpreted_transcript": "eight",
+                        }
+                    ],
+                }
+            ],
+        }
+    ],
 }
 
 
@@ -38,8 +40,9 @@ class TestCLISDK:
         "Ensures responses behave as expected"
 
         assert cli_sdk.get_response(intent, transcript, raw_data=False) is None
-        assert (cli_sdk.get_response(intent, transcript,
-                                     raw_data=True) == expected_response)
+        assert (
+            cli_sdk.get_response(intent, transcript, raw_data=True) == expected_response
+        )
 
     def test_get_entities(self):
         "Ensures we can fetch entities"

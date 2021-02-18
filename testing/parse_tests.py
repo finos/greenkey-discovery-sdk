@@ -72,8 +72,9 @@ def parse_test_line(ret_dict, key, value, test_folder):
     """
     if key not in ["test", "external_json", "transcript"]:
         # keys that define expected output of discovery
-        ret_dict["expected_outputs"] = ret_dict.get("expected_outputs",
-                                                    []) + [(key, value)]
+        ret_dict["expected_outputs"] = ret_dict.get("expected_outputs", []) + [
+            (key, value)
+        ]
     elif key == "external_json":
         ent_file = join_path(test_folder, "external_json", value)
         ret_dict[key] = json.load(open(ent_file, "r"))
@@ -91,10 +92,11 @@ def create_individual_tests(test_set):
     """
 
     test_inputs = {k: v for k, v in test_set.items() if k != "expected_outputs"}
-    test_dicts = [{
-        k: v,
-        **test_inputs
-    } for k, v in test_set.get("expected_outputs", [(None, None)]) if v]
+    test_dicts = [
+        {k: v, **test_inputs}
+        for k, v in test_set.get("expected_outputs", [(None, None)])
+        if v
+    ]
     return test_dicts
 
 

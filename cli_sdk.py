@@ -16,8 +16,11 @@ from testing.discovery_interface import (
 )
 
 
-def start(interpreter_directory=os.environ.get("INTERPRETER_DIRECTORY",
-                                               "examples/calling_room")):
+def start(
+    interpreter_directory=os.environ.get(
+        "INTERPRETER_DIRECTORY", "examples/calling_room"
+    )
+):
     """
     Start discovery with interpreter defined by environment variable INTERPRETER_DIRECTORY.
     """
@@ -39,8 +42,11 @@ def reload():
     reload_discovery_config()
 
 
-def restart(interpreter_directory=os.environ.get("INTERPRETER_DIRECTORY",
-                                                 "examples/calling_room")):
+def restart(
+    interpreter_directory=os.environ.get(
+        "INTERPRETER_DIRECTORY", "examples/calling_room"
+    )
+):
     """
     Restart discovery with interpreter defined by environment variable INTERPRETER_DIRECTORY.
     default is "examples/calling_room"
@@ -129,9 +135,13 @@ def get_token_coverage(intent, transcript):
     tokens = [[w for w in t.split(" ") if w][-2:] for t in token_lines]
     transcript = [w[-1] for w in tokens]
     coverage = [("*" if w[0] != "None" else " ") * len(w[-1]) for w in tokens]
-    print("""
+    print(
+        """
     Recognized parts of the transcript are denoted with '*'
 
     {0}
     {1}
-    """.format(" ".join(transcript), " ".join(coverage)))
+    """.format(
+            " ".join(transcript), " ".join(coverage)
+        )
+    )

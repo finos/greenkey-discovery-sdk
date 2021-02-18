@@ -49,8 +49,11 @@ def validate_entity_patterns(intent, yaml_file):
     try:
         list(map(expand_these, found_patterns))
     except Exception as exc:
-        print("Regex compilation for entity patterns failed for {} with error {}".format(
-            yaml_file, exc))
+        print(
+            "Regex compilation for entity patterns failed for {} with error {}".format(
+                yaml_file, exc
+            )
+        )
         sys.exit(1)
 
 
@@ -61,8 +64,11 @@ def validate_compound_entity_definition(entity, definition):
     try:
         expand_this(definition)
     except Exception as exc:
-        print("Entity {} contains invalid pattern {} failed validation with error {}".
-              format(entity, definition, exc))
+        print(
+            "Entity {} contains invalid pattern {} failed validation with error {}".format(
+                entity, definition, exc
+            )
+        )
         sys.exit(1)
 
 
@@ -76,7 +82,8 @@ def validate_compound_entities(intent):
             map(
                 validate_this_entity,
                 [value for value in values if isinstance(value, str) and "@" in value],
-            ))
+            )
+        )
 
 
 def validate_regex_in_yaml_file(yaml_file):
