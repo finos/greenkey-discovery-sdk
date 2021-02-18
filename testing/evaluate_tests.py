@@ -1,17 +1,19 @@
 #!/usr/bin/env python3
 
-import logging
-
-logger = logging.getLogger(__name__)
-
 import json
+import logging
 from datetime import date
 
 from testing.format_tests import strip_extra_whitespace
+from testing.output_tests import print_errors
+from testing.test_schema import test_schema
 
-"""
-Helper functions
-"""
+LOGGER = logging.getLogger(__name__)
+
+# create filehandler just for test errors for ease of human review
+error_log = logging.FileHandler("test_output.log", "w+")
+error_log.setLevel(logging.ERROR)
+LOGGER.addHandler(error_log)
 
 
 def is_valid_response(resp):
@@ -20,115 +22,6 @@ def is_valid_response(resp):
     Fail if a failure response was received
     """
     return resp.get("result") != "failure"
-
-
-"""
-Schema tests
-"""
-
-
-def _find_in_list(obj, key):
-    for list_item in obj:
-        item = _find(list_item, key)
-        if item is not None:
-            return item
-
-
-def _find_in_dict(obj, key):
-    if key in obj:
-        return obj[key]
-    for _, v in obj.items():
-        item = _find(v, key)
-        if item is not None:
-            return item
-
-
-def _find(obj, key):
-    if isinstance(obj, list):
-        return _find_in_list(obj, key)
-    if isinstance(obj, dict):
-        return _find_in_dict(obj, key)
-
-
-def is_invalid_schema(schema, test_value):
-    """
-    Checks schema against tests with dictionary nesting
-
-    >>> is_invalid_schema({"valid_key": "some_value"}, {"valid_key": "some_value"})
-    False
-
-    >>> is_invalid_schema({"invalid_key": "some_value"}, {"valid_key": "some_value"})
-    True
-
-    >>> is_invalid_schema(
-    ... {"nested": {"valid_key": "some_value", "another_key": "some_value"}},
-    ... {"nested": {"valid_key": "some_value"}}
-    ... )
-    False
-
-    >>> is_invalid_schema(
-    ... {"nested": {"invalid_key": "some_value", "another_key": "some_value"}},
-    ... {"nested": {"valid_key": "some_value"}}
-    ... )
-    True
-
-    >>> is_invalid_schema(
-    ... {"nested": {"valid_key": "some_invalid_value", "another_key": "some_value"}},
-    ... {"nested": {"valid_key": "some_value"}}
-    ... )
-    True
-
-    >>> is_invalid_schema(
-    ... {"nested": {"double": {"valid_key": "some_value", "another_key": "some_value"}}},
-    ... {"nested": {"double": {"valid_key": "some_value"}}}
-    ... )
-    False
-
-    >>> is_invalid_schema(
-    ... {"nested": {"double": {"valid_key": "some_value", "another_key": "some_value"}}},
-    ... {"nested": {"double": {"valid_key": "some_value"}, "some_key": "no_value"}}
-    ... )
-    True
-    """
-    if isinstance(test_value, dict):
-        return any(
-            is_invalid_schema(schema[k], test_value[k]) if k in schema else True
-            for k in test_value.keys()
-        )
-    return schema != test_value
-
-
-def test_schema(resp, test_value, test_name=""):
-    """
-    For each key-value pair given in the schema test,
-    recursively search the JSON response for the key,
-    then make sure the value is correct
-    """
-
-    # Returning number of errors, so check for values that do not equal test case
-    errs = {}
-    for res in map(
-        lambda k: {k: _find(resp, k)}
-        if is_invalid_schema(_find(resp, k), test_value[k])
-        else {},
-        list(test_value.keys()),
-    ):
-        errs.update(res)
-
-    if errs:
-        logger.info(
-            "Test {0} - Schema test failed for {1} with response {2}".format(
-                test_name, test_value, errs
-            )
-        )
-        logger.info("Test {0} - Full response is {1}".format(test_name, resp))
-
-    return len(errs), json.dumps(errs)
-
-
-"""
-Entity tests
-"""
 
 
 def test_single_entity(entities, entity_label, test_value, test_name=""):
@@ -140,11 +33,11 @@ def test_single_entity(entities, entity_label, test_value, test_name=""):
     :param test_name: str
     """
     if entity_label not in entities.keys():
-        logger.info("Test {0} - Entity not found: {1}".format(test_name, entity_label))
+        LOGGER.info("Test {0} - Entity not found: {1}".format(test_name, entity_label))
         return 1, "[value missing]"
 
     if entities[entity_label] != test_value:
-        logger.info(
+        LOGGER.info(
             "Test {0} - Observed Entity Value Incorrect: ({1}) Expected {2} != {3}".format(
                 test_name, entity_label, test_value, entities[entity_label]
             )
@@ -167,12 +60,7 @@ def print_extra_entities(observed_entity_dict, test_dict, test_name=""):
     }
 
     if extra_entities:
-        logger.info("Test {0} - Extra entities: {1}".format(test_name, extra_entities))
-
-
-"""
-Intent tests
-"""
+        LOGGER.info("Test {0} - Extra entities: {1}".format(test_name, extra_entities))
 
 
 def evaluate_intent(test_dict, resp, test_name=""):
@@ -191,7 +79,7 @@ def evaluate_intent(test_dict, resp, test_name=""):
     failed_test = 0 if expected_intent == observed_intent else 1
 
     if failed_test:
-        logger.info(
+        LOGGER.info(
             "Test {0} - Observed intent {1} does not match expected intent {2}".format(
                 test_name, observed_intent, expected_intent
             )
@@ -210,11 +98,6 @@ def format_intent_test_result(test_name, expected_intent, observed_intent):
             else []
         ),
     )
-
-
-"""
-Evaluate entity and schema tests
-"""
 
 
 def get_observed_values(resp):
@@ -318,8 +201,6 @@ def test_single_case(test_dict, resp, test_name=""):
         test_dict, resp, test_name, observed_entity_dict
     )
     total_errors += new_errors
-
-    print_extra_entities(observed_entity_dict, test_dict, test_name)
 
     return dict(
         total_errors=total_errors,
