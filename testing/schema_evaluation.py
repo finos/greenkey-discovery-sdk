@@ -4,6 +4,10 @@
 Stores utilities around testing schema
 """
 
+import json
+
+from testing.output_tests import print_errors
+
 
 def _find_in_list(obj, key):
     for list_item in obj:
@@ -76,7 +80,7 @@ def is_invalid_schema(schema, test_value):
     return schema != test_value
 
 
-def test_schema(resp, test_value, test_name=""):
+def test_schema(resp, test_value, logger, test_name=""):
     """
     For each key-value pair given in the schema test,
     recursively search the JSON response for the key,
@@ -93,12 +97,6 @@ def test_schema(resp, test_value, test_name=""):
     ):
         errs.update(res)
 
-    if errs:
-        logger.info(
-            "Test {0} - Schema test failed for {1} with response {2}".format(
-                test_name, test_value, errs
-            )
-        )
-        logger.info("Test {0} - Full response is {1}".format(test_name, resp))
+    print_errors(test_name, test_value, errs, logger)
 
     return len(errs), json.dumps(errs)

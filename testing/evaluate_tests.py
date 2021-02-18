@@ -6,7 +6,7 @@ from datetime import date
 
 from testing.format_tests import strip_extra_whitespace
 from testing.output_tests import print_errors
-from testing.test_schema import test_schema
+from testing.schema_evaluation import test_schema
 
 LOGGER = logging.getLogger(__name__)
 # create filehandler just for test errors for ease of human review
@@ -143,7 +143,7 @@ def check_entities(test_dict, resp, test_name, observed_entity_dict):
 
         if entity_label == "schema":
             errors, error_value = test_schema(
-                resp, json.loads(expected_entity_value), test_name
+                resp, json.loads(expected_entity_value), test_name, LOGGER
             )
         elif entity_label == "predicted_intent":
             continue
