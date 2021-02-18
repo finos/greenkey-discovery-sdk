@@ -75,6 +75,17 @@ def print_failures(test_failures):
     print(TABLE_BAR_LENGTH * "-")
 
 
+def print_errors(test_name, test_value, errs, logger):
+    if errs:
+        logger.info(
+            f"Test {test_name} - Schema test failed for {test_value} with response {errs}"
+        )
+        logger.error(test_name)
+        for key in errs.keys():
+            logger.error(f"Expected {key}: {test_value[key]}")
+            logger.error(f"Observed {key}: {errs[key]}\n")
+
+
 def record_results(output_dict, save_results=False):
     print("\n---\n")
     print("Entity Accuracy: {:.2f}".format(output_dict["entity_accuracy"]))

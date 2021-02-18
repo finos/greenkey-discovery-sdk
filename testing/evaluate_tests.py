@@ -9,7 +9,6 @@ from testing.output_tests import print_errors
 from testing.test_schema import test_schema
 
 LOGGER = logging.getLogger(__name__)
-
 # create filehandler just for test errors for ease of human review
 error_log = logging.FileHandler("test_output.log", "w+")
 error_log.setLevel(logging.ERROR)

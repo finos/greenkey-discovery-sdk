@@ -47,29 +47,14 @@ def format_bad_response(test_name, message, resp):
     return f"Test {test_name} - Failed: {message}. Response: {resp}"
 
 
-def format_bad_entities(test_dict, test_results):
+def format_bad_entities(test_name, test_results):
     """
     Format error for pytest output
     """
-    expected_output = {
-        k: v
-        for k, v in test_dict.items()
-        if k
-        not in [
-            "test",
-            "transcript",
-            "schema",
-            "intent",
-            "external_json",
-            "predicted_intent",
-        ]
-    }
-    msg = f"\nExpected: {expected_output}\nReceived: {test_results['observed_entity_dict']}"
-    if "predicted_intent" in test_dict:
-        msg += (
-            f"\nExpected intent: {test_dict['predicted_intent']}\n"
-            + f"Observed intents:{test_results['observed_intents']}"
-        )
+    msg = f"{test_name}\n"
+    for failure in test_results["test_failures"]:
+        msg += f"Expected {failure[1]}: {failure[2]}\n"
+        msg += f"Observed {failure[1]}: {failure[3]}\n"
 
     return msg
 
@@ -79,7 +64,7 @@ def test_nlp_stack(test_dict, intents, nlp_models, test_name):
     Test a single test dict with both nlprocessor and discovery
     """
     test_dict = test_dict.copy()
-    _, transcript = test_dict.pop("test"), test_dict.pop("transcript")
+    transcript = test_dict.pop("transcript")
     external_json = test_dict.get("external_json", {})
 
     resp = {}
@@ -102,7 +87,7 @@ def test_nlp_stack(test_dict, intents, nlp_models, test_name):
     test_results = evaluate_entities_and_schema(test_dict, resp)
 
     assert test_results.get("total_errors") in {0, None}, format_bad_entities(
-        test_dict, test_results
+        test_name, test_results
     )
 
 
