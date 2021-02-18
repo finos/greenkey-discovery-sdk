@@ -102,6 +102,7 @@ def freezeargs(func):
     Transform all mutable objects into immutables using freeze
     For the sake of lru_cache
     """
+
     @functools.wraps(func)
     def wrapped(*args, **kwargs):
         args = tuple(freeze(arg) for arg in args)

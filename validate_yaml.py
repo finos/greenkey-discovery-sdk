@@ -45,8 +45,9 @@ def validate_elements(new_elements, known_elements):
     is_known = bool(overlap)
 
     if not is_unique:
-        duplicated_elements = set(elem for elem in new_elements
-                                  if new_elements.count(elem) > 1)
+        duplicated_elements = set(
+            elem for elem in new_elements if new_elements.count(elem) > 1
+        )
         overlap = overlap.union(duplicated_elements)
     failure = is_known or not is_unique
     return (list(overlap if failure else unique_elements), not failure)
@@ -54,8 +55,9 @@ def validate_elements(new_elements, known_elements):
 
 def validate_file_exists(file_name):
     "This wrapper checks if a file exists."
-    print_or_throw_error(os.path.isfile(file_name), "",
-                         "File {} does not exist".format(file_name))
+    print_or_throw_error(
+        os.path.isfile(file_name), "", "File {} does not exist".format(file_name)
+    )
 
 
 def validate_files(structured_dict):
@@ -112,7 +114,8 @@ def check_key(yaml_file, data_dict, key, known_values):
         success_code,
         "No {} in {} duplicate previous ones".format(key, yaml_file),
         "{} contains {} duplicated elsewhere, namely {}".format(
-            yaml_file, key, str(new_values)),
+            yaml_file, key, str(new_values)
+        ),
     )
     return new_values
 
@@ -147,11 +150,13 @@ def validate_all_files(interpreter_directory):
         return
     known_entities = set()
     known_intents = set()
-    for yaml_file in glob.glob(os.path.join(interpreter_directory, "*.yaml"),
-                               recursive=True):
+    for yaml_file in glob.glob(
+        os.path.join(interpreter_directory, "*.yaml"), recursive=True
+    ):
         validate_regex_in_yaml_file(yaml_file)
-        new_entities, new_intents = validate_yaml_file(yaml_file, known_entities,
-                                                       known_intents)
+        new_entities, new_intents = validate_yaml_file(
+            yaml_file, known_entities, known_intents
+        )
         known_entities.update(new_entities)
         known_intents.update(new_intents)
 

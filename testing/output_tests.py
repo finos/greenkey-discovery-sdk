@@ -30,19 +30,23 @@ def print_table(timing_list, top_n=5, first_k_chars=25):
     print(TABLE_BAR_LENGTH * "-")
     sorted_timing = sorted(timing_list, key=lambda tup: tup.time_dif_ms, reverse=True)
     print("\nTop", top_n, "longest timed tests:\n")
-    print("{:<30s}{:<12s}{:<30s}{:<35s}{:<25s}".format("test_file_name", "test_no",
-                                                       "test_name", "transcript",
-                                                       "time(ms)"))
+    print(
+        "{:<30s}{:<12s}{:<30s}{:<35s}{:<25s}".format(
+            "test_file_name", "test_no", "test_name", "transcript", "time(ms)"
+        )
+    )
     print(TABLE_BAR_LENGTH * "-")
 
     for x in sorted_timing[:top_n]:
-        print("{:<30s}{:<12d}{:<30s}{:<35s}{:<25.2f}".format(
-            x.test_file[:first_k_chars],
-            x.test_no,
-            x.test_name[:first_k_chars],
-            x.transcript[:first_k_chars],
-            x.time_dif_ms,
-        ))
+        print(
+            "{:<30s}{:<12d}{:<30s}{:<35s}{:<25.2f}".format(
+                x.test_file[:first_k_chars],
+                x.test_no,
+                x.test_name[:first_k_chars],
+                x.transcript[:first_k_chars],
+                x.time_dif_ms,
+            )
+        )
 
     print(TABLE_BAR_LENGTH * "-")
 
@@ -58,7 +62,9 @@ def print_failures(test_failures):
 
     print(TABLE_BAR_LENGTH * "-")
     print("\nTest failures:\n")
-    print(table_string.format("test_name", "test_type", "expected_value/observed_value"))
+    print(
+        table_string.format("test_name", "test_type", "expected_value/observed_value")
+    )
     print(TABLE_BAR_LENGTH * "-")
 
     for t in test_failures:
@@ -71,7 +77,9 @@ def print_failures(test_failures):
 
 def print_errors(test_name, test_value, errs, logger):
     if errs:
-        logger.info(f"Test {test_name} - Schema test failed for {test_value} with response {errs}")
+        logger.info(
+            f"Test {test_name} - Schema test failed for {test_value} with response {errs}"
+        )
         logger.error(test_name)
         for key in errs.keys():
             logger.error(f"Expected {key}: {test_value[key]}")
@@ -83,8 +91,9 @@ def record_results(output_dict, save_results=False):
     print("Entity Accuracy: {:.2f}".format(output_dict["entity_accuracy"]))
 
     # evaluate metrics; treat each possible intent as reference
-    metrics_dict = compute_all(output_dict["expected_intents"],
-                               output_dict["observed_intents"])
+    metrics_dict = compute_all(
+        output_dict["expected_intents"], output_dict["observed_intents"]
+    )
 
     # record message regardless of number of entity errors
     message = "\n({} / {}) tests passed in {} seconds from {}\n".format(

@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 
-import logging
 import json
+import logging
 from datetime import date
+
 from testing.format_tests import strip_extra_whitespace
 from testing.output_tests import print_errors
+from testing.schema_evaluation import test_schema
 
 LOGGER = logging.getLogger(__name__)
 # create filehandler just for test errors for ease of human review
@@ -12,9 +14,6 @@ error_log = logging.FileHandler("test_output.log", "w+")
 error_log.setLevel(logging.ERROR)
 LOGGER.addHandler(error_log)
 
-"""
-Helper functions
-"""
 
 def is_valid_response(resp):
     """
@@ -22,106 +21,6 @@ def is_valid_response(resp):
     Fail if a failure response was received
     """
     return resp.get("result") != "failure"
-
-
-"""
-Schema tests
-"""
-
-def _find_in_list(obj, key):
-    for list_item in obj:
-        item = _find(list_item, key)
-        if item is not None:
-            return item
-
-
-def _find_in_dict(obj, key):
-    if key in obj:
-        return obj[key]
-    for _, v in obj.items():
-        item = _find(v, key)
-        if item is not None:
-            return item
-
-
-def _find(obj, key):
-    if isinstance(obj, list):
-        return _find_in_list(obj, key)
-    if isinstance(obj, dict):
-        return _find_in_dict(obj, key)
-
-
-def is_invalid_schema(schema, test_value):
-    """
-    Checks schema against tests with dictionary nesting
-
-    >>> is_invalid_schema({"valid_key": "some_value"}, {"valid_key": "some_value"})
-    False
-
-    >>> is_invalid_schema({"invalid_key": "some_value"}, {"valid_key": "some_value"})
-    True
-
-    >>> is_invalid_schema(
-    ... {"nested": {"valid_key": "some_value", "another_key": "some_value"}},
-    ... {"nested": {"valid_key": "some_value"}}
-    ... )
-    False
-
-    >>> is_invalid_schema(
-    ... {"nested": {"invalid_key": "some_value", "another_key": "some_value"}},
-    ... {"nested": {"valid_key": "some_value"}}
-    ... )
-    True
-
-    >>> is_invalid_schema(
-    ... {"nested": {"valid_key": "some_invalid_value", "another_key": "some_value"}},
-    ... {"nested": {"valid_key": "some_value"}}
-    ... )
-    True
-
-    >>> is_invalid_schema(
-    ... {"nested": {"double": {"valid_key": "some_value", "another_key": "some_value"}}},
-    ... {"nested": {"double": {"valid_key": "some_value"}}}
-    ... )
-    False
-
-    >>> is_invalid_schema(
-    ... {"nested": {"double": {"valid_key": "some_value", "another_key": "some_value"}}},
-    ... {"nested": {"double": {"valid_key": "some_value"}, "some_key": "no_value"}}
-    ... )
-    True
-    """
-    if isinstance(test_value, dict):
-        return any(
-            is_invalid_schema(schema[k], test_value[k]) if k in schema else True
-            for k in test_value.keys())
-    return schema != test_value
-
-
-def test_schema(resp, test_value, test_name=""):
-    """
-    For each key-value pair given in the schema test,
-    recursively search the JSON response for the key,
-    then make sure the value is correct
-    """
-
-    # Returning number of errors, so check for values that do not equal test case
-    errs = {}
-    for res in map(
-            lambda k: {k: _find(resp, k)}
-            if is_invalid_schema(_find(resp, k), test_value[k]) else {},
-            list(test_value.keys()),
-    ):
-        errs.update(res)
-
-    print_errors(test_name, test_value, errs, LOGGER)
-
-    return len(errs), json.dumps(errs)
-
-
-"""
-Entity tests
-"""
 
 
 def test_single_entity(entities, entity_label, test_value, test_name=""):
@@ -138,8 +37,10 @@ def test_single_entity(entities, entity_label, test_value, test_name=""):
 
     if entities[entity_label] != test_value:
         LOGGER.info(
-            "Test {0} - Observed Entity Value Incorrect: ({1}) Expected {2} != {3}".
-            format(test_name, entity_label, test_value, entities[entity_label]))
+            "Test {0} - Observed Entity Value Incorrect: ({1}) Expected {2} != {3}".format(
+                test_name, entity_label, test_value, entities[entity_label]
+            )
+        )
         return 1, entities[entity_label]
 
     return 0, ""
@@ -154,17 +55,11 @@ def print_extra_entities(observed_entity_dict, test_dict, test_name=""):
         that were not in the test_dict, if any
     """
     extra_entities = {
-        x: observed_entity_dict[x]
-        for x in observed_entity_dict if x not in test_dict
+        x: observed_entity_dict[x] for x in observed_entity_dict if x not in test_dict
     }
 
     if extra_entities:
         LOGGER.info("Test {0} - Extra entities: {1}".format(test_name, extra_entities))
-
-
-"""
-Intent tests
-"""
 
 
 def evaluate_intent(test_dict, resp, test_name=""):
@@ -185,7 +80,9 @@ def evaluate_intent(test_dict, resp, test_name=""):
     if failed_test:
         LOGGER.info(
             "Test {0} - Observed intent {1} does not match expected intent {2}".format(
-                test_name, observed_intent, expected_intent))
+                test_name, observed_intent, expected_intent
+            )
+        )
 
     return expected_intent, observed_intent
 
@@ -194,14 +91,12 @@ def format_intent_test_result(test_name, expected_intent, observed_intent):
     return dict(
         expected_intent=expected_intent,
         observed_intent=observed_intent,
-        test_failures=([test_name, "intent", expected_intent, observed_intent]
-                       if expected_intent != observed_intent else []),
+        test_failures=(
+            [test_name, "intent", expected_intent, observed_intent]
+            if expected_intent != observed_intent
+            else []
+        ),
     )
-
-
-"""
-Evaluate entity and schema tests
-"""
 
 
 def get_observed_values(resp):
@@ -217,7 +112,8 @@ def get_observed_values(resp):
         if entity.get("label", "") not in {"O", ""}:
             label = entity["label"].replace("B-", "").replace("I-", "")
             observed_entity_dict[label] = strip_extra_whitespace(
-                observed_entity_dict.get(label, "") + " " + entity.get("word"))
+                observed_entity_dict.get(label, "") + " " + entity.get("word")
+            )
 
     observed_entity_dict = {
         **observed_entity_dict,
@@ -241,20 +137,24 @@ def check_entities(test_dict, resp, test_name, observed_entity_dict):
     total_errors = 0
     # Loop through all entity tests
     for label, value in test_dict.items():
-        entity_label, expected_entity_value, resp = map(strip_extra_whitespace,
-                                                        [label, value, resp])
+        entity_label, expected_entity_value, resp = map(
+            strip_extra_whitespace, [label, value, resp]
+        )
 
         if entity_label == "schema":
-            errors, error_value = test_schema(resp, json.loads(expected_entity_value),
-                                              test_name)
+            errors, error_value = test_schema(
+                resp, json.loads(expected_entity_value), test_name, LOGGER
+            )
         elif entity_label == "predicted_intent":
             continue
         else:
-            errors, error_value = test_single_entity(observed_entity_dict, entity_label,
-                                                     expected_entity_value, test_name)
+            errors, error_value = test_single_entity(
+                observed_entity_dict, entity_label, expected_entity_value, test_name
+            )
 
         results.append(
-            [errors, test_name, entity_label, expected_entity_value, error_value])
+            [errors, test_name, entity_label, expected_entity_value, error_value]
+        )
 
         total_errors += errors
 
@@ -269,8 +169,10 @@ def check_intents(test_dict, observed_intents):
     Check intents
     """
     total_errors = 0
-    if (test_dict.get("predicted_intent")
-            and test_dict["predicted_intent"] not in observed_intents):
+    if (
+        test_dict.get("predicted_intent")
+        and test_dict["predicted_intent"] not in observed_intents
+    ):
         total_errors += 1
     return total_errors
 
@@ -294,8 +196,9 @@ def test_single_case(test_dict, resp, test_name=""):
     new_errors = check_intents(test_dict, observed_intents)
     total_errors += new_errors
 
-    test_failures, new_errors = check_entities(test_dict, resp, test_name,
-                                               observed_entity_dict)
+    test_failures, new_errors = check_entities(
+        test_dict, resp, test_name, observed_entity_dict
+    )
     total_errors += new_errors
 
     return dict(
@@ -320,8 +223,7 @@ def evaluate_entities_and_schema(test_dict, resp):
 
     # Remove non-entity keys from test_dict, then pass to `test_single_case`
     test_dict = {
-        k: v.replace("@CUR_2DIGIT_YEAR",
-                     str(date.today().year)[-2:])
+        k: v.replace("@CUR_2DIGIT_YEAR", str(date.today().year)[-2:])
         for k, v in test_dict.items()
         if k not in ["transcript", "intent", "test", "external_json"]
     }

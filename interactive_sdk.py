@@ -28,9 +28,9 @@ class RetryRequest(Retry):
     BACKOFF_MAX = float(env["TIMEOUT"])
 
 
-retries = RetryRequest(total=int(env["RETRIES"]),
-                       backoff_factor=1.0,
-                       status_forcelist=[500, 502, 503, 504])
+retries = RetryRequest(
+    total=int(env["RETRIES"]), backoff_factor=1.0, status_forcelist=[500, 502, 503, 504]
+)
 request_session = requests.Session()
 request_session.mount("http://", HTTPAdapter(max_retries=retries))
 
@@ -144,8 +144,11 @@ def test_an_interpreter(config):
     if show_everything:
         st.write(payload)
 
-    if ("intents" in payload and payload["intents"]
-            and "entities" in payload["intents"][0]):
+    if (
+        "intents" in payload
+        and payload["intents"]
+        and "entities" in payload["intents"][0]
+    ):
 
         show_matched_entities(payload, config, show_ents)
 
@@ -157,14 +160,14 @@ def test_an_interpreter(config):
 
 def entity_library(config):
     st.write("Available entities")
-    st.write({
-        k: v if not k.startswith("_") else {
-            "[built-in]": {
-                "samples": v.get("samples", [])
-            }
+    st.write(
+        {
+            k: v
+            if not k.startswith("_")
+            else {"[built-in]": {"samples": v.get("samples", [])}}
+            for k, v in config["entities"].items()
         }
-        for k, v in config["entities"].items()
-    })
+    )
 
 
 def main():
@@ -184,7 +187,8 @@ def main():
 
     # Domain / Intent Config
     config = request_session.get(
-        f"{env['DISCOVERY_HOST']}:{env['DISCOVERY_PORT']}/developer").json()
+        f"{env['DISCOVERY_HOST']}:{env['DISCOVERY_PORT']}/developer"
+    ).json()
 
     if option == "Test an interpreter":
         test_an_interpreter(config)

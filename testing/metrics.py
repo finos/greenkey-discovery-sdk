@@ -16,7 +16,8 @@ def normalize_confusion_matrix(matrix, imap, unique):
     normalized_rows = []
     for n, row in enumerate(matrix):
         normalized_rows.append(
-            list(map(lambda j: float(std_float(divide_or_zero(j, sigma[n]))), row)))
+            list(map(lambda j: float(std_float(divide_or_zero(j, sigma[n]))), row))
+        )
     matrix = normalized_rows
 
     return matrix
@@ -26,12 +27,14 @@ def calculate_matrix_with_labels(actual, predicted, label, normalize=False):
     TP, FN, FP, TN = compute_counts(actual, predicted, label)
     cm = [[TP, FP], [FN, TN]]
 
-    return ([
-        [divide_or_zero(TP, (TP + FP)),
-         divide_or_zero(FP, (TP + FP))],
-        [divide_or_zero(FN, (FN + TN)),
-         divide_or_zero(TN, (FN + TN))],
-    ] if normalize else cm)
+    return (
+        [
+            [divide_or_zero(TP, (TP + FP)), divide_or_zero(FP, (TP + FP))],
+            [divide_or_zero(FN, (FN + TN)), divide_or_zero(TN, (FN + TN))],
+        ]
+        if normalize
+        else cm
+    )
 
 
 def compute_confusion_matrix(actual, predicted):
@@ -137,10 +140,9 @@ def compute_all(y_true, y_pred, labels=None):
 
     for label in labels:
         d[label]["cm"] = confusion_matrix(y_true, y_pred, label)
-        d[label]["normalized_cm"] = confusion_matrix(y_true,
-                                                     y_pred,
-                                                     label,
-                                                     normalize=True)
+        d[label]["normalized_cm"] = confusion_matrix(
+            y_true, y_pred, label, normalize=True
+        )
         d[label]["metrics"] = precision_recall_f1_accuracy(y_true, y_pred, label)
         d["label_count_dict"] = get_label_counts(y_true, y_pred, labels)
     return d
@@ -151,7 +153,11 @@ def print_normalized_confusion_matrix(actual, predicted):
     print("\nConfusion Matrix:")
     print("\t\tActual")
     print("Predicted\t" + "\t".join([_[:7] for _ in labels]))
-    print("\n".join([
-        "\t" + label[:7] + "\t" + "\t".join([str(cell) for cell in row])
-        for label, row in zip(labels, matrix)
-    ]))
+    print(
+        "\n".join(
+            [
+                "\t" + label[:7] + "\t" + "\t".join([str(cell) for cell in row])
+                for label, row in zip(labels, matrix)
+            ]
+        )
+    )

@@ -26,8 +26,9 @@ def make_clean_input(pattern):
     '(a ){10}'
     """
     entity_pattern = re.compile(r"(@[a-zA-Z\_][\w]*)")
-    pattern = re.sub(entity_pattern, lambda match: "({} )".format(match.group()),
-                     pattern)
+    pattern = re.sub(
+        entity_pattern, lambda match: "({} )".format(match.group()), pattern
+    )
 
     word_pattern = re.compile(r"([a-zA-Z\_][\w]*)")
     pattern = re.sub(word_pattern, lambda match: "({} )".format(match.group()), pattern)
@@ -93,7 +94,9 @@ def expand_these(patterns):
     else:
         output = list(
             chain.from_iterable(
-                [expand_this(_) if isinstance(_, str) else [_] for _ in patterns]))
+                [expand_this(_) if isinstance(_, str) else [_] for _ in patterns]
+            )
+        )
 
     unique_patterns = []
     for pattern in output:
