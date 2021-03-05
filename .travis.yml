@@ -5,7 +5,7 @@ jobs:
   include:
     - stage: test discovery
       python:
-        - '3.6'
+        - "3.6"
       services:
         - docker
       install:
@@ -28,4 +28,4 @@ jobs:
           python3 -m pytest --doctest-modules \
             --cov=. --cov-append -v --durations=50 \
             --interpreter-directory=examples \
-            --tests $(find examples/*_tests.txt | paste -sd,)
+            --tests $(find examples/*_tests.txt | paste -sd, -)
