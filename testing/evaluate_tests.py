@@ -143,7 +143,7 @@ def check_entities(test_dict, resp, test_name, observed_entity_dict):
 
         if entity_label == "schema":
             errors, error_value = test_schema(
-                resp, json.loads(expected_entity_value), test_name, LOGGER
+                resp, json.loads(expected_entity_value), LOGGER, test_name=test_name
             )
         elif entity_label == "predicted_intent":
             continue
