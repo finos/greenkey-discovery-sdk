@@ -10,28 +10,42 @@ import cli_sdk
 intent = "digit"
 transcript = "please dial eight"
 expected_response = {
-    "transcript": transcript,
+    "formatted_entities": [
+        {"confidence": 1.0, "length": 1.2, "start": 0.0, "word": "please"},
+        {"confidence": 1.0, "length": 0.8, "start": 1.2, "word": "dial"},
+        {
+            "IOB": "B",
+            "confidence": 1.0,
+            "interpreted_transcript": "eight",
+            "label": "digits",
+            "length": 1.0,
+            "start": 2.0,
+            "word": "8",
+        },
+    ],
+    "formatted_transcript": "please dial 8",
     "intents": [
         {
-            "label": intent,
-            "probability": 1.0,
             "entities": [
                 {
                     "label": "digits",
                     "matches": [
                         {
-                            "value": "8",
-                            "probability": 1.0,
-                            "lattice_path": [[2, 0, None]],
-                            "startTimeSec": 2.0,
                             "endTimeSec": 3.0,
                             "interpreted_transcript": "eight",
+                            "lattice_path": [[2, 0, None]],
+                            "probability": 1.0,
+                            "startTimeSec": 2.0,
+                            "value": "8",
                         }
                     ],
                 }
             ],
+            "label": "digit",
+            "probability": 1.0,
         }
     ],
+    "transcript": "please dial eight",
 }
 
 
