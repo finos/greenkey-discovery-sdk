@@ -11,6 +11,7 @@ services:
             - PORT=${NLPROCESSOR_PORT}
             # options for log levels, in decreasing log verbosity: debug, info, warning, error, critical
             - LOG_LEVEL=info
+            - TOKENIZATION_STRATEGY=${TOKENIZATION_STRATEGY}
         volumes:
           - builtin-nlprocessor-models:/models
 
