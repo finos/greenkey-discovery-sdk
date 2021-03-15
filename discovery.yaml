@@ -25,6 +25,7 @@ services:
             - LOG_LEVEL=debug
             # Prune output lattice (remove word_confusions and alternates)
             - PRUNE_LATTICE=True
+            - TOKENIZATION_STRATEGY=${TOKENIZATION_STRATEGY}
         volumes:
           - custom-discovery-interpreter:/custom
           - builtin-discovery-models:/sdk
