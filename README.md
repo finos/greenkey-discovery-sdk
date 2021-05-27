@@ -9,11 +9,11 @@ The Discovery SDK allows you to write logic-based interpreters, and let GreenKey
 
 You can use your Discovery interpreter to power several voice- and chat-driven workflows
 
-- Building a skill in combination with [Scribe's Real-Time Dictation](https://docs.greenkeytech.com/audio/#audioserver)
+- Building a skill in combination with [Scribe's Real-Time Dictation](https://docs.greenkeytech.com/focus-api/data-input/#requirements)
 
-- Searching transcribed files for key phrases with [Scribe's File Transcription](https://docs.greenkeytech.com/audio/#fileserver)
+- Searching transcribed files for key phrases with [Scribe's File Transcription](https://docs.greenkeytech.com/focus-api/data-input/#requirements_1)
 
-- Powering chat-bot workflows using [Discovery as a service](https://docs.greenkeytech.com/nlp/#discovery)
+- Powering chat-bot workflows using [Discovery as a service](https://docs.greenkeytech.com/focus-api/nlp/#discovery)
 
 Read more about Discovery on our [blog](https://greenkeytech.com/greenkey-scribe-discovery-skills/) or [checkout the full documentation](https://github.com/finos/greenkey-discovery-sdk/wiki)
 
@@ -115,7 +115,7 @@ Creating a custom project can be done by following the structure of an existing 
 
 # 3. Deploying
 
-Check out our deployment [documentation](https://docs.greenkeytech.com/nlp/#discovery) for full details on deploying Discovery.
+Check out our deployment [documentation](https://docs.greenkeytech.com/focus-api/nlp/#discovery) for full details on deploying Discovery.
 
 
 # Contributing
