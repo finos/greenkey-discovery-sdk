@@ -1,8 +1,5 @@
 # GreenKey Scribe Discovery SDK [![Build Status](https://travis-ci.org/finos/greenkey-discovery-sdk.svg?branch=master)](https://travis-ci.org/finos/greenkey-discovery-sdk)[![FINOS - Active](https://cdn.jsdelivr.net/gh/finos/contrib-toolbox@master/images/badge-active.svg)](https://finosfoundation.atlassian.net/wiki/display/FINOS/Active)
 > Powerful NLP API for human conversations
-
-<img src="https://greenkeytech.com/wp-content/uploads/2019/02/gk_logo_colorlight.png" width="300" />
-
 ---
 
 The Discovery SDK allows you to write logic-based interpreters, and let GreenKey's Discovery engine use machine learning to identify intents and extract entities.
