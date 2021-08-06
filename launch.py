@@ -76,6 +76,21 @@ def pull_image(image):
         )
 
 
+def fix_volume_permissions(volume, folder):
+    busybox_tag = env["BUSYBOX_TAG"]
+    busybox_image = f"busybox:{busybox_tag}"
+    pull_image(busybox_image)
+    busybox_container = get_docker_client().containers.run(
+        busybox_image,
+        auto_remove=False,
+        detach=True,
+        volumes={volume.name: {"bind": folder, "mode": "rw"}},
+    )
+    busybox_container.start()
+    busybox_container.exec_run(f"chmod -R 777 {folder}", user="root")
+    busybox_container.remove(force=True)
+
+
 def load_builtin_discovery_models():
     """
     Create a docker volume,
@@ -86,6 +101,9 @@ def load_builtin_discovery_models():
     # copy default models in
     remove_volume(BUILTIN_DISCOVERY_MODELS)
     builtin_models = get_docker_client().volumes.create(name=BUILTIN_DISCOVERY_MODELS)
+    folder = "/models"
+    fix_volume_permissions(builtin_models, folder)
+
     initdiscovery_tag = env["INIT_DISCOVERY_TAG"]
     initdiscovery_project = "docker.greenkeytech.com/greenkey-discovery-sdk-private"
     initdiscovery_image = f"{initdiscovery_project}:{initdiscovery_tag}"
@@ -94,7 +112,7 @@ def load_builtin_discovery_models():
         initdiscovery_image,
         auto_remove=False,
         detach=True,
-        volumes={builtin_models.name: {"bind": "/models", "mode": "rw"}},
+        volumes={builtin_models.name: {"bind": folder, "mode": "rw"}},
     )
     initcontainer.start()
     initcontainer.wait()
@@ -111,6 +129,8 @@ def load_builtin_nlprocessor_models():
     # copy default models in
     remove_volume(BUILTIN_NLPROCESSOR_MODELS)
     builtin_models = get_docker_client().volumes.create(name=BUILTIN_NLPROCESSOR_MODELS)
+    folder = "/models/transformers"
+    fix_volume_permissions(builtin_models, folder)
     initnlprocessor_tag = env["INIT_NLPROCESSOR_TAG"]
     initnlprocessor_project = "docker.greenkeytech.com/nlpmodelcontroller"
     initnlprocessor_image = f"{initnlprocessor_project}:{initnlprocessor_tag}"
@@ -119,7 +139,7 @@ def load_builtin_nlprocessor_models():
         initnlprocessor_image,
         auto_remove=False,
         detach=True,
-        volumes={builtin_models.name: {"bind": "/models/transformers", "mode": "rw"}},
+        volumes={builtin_models.name: {"bind": folder, "mode": "rw"}},
     )
     initcontainer.start()
     initcontainer.wait()
