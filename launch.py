@@ -80,15 +80,14 @@ def fix_volume_permissions(volume, folder):
     busybox_tag = env["BUSYBOX_TAG"]
     busybox_image = f"busybox:{busybox_tag}"
     pull_image(busybox_image)
-    busybox_container = get_docker_client().containers.run(
+    get_docker_client().containers.run(
         busybox_image,
-        auto_remove=False,
-        detach=True,
+        command=f"chmod -R 777 {folder}",
+        user="root",
+        remove=True,
+        detach=False,
         volumes={volume.name: {"bind": folder, "mode": "rw"}},
     )
-    busybox_container.start()
-    busybox_container.exec_run(f"chmod -R 777 {folder}", user="root")
-    busybox_container.remove(force=True)
 
 
 def load_builtin_discovery_models():
