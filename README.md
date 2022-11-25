@@ -1,4 +1,6 @@
-# GreenKey Scribe Discovery SDK [![Build Status](https://travis-ci.com/finos/greenkey-discovery-sdk.svg?branch=master)](https://travis-ci.com/finos/greenkey-discovery-sdk)[![FINOS - Active](https://cdn.jsdelivr.net/gh/finos/contrib-toolbox@master/images/badge-active.svg)](https://finosfoundation.atlassian.net/wiki/display/FINOS/Active)
+[![FINOS - Archived](https://cdn.jsdelivr.net/gh/finos/contrib-toolbox@master/images/badge-archived.svg)](https://community.finos.org/docs/governance/Software-Projects/stages/archived)
+
+# GreenKey Scribe Discovery SDK 
 > Powerful NLP API for human conversations
 ---
 
