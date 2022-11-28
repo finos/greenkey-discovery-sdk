@@ -1,5 +1,7 @@
 [![FINOS - Archived](https://cdn.jsdelivr.net/gh/finos/contrib-toolbox@master/images/badge-archived.svg)](https://community.finos.org/docs/governance/Software-Projects/stages/archived)
 
+NOTE! This project is archived due to lack of activity; you can still consume this software, although not advised, as it is not actively maintained. If you're interested to restore activity on this repository, please email help@finos.org
+
 # GreenKey Scribe Discovery SDK 
 > Powerful NLP API for human conversations
 ---
